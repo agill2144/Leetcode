@@ -1,6 +1,7 @@
 type MedianFinder struct {
     left *maxHeap
     right *minHeap
+    items []int
 }
 
 
@@ -8,36 +9,53 @@ func Constructor() MedianFinder {
     return MedianFinder{
         left: &maxHeap{items: []int{}},
         right: &minHeap{items: []int{}},
+        items: []int{},
     }
 }
 
 
 func (this *MedianFinder) AddNum(num int)  {
-    heap.Push(this.left, num)
+    this.items = append(this.items, num)
     
-    // ensure left top <= right top
-    if this.left.Len() != 0 && this.right.Len() != 0 && 
-    this.left.items[0] > this.right.items[0] {
-        heap.Push(this.right, heap.Pop(this.left))
+    for i := len(this.items)-2; i >= 0; i-- {
+        if this.items[i+1] < this.items[i] {
+            this.items[i+1], this.items[i] = this.items[i], this.items[i+1]
+        } else {
+            break
+        }
     }
     
-    // ensure its balanced, so that the median is at the top of surface of both heaps
-    // otherwise median could get burried somewhere deep inside a heap
-    if this.left.Len() > this.right.Len() + 1 {
-        heap.Push(this.right, heap.Pop(this.left))
-    } else if this.right.Len() > this.left.Len() {
-        heap.Push(this.left, heap.Pop(this.right))
-    }
+//     heap.Push(this.left, num)
+    
+//     // ensure left top <= right top
+//     if this.left.Len() != 0 && this.right.Len() != 0 && 
+//     this.left.items[0] > this.right.items[0] {
+//         heap.Push(this.right, heap.Pop(this.left))
+//     }
+    
+//     // ensure its balanced, so that the median is at the top of surface of both heaps
+//     // otherwise median could get burried somewhere deep inside a heap
+//     if this.left.Len() > this.right.Len() + 1 {
+//         heap.Push(this.right, heap.Pop(this.left))
+//     } else if this.right.Len() > this.left.Len() {
+//         heap.Push(this.left, heap.Pop(this.right))
+//     }
+        
 }
 
 
 func (this *MedianFinder) FindMedian() float64 {
-    if this.left.Len() > this.right.Len() {
-        return float64(this.left.items[0])
-    } else if this.right.Len() > this.left.Len() {
-        return float64(this.right.items[0])
+    mid := (len(this.items)-1)/2
+    if len(this.items) % 2 == 0 {
+        return float64(this.items[mid]+this.items[mid+1])/2
     }
-    return float64(this.left.items[0]+this.right.items[0]) / 2.0
+    return float64(this.items[mid])
+    // if this.left.Len() > this.right.Len() {
+    //     return float64(this.left.items[0])
+    // } else if this.right.Len() > this.left.Len() {
+    //     return float64(this.right.items[0])
+    // }
+    // return float64(this.left.items[0]+this.right.items[0]) / 2.0
 }
 
 
