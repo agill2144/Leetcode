@@ -80,12 +80,12 @@ func Constructor() MedianFinder {
 
 
 func (this *MedianFinder) AddNum(num int)  {
-    heap.Push(this.left, num)
+    heap.Push(this.right, num)
     
     // ensure left top <= right top
     if this.left.Len() != 0 && this.right.Len() != 0 && 
-    this.left.items[0] > this.right.items[0] {
-        heap.Push(this.right, heap.Pop(this.left))
+    this.right.items[0] < this.left.items[0] {
+        heap.Push(this.left, heap.Pop(this.right))
     }
     
     // ensure its balanced, so that the median is at the top of surface of both heaps
