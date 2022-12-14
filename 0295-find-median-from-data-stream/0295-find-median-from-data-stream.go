@@ -14,27 +14,30 @@ func Constructor() MedianFinder {
 
 func (this *MedianFinder) AddNum(num int)  {
     heap.Push(this.left, num)
-    if this.right.Len() > 0 && this.left.items[0] > this.right.items[0] {
-        leftPopped := heap.Pop(this.left).(int)
-        heap.Push(this.right, leftPopped)
+    
+    // ensure left top <= right top
+    if this.left.Len() != 0 && this.right.Len() != 0 && 
+    this.left.items[0] > this.right.items[0] {
+        heap.Push(this.right, heap.Pop(this.left))
     }
-    if len(this.left.items) > len(this.right.items)+1 {
-        heap.Push(this.right, heap.Pop(this.left).(int))
-    }
-    if len(this.right.items) > len(this.left.items)+1 {
-        heap.Push(this.left, heap.Pop(this.right).(int))
+    
+    // ensure its balanced, so that the median is at the top of surface of both heaps
+    // otherwise median could get burried somewhere deep inside a heap
+    if this.left.Len() > this.right.Len() + 1 {
+        heap.Push(this.right, heap.Pop(this.left))
+    } else if this.right.Len() > this.left.Len() {
+        heap.Push(this.left, heap.Pop(this.right))
     }
 }
 
 
 func (this *MedianFinder) FindMedian() float64 {
-    if len(this.left.items) > len(this.right.items) {
+    if this.left.Len() > this.right.Len() {
         return float64(this.left.items[0])
-    } 
-    if len(this.right.items) > len(this.left.items) {
+    } else if this.right.Len() > this.left.Len() {
         return float64(this.right.items[0])
-    } 
-    return float64(this.left.items[0] + this.right.items[0]) / 2.0
+    }
+    return float64(this.left.items[0]+this.right.items[0]) / 2.0
 }
 
 
@@ -59,6 +62,7 @@ func (m *maxHeap) Pop() interface{} {
     m.items = m.items[:len(m.items)-1]
     return out
 }
+
 
 
 /**
