@@ -1,3 +1,6 @@
+// time: o(n)
+// space: o(1)
+
 func replaceElements(arr []int) []int {
     if arr == nil || len(arr) == 0 {return nil}
     // feels like dp, can be solved bottom up with the same intuition
