@@ -1,3 +1,4 @@
+// BFS
 // func validPath(n int, edges [][]int, source int, destination int) bool {
 //     adjMatrix := map[int][]int{}
 //     for i := 0; i < len(edges); i++ {
@@ -26,6 +27,8 @@
 //     return false
 // }
 
+
+// DFS
 func validPath(n int, edges [][]int, source int, destination int) bool {
     adjMatrix := map[int][]int{}
     for i := 0; i < len(edges); i++ {
