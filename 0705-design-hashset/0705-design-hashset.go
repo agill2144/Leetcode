@@ -35,7 +35,12 @@ func (this *MyHashSet) Add(key int) {
 	idx := hashIdx(key)
 	idx2 := hashIdx2(key)
 	if this.items[idx] == nil {
-		this.items[idx] = make([]bool, innerArraySize)
+        if idx == 0 {
+            this.items[idx] = make([]bool, outterArraySize+1)
+        } else {
+            this.items[idx] = make([]bool, outterArraySize)
+        }
+		
 	}
 	this.items[idx][idx2] = true
 }
