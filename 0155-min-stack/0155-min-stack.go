@@ -1,57 +1,45 @@
 type MinStack struct {
-    st [][]int // [val, minSoFar]
+    st []int
+    min []int
 }
 
 
 func Constructor() MinStack {
     return MinStack{
-        st: [][]int{},
+        st: []int{},
+        min : []int{},
     }
 }
 
 
-/* 
-time : o(1)
-space: o(1)
-*/
 func (this *MinStack) Push(val int)  {
-    item := []int{val, val}
-    if len(this.st) == 0 {
-        this.st = append(this.st, item)
+    this.st = append(this.st, val)
+    if len(this.min) == 0 {
+        this.min = append(this.min, val)
         return
     }
-    topMin := this.st[len(this.st)-1][1]
-    if topMin < val {
-        item[1] = topMin
+    topMin := this.min[len(this.min)-1]
+    if val <= topMin {
+        this.min = append(this.min, val)
     }
-    this.st = append(this.st, item)
 }
 
 
-/* 
-time : o(1)
-space: o(1)
-*/
 func (this *MinStack) Pop()  {
-    this.st = this.st[:len(this.st)-1]
+    top := this.st[len(this.st)-1]; this.st = this.st[:len(this.st)-1]
+    if top == this.min[len(this.min)-1] {
+        this.min = this.min[:len(this.min)-1]
+    }
 }
 
 
-/* 
-time : o(1)
-space: o(1)
-*/
 func (this *MinStack) Top() int {
-    return this.st[len(this.st)-1][0]
+    return this.st[len(this.st)-1]
 }
 
 
-/* 
-time : o(1)
-space: o(1)
-*/
 func (this *MinStack) GetMin() int {
-    return this.st[len(this.st)-1][1]
+    return this.min[len(this.min)-1]
 }
 
 
