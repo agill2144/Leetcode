@@ -11,23 +11,27 @@ func getImportance(employees []*Employee, id int) int {
     if employees == nil || len(employees) == 0 {return 0}
 
     empRef := map[int]*Employee{}
-    q := []*Employee{}
+    var start *Employee
     for i := 0; i < len(employees); i++ {
         emp := employees[i]
         empRef[emp.Id] = emp
-        if emp.Id == id {q = append(q, emp)}
-    }
-    if len(q) == 0 {return 0}
-    
-    sum := 0
-    for len(q) != 0 {
-        dq := q[0]
-        q = q[1:]
-        sum += dq.Importance
-        
-        for _, empID := range dq.Subordinates {
-            q = append(q, empRef[empID])
+        if emp.Id == id {
+            start = emp
         }
     }
+    sum := 0
+    var dfs func(e *Employee)
+    dfs = func(e *Employee) {
+        // base
+        if e == nil {return}
+        
+        // logic
+        sum += e.Importance
+        subordinates := e.Subordinates
+        for _, sub := range subordinates {
+            dfs(empRef[sub])
+        }
+    }
+    dfs(start)
     return sum
 }
