@@ -19,19 +19,18 @@ func getImportance(employees []*Employee, id int) int {
             start = emp
         }
     }
-    sum := 0
-    var dfs func(e *Employee)
-    dfs = func(e *Employee) {
+    var dfs func(e *Employee) int
+    dfs = func(e *Employee) int {
         // base
-        if e == nil {return}
+        if e == nil {return 0}
         
         // logic
-        sum += e.Importance
+        sum := e.Importance
         subordinates := e.Subordinates
         for _, sub := range subordinates {
-            dfs(empRef[sub])
+            sum += dfs(empRef[sub])
         }
+        return sum
     }
-    dfs(start)
-    return sum
+    return dfs(start)
 }
