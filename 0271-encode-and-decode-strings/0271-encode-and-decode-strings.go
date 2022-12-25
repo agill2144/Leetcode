@@ -15,6 +15,8 @@ type Codec struct {
 }
 
 // Encodes a list of strings to a single string.
+// time: o(n) to loop over all strs
+// space: o(1) since string builder is used as output, that does not count
 func (codec *Codec) Encode(strs []string) string {
     out := new(strings.Builder)
     for i := 0; i < len(strs); i++ {
@@ -27,6 +29,8 @@ func (codec *Codec) Encode(strs []string) string {
 }
 
 // Decodes a single string to a list of strings.
+// time: o(n) - split under the hood is going character by character and as soon as it finds the delimeter it splits ( does that at each delimeter )
+// space: o(1)
 func (codec *Codec) Decode(strs string) []string {
     return strings.Split(strs, string(unicode.MaxASCII+1))
 }
