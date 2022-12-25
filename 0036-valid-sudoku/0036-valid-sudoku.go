@@ -1,3 +1,8 @@
+// time: o(mn)
+// space: o(1) ??? 
+// because worst case board is all filled out and our box map has 9^2 elements... 
+// so its constant and never grows more than o(numOfElementsInRowSet) + o(numOfElementsInColSet) + o(9^2)
+// space: o(9)+o(9)+o(81) -- so o(1) - these are constant numbers IMO
 func isValidSudoku(board [][]byte) bool {
     m := 9
     n := 9
