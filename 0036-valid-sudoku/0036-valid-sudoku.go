@@ -2,7 +2,6 @@ func isValidSudoku(board [][]byte) bool {
     m := 9
     n := 9
     
-    // {"0:1": {5,3},  }
     boxMap := map[string]map[byte]struct{}{}
     
     for i := 0; i < m; i++ {
@@ -13,23 +12,15 @@ func isValidSudoku(board [][]byte) bool {
             
             rowVal := board[i][j]
             colVal := board[j][i]
-            // fmt.Println(i,j)
-            // handle row
+
             if rowVal != '.' {
+                
+                // handle row
                 _, existsInRow := rowSet[rowVal]
                 if existsInRow { return false }
                 rowSet[rowVal] = struct{}{}
-            }
-            
-            // handle col
-            if colVal != '.' {
-                _, existsInCol := colSet[colVal]
-                if existsInCol {  return false }
-                colSet[colVal] = struct{}{}               
-            }
-            
-            // handle 3x3 box
-            if rowVal != '.'{
+                
+                // handle 3x3
                 boxKey := fmt.Sprintf("%v:%v",i/3, j/3)
                 _, boxExists := boxMap[boxKey]
                 if !boxExists {
@@ -40,7 +31,17 @@ func isValidSudoku(board [][]byte) bool {
                     if ok {return false}
                     boxMap[boxKey][rowVal] = struct{}{}
                 }
+                
             }
+            
+            // handle col
+            if colVal != '.' {
+                _, existsInCol := colSet[colVal]
+                if existsInCol {  return false }
+                colSet[colVal] = struct{}{}               
+            }
+            
+            
         }
     }
 
