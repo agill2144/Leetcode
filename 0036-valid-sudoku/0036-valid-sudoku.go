@@ -43,7 +43,6 @@ func isValidSudoku(board [][]byte) bool {
             }
         }
     }
-        fmt.Println(boxMap)
 
     return true
     
