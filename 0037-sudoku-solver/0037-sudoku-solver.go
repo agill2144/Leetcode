@@ -34,14 +34,14 @@ func solveSudoku(board [][]byte)  {
             return dfs(r, c+1)
         }
         
+        boxIdx := fmt.Sprintf("%v:%v", r/3,c/3)
+        boxSet := boxMap[boxIdx]
+        rowSet := rows[r]
+        colSet := cols[c]
         
         // logic
         for i := 0; i < len(choices); i++ {
             choice := choices[i]
-            boxIdx := fmt.Sprintf("%v:%v", r/3,c/3)
-            boxSet := boxMap[boxIdx]
-            rowSet := rows[r]
-            colSet := cols[c]
 
             if !rowSet.contains(choice) && !colSet.contains(choice) &&
             (boxSet == nil || !boxSet.contains(choice)) {
