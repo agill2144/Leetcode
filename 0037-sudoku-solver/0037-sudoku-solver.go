@@ -83,7 +83,7 @@ func newSet() *set {
 }
 func (s *set)contains(x byte) bool {
     _, ok := s.items[x]
-    return ok == true
+    return ok 
 }
 func (s *set)add(x byte) {
     s.items[x]  = struct{}{}
