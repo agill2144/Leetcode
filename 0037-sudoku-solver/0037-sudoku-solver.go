@@ -1,3 +1,7 @@
+/*
+    time: something exponential (if someone asks me this question, I am walking out...)
+*/
+
 func solveSudoku(board [][]byte)  {
     m := len(board)
     n := len(board[0])
