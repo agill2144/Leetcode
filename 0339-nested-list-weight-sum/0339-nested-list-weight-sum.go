@@ -24,8 +24,8 @@
  * func (n NestedInteger) GetList() []*NestedInteger {}
  */
 func depthSum(nestedList []*NestedInteger) int {
-    var dfs func(depth int, nl []*NestedInteger) int
-    dfs = func(depth int, nl []*NestedInteger) int {
+    var dfs func(nl []*NestedInteger, depth int) int
+    dfs = func(nl []*NestedInteger, depth int) int {
         // base
         
         // logic
@@ -33,12 +33,12 @@ func depthSum(nestedList []*NestedInteger) int {
         for i := 0; i < len(nl); i++ {
             ne := nl[i]
             if ne.IsInteger() {
-                sum += ne.GetInteger()*depth
+                sum += ne.GetInteger() * depth
             } else {
-                sum += dfs(depth+1, ne.GetList())
+                sum += dfs(ne.GetList(), depth+1)
             }
         }
         return sum
     }
-    return dfs(1, nestedList)
+    return dfs(nestedList, 1)
 }
