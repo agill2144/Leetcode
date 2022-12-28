@@ -1,6 +1,6 @@
 /*
-        Subarray == sliding window  ||  prefix/running sum/prod
-        Check if the number have negative
+        sliding window  OR  Running Sum ?
+        Check if the numbers have negative
         if they dont , sliding window could work. 
      
         In this case we wont have negatives
