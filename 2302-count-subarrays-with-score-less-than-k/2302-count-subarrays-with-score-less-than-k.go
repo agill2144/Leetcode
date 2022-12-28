@@ -1,3 +1,9 @@
+/*
+    same as: https://leetcode.com/problems/subarray-product-less-than-k/ but now we have 2 things to manage
+    - sliding window approach because no negative numbers
+    time: o(n)
+    space: o(1)
+*/
 func countSubarrays(nums []int, k int64) int64 {
     if nums == nil || len(nums) == 0 || k <= 0 {return 0}
     var count int64 = 0    
