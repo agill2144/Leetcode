@@ -15,7 +15,7 @@ func minStoneSum(piles []int, k int) int {
         }
         total -= value-piles[idx]
         k--
-        if k != 0 {heap.Push(mh, []int{idx, piles[idx]})}
+        heap.Push(mh, []int{idx, piles[idx]})
     }
     return total
 }
