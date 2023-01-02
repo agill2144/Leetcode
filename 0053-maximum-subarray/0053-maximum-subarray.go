@@ -41,7 +41,7 @@ func maxSubArray(nums []int) int {
     - Then we will save the max between previous max and new updated runningSum in each iteration
     
     - TLDR: 
-        - runningSum pattern
+        - runningSum pattern ( but less trickier )
         - runningSum = max(runningSum, runningSum+nums[i])
         - max = max(max, runningSum)
     
@@ -50,12 +50,22 @@ func maxSubArray(nums []int) int {
 */
 func maxSubArray(nums []int) int {
     if nums == nil || len(nums) == 0 {return 0}
-    curr := nums[0]
-    out := nums[0]
+//     curr := nums[0]
+//     out := nums[0]
 
+//     for i := 1; i < len(nums); i++ {
+//         curr = max(curr+nums[i], nums[i])
+//         out = max(out, curr)
+//     }
+//     return out
+    
+    dp := make([]int, len(nums))
+    dp[0] = nums[0]
+    out := dp[0]
+    
     for i := 1; i < len(nums); i++ {
-        curr = max(curr+nums[i], nums[i])
-        out = max(out, curr)
+        dp[i] = max(nums[i], nums[i]+dp[i-1])
+        out = max(dp[i], out)
     }
     return out
 }
