@@ -64,6 +64,8 @@ func maxSubArray(nums []int) int {
     out := dp[0]
     
     for i := 1; i < len(nums); i++ {
+        // we do not have a zero case - this i dont understand why we dont have a zero case ( instinct says it has to do with "subarray" but havent proven to myself yet )
+        // its between 1. choose this number on it own 2. this number + previous sub problem answer
         dp[i] = max(nums[i], nums[i]+dp[i-1])
         out = max(dp[i], out)
     }
