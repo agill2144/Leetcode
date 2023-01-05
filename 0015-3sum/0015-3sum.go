@@ -13,12 +13,12 @@ func threeSum(nums []int) [][]int {
     result := [][]int{}
     for i := 0; i < len(nums); i++ {
         if i != 0 && nums[i] == nums[i-1] {continue}
-        target := 0 - nums[i]
-        
+        // target := 0 - nums[i]
+        target := 0
         left := i+1
         right := len(nums)-1
         for left < right {
-            sum := nums[left] + nums[right]
+            sum := nums[i] + nums[left] + nums[right]
             if sum == target {
                 result = append(result, []int{nums[i], nums[left], nums[right]})
                 left++; right--
