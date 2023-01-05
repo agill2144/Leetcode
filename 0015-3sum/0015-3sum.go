@@ -1,3 +1,13 @@
+/*
+    approach: sort + two ptrs
+    - sort the entire array
+    - for each ith element
+        - we will run a two pointer to search for a target ( two pointer search on sorted array like two sum ii )
+        - what will be the target
+        - 2 ways;
+            1. target can be 0-nums[i] ( where i is the outter i )
+            2. target can be discovered by summing all 3 numbers ( i, left, right )
+*/
 func threeSum(nums []int) [][]int {
     sort.Ints(nums)
     result := [][]int{}
