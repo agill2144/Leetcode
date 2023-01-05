@@ -23,7 +23,7 @@ func threeSum(nums []int) [][]int {
                 sort.Ints(triplet)
                 if _, ok := outSeen[fmt.Sprintf("%v", triplet)]; ok {continue}
                 outSeen[fmt.Sprintf("%v", triplet)] = struct{}{}
-                out = append(out, []int{outterNum, nums[j], compl})
+                out = append(out, triplet)
             }
             seen[nums[j]] = struct{}{}
         }
