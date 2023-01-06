@@ -1,3 +1,9 @@
+
+
+
+// sort and pick cheapest ones first
+// time: o(nlogn) + o(min(costs, coins))
+// space: o(n) if merge sort since it may use extra temp array to merge
 func maxIceCream(costs []int, coins int) int {
     sort.Ints(costs)
     i := 0
