@@ -1,4 +1,21 @@
+
+// easier version of this problem
+// func removeDuplicates(nums []int) int {
+//     s := 1
+//     for f := 1; f < len(nums); f++ {
+//         if nums[f] != nums[f-1] {
+//             nums[s] = nums[f]
+//             s++
+//         }
+//     }
+//     return s
+// }
+
+
 /*
+Fast is saying I have seen <= k elements, therefore slow take this value since you are collecting only k of specific nums.
+As soon as count >= k , fast does not tell slow to take the value because it breaches the k contract
+
     approach: slow and fast pointers
     - Slight variation of remove duplicates from sorted array
         - where we used slow pointer as a position where the next uniq element should go.
@@ -15,24 +32,23 @@
     space: o(1)
     
     the other brute force to create a separate list and write it back to nums list
+
 */
+
 func removeDuplicates(nums []int) int {
-    fast := 1
-    slow := 1
-    n := len(nums)
+    s := 1
     count := 1
     k := 2
-    for fast < n {
-        if nums[fast] == nums[fast-1] {
+    for f := 1; f < len(nums); f++ {
+        if nums[f] == nums[f-1] {
             count++
         } else {
-            count = 1 
+            count = 1
         }
         if count <= k {
-            nums[slow] = nums[fast]
-            slow++
+            nums[s] = nums[f]
+            s++
         }
-        fast++
     }
-    return slow
+    return s
 }
