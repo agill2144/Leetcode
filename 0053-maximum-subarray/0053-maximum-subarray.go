@@ -1,11 +1,9 @@
 func maxSubArray(nums []int) int {
-    
-    dp := make([]int, len(nums))
-    dp[0] = nums[0]
-    out := dp[0]    
+    curr := nums[0]
+    out := nums[0]    
     for i := 1; i < len(nums); i++ {
-        dp[i] = max(nums[i], nums[i]+dp[i-1])
-        out = max(out, dp[i])
+        curr = max(nums[i], nums[i]+curr)
+        out = max(out, curr)
     }
 
     return out
