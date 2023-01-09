@@ -87,7 +87,6 @@ func findPairs(nums []int, k int) int {
         }
         
     }
-    
     return count
 }
 
@@ -112,3 +111,55 @@ func (s *setOfPairs) containsPair(n [2]int)  bool {
     _, ok := s.items[n]
     return ok
 }
+
+
+/*
+    approach 2: sort + two pointers
+    - sort the nums first
+    - then use two pointers
+        - in two sum sorted input, we placed two pointers at the beginning and end of array
+        - in this we need to place them in at same spot ( from beginning )
+        - why ?
+            - [3,1,4,1,5]
+            -  ^       ^
+            - sort it
+            - [1,1,3,4,5]
+            -  ^   ^
+            - now if we place 2 pointers at the end like 2 sum
+            - we will move the right ptr back to value 3 ( because 5-1 > 2, so right move back, 4-1 > 2 , so right move back, 3-1 == 2 )
+            - but now we have lost 5 and 3 as pair...
+        - therefore we will place ptr1 at idx 0 and ptr2 at idx 1
+        - then diff ; nums[ptr2] - nums[ptr1]
+        - if diff == k, move both ptrs!
+            - However because there could be dupes, keep ptr2 moving by 1 if nums[ptr2] == nums[ptr2-1] ( just like we did in 3Sum / 2Sum to avoid dupes in sorted array )
+        - if diff > k, move the ptr1 closer to ptr2
+            - ptr1++
+            - moving ptr2 ahead will only increase the diff since its a sorted array
+        - otherwise diff < k , then move ptr2 ahead by 1 because diff is smaller than k, we need a bigger value 
+        
+    time: o(nlogn) + o(n)
+    space: o(1)
+*/
+// func findPairs(nums []int, k int) int {
+//     sort.Ints(nums)
+//     count := 0
+//     i := 1
+//     j := 0
+//     for i < len(nums) {
+//         if i == j {i++; continue}
+//         diff := nums[i]-nums[j]
+//         if diff == k {
+//             count++
+//             i++
+//             j++
+//             for i < len(nums) && nums[i] == nums[i-1] {i++}
+//         } else if diff > k {
+//             j++
+//         } else {
+//             i++
+//         }
+//     }
+//     return count
+// }
+
+
