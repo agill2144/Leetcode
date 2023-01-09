@@ -11,19 +11,20 @@ func countComponents(n int, edges [][]int) int {
     var dfs func(node int)
     dfs = func(node int) {
         // base
+        if _, ok := visited[node]; ok {return}
+
         // logic
         visited[node] = true
         for _, edge := range adjList[node] {
-            if _, ok := visited[edge]; ok {continue}
             dfs(edge)
         }
     }
     
     for i := 0; i < n; i++ {
-        if _, ok := visited[i]; ok {continue}
-        visited[i] = true
-        dfs(i)
-        count++
+        if _, ok := visited[i]; !ok {
+            dfs(i)
+            count++
+        }
     }
     return count
 }
