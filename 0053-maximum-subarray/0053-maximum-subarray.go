@@ -50,6 +50,9 @@
     approach: bottom up dp + space optimization
     - since we only need to look at 1 step back in 1d dp array
     - we can save that in a variable ( lets call it current or whatever )
+    
+    time: o(n)
+    space: o(1)
 */
 
 func maxSubArray(nums []int) int {
