@@ -8,6 +8,7 @@
  */
 /*
     approach: level order using dfs
+    - inspirations from binary tree right side view 
     
     bfs is probably cleaner than this - oh well
 */
