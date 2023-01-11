@@ -6,6 +6,9 @@
  *     Right *TreeNode
  * }
  */
+/*
+    approach: level order using dfs
+*/
 func findBottomLeftValue(root *TreeNode) int {
     maxLevel := 0
     out := -1
