@@ -8,6 +8,8 @@
  */
 /*
     approach: level order using dfs
+    
+    bfs is probably cleaner than this - oh well
 */
 func findBottomLeftValue(root *TreeNode) int {
     maxLevel := 0
