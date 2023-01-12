@@ -17,14 +17,13 @@ func pathSum(root *TreeNode, targetSum int) int {
         // logic
         sum += r.Val
         diff := sum-targetSum
-        if c , ok := freqMap[diff]; ok {count+=c}
+        if c , ok := freqMap[diff]; ok && c > 0 {count+=c}
         freqMap[sum]++
         
         
         dfs(r.Left, sum)
         dfs(r.Right, sum)
         freqMap[sum]--
-        if freqMap[sum] == 0 {delete(freqMap, sum)}
     }
     dfs(root, 0)
     return count
