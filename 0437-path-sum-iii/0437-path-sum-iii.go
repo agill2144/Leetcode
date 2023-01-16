@@ -35,7 +35,7 @@
     - We dont have a subarray so we need something to keep track of a path going down ( i.e our own subarray )
     - but since numbers in a path going down can repeat, we will have to use a hashmap ( freqMap )
     - once our recursion comes back from a node ( i.e done with a node, ) than this node is no longer being considered as part of our "subarray" - therefore remove it from freqMap (decrement first, and then remove if needed )
-        - i.e backtrack our map
+        - i.e backtrack our map/path/subarray
     
     time: o(n)
     space: o(n) + o(h) ; or worse case its just o(n)
