@@ -30,10 +30,10 @@ func (this *Solution) PickIndex() int {
     
     for left <= right {
         mid := left + (right-left)/2
+        
         if this.sums[mid] == target || (target < this.sums[mid] && (mid == 0 || target > this.sums[mid-1])) {
             return mid
-        }
-        if target > this.sums[mid] {
+        } else if target > this.sums[mid] {
             left = mid+1
         } else {
             right = mid-1
