@@ -1,5 +1,5 @@
 type Solution struct {
-    runningSums []int
+    sums []int
     total int
 }
 
@@ -12,31 +12,34 @@ func Constructor(w []int) Solution {
         rSums = append(rSums, total)
     }
     return Solution{
-        runningSums: rSums,
+        sums: rSums,
         total: total,
     }
 }
 
 
 func (this *Solution) PickIndex() int {
+    
     rand.Seed(time.Now().UnixNano())
     min := 1
     max := this.total
     target := rand.Intn(max - min + 1) + min
 
     left := 0
-    right := len(this.runningSums)-1
+    right := len(this.sums)-1
     
     for left <= right {
         mid := left + (right-left)/2
-        if this.runningSums[mid] == target {return mid}
-        if target < this.runningSums[mid] {
-            right = mid-1
-        } else {
+        if this.sums[mid] == target || (target < this.sums[mid] && (mid == 0 || target > this.sums[mid-1])) {
+            return mid
+        }
+        if target > this.sums[mid] {
             left = mid+1
+        } else {
+            right = mid-1
         }
     }
-    return left
+    return right
 }
 
 
