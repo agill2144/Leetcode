@@ -5,10 +5,10 @@ type Solution struct {
 
 func Constructor(w []int) Solution {
     total := 0
-    rSums := []int{}
+    rSums := make([]int, len(w))
     for i := 0; i < len(w); i++ {
         total += w[i]
-        rSums = append(rSums, total)
+        rSums[i] = total
     }
     return Solution{
         sums: rSums,
