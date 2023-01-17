@@ -13,11 +13,6 @@ func minNumberOfFrogs(croakOfFrogs string) int {
         if char == 'c' {
             c++
             activeFrogs++
-            // as soon as we encounter a c, a potential frog is found
-            // each new c == potential frog
-            // increase number of active frogs by 1
-            // and save if activeFrogs seen > ans 
-            ans = max(ans, activeFrogs)
         } else if char == 'r' {
             r++
         } else if char == 'o' {
@@ -29,6 +24,12 @@ func minNumberOfFrogs(croakOfFrogs string) int {
             // therefore reduce the count of active frogs
             // this works well for "croakcroak" - sequential, not multiple frogs
             k++
+            // as soon as we encounter a c, a potential frog is found
+            // each new c == potential frog
+            // increase number of active frogs by 1
+            // and save if activeFrogs seen > ans 
+            ans = max(ans, activeFrogs)
+
             activeFrogs--
         }
         // to do sequential check of char, each char must appear before its prev char
