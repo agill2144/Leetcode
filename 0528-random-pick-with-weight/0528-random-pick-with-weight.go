@@ -1,45 +1,40 @@
 type Solution struct {
-    sums []int
+    prefixSum []int
 }
 
 
 func Constructor(w []int) Solution {
+    prefixSum := make([]int, len(w))
     total := 0
-    rSums := make([]int, len(w))
     for i := 0; i < len(w); i++ {
         total += w[i]
-        rSums[i] = total
+        prefixSum[i] = total
     }
-    return Solution{
-        sums: rSums,
-    }
+    return Solution{prefixSum: prefixSum}
 }
 
 
 func (this *Solution) PickIndex() int {
-    n := len(this.sums)
-    if n == 0 {return -1}
-    
-    rand.Seed(time.Now().UnixNano())
-    min := 1
-    max := this.sums[n-1]
-    target := rand.Intn(max - min + 1) + min
+    n := len(this.prefixSum)
+    if n == 0 {
+        return -1
+    }
+    total := this.prefixSum[n-1]
+    randNum := rand.Intn(total)
+    return this.BinarySearch(randNum)
+}
 
-    left := 0
-    right := n-1
-    
-    for left <= right {
-        mid := left + (right-left)/2
-        
-        if this.sums[mid] == target || (target < this.sums[mid] && (mid == 0 || target > this.sums[mid-1])) {
-            return mid
-        } else if target > this.sums[mid] {
-            left = mid+1
+func (this *Solution) BinarySearch(target int) int {
+    left, right := 0, len(this.prefixSum)-1
+    for left < right {
+        mid := left + (right - left) / 2
+        if this.prefixSum[mid] > target {
+            right = mid
         } else {
-            right = mid-1
+            left = mid+1
         }
     }
-    return -1
+    return left
 }
 
 
