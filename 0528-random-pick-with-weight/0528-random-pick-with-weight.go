@@ -1,48 +1,44 @@
+
 type Solution struct {
-    sums []int
+    prefixSum []int
 }
 
 
 func Constructor(w []int) Solution {
-    total := 0
-    rSums := []int{}
+    prefixSum := make([]int, len(w))
     for i := 0; i < len(w); i++ {
-        total += w[i]
-        rSums = append(rSums, total)
+        if i == 0 {
+            prefixSum[i] = w[i]
+        } else {
+            prefixSum[i] = prefixSum[i-1] + w[i]
+        }
     }
-    return Solution{
-        sums: rSums,
+    for i := 0; i < len(w); i++ {
+        fmt.Println(prefixSum[i])
     }
+    return Solution{prefixSum}
 }
 
 
 func (this *Solution) PickIndex() int {
-    
-    rand.Seed(time.Now().UnixNano())
-    min := 1
-    max := this.sums[len(this.sums)-1]
-    target := rand.Intn(max - min + 1) + min
-
-    left := 0
-    right := len(this.sums)-1
-    
-    for left <= right {
-        mid := left + (right-left)/2
-        
-        if this.sums[mid] == target || (target < this.sums[mid] && (mid == 0 || target > this.sums[mid-1])) {
-            return mid
-        } else if target > this.sums[mid] {
-            left = mid+1
-        } else {
-            right = mid-1
-        }
+    n := len(this.prefixSum)
+    if n == 0 {
+        return -1
     }
-    return -1
+    total := this.prefixSum[n-1]
+    randNum := rand.Intn(total)
+    return this.BinarySearch(randNum)
 }
 
-
-/**
- * Your Solution object will be instantiated and called as such:
- * obj := Constructor(w);
- * param_1 := obj.PickIndex();
- */
+func (this *Solution) BinarySearch(target int) int {
+    left, right := 0, len(this.prefixSum)-1
+    for left < right {
+        mid := left + (right - left) / 2
+        if this.prefixSum[mid] > target {
+            right = mid
+        } else {
+            left = mid+1
+        }
+    }
+    return left
+}
