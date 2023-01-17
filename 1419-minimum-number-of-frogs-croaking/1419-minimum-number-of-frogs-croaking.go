@@ -12,6 +12,8 @@ func minNumberOfFrogs(croakOfFrogs string) int {
         if char == 'c' {
             c++
             activeFrogs++
+            ans = max(ans, activeFrogs)
+
         } else if char == 'r' {
             r++
         } else if char == 'o' {
@@ -23,7 +25,6 @@ func minNumberOfFrogs(croakOfFrogs string) int {
             activeFrogs--
         }
         if r > c || o > r || a > o || k > a {return -1}
-        ans = max(ans, activeFrogs)
     }
     if activeFrogs != 0 {return -1}
     return ans
