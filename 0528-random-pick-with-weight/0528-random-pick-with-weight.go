@@ -39,7 +39,7 @@ func (this *Solution) PickIndex() int {
             right = mid-1
         }
     }
-    return right
+    return -1
 }
 
 
