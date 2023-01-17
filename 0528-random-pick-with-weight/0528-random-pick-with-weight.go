@@ -1,6 +1,5 @@
 type Solution struct {
     sums []int
-    total int
 }
 
 
@@ -13,7 +12,6 @@ func Constructor(w []int) Solution {
     }
     return Solution{
         sums: rSums,
-        total: total,
     }
 }
 
@@ -22,7 +20,7 @@ func (this *Solution) PickIndex() int {
     
     rand.Seed(time.Now().UnixNano())
     min := 1
-    max := this.total
+    max := this.sums[len(this.sums)-1]
     target := rand.Intn(max - min + 1) + min
 
     left := 0
