@@ -17,7 +17,13 @@
 // therefore reduce the count of potential frogs seen currently under investigation by 1
 // this works well for "croakcroak" - sequential, not multiple frogs
 // Example: croakcroak - wouldnt there be 2 'c's here? and therefore 2 frogs?
-// Yes but we ONLY COUNT COMPLETE FROGS
+// Yes but we ONLY COUNT COMPLETE FROGS ( when char k is found ), thats when we know a frog has finished croaking!
+// so yes, we will see 2 counts of c but we do not use c count as our answer.
+// we use c char to increment a potentialFrog
+// we use k char to complete a potentialFrog
+// when we run into a k, we increment k by 1
+// then we check if potentialFrog > maxSeenSoFar, if yes save it
+// potentialFrog goes down by 1
 
 func minNumberOfFrogs(croakOfFrogs string) int {
     c := 0
