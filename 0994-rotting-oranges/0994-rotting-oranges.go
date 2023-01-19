@@ -1,3 +1,36 @@
+
+
+/*
+    "any fresh orange that is 4-directionally adjacent to a rotten orange becomes rotten"
+    
+    Connected components!
+    Domino effect if 1 orange is rotten the  4-directionally adjacent to a rotten orange becomes rotten!
+    Then the other 4 around the new rotten become rotten!
+    We need to count the time its going to take to do this.
+    
+    Each time we apply the rotten to all 4 neighbors, we increase our time by 1
+    
+    Seems level by level - once 1 level is done, time++
+    
+    the fresh nodes depend on whether they have any rotten ones around them.
+    I.e each fresh orange depends on a rotten neighbor
+    
+    However the rotten orange does not get worse than rotten
+    its state does not change, which means the rotten oranges are independant!
+    Which means our starting nodes will be all positions of rotten nodes
+
+    
+    approach 1:
+    - level order using BFS
+    - Search for all rotten oranges and enqueue them. While searching we will also count the number of fresh ones we have
+        - Why? to answer the following: "until no cell has a fresh orange. If this is impossible, return -1."
+    - When processing a level, check a rotten orange neighbours in all 4 directions
+    - If fresh is found around this node, rotten it and enqueue it
+    - Then rinse and repeat
+    
+    time: o(mn)
+    space: o(mn) - if we start everything with rotten, we have enqueued all of the cells right away.
+*/
 func orangesRotting(grid [][]int) int {
     m := len(grid)
     n := len(grid[0])
