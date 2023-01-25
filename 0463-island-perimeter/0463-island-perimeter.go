@@ -40,28 +40,29 @@ func islandPerimeter(grid [][]int) int {
     m := len(grid)
     n := len(grid[0])
     out := 0
-    var dfs func(r, c int)
-    dfs = func(r, c int) {
+    var dfs func(r, c int) int
+    dfs = func(r, c int) int {
         // base
         
         //logic
         grid[r][c] = -1
-        out += 4
+        localOut := 4
         for _, dir := range dirs {
             nr := r+dir[0]
             nc := c+dir[1]
             if nr >= 0 && nr < m && nc >= 0 && nc < n && (grid[nr][nc] == -1||grid[nr][nc] == 1) {
-                out -= 1
+                localOut -= 1
                 if grid[nr][nc] == 1 { 
-                    dfs(nr, nc)
+                    localOut += dfs(nr, nc)
                 }
             }
         }
+        return localOut
     }
     for i := 0; i < m; i++ {
         for j := 0; j < n; j++ {
             if grid[i][j] == 1{
-                dfs(i,j)
+                out = dfs(i,j)
             }
         }
     }
