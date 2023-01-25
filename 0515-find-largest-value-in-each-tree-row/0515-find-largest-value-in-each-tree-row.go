@@ -6,50 +6,81 @@
  *     Right *TreeNode
  * }
  */
+
+
+/*
+    level order traversal.
+    
+    approach: BFS
+    - maintain a level var ( start at 0)
+    - the level var maps to idx in the result array
+    - if the len of result == level, it means this levelIdx does not exist yet, so append
+    - if not, it means that this level idx already exists, update value at levelIdx if currentVal > result[levelIdx]
+    - level++ ( once a level is done ) so that the our level idx is pointing to next idx.
+    time : o(n)
+    space: o(maxWidthOfTree) or o(n/2)
+    
+
+    approach: DFS
+    - level order is also possible using DFS, by maintaining a level value at each recursion call.
+    - Same logic as the BFS
+    time: o(n) - we visit all the nodes in the tree
+    space: o(h) for avg case and o(n) for a skewed tree
+
+*/
+
+
+// DFS
+func largestValues(root *TreeNode) []int {
+    if root == nil {
+        return nil
+    }
+    result := []int{}
+    var dfs func(level int, a *TreeNode)
+    dfs = func(level int, a *TreeNode) {
+        if a == nil {
+            return
+        }
+        if len(result) == level {
+            result = append(result, a.Val)
+        } else if a.Val > result[level] {
+            result[level] = a.Val
+        }
+        dfs(level+1, a.Left)
+        dfs(level+1, a.Right)
+    }
+    dfs(0, root)
+    return result
+}
+
+
+// BFS
 // func largestValues(root *TreeNode) []int {
-//     if root == nil {return nil}
-//     out := []int{}
+//     if root == nil {
+//         return nil
+//     }
+//     result := []int{}
+//     level := 0   
 //     q := []*TreeNode{root}
 //     for len(q) != 0 {
-//         levelMax := math.MinInt64
+       
 //         qSize := len(q)
 //         for qSize != 0 {
 //             dq := q[0]
 //             q = q[1:]
-//             if dq.Val > levelMax {levelMax = dq.Val}
-//             if dq.Left != nil {
-//                 q = append(q, dq.Left)
+//             if len(result) == level {
+//                 result = append(result, dq.Val)
+//             } else if dq.Val > result[level]{
+//                 result[level] = dq.Val
 //             }
-//             if dq.Right != nil {
-//                 q = append(q, dq.Right)
-//             }
+            
+//             if dq.Left != nil { q = append(q, dq.Left)}
+//             if dq.Right != nil { q = append(q, dq.Right)}
+            
 //             qSize--
 //         }
-//         out = append(out, levelMax)
+//         level++
+    
 //     }
-//     return out
-// }
-
-func largestValues(root *TreeNode) []int{
-    if root == nil {return nil}
-    out := []int{}
-    
-    var dfs func(r *TreeNode, level int)
-    dfs = func(r *TreeNode, level int) {
-        // base
-        if r == nil {return}
-        
-        // logic
-        if len(out) == level {
-            out = append(out, r.Val)
-        } else if r.Val > out[level] {
-            out[level] = r.Val
-        }
-        dfs(r.Left, level+1)
-        dfs(r.Right, level+1)
-        
-    }
-    dfs(root,0)
-    
-    return out
-}
+//     return result
+//  }
