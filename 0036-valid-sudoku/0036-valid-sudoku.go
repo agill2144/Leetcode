@@ -1,55 +1,53 @@
-// time: o(mn)
-// space: o(1) ??? 
-// because worst case board is all filled out and our box map has 9^2 elements... 
-// so its constant and never grows more than o(numOfElementsInRowSet) + o(numOfElementsInColSet) + o(9^2)
-// space: o(9)+o(9)+o(81) -- so o(1) - these are constant numbers IMO
 func isValidSudoku(board [][]byte) bool {
-    m := 9
-    n := 9
-    
-    boxMap := map[string]map[byte]struct{}{}
+    m := len(board)
+    n := len(board[0])
+    boxMap := map[string]*set{}
     
     for i := 0; i < m; i++ {
-        rowSet := map[byte]struct{}{}
-        colSet := map[byte]struct{}{}
-        
+        rowSet := newSet()
+        colSet := newSet()
+
         for j := 0; j < n; j++ {
             
-            rowVal := board[i][j]
-            colVal := board[j][i]
-
-            if rowVal != '.' {
-                
-                // handle row
-                _, existsInRow := rowSet[rowVal]
-                if existsInRow { return false }
-                rowSet[rowVal] = struct{}{}
-                
-                // handle 3x3
-                boxKey := fmt.Sprintf("%v:%v",i/3, j/3)
-                _, boxExists := boxMap[boxKey]
-                if !boxExists {
-                    boxMap[boxKey] = map[byte]struct{}{}
-                    boxMap[boxKey][rowVal] = struct{}{}
-                } else {
-                    _, ok := boxMap[boxKey][rowVal]
-                    if ok {return false}
-                    boxMap[boxKey][rowVal] = struct{}{}
+            if board[i][j] != '.' {
+                if rowSet.contains(board[i][j]) {
+                    return false
                 }
+                rowSet.add(board[i][j])
                 
+                boxKey := fmt.Sprintf("%v:%v", i/3, j/3)
+                boxSet , ok := boxMap[boxKey]
+                if !ok {
+                    boxSet = newSet()
+                    boxMap[boxKey] = boxSet
+                }
+                if boxSet.contains(board[i][j]) {return false}
+                boxSet.add(board[i][j])
             }
             
-            // handle col
-            if colVal != '.' {
-                _, existsInCol := colSet[colVal]
-                if existsInCol {  return false }
-                colSet[colVal] = struct{}{}               
+            if board[j][i] != '.' {
+                if colSet.contains(board[j][i]) {
+                    return false
+                }
+                colSet.add(board[j][i])
             }
-            
-            
         }
     }
-
     return true
     
+}
+
+type set struct {
+    items map[byte]struct{}
+}
+
+func newSet() *set {
+    return &set{items: map[byte]struct{}{}}
+}
+func (this *set) add(x byte) {
+    this.items[x] = struct{}{}
+}
+func (this *set) contains(x byte) bool {
+    _, ok := this.items[x]
+    return ok
 }
