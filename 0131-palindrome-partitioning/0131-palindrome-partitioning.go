@@ -1,3 +1,8 @@
+/*
+    approach: backtracking + for-loop recursion
+    time: o(2^n) x o(n)
+    space: o(n)
+*/
 func partition(s string) [][]string {
     out := [][]string{}
     var dfs func(start int, path []string)
