@@ -25,7 +25,19 @@
 //     return out
 // }
 
-
+/*
+    approach: make a copy of list each time and append nums[i] to it.
+    - start with out array with an empty array { {} }
+    - then for each ith number, loop over all the lists we have so far in output array
+    - make a deep copy of each list
+    - add ith number
+    - save this new list to output array 
+    time: o(2^n) x o(n) 
+        - the largest nested loop will be for the last ith number in nums array
+        - that loop will run o(2^n-1) iterations
+        - the extra o(n) is for deep copy
+    space: ??? PR reviewer - help ??  I want to say its o(1) because each deep copy is part of the output .. 
+*/
 func subsets(nums []int) [][]int {
     out := [][]int{{}}
     for i := 0; i < len(nums); i++ {
