@@ -37,9 +37,6 @@ func insert(root *trieNode, word string) {
     current.isEnd = true
 }
 
-func search(root *trieNode, word string) {
-    
-}
 
 func longestWord(words []string) string {
     root := &trieNode{childrens: [26]*trieNode{}}
@@ -61,7 +58,7 @@ func longestWord(words []string) string {
         for i := 0 ; i < 26; i++ {
             if r.childrens[i] != nil && r.childrens[i].isEnd{
                 // action
-                path += string('a'+i)
+                path += string(i+'a')
                 // recurse
                 backtrack(r.childrens[i], path)
                 // backtrack
