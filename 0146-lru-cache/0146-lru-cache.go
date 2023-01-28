@@ -1,5 +1,5 @@
 type LRUCache struct {
-    cache map[int]*listNode
+    index map[int]*listNode
     dll *dll
     max int
 }
@@ -7,7 +7,7 @@ type LRUCache struct {
 
 func Constructor(capacity int) LRUCache {
     return LRUCache{
-        cache: map[int]*listNode{},
+        index: map[int]*listNode{},
         dll: &dll{},
         max: capacity,
     }
@@ -15,7 +15,7 @@ func Constructor(capacity int) LRUCache {
 
 
 func (this *LRUCache) Get(key int) int {
-    nodeRef, ok := this.cache[key]
+    nodeRef, ok := this.index[key]
     if !ok {
         return -1
     }
@@ -36,19 +36,19 @@ func (this *LRUCache) update(nodeRef *listNode) {
 
 
 func (this *LRUCache) Put(key int, value int)  {
-    nodeRef, ok := this.cache[key]
+    nodeRef, ok := this.index[key]
     if ok {
         nodeRef.val = value
         this.update(nodeRef)
     } else {
-        if len(this.cache) == this.max {
+        if len(this.index) == this.max {
             nodeToDelete := this.dll.tail
             this.dll.deleteNode(nodeToDelete)
-            delete(this.cache, nodeToDelete.key)
+            delete(this.index, nodeToDelete.key)
         }
         newNode := &listNode{key: key, val: value}
         this.dll.addNodeToHead(newNode)
-        this.cache[key] = newNode
+        this.index[key] = newNode
     }
 }
 
