@@ -13,7 +13,8 @@ func Constructor(capacity int) LRUCache {
     }
 }
 
-
+// time; o(1)
+// space: o(1)
 func (this *LRUCache) Get(key int) int {
     nodeRef, ok := this.index[key]
     if !ok {
@@ -23,6 +24,8 @@ func (this *LRUCache) Get(key int) int {
     return nodeRef.val
 }
 
+// time; o(1)
+// space: o(1)
 func (this *LRUCache) update(nodeRef *listNode) {
     // move this node to head
     // 1-2-3 move 3
@@ -34,7 +37,8 @@ func (this *LRUCache) update(nodeRef *listNode) {
     this.dll.addNodeToHead(nodeRef)
 }
 
-
+// time; o(1)
+// space: o(1)
 func (this *LRUCache) Put(key int, value int)  {
     nodeRef, ok := this.index[key]
     if ok {
