@@ -1,74 +1,76 @@
 
-type trieNode struct {
-    isEnd bool
-    childs [26]*trieNode
-}
 
-func newTrieNode() *trieNode {
-    return &trieNode{childs: [26]*trieNode{}}
-}
+/*
+    - toss the entire dictonary in a trie
+    - then split sentence into a list
+    - Loop over each word in split array
+    - Search for each character and form the replacement word
+    - If we successfully found a replacement, then replace append the replacement to a our resulting string builder
+    - Finally return the string from string builder
+    
 
-// time: o(n) where n is the len of word
-// space: o(26*n) where n is the len of word ( for each char we allocate 26 sized array )
-func (r *trieNode) insert(word string) {
-    curr := r
-    for i := 0; i < len(word); i++ {
-        idx := word[i] - 'a'
-        if curr.childs[idx] == nil {
-            curr.childs[idx] = newTrieNode()
-        }
-        curr = curr.childs[idx]
-    }
-    curr.isEnd = true
-}
+*/
 
-// time: o(n) - we found the entire word as is, no early exits 
-// space: o(n) - we found the entire word as is, and we allocated entire word space in str builder
-func (r *trieNode) findPrefix(word string) (string, bool) {
-    curr := r
-    tmp := new(strings.Builder)
-
-    for i := 0; i < len(word); i++ {
-        idx := word[i] - 'a'
-        if curr.childs[idx] == nil { return "", false }
-        tmp.WriteByte(word[i])
-        if curr.childs[idx].isEnd {return tmp.String(), true }
-        curr = curr.childs[idx]
-    }
-    return  tmp.String(), curr.isEnd
-}
-
-
+// dictionary size = m, avg word len = k
+// total words in sentence = n, avg word len = l
+// total time = o(mk) + o(nl)
+// space: o(mk) + o(nl)
 func replaceWords(dictionary []string, sentence string) string {
-    
-    root := newTrieNode()
-    // o(d) * o(k) where d is number of words in dict, k is the avg len of each word
-    // therefore o(dk)
-    for i := 0; i < len(dictionary); i++ {
-        root.insert(dictionary[i])
+    root := &trieNode{childrens: [26]*trieNode{}}
+    // time : o(mk)
+    for _, word := range dictionary {
+        insert(root, word)
     }
-    
-    // let w == len of words in sentence
-    // o(w) space
-    sSplit := strings.Split(sentence, " ")
-    
-    // o(w) space 
-    out := new(strings.Builder) 
 
-    // o(w) * o(k) where w is the number of words we have in sentence, k is the avg len of each word
-    // for each w word, we do a prefixSearch where prefixSearch takes o(k) time worse case
-    // therefore o(wk)
-    for idx, word := range sSplit {
-        prefix, found := root.findPrefix(word) // time: o(k), space: o(k)
+    // time : o(n) * o(l) = o(nl)
+    // o(l) where l is the avg len of each word in sentence and searching for a word in trie takes o(l) time
+    // time = o(nl)
+    out := new(strings.Builder)
+    splitSen := strings.Split(sentence, " ")
+    for idx, word := range splitSen {
+        if idx != 0 {out.WriteString(" ")}
+        found, replace := search(root, word)
         if found {
-            out.WriteString(prefix)
-        } else {
-            out.WriteString(word)
+            splitSen[idx] = replace
         }
-        if idx != len(sSplit)-1 {
-            out.WriteString(" ")
-        }
+        out.WriteString(splitSen[idx])
     }
+    
     
     return out.String()
+}
+
+
+type trieNode struct {
+    isEnd bool
+    childrens [26]*trieNode
+}
+
+// time: o(k) where k is len of input str
+// space: o(k)
+func insert(root *trieNode, word string) {
+    current := root
+    for _, char := range word {
+        if current.childrens[char-'a'] == nil {
+            current.childrens[char-'a'] = &trieNode{childrens: [26]*trieNode{}}
+        }
+        current = current.childrens[char-'a']
+    }
+    current.isEnd = true
+}
+
+// time: o(k) where k is len of input str
+// space: o(k) for string builder - worse case we do not find any smaller valid word
+func search(root *trieNode, word string) (bool, string) {
+    current := root
+    out := new(strings.Builder)
+    for _, char := range word {
+        if current.childrens[char-'a'] == nil {return false, word}
+        current = current.childrens[char-'a']
+        out.WriteRune(char)
+        if current.isEnd {
+            return true, out.String()
+        }
+    }
+    return false, word
 }
