@@ -19,7 +19,7 @@ func findWords(board [][]byte, words []string) []string {
         path += string(board[i][j])
         newRoot := search(root, path)
         // not found
-        if newRoot==nil {return}
+        if newRoot == nil {return}
         if newRoot.isEnd && !newRoot.addedToAns {
             newRoot.addedToAns = true
             out = append(out, path)
