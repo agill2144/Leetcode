@@ -1,4 +1,6 @@
 func findWords(board [][]byte, words []string) []string {
+    // insert words into trie
+    // o(nk)
     root := &trieNode{childs: [26]*trieNode{}}
     for _, word := range words {
         insert(root, word)
@@ -33,6 +35,11 @@ func findWords(board [][]byte, words []string) []string {
 
     }
     
+    // loop thru entire matrix
+    // form each word at each cell, explore all 4 dirs 
+    // and use trie to continue direction exploration
+    // o(mn) * 3^wk
+    // w = len of words and k being avg of each 
     for i := 0; i < m; i++ {
         for j := 0; j < n; j++ {
             dfs(root, i,j, "")
