@@ -1,82 +1,77 @@
+type Trie struct {
+    children map[byte]*Trie
+    word string
+}
+
+func (t *Trie) Add(word string) {
+    c := t
+    for i := 0; i < len(word); i++ {
+        v := word[i]
+        if n, ok := c.children[v]; ok {
+            c = n
+        } else {
+            c.children[v] = &Trie{children: make(map[byte]*Trie)}
+            c = c.children[v]
+        }
+    }
+    c.word = word
+}
+
 func findWords(board [][]byte, words []string) []string {
-    // insert words into trie
-    // o(nk)
-    root := &trieNode{childs: [26]*trieNode{}}
+    // Construct trie from input words
+    trie := &Trie{children: make(map[byte]*Trie)}
     for _, word := range words {
-        insert(root, word)
+        trie.Add(word)
     }
-    m := len(board)
-    n := len(board[0])
-    dirs := [][]int{{1,0},{-1,0},{0,-1},{0,1}}
-    out := []string{}
 
-    var dfs func(r *trieNode, i, j int, path string)
-    dfs = func(r *trieNode, i, j int, path string) {
-        // base
-        if i < 0 || i == m || j < 0 || j == n || board[i][j] == '#' {return}
-        
-        // logic
-        path += string(board[i][j])
-        newRoot := search(root, path)
-        // not found
-        if newRoot == nil {return}
-        if newRoot.isEnd && !newRoot.addedToAns {
-            newRoot.addedToAns = true
-            out = append(out, path)
+    moves := [][2]int{{-1, 0}, {1, 0}, {0, -1}, {0, 1}}
+    adj := func(row, col int) [][2]int {
+        var ans [][2]int
+        for _, m := range moves {
+            r, c := row+m[0], col+m[1]
+            if r >= 0 && r < len(board) && c >= 0 && c < len(board[0]) {
+                ans = append(ans, [2]int{r, c})
+            }
         }
-        
-        
-        tmp := board[i][j]
-        board[i][j] = '#'
-        for _, dir := range dirs {
-            dfs(newRoot, i+dir[0], j+dir[1], path)
+        return ans
+    }
+
+    ans := make(map[string]bool)
+
+    var dfs func(int, int, *Trie)
+    dfs = func(row, col int, t *Trie) {
+        v := board[row][col]
+        board[row][col] = '_'
+        // Backtracking with defer!
+        defer func() {
+            board[row][col] = v
+        }()
+        if tn, ok := t.children[v]; ok {
+            t = tn
+        } else {
+            return
         }
-        board[i][j]= tmp
+        if len(t.word) > 0 {
+            ans[t.word] = true
+        }
 
-    }
-    
-    // loop thru entire matrix
-    // form each word at each cell, explore all 4 dirs 
-    // and use trie to continue direction exploration
-    // o(mn) * 3^wk
-    // w = len of words and k being avg of each 
-    for i := 0; i < m; i++ {
-        for j := 0; j < n; j++ {
-            dfs(root, i,j, "")
+        for _, n := range adj(row, col) {
+            v := board[n[0]][n[1]]
+            if v == '_' {
+                continue
+            }
+            dfs(n[0], n[1], t)
         }
     }
-    
-    return out
-}
 
-
-
-
-type trieNode struct {
-    isEnd bool
-    childs [26]*trieNode
-    addedToAns bool // acting as my set :D 
-}
-
-
-
-func insert(root *trieNode, word string)  {
-    curr := root
-    for _, char := range word {
-        if curr.childs[char-'a'] == nil {
-            curr.childs[char-'a'] = &trieNode{isEnd: false, childs: [26]*trieNode{}}
+    for row := 0; row < len(board); row++ {
+        for col := 0; col < len(board[0]); col++ {
+            dfs(row, col, trie)
         }
-        curr = curr.childs[char-'a']
     }
-    curr.isEnd = true
-}
-
-func search(root *trieNode, prefix string) *trieNode {
-    curr := root
-    for _, char := range prefix {
-        idx := char-'a'
-        if curr.childs[idx] == nil {return nil}
-        curr = curr.childs[idx]
+    var ans2 []string
+    for w, _ := range ans {
+        ans2 = append(ans2, w)
     }
-    return curr
+    return ans2
 }
