@@ -1,4 +1,5 @@
 // time: o(n) + o(n!)
+// space: o(n) nums arr + o(n) recursion stack
 func countArrangement(n int) int {
     
     // o(n) time
