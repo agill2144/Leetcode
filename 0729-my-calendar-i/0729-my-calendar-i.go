@@ -21,13 +21,13 @@ func (this *MyCalendar) Book(start int, end int) bool {
     prevIdx := this.searchLeft(start)
     if prevIdx == -1 {prevIdx = 0}
     prev := this.cal[prevIdx]
-    if start < prev[1] && end > prev[0] {return false}
+    if end > prev[0] && start < prev[1]  {return false}
 
     // o(logn)
     nextIdx := this.searchRight(start)
     if nextIdx == -1 {nextIdx = 0}
     next := this.cal[nextIdx]
-    if start < next[1] && end > next[0] {return false}
+    if end > next[0] && start < next[1]  {return false}
     
     // o(n)
     this.insert(start, end)
