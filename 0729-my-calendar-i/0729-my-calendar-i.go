@@ -10,9 +10,7 @@ func Constructor() MyCalendar {
 
 func (this *MyCalendar) Book(start int, end int) bool {
     for i := 0; i < len(this.cal); i++ {
-        s := this.cal[i][0]
-        e := this.cal[i][1]
-        if s < end && start < e {return false}
+        if end > this.cal[i][0] && start < this.cal[i][1] {return false}
     }
     this.cal = append(this.cal, []int{start, end})
     return true
