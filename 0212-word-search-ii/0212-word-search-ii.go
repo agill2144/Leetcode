@@ -15,9 +15,9 @@ func findWords(board [][]byte, words []string) []string {
         
         // logic
         path += string(board[i][j])
-        newR, found := startsWith(root, path)
+        newRoot, found := startsWith(root, path)
         if !found {return}
-        if newR.isEnd {
+        if newRoot.isEnd {
             if _, ok := outSet[path]; !ok {
                 outSet[path] = struct{}{}
             }
@@ -27,7 +27,7 @@ func findWords(board [][]byte, words []string) []string {
         tmp := board[i][j]
         board[i][j] = '#'
         for _, dir := range dirs {
-            dfs(newR, i+dir[0], j+dir[1], path)
+            dfs(newRoot, i+dir[0], j+dir[1], path)
         }
         board[i][j]= tmp
 
