@@ -8,6 +8,10 @@ func Constructor() MyCalendar {
 }
 
 
+// everytime this func is invoked
+// o(logn) + o(logn) + o(n)
+// o(n) time
+// space: o(1)
 func (this *MyCalendar) Book(start int, end int) bool {
     if len(this.cal) == 0 {
         this.cal = append(this.cal, []int{start, end})
@@ -25,12 +29,7 @@ func (this *MyCalendar) Book(start int, end int) bool {
     next := this.cal[nextIdx]
     if start < next[1] && end > next[0] {return false}
     
-
-    // // o(nlogn)
-    // this.cal = append(this.cal, []int{start, end})
-    // sort.SliceStable(this.cal, func(i, j int) bool{
-    //     return this.cal[i][0] < this.cal[j][0]
-    // })
+    // o(n)
     this.insert(start, end)
     return true 
 }
