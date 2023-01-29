@@ -45,14 +45,14 @@ func (this *MyCalendar) insert(start, end int) {
     }
 }
 
-func (this *MyCalendar) searchLeft(start int) int {
+func (this *MyCalendar) searchLeft(target int) int {
     left := 0
     right := len(this.cal)-1
     ans := -1
     for left <= right {
         mid := left + (right-left)/2
-        if this.cal[mid][0] <= start {
-            if this.cal[mid][0] == start {
+        if this.cal[mid][0] <= target {
+            if this.cal[mid][0] == target {
                 return mid
             }
             ans = mid
@@ -64,14 +64,14 @@ func (this *MyCalendar) searchLeft(start int) int {
     return ans
 }
 
-func (this *MyCalendar) searchRight(start int) int {
+func (this *MyCalendar) searchRight(target int) int {
     left := 0
     right := len(this.cal)-1
     ans := -1
     for left <= right {
         mid := left + (right-left)/2
-        if this.cal[mid][0] >= start {
-            if this.cal[mid][0] == start {
+        if this.cal[mid][0] >= target {
+            if this.cal[mid][0] == target {
                 return mid
             }
             ans = mid
