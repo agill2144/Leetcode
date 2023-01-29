@@ -22,6 +22,7 @@ func (this *MyCalendar) Book(start int, end int) bool {
     if prevIdx == -1 {prevIdx = 0}
     prev := this.cal[prevIdx]
     if end > prev[0] && start < prev[1]  {return false}
+    
 
     // o(logn)
     nextIdx := this.searchRight(start)
