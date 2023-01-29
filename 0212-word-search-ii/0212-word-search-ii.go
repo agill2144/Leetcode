@@ -30,6 +30,7 @@ func findWords(board [][]byte, words []string) []string {
             dfs(newR, i+dir[0], j+dir[1], path)
         }
         board[i][j]= tmp
+
     }
     
     for i := 0; i < m; i++ {
