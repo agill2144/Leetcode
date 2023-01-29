@@ -1,30 +1,25 @@
 func countArrangement(n int) int {
-    
     nums := make([]int, n+1)
     for i := 1; i < len(nums); i++ {
         nums[i] = i
     }
-    
     count := 0
     
-    var backtrack func(start int)
-    backtrack = func(start int) {
+    var dfs func(start int)
+    dfs = func(start int) {
         // base
-        if start == len(nums) {count++; return}
+        if start == len(nums) { count++; return}
         
         // logic
         for i := start; i < len(nums); i++ {
-            if (nums[i] % (start) == 0) || ((start) % nums[i] == 0) {
-                // action
-                nums[i], nums[start] = nums[start], nums[i]
-                // recurse
-                backtrack(start+1)
-                // backtrack
-                nums[i], nums[start] = nums[start], nums[i] 
+            nums[i], nums[start] = nums[start] , nums[i]
+            if (nums[start] % start == 0 || start % nums[start] == 0) {
+                dfs(start+1)
             }
+            nums[i], nums[start] = nums[start] , nums[i]
         }
     }
     
-    backtrack(1)
+    dfs(1)
     return count
 }
