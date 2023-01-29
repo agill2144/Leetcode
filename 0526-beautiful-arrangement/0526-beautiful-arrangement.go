@@ -1,4 +1,8 @@
+// time: o(n) + o(n!)
 func countArrangement(n int) int {
+    
+    // o(n) time
+    // o(n) space
     nums := make([]int, n+1)
     for i := 1; i < len(nums); i++ {
         nums[i] = i
@@ -6,6 +10,7 @@ func countArrangement(n int) int {
     count := 0
     
     var dfs func(start int)
+    // permutations take worst case o(n!) time
     dfs = func(start int) {
         // base
         if start == len(nums) { count++; return}
