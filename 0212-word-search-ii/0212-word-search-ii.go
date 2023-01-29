@@ -15,8 +15,9 @@ func findWords(board [][]byte, words []string) []string {
         
         // logic
         path += string(board[i][j])
-        newRoot, found := startsWith(root, path)
-        if !found {return}
+        newRoot := search(root, path)
+        // not found
+        if newRoot==nil {return}
         if newRoot.isEnd {
             if _, ok := outSet[path]; !ok {
                 outSet[path] = struct{}{}
@@ -66,12 +67,12 @@ func insert(root *trieNode, word string)  {
     curr.isEnd = true
 }
 
-func startsWith(root *trieNode, prefix string) (*trieNode, bool) {
+func search(root *trieNode, prefix string) *trieNode {
     curr := root
     for _, char := range prefix {
         idx := char-'a'
-        if curr.childs[idx] == nil {return nil, false}
+        if curr.childs[idx] == nil {return nil}
         curr = curr.childs[idx]
     }
-    return curr, true
+    return curr
 }
