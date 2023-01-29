@@ -12,10 +12,14 @@ func countArrangement(n int) int {
         
         // logic
         for i := start; i < len(nums); i++ {
+            // permute / action 
             nums[i], nums[start] = nums[start] , nums[i]
+            // check / validate
             if (nums[start] % start == 0 || start % nums[start] == 0) {
+                // recurse
                 dfs(start+1)
             }
+            // backtrack
             nums[i], nums[start] = nums[start] , nums[i]
         }
     }
