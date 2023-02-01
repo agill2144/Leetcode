@@ -20,15 +20,9 @@ func maxFreq(s string, maxLetters int, minSize int, maxSize int) int {
         }
         
         windowStr := s[left:right+1]
-        // fmt.Println(windowStr)
-        // min = 3
-        // max = 6
-        // 3
-        // 4 || 5 || 6
         for len(windowStr) >= minSize && len(windowStr) <= maxSize {
             wordMap[windowStr]++
             if val := wordMap[windowStr]; val > maxCount {maxCount = val}
-            // if len(windowStr) == minSize {break}
             leftStrChar := string(s[left])
             windowMap[leftStrChar]--
             if val := windowMap[leftStrChar]; val == 0 {
