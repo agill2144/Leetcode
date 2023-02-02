@@ -13,23 +13,23 @@ func findKthLargest(nums []int, k int) int {
         if l > r {return -1, false}
         
         // logic
-        nextSmallerThanPivot := l
+        nextSmaller := l
         pivotIdx := r
         for i := l; i < pivotIdx; i++ {
             if nums[i] < nums[pivotIdx] {
-                nums[i], nums[nextSmallerThanPivot] = nums[nextSmallerThanPivot], nums[i]
-                nextSmallerThanPivot++
+                nums[i], nums[nextSmaller] = nums[nextSmaller], nums[i]
+                nextSmaller++
             }
         }
-        nums[nextSmallerThanPivot], nums[pivotIdx] = nums[pivotIdx], nums[nextSmallerThanPivot]
-        if nextSmallerThanPivot == targetIdx {
-            return nums[nextSmallerThanPivot], true
+        nums[nextSmaller], nums[pivotIdx] = nums[pivotIdx], nums[nextSmaller]
+        if nextSmaller == targetIdx {
+            return nums[nextSmaller], true
         }
-        if targetIdx > nextSmallerThanPivot {
-            val, ok := quickSelect(nextSmallerThanPivot+1, r)
+        if targetIdx > nextSmaller {
+            val, ok := quickSelect(nextSmaller+1, r)
             if ok {return val, ok}
         } else { 
-            return quickSelect(l, nextSmallerThanPivot-1)
+            return quickSelect(l, nextSmaller-1)
         }
         return -1, false
     }
