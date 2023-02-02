@@ -7,12 +7,10 @@ func findKthLargest(nums []int, k int) int {
     if k > len(nums) {return -1}
     targetIdx := len(nums)-k
     
-    var quickSelect func(l, r int) (int, bool)
-    quickSelect = func(l, r int) (int, bool) {
-        // base
-        if l > r {return -1, false}
+    l := 0
+    r := len(nums)-1
+    for l <= r {
         
-        // logic
         nextSmaller := l
         pivotIdx := r
         for i := l; i < pivotIdx; i++ {
@@ -23,18 +21,17 @@ func findKthLargest(nums []int, k int) int {
         }
         nums[nextSmaller], nums[pivotIdx] = nums[pivotIdx], nums[nextSmaller]
         if nextSmaller == targetIdx {
-            return nums[nextSmaller], true
+            return nums[nextSmaller]
         }
+        
         if targetIdx > nextSmaller {
-            val, ok := quickSelect(nextSmaller+1, r)
-            if ok {return val, ok}
-        } else { 
-            return quickSelect(l, nextSmaller-1)
+            l = nextSmaller+1
+        } else {
+            r = nextSmaller-1
         }
-        return -1, false
+        
     }
-    val, _ := quickSelect(0, len(nums)-1)
-    return val
+    return -1
 }
 
 /*
