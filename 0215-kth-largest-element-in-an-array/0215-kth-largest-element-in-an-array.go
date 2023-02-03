@@ -1,37 +1,105 @@
 /*
     approach: quick select
-    - like quick sort except you decide after each iteration, which side to sort on
+    - pick a pivot idx to compare all elements with
+    - lets make pivot as last idx
+    - we need to ensure all elements less than pivot value is to the left
+    - so we need a nextSmaller ptr that collects all the smaller value than pivot
+    - the nextSmaller ptr becomes responsible for collecting all smaller values than pivot
+    - each time we run into a value thats smaller than pivot value, we swap with nextSmaller
+        - move nextSmaller forward
+    - once we have done that loop once, we know for sure all elements to the left is smaller
+    - nextSmaller may not reach pivotIdx-1, it may stop early
+    - this tells us that the pivot value belongs ( 100% ) at the nextSmaller idx
+        - therefore swap the nextSmaller with pivot idx once the we have done a loop
+    - now we know for sure that the value at nextSmaller is at the correct idx position
+        - in terms of asc order
+    - then we can check if nextSmaller is the targetIdx ( n - k )
+        - if yes, return and exit earl
+    - if targetIdx lies on the right side,
+        - run the same quickSelect from nextSmaller+1 : end
+        - we exclude nextSmaller because we have already checked its not our target idx
+        - we exclude nextSmaller because we have it at the correct position, therefore no need to include it again
+
+    - otherwise
+        - run the same quickSelect from start : nextSmaller-1
+        - we exclude nextSmaller because we have already checked its not our target idx
+        - we exclude nextSmaller because we have it at the correct position, therefore no need to include it again
+        
+    avg time: o(n)
+    worst time: o(n^2)
+    space: o(1) in iterative
 */
 
+// func findKthLargest(nums []int, k int) int {
+//     if k > len(nums) {return -1}
+//     targetIdx := len(nums)-k
+    
+//     l := 0
+//     r := len(nums)-1
+//     for l <= r {
+        
+//         nextSmaller := l
+//         pivotIdx := r
+//         for i := l; i < pivotIdx; i++ {
+//             if nums[i] < nums[pivotIdx] {
+//                 nums[i], nums[nextSmaller] = nums[nextSmaller], nums[i]
+//                 nextSmaller++
+//             }
+//         }
+//         nums[nextSmaller], nums[pivotIdx] = nums[pivotIdx], nums[nextSmaller]
+//         if nextSmaller == targetIdx {
+//             return nums[nextSmaller]
+//         }
+        
+//         if targetIdx > nextSmaller {
+//             l = nextSmaller+1
+//         } else {
+//             r = nextSmaller-1
+//         }
+        
+//     }
+//     return -1
+// }
+
+// quick select recursive
 func findKthLargest(nums []int, k int) int {
     if k > len(nums) {return -1}
-    targetIdx := len(nums)-k
-    
     l := 0
     r := len(nums)-1
-    for l <= r {
+    targetIdx := len(nums)-k
+    
+    var quickSelect func(left, right int) (int, bool)
+    quickSelect = func(left, right int) (int, bool) {
+        // base
+        if l > r {return -1, false}
         
-        nextSmaller := l
-        pivotIdx := r
-        for i := l; i < pivotIdx; i++ {
+        // logic
+        // pivot is the last idx (i.e right idx)
+        pivotIdx := right
+        nextSmaller := left
+        
+        
+        // from left - exlcuding pivotIdx
+        for i := left; i < pivotIdx; i++ {
             if nums[i] < nums[pivotIdx] {
                 nums[i], nums[nextSmaller] = nums[nextSmaller], nums[i]
                 nextSmaller++
             }
         }
+        // we found the 100% correct position for pivot val ( i.e nextSmaller )
         nums[nextSmaller], nums[pivotIdx] = nums[pivotIdx], nums[nextSmaller]
+
+        // if nextSmaller is our kth largest
         if nextSmaller == targetIdx {
-            return nums[nextSmaller]
+            // return
+            return nums[nextSmaller], true
+        } else if targetIdx > nextSmaller {
+            if val, ok := quickSelect(nextSmaller+1, right); ok {return val, ok}
         }
-        
-        if targetIdx > nextSmaller {
-            l = nextSmaller+1
-        } else {
-            r = nextSmaller-1
-        }
-        
+        return quickSelect(left, nextSmaller-1)
     }
-    return -1
+    val, _ := quickSelect(0, len(nums)-1)
+    return val
 }
 
 /*
