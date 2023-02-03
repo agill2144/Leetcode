@@ -30,77 +30,77 @@
     space: o(1) in iterative
 */
 
-// func findKthLargest(nums []int, k int) int {
-//     if k > len(nums) {return -1}
-//     targetIdx := len(nums)-k
-    
-//     l := 0
-//     r := len(nums)-1
-//     for l <= r {
-        
-//         nextSmaller := l
-//         pivotIdx := r
-//         for i := l; i < pivotIdx; i++ {
-//             if nums[i] < nums[pivotIdx] {
-//                 nums[i], nums[nextSmaller] = nums[nextSmaller], nums[i]
-//                 nextSmaller++
-//             }
-//         }
-//         nums[nextSmaller], nums[pivotIdx] = nums[pivotIdx], nums[nextSmaller]
-//         if nextSmaller == targetIdx {
-//             return nums[nextSmaller]
-//         }
-        
-//         if targetIdx > nextSmaller {
-//             l = nextSmaller+1
-//         } else {
-//             r = nextSmaller-1
-//         }
-        
-//     }
-//     return -1
-// }
-
-// quick select recursive
 func findKthLargest(nums []int, k int) int {
     if k > len(nums) {return -1}
-    l := 0
-    r := len(nums)-1
     targetIdx := len(nums)-k
     
-    var quickSelect func(left, right int) (int, bool)
-    quickSelect = func(left, right int) (int, bool) {
-        // base
-        if l > r {return -1, false}
+    l := 0
+    r := len(nums)-1
+    for l <= r {
         
-        // logic
-        // pivot is the last idx (i.e right idx)
-        pivotIdx := right
-        nextSmaller := left
-        
-        
-        // from left - exlcuding pivotIdx
-        for i := left; i < pivotIdx; i++ {
+        nextSmaller := l
+        pivotIdx := r
+        for i := l; i < pivotIdx; i++ {
             if nums[i] < nums[pivotIdx] {
                 nums[i], nums[nextSmaller] = nums[nextSmaller], nums[i]
                 nextSmaller++
             }
         }
-        // we found the 100% correct position for pivot val ( i.e nextSmaller )
         nums[nextSmaller], nums[pivotIdx] = nums[pivotIdx], nums[nextSmaller]
-
-        // if nextSmaller is our kth largest
         if nextSmaller == targetIdx {
-            // return
-            return nums[nextSmaller], true
-        } else if targetIdx > nextSmaller {
-            if val, ok := quickSelect(nextSmaller+1, right); ok {return val, ok}
+            return nums[nextSmaller]
         }
-        return quickSelect(left, nextSmaller-1)
+        
+        if targetIdx > nextSmaller {
+            l = nextSmaller+1
+        } else {
+            r = nextSmaller-1
+        }
+        
     }
-    val, _ := quickSelect(0, len(nums)-1)
-    return val
+    return -1
 }
+
+// quick select recursive
+// func findKthLargest(nums []int, k int) int {
+//     if k > len(nums) {return -1}
+//     l := 0
+//     r := len(nums)-1
+//     targetIdx := len(nums)-k
+    
+//     var quickSelect func(left, right int) (int, bool)
+//     quickSelect = func(left, right int) (int, bool) {
+//         // base
+//         if l > r {return -1, false}
+        
+//         // logic
+//         // pivot is the last idx (i.e right idx)
+//         pivotIdx := right
+//         nextSmaller := left
+        
+        
+//         // from left - exlcuding pivotIdx
+//         for i := left; i < pivotIdx; i++ {
+//             if nums[i] < nums[pivotIdx] {
+//                 nums[i], nums[nextSmaller] = nums[nextSmaller], nums[i]
+//                 nextSmaller++
+//             }
+//         }
+//         // we found the 100% correct position for pivot val ( i.e nextSmaller )
+//         nums[nextSmaller], nums[pivotIdx] = nums[pivotIdx], nums[nextSmaller]
+
+//         // if nextSmaller is our kth largest
+//         if nextSmaller == targetIdx {
+//             // return
+//             return nums[nextSmaller], true
+//         } else if targetIdx > nextSmaller {
+//             if val, ok := quickSelect(nextSmaller+1, right); ok {return val, ok}
+//         }
+//         return quickSelect(left, nextSmaller-1)
+//     }
+//     val, _ := quickSelect(0, len(nums)-1)
+//     return val
+// }
 
 /*
     approach: min heap
