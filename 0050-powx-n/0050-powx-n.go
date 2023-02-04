@@ -1,6 +1,6 @@
 func myPow(x float64, n int) float64 {
     if n < 0 {
-        n *= -1
+        n = n * -1
         x = 1/x
     }
     var dfs func(base float64, exp int) float64
@@ -10,11 +10,12 @@ func myPow(x float64, n int) float64 {
         
         // logic
         result := dfs(base, exp/2)
-        if exp % 2 == 0 {
-            return result * result
+        if exp % 2 != 0 {
+            result = result * result * base
         } else {
-            return result * result * base
+            result = result * result
         }
+        return result
     }
     return dfs(x, n)
 }
