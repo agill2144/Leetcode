@@ -1,41 +1,31 @@
-// time: o(1) - the matrix is given to be 9x9 in all test cases
-// space: o(1) -  the matrix is given to be 9x9 in all test cases
-// because worst case board is all filled out and our box map has 9^2 elements... 
-// so its constant and never grows more than o(numOfElementsInRowSet) + o(numOfElementsInColSet) + o(9^2)
-// space: o(9)+o(9)+o(81) -- so o(1) - these are constant numbers IMO
-
 func isValidSudoku(board [][]byte) bool {
     m := len(board)
     n := len(board[0])
-    boxMap := map[int]*set{}
+    boxMap := map[string]*set{}
     
-    for i := 0; i < m; i++ {
-        rowSet := newSet()
-        colSet := newSet()
+    for i := 0; i<m; i++ {
+        rowSet := NewSet()
+        colSet := NewSet()
         for j := 0; j < n; j++ {
-            if board[i][j] != '.' {
-                if rowSet.contains(board[i][j]) {
-                    return false
-                }
-                rowSet.add(board[i][j])
+            rowVal := board[i][j]
+            colVal := board[j][i]
+            if rowVal != '.' {
+                if rowSet.contains(rowVal) {return false}
+                rowSet.add(rowVal)
                 
-                boxKey := 0
-                boxKey = boxKey * 10 + (i/3)
-                boxKey = boxKey * 10 + (j/3)                
-                boxSet , ok := boxMap[boxKey]
-                if !ok {
-                    boxSet = newSet()
+                boxKey := fmt.Sprint("%v-%v", i/3, j/3)
+                boxSet := boxMap[boxKey]
+                if boxSet == nil {
+                    boxSet = NewSet()
                     boxMap[boxKey] = boxSet
                 }
-                if boxSet.contains(board[i][j]) {return false}
-                boxSet.add(board[i][j])
-            }
+                if boxSet.contains(rowVal) {return false}
+                boxSet.add(rowVal)
             
-            if board[j][i] != '.' {
-                if colSet.contains(board[j][i]) {
-                    return false
-                }
-                colSet.add(board[j][i])
+            }
+            if colVal != '.' {
+                if colSet.contains(colVal) {return false}
+                colSet.add(colVal)
             }
         }
     }
@@ -43,17 +33,16 @@ func isValidSudoku(board [][]byte) bool {
     
 }
 
-type set struct {
+type set struct{
     items map[byte]struct{}
 }
-
-func newSet() *set {
+func NewSet() *set {
     return &set{items: map[byte]struct{}{}}
 }
-func (this *set) add(x byte) {
-    this.items[x] = struct{}{}
+func (s *set) add(x byte) {
+    s.items[x] = struct{}{}
 }
-func (this *set) contains(x byte) bool {
-    _, ok := this.items[x]
+func (s *set) contains(x byte) bool {
+    _, ok := s.items[x]
     return ok
 }
