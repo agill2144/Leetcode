@@ -8,7 +8,7 @@ func updateMatrix(mat [][]int) [][]int {
         for j := 0; j < n; j++ {
             if mat[i][j] == 0 {continue}
 
-            minVal := math.MaxInt64-10
+            minVal := math.MaxInt64-100
             for _, dir := range topLeftDirs {
                 nr := i+dir[0]
                 nc := j+dir[1]
@@ -24,7 +24,7 @@ func updateMatrix(mat [][]int) [][]int {
         for j := n-1; j >= 0; j-- {
             if mat[i][j] == 0 {continue}
             
-            minVal := math.MaxInt64-10
+            minVal := math.MaxInt64-100
             for _ , dir := range bottomRight {
                 nr := i+dir[0]
                 nc := j+dir[1]
