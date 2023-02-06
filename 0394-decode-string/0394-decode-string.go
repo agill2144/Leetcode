@@ -23,6 +23,8 @@
         - decoding a bracket requires access to prev num and prev parent ( stack )
     
     We can do this with 1 stack too. Space would be the same regardless.
+    Instead of having 1 dedicated stack for each use case, we can push a pair to 1 stack (previousChar, previousNum)
+    
     
     time: o(s*k^countNumberOfNesting)
         s is the len of input string
