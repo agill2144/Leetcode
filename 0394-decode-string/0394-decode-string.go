@@ -35,38 +35,103 @@
     space: o(numSt) + o(strSt)
     
 */
-func decodeString(s string) string {
-    numSt := []int{}
-    strSt := []*strings.Builder{}
+// func decodeString(s string) string {
+//     numSt := []int{}
+//     strSt := []*strings.Builder{}
     
-    curr := new(strings.Builder)
-    num := 0
+//     curr := new(strings.Builder)
+//     num := 0
     
-    for i := 0; i < len(s); i++ {
-        char := s[i] // byte, i.e the ascii value
+//     for i := 0; i < len(s); i++ {
+//         char := s[i] // byte, i.e the ascii value
         
-        // if ascii value is >= ascii of 0 and <= ascii of 9, then this is a digit
-        if char >= '0' && char <= '9' {
-            num = num * 10 + int(char-'0')
-        } else if char >= 'a' && char <= 'z' {
-            curr.WriteByte(char)
-        } else if char == '[' {
-            numSt = append(numSt, num)
-            strSt = append(strSt, curr)
-            curr = new(strings.Builder)
-            num = 0
-        } else if char == ']' {
-            k := numSt[len(numSt)-1]
-            numSt = numSt[:len(numSt)-1]
-            expandedCurr := new(strings.Builder)
-            for i := 0; i < k; i++ {
-                expandedCurr.WriteString(curr.String())
+//         // if ascii value is >= ascii of 0 and <= ascii of 9, then this is a digit
+//         if char >= '0' && char <= '9' {
+//             num = num * 10 + int(char-'0')
+//         } else if char >= 'a' && char <= 'z' {
+//             curr.WriteByte(char)
+//         } else if char == '[' {
+//             numSt = append(numSt, num)
+//             strSt = append(strSt, curr)
+//             curr = new(strings.Builder)
+//             num = 0
+//         } else if char == ']' {
+//             k := numSt[len(numSt)-1]
+//             numSt = numSt[:len(numSt)-1]
+//             expandedCurr := new(strings.Builder)
+//             for i := 0; i < k; i++ {
+//                 expandedCurr.WriteString(curr.String())
+//             }
+//             parent := strSt[len(strSt)-1]
+//             strSt = strSt[:len(strSt)-1]
+//             parent.WriteString(expandedCurr.String())
+//             curr = parent
+//         }
+//     }
+//     return curr.String()
+// }
+
+
+
+/*
+    approach: recursion
+    - instead of explicit stack, we can store the stack level vars in recursion stack
+    - return curr string on ']'
+    - return curr string on ']', the expand the returned string k time ( curr num in that recursion stack )
+    - and parent will be curr str in that recursion stack.
+    - Note: we wont make the "i" pointer as part of recursion ( even tho it feels like we should, or else how would a recursive call know where to start the for loop from ? )
+        - if we do use i ptr as part of the recursion, then when we go back to a paused recursion call, the i will get backtracked automatically to where the i was where the recursive call started from. and we do not want this. DRAW THIS OUT ON YOUR BOARD TO UNDERSTAND BETTER.
+*/
+func decodeString(s string) string {
+    ptr := 0
+    var dfs func() string
+    dfs = func() string {
+        // base
+        
+        // logic
+        curr := new(strings.Builder)
+        num := 0
+        for ptr < len(s) {
+            char := s[ptr]
+            if char >= '0' && char <= '9' {
+                num = num * 10 + int(char-'0')
+                ptr++
+            } else if char >= 'a' && char <= 'z' {
+                curr.WriteByte(char)
+                ptr++
+            } else if char == '[' {
+                // ptr++ before because we need to escape this char and have the next recursive call start from next char, therefore.
+                ptr++
+                innerStr := dfs()
+                expanded := new(strings.Builder)
+                for i := 0; i < num; i++ {
+                    expanded.WriteString(innerStr)
+                }
+                // reset, as we have just done this work ^
+                num = 0
+                // combine with parent, parent in recursion is curr var
+                curr.WriteString(expanded.String())
+                
+            } else if char == ']' {
+                ptr++
+                return curr.String()
             }
-            parent := strSt[len(strSt)-1]
-            strSt = strSt[:len(strSt)-1]
-            parent.WriteString(expandedCurr.String())
-            curr = parent
         }
+        return curr.String()
     }
-    return curr.String()
+    return dfs()
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
