@@ -64,28 +64,39 @@ Space: o(1)
 
 // binary search to find the starting point of the range
 func findClosestElements(arr []int, k int, x int) []int {
+    // using binary search we are looking for the start position of our k sized range
+    // looking for start position of our k size range
+    // then the last start position we can have is n-k
     left := 0
-    // the last valid starting point inorder to get a valid k size array
     right := len(arr)-k
     
-    for left < right {
-        mid := left + (right-left)/2
-        distStart := x-arr[mid]
-        distEnd := arr[mid+k]-x
-        if distStart > distEnd {
-            // move away from mid because start is way farther from end 
-            // so mid which is potential starting point is not correct, since the end of this range is alot closer than the start
+    for left <= right {
+        // is mid our potential start position of our range ? 
+        // the only way mid can be start position of our range is
+        // if the distance from start is almost balanced ( i.e same ) from endDistance to x
+        // if the distrance from start and end is the same, THAN WE KNOW FOR SURE WE CANNOT INCLUDE THE RIGHT ELEMENT; if |a - x| == |b - x| and a < b
+        // inorder to rule out the right element having the same distance, we will pick our range to be 1 size bigger
+        // that is start from mid
+        // but the end of this range being mid+k-1 , now we will include 1 extra element
+        // start = mid, end = mid+k
+        // now we need to evaluate whether this is our range. 
+        // which means the distance from both values ( start and end ) must be well balanced!
+        // if start(mid) > end(mid+k) , move away from midt to right side; left = mid+1 ( since its the left side that is bigger and making it unbalanced )
+        // if end(mid+k) > start(mid), move away from mid to left side; right = mid-1 ( since its the right side that is bigger and making it unbalanced )
+        
+        mid := left+(right-left)/2
+        startDist := x-arr[mid]
+        // what if this goes out of bounds... 
+        if mid+k >= len(arr) {break}
+        endDist := arr[mid+k]-x
+        
+        if startDist > endDist {
             left = mid+1
         } else {
-            right = mid
+            right = mid-1
         }
     }
-    
-    out := []int{}
-    for i := left; i < left+k; i++ {
-        out = append(out, arr[i])
-    }
-    return out
+    return arr[left:left+k]
 }
 
 // two pointer linear approach
