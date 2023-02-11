@@ -1,3 +1,21 @@
+/*
+    brute force: 2 heaps ( inspired by Find median from data stream )
+    - idea is the same, we have 1 sorted array ( we merge nums1 and nums2 ) - o(n1+n2) time and space
+    - median, means we only care about middle elements
+    - we can use 2 heaps (min and max)
+        - where min is used on the right half of the array
+        - and max is used on the left half of the array
+        - this way middle elements are at the top of both heaps
+    
+    if N = n1+n2 elements
+    time ;
+        - o(N) to merge both into 1 array ( we could get away from doing this too)
+        - for each element in N elements, we did 
+            - heap.Push + [heap.Pop() + heap.Push()] + [heap.Pop() + heap.Push()]
+            - o(5logN)
+        - o(N) + o(N5logN)
+    space: o(2N) or o(N)
+*/
 func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
     merged := []int{}
     n1 := 0
