@@ -1,5 +1,7 @@
 /*
     approach : find parition ( split ) such that all elements on the left of partition are < elements on right side of partition
+    - binary search to not search for a target, 
+    - but instead our target is where to place a partition such that all elements on the left of partition are < elements on right side of partition 
     - to find the correct partition, use binary search
     - if this was a 1d array, then to split the array in half, we would do len/2
         - this would create 2 sides of equal size ( approx equal )
