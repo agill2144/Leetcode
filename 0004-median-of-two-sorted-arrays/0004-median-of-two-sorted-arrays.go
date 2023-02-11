@@ -34,6 +34,9 @@
                 - median is max(l1, l2) + min(r1,r2) / 2
         
     
+    time: o(log(min(nums1,nums2)))
+    space: o(1)
+    
 */
 func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
     if len(nums2) < len(nums1) {return findMedianSortedArrays(nums2, nums1) }
