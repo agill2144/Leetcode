@@ -1,92 +1,37 @@
-/*
-    brute force: 2 heaps ( inspired by Find median from data stream )
-    - idea is the same, we have 1 sorted array ( we merge nums1 and nums2 ) - o(n1+n2) time and space
-    - median, means we only care about middle elements
-    - we can use 2 heaps (min and max)
-        - where min is used on the right half of the array
-        - and max is used on the left half of the array
-        - this way middle elements are at the top of both heaps
-    
-    if N = n1+n2 elements
-    time ;
-        - o(N) to merge both into 1 array ( we could get away from doing this too)
-        - for each element in N elements, we did 
-            - heap.Push + [heap.Pop() + heap.Push()] + [heap.Pop() + heap.Push()]
-            - o(5logN)
-        - o(N) + o(N5logN)
-    space: o(2N) or o(N)
-*/
 func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
-    merged := []int{}
-    n1 := 0
-    n2 := 0
-    for n1 < len(nums1) && n2 < len(nums2) {
-        if nums1[n1] < nums2[n2] {
-            merged = append(merged, nums1[n1])
-            n1++
+    if len(nums2) < len(nums1) {return findMedianSortedArrays(nums2, nums1) }
+    
+    n1 := len(nums1)
+    n2 := len(nums2)
+    
+    left := 0
+    right := n1
+    
+    for left <= right {
+        partX := left + (right-left)/2
+        partY := (n1+n2)/2 - partX
+        
+        l1 := math.MinInt64
+        if partX != 0 {l1 = nums1[partX-1]}
+        l2 := math.MinInt64
+        if partY != 0 {l2 = nums2[partY-1]}
+        
+        r1 := math.MaxInt64
+        if partX < n1 {r1 = nums1[partX]}
+        r2 := math.MaxInt64
+        if partY < n2 {r2 = nums2[partY]}
+        
+        if l1 <= r2 && l2 <= r1 {
+            if (n1+n2) % 2 == 0 {
+                return (math.Min(float64(r1), float64(r2)) + math.Max(float64(l1), float64(l2))) / 2.0
+            } else {
+                return math.Min(float64(r1), float64(r2))
+            }
+        } else if l1 > r2 {
+            right = partX-1
         } else {
-            merged = append(merged, nums2[n2])
-            n2++            
+            left = partX+1
         }
     }
-    for n1 < len(nums1) { merged = append(merged, nums1[n1]) ; n1++ }
-    for n2 < len(nums2) { merged = append(merged, nums2[n2]) ; n2++ }
-    
-    left := &maxHeap{items: []int{}}
-    right := &minHeap{items: []int{}}
-    
-    
-    for i := 0; i < len(merged); i++ {
-        heap.Push(left, merged[i])
-        // ensure left top <= right top
-        if left.Len() != 0 && right.Len() != 0 && 
-        left.items[0] > right.items[0] {
-            heap.Push(right, heap.Pop(left))
-        }
-        // ensure its balanced, so that the median is at the top of surface of both heaps
-        // otherwise median could get burried somewhere deep inside a heap
-        if left.Len() > right.Len() + 1 {
-            heap.Push(right, heap.Pop(left))
-        } else if right.Len() > left.Len() {
-            heap.Push(left, heap.Pop(right))
-        }
-
-    }
-    if len(left.items) > len(right.items) {
-        return float64(left.items[0])
-    } else if len(right.items) > len(left.items) {
-        return float64(right.items[0])
-    }
-    return (float64(left.items[0]) + float64(right.items[0]))/2.0
-}
-
-
-func abs(x int) int {
-    if x < 0 {return x * -1}
-    return x
-}
-
-
-
-
-type maxHeap struct {items []int}
-func(m *maxHeap) Less(i, j int)bool {return m.items[i] > m.items[j]}
-func(m *maxHeap) Swap(i, j int)     {m.items[i], m.items[j] = m.items[j], m.items[i]}
-func(m *maxHeap) Len()int           {return len(m.items)}
-func(m *maxHeap) Push(x interface{}) {m.items = append(m.items, x.(int))}
-func(m *maxHeap) Pop()interface{} {
-    out := m.items[len(m.items)-1]
-    m.items = m.items[:len(m.items)-1]
-    return out
-}
-
-type minHeap struct {items []int}
-func(m *minHeap) Less(i, j int)bool {return m.items[i] < m.items[j]}
-func(m *minHeap) Swap(i, j int)     {m.items[i], m.items[j] = m.items[j], m.items[i]}
-func(m *minHeap) Len()int           {return len(m.items)}
-func(m *minHeap) Push(x interface{}) {m.items = append(m.items, x.(int))}
-func(m *minHeap) Pop()interface{} {
-    out := m.items[len(m.items)-1]
-    m.items = m.items[:len(m.items)-1]
-    return out
-}
+    return -1
+}   
