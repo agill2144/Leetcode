@@ -69,10 +69,10 @@ func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
             } else {
                 return math.Min(float64(r1), float64(r2))
             }
-        } else if l1 > r2 {
-            right = partX-1
-        } else {
+        } else if l2 > r1 {
             left = partX+1
+        } else {
+            right =partX-1
         }
     }
     return -1
