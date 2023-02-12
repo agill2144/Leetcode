@@ -11,11 +11,10 @@ func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
     dfs = func(r *TreeNode) *TreeNode {
         // base
         if r == nil {return nil}
+        if r == p || r == q {return r}
 
         // logic
         left := dfs(r.Left)
-        if r == p || r == q {return r}
-
         right := dfs(r.Right)
 
         if left != nil && right != nil {
