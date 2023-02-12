@@ -20,9 +20,16 @@ func kthSmallest(matrix [][]int, k int) int {
 }
 func countLessOrEqual(target int, matrix[][]int) int {
     count := 0
-    for i := 0; i < len(matrix); i++ {
-        for j := 0; j < len(matrix[0]); j++ {
-            if matrix[i][j] <= target {count++}
+    m := len(matrix)
+    n := len(matrix[0])
+    r := m-1
+    c := 0
+    for r >= 0 && c < n {
+        if matrix[r][c] <= target {
+            count += r+1
+            c++
+        } else {
+            r--
         }
     }
     return count
