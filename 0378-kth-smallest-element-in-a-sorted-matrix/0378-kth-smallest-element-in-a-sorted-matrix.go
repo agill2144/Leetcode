@@ -3,17 +3,18 @@ func kthSmallest(matrix [][]int, k int) int {
     n := len(matrix[0])
     left := matrix[0][0]
     right := matrix[m-1][n-1]
-    
-    for left < right {
+    ans := -1    
+    for left <= right {
         mid := left + (right-left)/2
         count := countLessOrEqual(mid, matrix)
-        if count < k {
-            left = mid+1
+        if count >= k {
+            ans = mid
+            right = mid-1
         } else {
-            right = mid
+            left = mid+1
         }
     }
-    return left
+    return ans
 }
 func countLessOrEqual(target int, matrix[][]int) int {
     count := 0
