@@ -10,7 +10,6 @@ func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
     for left <= right {
         partA := left + (right-left)/2
         partB := (n1+n2)/2 - partA
-        fmt.Println(nums1, nums2, partA, partB)
         l1 := math.MinInt64
         if partA != 0 {l1 = nums1[partA-1]}
         l2 := math.MinInt64
