@@ -7,6 +7,8 @@ func kthSmallest(matrix [][]int, k int) int {
     for left <= right {
         mid := left + (right-left)/2
         count := countLessOrEqual(mid, matrix)
+        // there can be dupes, we want the smallest possible position that satifies count >= k
+        // we may have overshot, so continue searching left.
         if count >= k {
             ans = mid
             right = mid-1
