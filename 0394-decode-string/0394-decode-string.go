@@ -1,30 +1,35 @@
 func decodeString(s string) string {
-    curr := new(strings.Builder)
-    n := 0
-    currSt := []*strings.Builder{}
-    nSt := []int{}
-    
-    for i := 0; i < len(s); i++ {
-        char := s[i]
-        if char >= 'a' && char <= 'z' {
-            curr.WriteByte(char)
-        } else if char >= '0' && char <= '9' {
-            n = n * 10 + int(char-'0')
-        } else if char == '[' {
-            currSt = append(currSt, curr)
-            nSt = append(nSt, n)
-            curr = new(strings.Builder)
-            n = 0
-        } else if char == ']' {
-            expanded := new(strings.Builder)
-            kTimes := nSt[len(nSt)-1]; nSt = nSt[:len(nSt)-1]
-            for j := 0; j < kTimes; j++ {
-                expanded.WriteString(curr.String())
+    i := 0    
+    var dfs func() string
+    dfs = func() string {
+        // base
+        if i == len(s) {return ""}
+        
+        // logic
+        curr := new(strings.Builder)
+        n := 0
+        for i < len(s) {
+            char := s[i]
+            if char >= 'a' && char <= 'z' {
+                curr.WriteByte(char)
+                i++
+            } else if char >= '0' && char <= '9' {
+                n = n * 10 + int(char-'0')
+                i++
+            } else if char == '[' {
+                i++
+                inner := dfs()
+                for i := 0; i < n ; i++ {
+                    curr.WriteString(inner)
+                }
+                n = 0
+            } else if char == ']' {
+                i++
+                return curr.String()
             }
-            parent := currSt[len(currSt)-1]; currSt = currSt[:len(currSt)-1]
-            parent.WriteString(expanded.String())
-            curr = parent
         }
+        return curr.String()
     }
-    return curr.String()
+    
+    return dfs()
 }
