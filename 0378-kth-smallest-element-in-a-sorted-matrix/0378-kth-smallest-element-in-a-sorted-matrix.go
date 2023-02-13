@@ -1,5 +1,6 @@
 /*
 time: o(log$maxNumber) for binary search on values * o(m+n) for stair case search
+space: o(1)
 */
 func kthSmallest(matrix [][]int, k int) int {
     // binary search on values ( smallest valie at 0,0 and largest value at m-1,n-1 )
