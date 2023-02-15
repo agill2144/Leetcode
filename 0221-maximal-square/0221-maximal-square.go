@@ -2,32 +2,16 @@ func maximalSquare(matrix [][]byte) int {
     m := len(matrix)
     n := len(matrix[0])
     maxSize := 0
-    for i := 0; i < m; i++ {
-        for j := 0; j < n; j++ {
-            if matrix[i][j] == '1' {
-                size := 1
-                flag := true
-                for i+size < m && j + size < n && flag {
-                    
-                    // go up in rows
-                    for k := i+size; k>= i; k-- {
-                        if matrix[k][j+size] != '1'{
-                            flag = false
-                            break
-                        } 
-                    }
-                    
-                    // go left in col
-                    for k := j+size; k >= j; k-- {
-                        if matrix[i+size][k] != '1' {
-                            flag = false
-                            break
-                        }
-                    }
-                    
-                    if flag {size++}
+    dp := make([][]int, m+1)
+    for idx, _ := range dp {dp[idx] = make([]int, n+1)}
+    
+    for i := 1; i < len(dp); i++ {
+        for j := 1; j < len(dp[0]); j++ {
+            if matrix[i-1][j-1] == '1' {
+                dp[i][j] = int(math.Min(float64(dp[i-1][j-1]), math.Min(float64(dp[i][j-1]), float64(dp[i-1][j]))))+1
+                if dp[i][j] > maxSize {
+                    maxSize = dp[i][j]
                 }
-                if size > maxSize {maxSize = size}
             }
         }
     }
