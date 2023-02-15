@@ -1,16 +1,21 @@
 func maximalSquare(matrix [][]byte) int {
     m := len(matrix)
     n := len(matrix[0])
-    dp := make([][]int, m+1)
-    for i := 0; i < len(dp); i++ {dp[i] = make([]int, n+1)}
+    dp := make([]int, n+1)
     
+    diagUp := 0
     max := 0
-    for i := 1; i < len(dp); i++{
-        for j := 1; j < len(dp[0]); j++ {
+    for i := 1; i < m+1; i++{
+        for j := 1; j < n+1; j++ {
+            nextDiagUp := dp[j]
             if matrix[i-1][j-1] == '1' {
-                dp[i][j] = min(dp[i-1][j-1], min(dp[i-1][j], dp[i][j-1]))+1
-                if dp[i][j] > max {max = dp[i][j]}
+                dp[j] = min(diagUp, min(dp[j], dp[j-1]))+1
+                if dp[j] > max {max = dp[j]}
+            } else {
+                dp[j] = 0
             }
+            diagUp = nextDiagUp
+
         }
     }
     return max*max
