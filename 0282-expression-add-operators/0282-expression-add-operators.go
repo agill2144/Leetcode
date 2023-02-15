@@ -11,8 +11,8 @@ func addOperators(num string, target int) []string {
         }
         // logic
         for i := start; i < len(num); i++ {
-            // if the sub number we are forming, starts with 0, this is an invalid number
             curr := num[start:i+1]
+            // if the sub number we are forming, starts with 0, this is an invalid number
             if len(curr) > 1 && curr[0] == '0' {continue}
             currNum,_ := strconv.Atoi(curr)
 
