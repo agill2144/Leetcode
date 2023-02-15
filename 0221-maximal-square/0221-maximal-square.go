@@ -2,33 +2,21 @@
 func maximalSquare(matrix [][]byte) int {
     m := len(matrix)
     n := len(matrix[0])
-    dp := make([][]int, m)
-    for i := 0; i < m; i++ {dp[i] = make([]int, n)}
-    max := 0    
-    dirs := [][]int{{-1,0},{-1,-1},{0,-1}}
-    for i := 0; i < m; i++ {
-        for j := 0; j < n; j++ {
-            if i == 0 {
-                dp[i][j] = int(matrix[i][j]-'0')
-                if dp[i][j] > max {max = dp[i][j]}
-                continue
-            }
-
-            if matrix[i][j] == '1' {
-                minVal := math.MaxInt64
-                for _, dir := range dirs {
-                    r := i+dir[0]
-                    c := j+dir[1]
-                    if r >= 0 && c >= 0 {
-                        if dp[r][c] < minVal {minVal = dp[r][c]}
-                    } else {
-                        minVal = 0
-                    }
-                }
-                dp[i][j] = 1+minVal
+    dp := make([][]int, m+1)
+    for i := 0; i < m+1; i++ {dp[i] = make([]int, n+1)}
+    max := 0 
+    for i := 1; i < len(dp); i++ {
+        for j := 1; j < len(dp[0]); j++ {
+            if matrix[i-1][j-1] == '1' {
+                dp[i][j] = min(dp[i-1][j-1], min(dp[i-1][j],dp[i][j-1]))+1
                 if dp[i][j] > max {max = dp[i][j]}
             }
         }
     }
     return max*max
+}
+
+func min(x, y int) int {
+    if x < y {return x}
+    return y
 }
