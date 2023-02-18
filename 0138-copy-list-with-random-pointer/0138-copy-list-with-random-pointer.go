@@ -9,27 +9,36 @@
 
 func copyRandomList(head *Node) *Node {
     if head == nil {return nil}
-    srcToCopy := map[*Node]*Node{}
-    out := &Node{Val:0}
-    tail := out
+    // 1-2-3-4-5
     curr := head
     for curr != nil {
-        newNode := &Node{Val: curr.Val}
-        srcToCopy[curr] = newNode
-        tail.Next = newNode
-        tail = tail.Next
-        curr = curr.Next
+        next := curr.Next
+        dupe := &Node{Val: curr.Val}
+        curr.Next = dupe
+        dupe.Next = next
+        curr = next
     }
-    
+
     curr = head
     for curr != nil {
+        next := curr.Next.Next
         if curr.Random != nil {
-            src := srcToCopy[curr]
-            target := srcToCopy[curr.Random]
-            src.Random = target
+            curr.Next.Random = curr.Random.Next
         }
-        curr = curr.Next
+        curr = next
+    }
+    
+    out := &Node{Val: 0}
+    curr = head
+    tail := out
+    for curr != nil && curr.Next != nil {
+        next := curr.Next.Next
+        deepCp := curr.Next
+        deepCp.Next = nil
+        curr.Next = next
+        tail.Next = deepCp
+        tail = tail.Next
+        curr = next
     }
     return out.Next
-    
 }
