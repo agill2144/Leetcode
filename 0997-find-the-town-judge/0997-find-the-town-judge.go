@@ -63,8 +63,8 @@
     and only return that node if this node does not have any outgoing edges
     in other words, this person does not trusts 
     
-    time: o(n)
-    space: o(2n) or simply o(n) -- for indegrees array
+    time: o(e) + o(v) OR o(v+e)
+    space: o(v)
 */
 
 
