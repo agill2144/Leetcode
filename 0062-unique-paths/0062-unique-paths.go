@@ -1,5 +1,7 @@
 /*
     approach: top down with memoization
+    time: o(mn)
+    space: o(mn) for memo + m+n for the recursive stack
 */
 func uniquePaths(m int, n int) int {
     dr := m-1
@@ -10,14 +12,12 @@ func uniquePaths(m int, n int) int {
     var dfs func(r, c int) int
     dfs = func(r, c int) int {
         // base
-        if r == dr && c == dc {
-            return 1
-        }
+        if r == dr && c == dc {return 1}
         if r == m || c == n {return 0}
 
+        // logic
         if memo[r][c+1] == 0 { memo[r][c+1] = dfs(r,c+1) }
         if memo[r+1][c] == 0 { memo[r+1][c] = dfs(r+1,c) }
-        
         return memo[r+1][c] + memo[r][c+1]
     }
     return dfs(0,0)
