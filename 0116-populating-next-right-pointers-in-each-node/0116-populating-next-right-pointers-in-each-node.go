@@ -7,7 +7,16 @@
  *     Next *Node
  * }
  */
-
+/*
+    approach: bfs inspired level by level without space
+    - consider level by level
+    - from each node, connect left->right and go to next node and repeat until current level is out of nodes
+    - so treat each level like a Linkedlist and keep moving right
+    - do not go to next level until current level is done ( across subtrees )
+    time: o(n)
+    space: o(1)
+    
+*/
 func connect(root *Node) *Node {
     r := root
     for root != nil {
