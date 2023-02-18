@@ -1,4 +1,32 @@
 /*
+    approach: bottom up dp 
+    - space optimized if k is always going to < len(arr)
+    time: o(n)
+    space: o(k)
+*/
+func maxSumAfterPartitioning(arr []int, k int) int {
+    dp := make([]int, k)
+    dp[0] = arr[0]
+    out := dp[0]
+    for i := 1; i < len(arr); i++ {
+        max := 0
+        maxTotal := 0
+        for j := i; j > i-k && j >= 0; j-- {
+            if arr[j] > max {max = arr[j]}
+            total := max * (i-j+1)
+            if j > 0 {
+                total += dp[(j-1)%k]
+            }
+            if total > maxTotal {maxTotal = total}
+        }
+        dp[i%k] = maxTotal
+        if dp[i%k] > out {out=dp[i%k]}
+    }
+    return out
+}
+
+
+/*
     approach: bottom up dp
     - Solve smaller sub problem from bottom up
         - Decisions: k - for each ith element we have k choices, k partitions
@@ -48,31 +76,31 @@
 */
 // time: o(nk)
 // space: o(n)
-func maxSumAfterPartitioning(arr []int, k int) int {
-    n := len(arr)
-    dp := make([]int, n)
-    dp[0] = arr[0]
+// func maxSumAfterPartitioning(arr []int, k int) int {
+//     n := len(arr)
+//     dp := make([]int, n)
+//     dp[0] = arr[0]
     
-    for i := 1; i < n; i++ {
+//     for i := 1; i < n; i++ {
         
-        maxInPart := 0
-        for j := i; j > i-k && j >= 0 ; j-- {
-            if arr[j] > maxInPart { maxInPart = arr[j] }
-            partSize := i-j+1
-            partitionSum := maxInPart * partSize
-            if j-1 >= 0 {
-                partitionSum += dp[j-1]
-            }
-            if partitionSum > dp[i] {dp[i] = partitionSum}
-        }
-    }
+//         maxInPart := 0
+//         for j := i; j > i-k && j >= 0 ; j-- {
+//             if arr[j] > maxInPart { maxInPart = arr[j] }
+//             partSize := i-j+1
+//             partitionSum := maxInPart * partSize
+//             if j-1 >= 0 {
+//                 partitionSum += dp[j-1]
+//             }
+//             if partitionSum > dp[i] {dp[i] = partitionSum}
+//         }
+//     }
     
-    return dp[len(dp)-1]
-}
+//     return dp[len(dp)-1]
+// }
 
-func max(x, y int) int {
-    if x > y {
-        return x
-    }
-    return y
-}
+// func max(x, y int) int {
+//     if x > y {
+//         return x
+//     }
+//     return y
+// }
