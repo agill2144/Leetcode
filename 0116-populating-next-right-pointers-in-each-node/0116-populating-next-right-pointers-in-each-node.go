@@ -9,23 +9,49 @@
  */
 
 func connect(root *Node) *Node {
-    var dfs func(r *Node)
-    dfs = func(r *Node) {
-        // base
-        if r == nil {return}
-        if r.Left == nil && r.Right == nil {return}
-        
-        // logic
-        r.Left.Next = r.Right
-        if r.Next != nil {
-            r.Right.Next = r.Next.Left
+    r := root
+    for root != nil {
+        cl := root
+        nl := root.Left
+        for cl != nil {
+            if cl.Left != nil && cl.Right != nil {
+                cl.Left.Next = cl.Right
+            }
+            if cl.Next != nil && cl.Right != nil {
+                cl.Right.Next = cl.Next.Left
+            }
+            cl = cl.Next
         }
-        dfs(r.Left)
-        dfs(r.Right)
+        root = nl
     }
-    dfs(root)
-    return root
+    return r
 }
+
+/*
+    approach: dfs
+    - at a root node, connect left->right
+    - if at a node we have a next ptr, then make the cross tree connection
+    time: o(n)
+    space: o(h)
+*/
+// func connect(root *Node) *Node {
+//     var dfs func(r *Node)
+//     dfs = func(r *Node) {
+//         // base
+//         if r == nil {return}
+//         if r.Left == nil && r.Right == nil {return}
+        
+//         // logic
+//         r.Left.Next = r.Right
+//         if r.Next != nil {
+//             r.Right.Next = r.Next.Left
+//         }
+//         dfs(r.Left)
+//         dfs(r.Right)
+//     }
+//     dfs(root)
+//     return root
+// }
 
 
 /*
