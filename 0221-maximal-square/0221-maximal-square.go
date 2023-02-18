@@ -10,6 +10,15 @@
     
     time : o(mn)
     space: o(n)
+    
+    can we do this using 3 vars? ( up, left and diagUp ) ?
+    - No, by the time we finish 1 row, we would have lost previous left ,up and diagUp values
+        - draw it on the board
+        - and you will see it working for the 1st row,
+        - as soon as you have to go next row, you have lost the previous up, left, and diagUp values
+        - therefore we need an array of previous / above row (i-1) to process an ith row
+        - thereofore an array is needed
+        
 */
 func maximalSquare(matrix [][]byte) int {
     m := len(matrix)
