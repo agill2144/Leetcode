@@ -62,11 +62,10 @@ type trieNode struct {
     isEnd bool
 }
 
-func insertWord(r *trieNode, word string) {
-    curr := r
+func insertWord(root *trieNode, word string)  {
+    curr := root
     for i := 0; i < len(word); i++ {
-        char := word[i]
-        idx := char-'a'
+        idx := word[i]-'a'
         if curr.childs[idx] == nil {
             curr.childs[idx] = &trieNode{childs: [26]*trieNode{}}
         }
@@ -78,9 +77,8 @@ func insertWord(r *trieNode, word string) {
 func search(r *trieNode, word string) bool {
     curr := r
     for i := 0; i < len(word); i++ {
-        char := word[i]
-        idx := char-'a'
-        if curr.childs[idx] == nil {return false}
+        idx := word[i]-'a'
+        if curr.childs[idx] == nil { return false }
         curr = curr.childs[idx]
     }
     return curr.isEnd
