@@ -1,74 +1,57 @@
+
 /*
-    approach: top down with memoization
-    time: o(mn)
-    space: o(mn) for memo + m+n for the recursive stack
+    approach: bottom up DP
+    - there are repeating subproblems.
+    - solve the smallest problem and use its answer to solve bigger and bigger problems iteratively ( start small -> big )
+    - how, if we have already solved for a cell , we can just use the value of that cell and not compute from that cell further.
+    - transpose the matrix such that we start from 0,0
+    - if 0,0 is our destination, there is only 1 way to reach it.
+        - therefore value at 0,0 will be 1
+    - then loop over the rest of the matrix, solving each cells problem by looking back
+        - question to ask at each cell, how many ways we can reach this cell if my subproblem cell are on top and left ?
+        - ans: top+left
+        - repeat for the rest of the cells from 0,0
+        - tip: only look back at the current problem from current i,j and forget about the rest of the right side
+    - matrix DP observation tricks;
+        - may involve 2 passes from 0,0 and from m-1, n-1 if looking for min/max something that depends on neighboring cells.
+            - example: 0/1 matrix
+        - if starting from 0,0, to look back; top and left
+        - if start from m-1,n-1, to look back; down and right
+        - this is not looking for min/max so no 2 passes needed from 0,0, m-1,n-1
 */
 func uniquePaths(m int, n int) int {
-    dr := m-1
-    dc := n-1
-    memo := make([][]int, m+1)
-    for i := 0; i < m+1; i++ { memo[i] = make([]int, n+1)}
+    dp := make([][]int, m+1)
+    for i := 0; i < m+1; i++ {dp[i] = make([]int, n+1)}
     
-    var dfs func(r, c int) int
-    dfs = func(r, c int) int {
-        // base
-        if r == dr && c == dc {return 1}
-        if r == m || c == n {return 0}
-
-        // logic
-        if memo[r][c+1] == 0 { memo[r][c+1] = dfs(r,c+1) }
-        if memo[r+1][c] == 0 { memo[r+1][c] = dfs(r+1,c) }
-        return memo[r+1][c] + memo[r][c+1]
+    dp[1][1] = 1
+    for i := 1; i < len(dp); i++ {
+        for j := 1; j < len(dp[i]); j++ {
+            if i == 1 && j == 1 {continue}
+            dp[i][j] = dp[i-1][j] + dp[i][j-1]
+        }
     }
-    return dfs(0,0)
+    return dp[m][n]
 }
 
-
 /*
-    approach: bottom up dp with space optimzation
-    - transpose the matrix such that 0,0 is the exit point and solve bottom up
+    approach: brute force dfs
+    - explore all paths recursively
+    - each cell has 2 option ; go down or go right
+    - each cell will explore all of those 2 options
+    - there are mxn cells
     
-    time: o(mn)
-    space: o(n)
+    time: 2^mn
+    space: o(max(m,n)); draw a wide matrix and a narrow matrix and track stack, it helps prove this 
 */
 // func uniquePaths(m int, n int) int {
-//     dp := make([]int, n)
-    
-//     for i := 0; i < m; i++ {
-//         for j := 0; j < n; j++ {
-//             if i == 0 {dp[j] = 1; continue}
-//             top := dp[j]
-//             left := 0
-//             if j != 0 {
-//                 left = dp[j-1]
-//             }
-//             dp[j] = top+left
-//         }        
+//     var dfs func(r, c int) int
+//     dfs = func(r, c int) int {
+//         // base
+//         if r == m-1 && c == n-1 {return 1}
+//         if r == m || c == n {return 0}
+        
+//         // logic
+//         return dfs(r+1,c) + dfs(r, c+1)
 //     }
-//     return dp[n-1]
-    
-// }
-
-/*
-    approach: bottom up dp 
-    - transpose the matrix such that 0,0 is the exit point and solve bottom up
-    
-    time: o(mn)
-    space: o(mn)
-*/
-// func uniquePaths(m int, n int) int {
-//     dp := make([][]int, m)
-//     for i := 0; i < len(dp); i++ {dp[i] = make([]int, n)}
-//     dp[0][0] = 1
-    
-//     for i := 0; i < len(dp); i++ {
-//         for j := 0; j < len(dp[0]); j++ {
-//             if i == 0 && j == 0 {continue}
-//             if i == 0 {dp[i][j] = 1; continue}
-//             if j == 0 {dp[i][j] = 1; continue}
-//             dp[i][j] = dp[i][j-1]+dp[i-1][j]
-//         }
-//     }
-//     return dp[m-1][n-1]
-    
+//     return dfs(0, 0)
 // }
