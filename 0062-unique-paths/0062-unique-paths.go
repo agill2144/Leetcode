@@ -8,22 +8,60 @@
         - therefore top = dp[j]
         - and left = dp[j-1]
     
+    can we do with 2 vars ?
+    - no, we keep overriding those 2 vars and when we get to next row,
+    -  we need those 2 vars to hold the previous row start values
+    - and they wont, these 2 ars will hold the last values from the previous row
+    - for matrixes, 2 vars have not worked because of this
+    - for 1d array input array its possible
+    
     time: o(mn)
     space: o(n)
 */
 func uniquePaths(m int, n int) int {
-    dp := make([]int, n+1)
-    dp[1] = 1
-    for i := 0; i < m; i++ {
-        for j := 1; j < len(dp); j++ {
-            if i == 1 && j == 1 {continue}
-            left := dp[j-1]
-            top := dp[j]
-            dp[j] = left+top
+    dp := make([]int, n)
+    for i := 0; i < len(dp); i++ {dp[i] = 1}
+    for i := 1; i < m; i++ {
+        for j := 1; j < n; j++ {
+            dp[j] = dp[j] + dp[j-1]
         }
     }
-    return dp[n]
+    return dp[len(dp)-1]
 }
+
+
+/*
+    approach: top down with memoization
+    - optimization of brute force dfs
+    - when solving top down using memoization, we need a memo data structure.
+    - this memo data structure varies from problem to problem
+    - the memo data structure acts as a cache and holds values of already solved repeated problems
+    - in this question, we will use a matrix as our memo cache
+    
+    time: o(mn)
+    space: o(max(m,n)) for recursion stack + o(mn) memo matrix
+*/
+// func uniquePaths(m int, n int) int {
+//     memo := make([][]int, m+1)
+//     for i := 0; i < len(memo); i++ {memo[i] = make([]int, n+1)}
+    
+//     var dfs func(r, c int) int
+//     dfs = func(r, c int) int {
+//         // base
+//         if r == m || c == n {return 0}
+//         if r == m-1 && c == n-1 {return 1}
+        
+//         // logic
+//         if memo[r+1][c] == 0 {
+//             memo[r+1][c] = dfs(r+1,c)
+//         }
+//         if memo[r][c+1] == 0 {
+//             memo[r][c+1] = dfs(r, c+1)
+//         }
+//         return memo[r][c+1] + memo[r+1][c]
+//     }
+//     return dfs(0,0)
+// }
 
 
 /*
