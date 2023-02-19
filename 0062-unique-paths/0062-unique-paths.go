@@ -7,6 +7,13 @@
         - the current 1d array is THE PREVIOUS / ABOVE ROW IN DP MATRIX
         - therefore top = dp[j]
         - and left = dp[j-1]
+    - the 0th row will only have 1 way ( check dp matrix )
+    - and the 0th col in each row will always have 1 way ( top way )
+    - therefore we can prefill 1d dp array with 1s
+        - dp array of size n
+    - then we can skip row 0, because we just solved row 0 by prefilling 1s because there is only 1 way if our subproblem is the JUST THE 0th row
+    - we can also skip col 0 in each row, since it does not have a left choice and only top choice which will always be 1 ( look at dp matrix for ref )
+    - dp[j] = dp[j](top) + dp[j-1](left)
     
     can we do with 2 vars ?
     - no, we keep overriding those 2 vars and when we get to next row,
