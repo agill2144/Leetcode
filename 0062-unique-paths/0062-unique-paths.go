@@ -1,3 +1,30 @@
+/*
+    approach: bottom up dp with space optimization
+    - we just need access to previous row for each row we solve
+    - therefore we do not need the full mxn dp matrix
+    - we can do the same with 1d array
+    - before we mutate;
+        - the current 1d array is THE PREVIOUS / ABOVE ROW IN DP MATRIX
+        - therefore top = dp[j]
+        - and left = dp[j-1]
+    
+    time: o(mn)
+    space: o(n)
+*/
+func uniquePaths(m int, n int) int {
+    dp := make([]int, n+1)
+    dp[1] = 1
+    for i := 0; i < m; i++ {
+        for j := 1; j < len(dp); j++ {
+            if j == 1 {continue}
+            left := dp[j-1]
+            top := dp[j]
+            dp[j] = left+top
+        }
+    }
+    return dp[n]
+}
+
 
 /*
     approach: bottom up DP
@@ -18,20 +45,23 @@
         - if starting from 0,0, to look back; top and left
         - if start from m-1,n-1, to look back; down and right
         - this is not looking for min/max so no 2 passes needed from 0,0, m-1,n-1
-*/
-func uniquePaths(m int, n int) int {
-    dp := make([][]int, m+1)
-    for i := 0; i < m+1; i++ {dp[i] = make([]int, n+1)}
     
-    dp[1][1] = 1
-    for i := 1; i < len(dp); i++ {
-        for j := 1; j < len(dp[i]); j++ {
-            if i == 1 && j == 1 {continue}
-            dp[i][j] = dp[i-1][j] + dp[i][j-1]
-        }
-    }
-    return dp[m][n]
-}
+    time: o(mn)
+    space: o(mn)
+*/
+// func uniquePaths(m int, n int) int {
+//     dp := make([][]int, m+1)
+//     for i := 0; i < m+1; i++ {dp[i] = make([]int, n+1)}
+    
+//     dp[1][1] = 1
+//     for i := 1; i < len(dp); i++ {
+//         for j := 1; j < len(dp[i]); j++ {
+//             if i == 1 && j == 1 {continue}
+//             dp[i][j] = dp[i-1][j] + dp[i][j-1]
+//         }
+//     }
+//     return dp[m][n]
+// }
 
 /*
     approach: brute force dfs
