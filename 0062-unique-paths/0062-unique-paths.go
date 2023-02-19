@@ -16,7 +16,7 @@ func uniquePaths(m int, n int) int {
     dp[1] = 1
     for i := 0; i < m; i++ {
         for j := 1; j < len(dp); j++ {
-            if j == 1 {continue}
+            if i == 1 && j == 1 {continue}
             left := dp[j-1]
             top := dp[j]
             dp[j] = left+top
