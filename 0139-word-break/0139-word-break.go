@@ -1,3 +1,31 @@
+/*
+    we have to split s into substrs such that each splitted substr exists in wordDict
+    approach: bottom up dp
+    - we will create a 1d dp array of size s+1 ( bool array )
+    - we will look over the dp array from left to right ( i loop )
+    - and at each position, we will answer;
+        - whether the substr from 0:i-1 is a valid segment / split or not
+        - whether the substr before the ith char is a valid substr or not
+    - what about all other substrings we explored when doing recursively ?
+    - we will be doing the same thing except if at a ith position in dp array is false
+        - this means the previous substr cannot be split into valid word
+        - if previous cannot be split, then there is no point in further exploring next substr after previous split
+        - this is where we save extra recursive calls
+        - but it maybe possible that previous substr is not possible but maybe some other substr in the middle is possible.
+        - this is where we will have a j pointer starting from idx 0
+        - j loop runs from 0 to i ( excluding i )
+        - if value at dp[j] is true
+            - it means the previous string is a valid split
+            - it maybe worth further exploring down this path
+            - i.e substr[j:i]
+            - if the above at point is true at any point, it means we have a valid split.
+            - set dp[i] = true, break out of the j loop
+    
+    n = len(s)
+    time: o(len(wordDict)) + o(n^3)  how? o(n) for the s string * o(n) for the j loop, * o(n) for substr creation
+    space: o(len(wordDict)) + o(n+1)
+*/
+
 func wordBreak(s string, wordDict []string) bool {
     set := map[string]struct{}{}
     for i := 0; i < len(wordDict); i++ { set[wordDict[i]] = struct{}{} }
