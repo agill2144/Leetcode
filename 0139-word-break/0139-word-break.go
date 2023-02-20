@@ -9,6 +9,9 @@ func wordBreak(s string, wordDict []string) bool {
                 subStr := string(s[j:i])
                 if _, ok := set[subStr]; ok {
                     dp[i] = true
+                    // follow up, return the exact subStr splits
+                    // append the subStr we have formed here into an output array
+                    // fmt.Println(subStr)
                     break
                 }
             }
@@ -16,6 +19,7 @@ func wordBreak(s string, wordDict []string) bool {
     }
     return dp[len(dp)-1]
 }
+
 
 /*
     we have to split s into substrs such that each splitted substr exists in wordDict
