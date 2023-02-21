@@ -1,3 +1,8 @@
+// same intuition as decode strings, basic calculator
+// solve / hash out the inner most and combine with parent
+// inorder to access parent, push parent to stack when running into an open ( paran
+// time: o(s) * o(s) for reversing
+// space: o(s)
 func reverseParentheses(s string) string {
     st := []*strings.Builder{}
     curr := new(strings.Builder)
