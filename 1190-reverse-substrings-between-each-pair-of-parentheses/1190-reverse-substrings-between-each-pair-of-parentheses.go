@@ -1,33 +1,37 @@
 func reverseParentheses(s string) string {
-    st := []string{}
-    curr := ""
+    st := []*strings.Builder{}
+    curr := new(strings.Builder)
     for i := 0; i < len(s); i++ {
-        char := string(s[i])
-        if char == "(" {
+        char := s[i]
+        if char == '(' {
             // push parent to stack
             st = append(st, curr)
-            curr = ""
-        } else if char == ")" {
+            curr = new(strings.Builder)
+        } else if char == ')' {
             // reverse curr
             currRev := reverse(curr)
             // combine with parent
             if len(st) != 0 {
                 parent := st[len(st)-1]
                 st = st[:len(st)-1]
-                currRev = parent+currRev
+                parent.WriteString(currRev.String())
+                curr = parent
+            } else {
+                curr = currRev
             }
-            curr = currRev
+            
         } else {
-            curr += char
+            curr.WriteByte(char)
         }
     }
-    return curr
+    return curr.String()
 }
 
-func reverse(s string) string {
-    newS := ""
-    for i := len(s)-1; i >= 0 ; i-- {
-        newS += string(s[i])
+func reverse(s *strings.Builder) *strings.Builder {
+    newS := new(strings.Builder)
+    sStr := s.String()
+    for i := len(sStr)-1; i >= 0 ; i-- {
+        newS.WriteByte(sStr[i])
     }
     return newS
 }
