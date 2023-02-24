@@ -1,3 +1,8 @@
+/*
+    approach: bottom up dp
+    time: o(s^2)
+    space: o(s)
+*/
 func minCut(s string) int {
     dp := make([]int, len(s))
     dp[0] = 0
