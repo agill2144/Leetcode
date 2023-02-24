@@ -4,8 +4,7 @@ func minCut(s string) int {
     for i := 1; i < len(dp); i++ {dp[i] = math.MaxInt64}
     for i := 1; i < len(s); i++ {
         for j := i; j >= 0; j-- {
-            subStr := string(s[j:i+1])
-            if isPalindrome(subStr) {
+            if isPalindrome(s, j, i) {
                 if j == 0 {dp[i] = 0; break}
                 dp[i] = min(dp[i], dp[j-1]+1)
             }
@@ -17,9 +16,7 @@ func min(x, y int) int {
     if x < y {return x}
     return y
 }
-func isPalindrome(s string) bool {
-    if len(s) <= 1 {return true}
-    left := 0; right := len(s)-1
+func isPalindrome(s string, left, right int) bool {
     for left < right {
         if s[left] != s[right] {return false}
         left++
