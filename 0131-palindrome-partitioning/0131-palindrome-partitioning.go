@@ -11,14 +11,11 @@ func partition(s string) [][]string {
         }
         
         // logic
-        for i := start; i<len(s); i++ {
+        for i := start; i < len(s); i++ {
             subStr := string(s[start:i+1])
             if isPalindrome(subStr) {
-                // action
                 path = append(path, subStr)
-                // recurse
                 dfs(i+1, path)
-                // backtrack
                 path = path[:len(path)-1]
             }
         }
@@ -27,11 +24,14 @@ func partition(s string) [][]string {
     return out
 }
 
-func isPalindrome(s string) bool {
-    if len(s) <= 1 {return true}
-    left := 0; right := len(s)-1
+func isPalindrome(subStr string) bool {
+    if len(subStr) == 1 {return true}
+    left := 0
+    right := len(subStr)-1
     for left < right {
-        if s[left] != s[right] {return false}
+        if subStr[left] != subStr[right] {
+            return false
+        }
         left++
         right--
     }
