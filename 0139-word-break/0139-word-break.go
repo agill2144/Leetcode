@@ -31,15 +31,12 @@ func wordBreak(s string, wordDict []string) bool {
     for i := 0; i < len(wordDict); i++ { set[wordDict[i]] = struct{}{} }
     dp := make([]bool, len(s)+1)
     dp[0] = true
-    for i := 0; i < len(dp); i++ {
-        for j := 0; j < i; j++ {
+    for i := 1; i < len(dp); i++ {
+        for j := i-1; j >= 0; j-- {
             if dp[j] {
                 subStr := string(s[j:i])
                 if _, ok := set[subStr]; ok {
                     dp[i] = true
-                    // follow up, return the exact subStr splits
-                    // append the subStr we have formed here into an output array
-                    // fmt.Println(subStr)
                     break
                 }
             }
