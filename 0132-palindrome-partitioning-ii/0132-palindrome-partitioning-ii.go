@@ -1,6 +1,9 @@
 /*
     approach: bottom up dp
-    time: o(s^2)
+    time: o(s^3)
+        - o(s) for looping over s
+        - o(s) for each char, we go back all the way to 0 idx ; worst case
+        - o(s) for palindrome check
     space: o(s)
 */
 func minCut(s string) int {
