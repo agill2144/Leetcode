@@ -24,18 +24,23 @@ func kthSmallest(matrix [][]int, k int) int {
         // there must be atleast k elements less than or equal to this number
         numElementsLessThanMid := countLessThanOrEqualTo(matrix, mid)
         
-        // number of elements less than or equal to mid can be k (no dupes) or more than k (because of dupes)
-        // as long as the number of elemnts to the left of this mid number is >= k , than this means, we have 
-        // ATLEAST k numbers to the left of this mid number, save this as a potential answer, and search left
-        // we want the smallest possible such mid
-        if numElementsLessThanMid >= k {
+        // this means that the number of elements to the left of mid is less than k
+        // that means for sure, mid is not the kth value
+        // for example; if mid = 8
+        // and count = 2
+        // start = 1
+        // that means, from 1 to 8, there are only 2 elements in between (inclusive)
+        // -------------------------------------------
+        // 1  x  x  8
+        // which means 8 currently is the 4th smallest .. and we want 8th smallest, therefore it must be on the right of 8
+        // therefore search right
+        if numElementsLessThanMid < k {
+            left = mid+1
+        } else {
+            // we have ATLEAST k numbers to the left of this mid number, save this as a potential answer, and search left
+            // we want the smallest possible such mid ( as this mid number may not even be a valid number number in our matrix )
             kth = mid
             right = mid-1
-        } else {
-            // when the number of elements to the left of mid is less than k
-            // that means this mid number on our number line is not at the kth position
-            // therefore search right
-            left = mid+1
         }
     }
     return kth
