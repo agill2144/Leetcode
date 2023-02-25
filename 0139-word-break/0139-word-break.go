@@ -25,6 +25,37 @@
     time: o(len(wordDict)) + o(n^3)  how? o(n) for the s string * o(n) for the j loop, * o(n) for substr creation
     space: o(len(wordDict)) + o(n+1)
 */
+// func wordBreak(s string, wordDict []string) bool {
+//     set := map[string]struct{}{}
+//     for i := 0; i < len(wordDict); i++ { set[wordDict[i]] = struct{}{} }
+//     dp := make([]bool, len(s)+1)
+//     dp[0] = true
+//     for i := 1; i < len(dp); i++ {
+//         for j := i-1; j >= 0; j-- {
+//             if dp[j] {
+//                 subStr := string(s[j:i])
+//                 if _, ok := set[subStr]; ok {
+//                     dp[i] = true
+//                     break
+//                 }
+//             }
+//         }
+//     }
+//     return dp[len(dp)-1]
+// }
+
+
+/*    
+    
+    approach: bottom up DP ( splitting substrs from back )
+    - back partitioning only if j-1 is a valid split
+    - start splitting from the back
+    - continue following the model of bottom up
+    - start from the back and make decisions; 
+    - and that is subStr[j:i] can be split only if dp[j-1] is a valid split
+
+    code is messy and not super readable 
+*/
 
 func wordBreak(s string, wordDict []string) bool {
     set := map[string]struct{}{}
