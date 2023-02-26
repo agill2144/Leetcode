@@ -17,7 +17,8 @@ func Constructor(maxNumbers int) PhoneDirectory {
     }
 }
 
-
+// time: o(1)
+// space: o(1)
 func (this *PhoneDirectory) Get() int {
     if this.sll.Size() == 0 { return -1 }
     out := this.sll.PopFromFront()
@@ -25,13 +26,15 @@ func (this *PhoneDirectory) Get() int {
     return out.val
 }
 
-
+// time: o(1)
+// space: o(1)
 func (this *PhoneDirectory) Check(number int) bool {
     _, ok := this.taken[number]
     return !ok
 }
 
-
+// time: o(1)
+// space: o(1)
 func (this *PhoneDirectory) Release(number int)  {
     _, ok := this.taken[number]
     if ok {
@@ -52,8 +55,12 @@ type sll struct {
     size int
 }
 
+// time: o(1)
+// space: o(1)
 func (s *sll) Size() int { return s.size }
 
+// time: o(1)
+// space: o(1)
 func (s *sll) Append(x int) {
     newTail := &listNode{val: x}
     if s.head == nil {
@@ -67,7 +74,8 @@ func (s *sll) Append(x int) {
     s.size++
 }
 
-
+// time: o(1)
+// space: o(1)
 func (s *sll) PopFromFront() *listNode {
     out := s.head
     if s.head == nil || s.head.next == nil {
