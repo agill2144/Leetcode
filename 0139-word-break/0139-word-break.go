@@ -26,27 +26,27 @@
     space: o(len(wordDict)) + o(n+1)
 */
 
-func wordBreak(s string, wordDict []string) bool {
-    set := map[string]struct{}{}
-    for i := 0; i < len(wordDict); i++ { set[wordDict[i]] = struct{}{} }
-    dp := make([]bool, len(s)+1)
-    dp[0] = true
-    for i := 0; i < len(dp); i++ {
-        for j := 0; j < i; j++ {
-            if dp[j] {
-                subStr := string(s[j:i])
-                if _, ok := set[subStr]; ok {
-                    dp[i] = true
-                    // follow up, return the exact subStr splits
-                    // append the subStr we have formed here into an output array
-                    // fmt.Println(subStr)
-                    break
-                }
-            }
-        }
-    }
-    return dp[len(dp)-1]
-}
+// func wordBreak(s string, wordDict []string) bool {
+//     set := map[string]struct{}{}
+//     for i := 0; i < len(wordDict); i++ { set[wordDict[i]] = struct{}{} }
+//     dp := make([]bool, len(s)+1)
+//     dp[0] = true
+//     for i := 0; i < len(dp); i++ {
+//         for j := 0; j < i; j++ {
+//             if dp[j] {
+//                 subStr := string(s[j:i])
+//                 if _, ok := set[subStr]; ok {
+//                     dp[i] = true
+//                     // follow up, return the exact subStr splits
+//                     // append the subStr we have formed here into an output array
+//                     // fmt.Println(subStr)
+//                     break
+//                 }
+//             }
+//         }
+//     }
+//     return dp[len(dp)-1]
+// }
 
 /*    
     
@@ -58,23 +58,23 @@ func wordBreak(s string, wordDict []string) bool {
     - and that is subStr[j:i] can be split only if dp[j-1] is a valid split
 */
 
-// func wordBreak(s string, wordDict []string) bool {
-//     set := map[string]struct{}{}
-//     for i := 0; i < len(wordDict); i++ { set[wordDict[i]] = struct{}{} }
-//     dp := make([]bool, len(s))
-//     for i := 0; i < len(s); i++ {
-//         for j := i; j >= 0; j-- {
-//             if j == 0 || dp[j-1] {
-//                 subStr := string(s[j:i+1])
-//                 if _, ok := set[subStr]; ok {
-//                     dp[i] = true
-//                     break
-//                 }
-//             }
-//         }
-//     }
-//     return dp[len(dp)-1]
-// }
+func wordBreak(s string, wordDict []string) bool {
+    set := map[string]struct{}{}
+    for i := 0; i < len(wordDict); i++ { set[wordDict[i]] = struct{}{} }
+    dp := make([]bool, len(s))
+    for i := 0; i < len(dp); i++ {
+        for j := i; j >= 0; j-- {
+            if j == 0 || dp[j-1] {
+                subStr := string(s[j:i+1])
+                if _, ok := set[subStr]; ok {
+                    dp[i] = true
+                    break
+                }
+            }
+        }
+    }
+    return dp[len(dp)-1]
+}
 
 
 /*
