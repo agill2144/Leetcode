@@ -7,6 +7,7 @@ func validPath(n int, edges [][]int, source int, destination int) bool {
         adjList[dest] = append(adjList[dest], src)
 
     }
+    memo := map[int]bool{}
     visited := map[int]struct{}{}
     var dfs func(start int) bool
     dfs = func(start int) bool {
@@ -15,12 +16,15 @@ func validPath(n int, edges [][]int, source int, destination int) bool {
         if _, ok := visited[start]; ok {return false}
         
         // logic
-        visited[start] = struct{}{}
-        for _, edge := range adjList[start] {
-            if ok := dfs(edge); ok {return true}
+        if _, ok := memo[start]; !ok {
+            visited[start] = struct{}{}
+            for _, edge := range adjList[start] {
+                if ok := dfs(edge); ok {memo[start]=true; return true}
+            }
+            delete(visited, start)
+            memo[start] = false
         }
-        // delete(visited, start)
-        return false
+        return memo[start]
     }
     return dfs(source)
     
