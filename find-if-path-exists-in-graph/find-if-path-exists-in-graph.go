@@ -1,0 +1,27 @@
+func validPath(n int, edges [][]int, source int, destination int) bool {
+    adjList := map[int][]int{}
+    for i := 0; i < len(edges); i++ {
+        src := edges[i][0]
+        dest := edges[i][1]
+        adjList[src] = append(adjList[src], dest)
+        adjList[dest] = append(adjList[dest], src)
+
+    }
+    visited := map[int]struct{}{}
+    var dfs func(start int) bool
+    dfs = func(start int) bool {
+        // base
+        if start == destination { return true }
+        if _, ok := visited[start]; ok {return false}
+        
+        // logic
+        visited[start] = struct{}{}
+        for _, edge := range adjList[start] {
+            if ok := dfs(edge); ok {return true}
+        }
+        // delete(visited, start)
+        return false
+    }
+    return dfs(source)
+    
+}
