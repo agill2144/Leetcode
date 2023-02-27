@@ -24,7 +24,7 @@ func validPath(n int, edges [][]int, source int, destination int) bool {
             delete(visited, start)
             memo[start] = false
         }
-        return memo[start]
+        return false
     }
     return dfs(source)
     
