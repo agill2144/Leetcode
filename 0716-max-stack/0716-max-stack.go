@@ -4,7 +4,7 @@ type node struct {
     prev *node
 }
 type MaxStack struct {
-    head *node
+    st []*node
     maxH *maxHeap
     removedNodes map[*node]struct{}
 }
@@ -12,32 +12,21 @@ type MaxStack struct {
 
 func Constructor() MaxStack {
     mx := &maxHeap{items: []*node{}}
-    return MaxStack{maxH: mx, removedNodes: map[*node]struct{}{}}
+    return MaxStack{st: []*node{}, maxH: mx, removedNodes: map[*node]struct{}{}}
 }
 
 
 func (this *MaxStack) Push(x int)  {
     newNode := &node{val: x}
-    if this.head == nil {
-        this.head = newNode
-        heap.Push(this.maxH, newNode)
-        return
-    }
-    newNode.next = this.head
-    this.head.prev = newNode
-    this.head = newNode
-    heap.Push(this.maxH, newNode)
-    
+    this.st = append(this.st, newNode)
+    heap.Push(this.maxH, newNode)    
 }
 
 func (this *MaxStack) adjustStWithRemovedNodes() {
-    _, topIsRemovedFromHeap := this.removedNodes[this.head]
-    for topIsRemovedFromHeap && this.head != nil {
-        newHead := this.head.next
-        this.head.next = nil
-        newHead.prev = nil
-        this.head = newHead
-        _, topIsRemovedFromHeap = this.removedNodes[this.head]
+    _, topIsRemoved := this.removedNodes[this.st[len(this.st)-1]]
+    for len(this.st) != 0 && topIsRemoved {
+        this.st = this.st[:len(this.st)-1]
+        _, topIsRemoved = this.removedNodes[this.st[len(this.st)-1]]
     }
 }
 
@@ -52,15 +41,8 @@ func (this *MaxStack) adjustHeapWithRemovedNodes() {
 
 func (this *MaxStack) Pop() int {
     this.adjustStWithRemovedNodes()
-    out := this.head
-    if this.head.next == nil {
-        this.head = nil
-    } else {
-        newHead := this.head.next
-        newHead.prev = nil
-        this.head.next = nil
-        this.head = newHead
-    }
+    out := this.st[len(this.st)-1]
+    this.st = this.st[:len(this.st)-1]
     this.removedNodes[out] = struct{}{}
     return out.val
 }
@@ -68,7 +50,7 @@ func (this *MaxStack) Pop() int {
 
 func (this *MaxStack) Top() int {
     this.adjustStWithRemovedNodes()
-    return this.head.val
+    return this.st[len(this.st)-1].val
 }
 
 
