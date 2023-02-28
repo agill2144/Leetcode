@@ -6,8 +6,7 @@ func findCircleNum(isConnected [][]int) int {
         for j := 0; j < n; j++ {
             if isConnected[i][j] == 1 && i != j {
                 adjList[i] = append(adjList[i], j)
-                // adjList[j] = append(adjList[j], i)
-                // isConnected[j][i] = 0
+                adjList[j] = append(adjList[j], i)
             }
         }
     }
