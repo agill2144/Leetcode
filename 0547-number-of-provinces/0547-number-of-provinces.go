@@ -18,7 +18,6 @@ func findCircleNum(isConnected [][]int) int {
                 // add both edges because this is an undirected graph
                 adjList[i] = append(adjList[i], j)
                 adjList[j] = append(adjList[j], i)
-                
             }
         }
     }
@@ -32,6 +31,8 @@ func findCircleNum(isConnected [][]int) int {
         // logic
         visited[node] = struct{}{}
         for _, x := range adjList[node] {
+            // optimization: no need to further recurse if x is already visited
+            if _, ok := visited[x]; ok {continue}
             dfs(x)
         }
     }
