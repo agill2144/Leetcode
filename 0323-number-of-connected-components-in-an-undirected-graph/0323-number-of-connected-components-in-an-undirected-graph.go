@@ -1,29 +1,26 @@
 func countComponents(n int, edges [][]int) int {
     adjList := map[int][]int{}
     for i := 0; i < len(edges); i++ {
-        node := edges[i][0]
-        edge := edges[i][1]
-        adjList[node] = append(adjList[node], edge)
-        adjList[edge] = append(adjList[edge], node)
+        adjList[edges[i][0]] = append(adjList[edges[i][0]], edges[i][1])
+        adjList[edges[i][1]] = append(adjList[edges[i][1]], edges[i][0])
     }
-    visited := map[int]bool{}
-    count := 0
+    visited := map[int]struct{}{}
     var dfs func(node int)
     dfs = func(node int) {
         // base
         if _, ok := visited[node]; ok {return}
-
+        
         // logic
-        visited[node] = true
+        visited[node] = struct{}{}
         for _, edge := range adjList[node] {
             dfs(edge)
         }
     }
-    
+    count := 0
     for i := 0; i < n; i++ {
         if _, ok := visited[i]; !ok {
-            dfs(i)
             count++
+            dfs(i)
         }
     }
     return count
