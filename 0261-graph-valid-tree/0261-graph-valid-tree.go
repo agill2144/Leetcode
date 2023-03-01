@@ -20,6 +20,11 @@ func validTree(n int, edges [][]int) bool {
     }
     out := dfs(0, -1)
     if !out {return false}
-    for i := 0; i < n; i++ {if _, ok :=  visited[i]; !ok {return false}}
-    return true
+/*
+Recall that a graph, G, is a tree iff the following two conditions are met:
+
+G is fully connected. In other words, for every pair of nodes in G, there is a path between them. - visited nodes count == n
+G contains no cycles. In other words, there is exactly one path between each pair of nodes in G. - use DFS
+*/
+    return len(visited) == n
 }
