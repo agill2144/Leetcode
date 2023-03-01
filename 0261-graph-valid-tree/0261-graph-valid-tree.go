@@ -20,5 +20,6 @@ func validTree(n int, edges [][]int) bool {
     }
     out := dfs(0, -1)
     if !out {return false}
-    return len(visited) == n
+    for i := 0; i < n; i++ {if _, ok :=  visited[i]; !ok {return false}}
+    return true
 }
