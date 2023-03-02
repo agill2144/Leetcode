@@ -8,11 +8,11 @@ func leadsToDestination(n int, edges [][]int, source int, destination int) bool 
     dfs = func(node int, path map[int]struct{}) bool {
         // base
         if _, inPath := path[node]; inPath {return false}
-        
         if _, isVisited := visited[node]; isVisited{return true}
         if len(adjList[node]) == 0 {
             return destination == node
         }
+        
         // logic
         visited[node] = struct{}{}
         path[node] = struct{}{}
