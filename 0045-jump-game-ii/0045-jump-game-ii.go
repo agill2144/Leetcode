@@ -1,7 +1,7 @@
 func jump(nums []int) int {
     dp := make([]int, len(nums))
     for i := 0; i < len(dp)-1; i++ {
-        dp[i] = 10001
+        dp[i] = math.MaxInt64-100
     }
     
     for i := len(nums)-2; i>=0;  i-- {
