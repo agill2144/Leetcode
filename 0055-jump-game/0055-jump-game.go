@@ -1,7 +1,7 @@
 func canJump(nums []int) bool {
-    memoIdx := map[int]bool{}
+    memo := map[int]bool{}
     var dfs func(start int) bool
-    dfs = func(start int)bool {
+    dfs = func(start int) bool {
         // base
         if start >= len(nums)-1 {
             if start == len(nums)-1 {return true}
@@ -9,14 +9,14 @@ func canJump(nums []int) bool {
         }
         
         // logic
-        if _, ok := memoIdx[start]; !ok {
+        if _, ok := memo[start]; !ok {
             numJumps := nums[start]
             for j := numJumps; j >= 1; j-- {
-                if ok := dfs(start+j); ok {return true}
+                if ok := dfs(start+j); ok {memo[start] = true; return true}
             }
-            memoIdx[start] = false
+            memo[start] = false
         }
-        return memoIdx[start]
+        return memo[start]
     }
     return dfs(0)
 }
