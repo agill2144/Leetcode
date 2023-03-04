@@ -1,11 +1,11 @@
 func canJump(nums []int) bool {
-    bestIdx := nums[0]
-    for i := 1; i <= bestIdx; i++ {
-        if bestIdx >= len(nums)-1 {return true}
+    canJumpToThisIdx := nums[0]
+    for i := 1; i <= canJumpToThisIdx; i++ {
+        if canJumpToThisIdx >= len(nums)-1 {return true}
         jumpDist := i+nums[i]
-        if jumpDist > bestIdx {bestIdx = jumpDist}
+        if jumpDist > canJumpToThisIdx {canJumpToThisIdx = jumpDist}
     }
-    return bestIdx >= len(nums)-1
+    return canJumpToThisIdx >= len(nums)-1
 }
 
 func max(x, y int) int {
