@@ -16,7 +16,7 @@ func jump(nums []int) int {
         
         // if we can take the max jump and reach or go beyond (since we took max), 
         // then number of jumps is 1, nothing is going to be < 1 jump
-        if i+jumpDist >= len(nums) {dp[i] = 1; continue}
+        if i+jumpDist >= len(nums)-1 {dp[i] = 1; continue}
         
         // otherwise, explore all jumps
         for j := jumpDist; j >= 1; j-- {
