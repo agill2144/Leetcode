@@ -1,8 +1,13 @@
+/*
+    bottom up dp
+    time: o(n) + o(n*j)
+    space: o(n)
+*/
 func jump(nums []int) int {
     dp := make([]int, len(nums))
-    for i := 0; i < len(dp)-1; i++ {
-        dp[i] = math.MaxInt64-100
-    }
+    
+    // fill it with Inf value
+    for i := 0; i < len(dp)-1; i++ {dp[i] = math.MaxInt64-100}
     
     for i := len(nums)-2; i>=0;  i-- {
         jumpDist := nums[i]
