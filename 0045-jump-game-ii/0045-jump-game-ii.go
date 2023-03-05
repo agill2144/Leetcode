@@ -13,7 +13,12 @@ func jump(nums []int) int {
     for i := len(nums)-2; i>=0;  i-- {
         jumpDist := nums[i]
         if jumpDist == 0 {continue}
+        
+        // if we can take the max jump and reach or go beyond (since we took max), 
+        // then number of jumps is 1, nothing is going to be < 1 jump
         if i+jumpDist >= len(nums) {dp[i] = 1; continue}
+        
+        // otherwise, explore all jumps
         for j := jumpDist; j >= 1; j-- {
             if i+j < len(nums) {
                 dp[i] = min(dp[i], 1+dp[i+j])
