@@ -19,8 +19,8 @@ func numEnclaves(grid [][]int) int {
     for i := 0; i < m; i++ {dfs(i, 0); dfs(i, n-1)}
     
     count := 0
-    for i := 0; i < m; i++ {
-        for j := 0; j < n; j++ {
+    for i := 1; i < m; i++ {
+        for j := 1; j < n; j++ {
             if grid[i][j] == 1 {count++}
         }
     }
