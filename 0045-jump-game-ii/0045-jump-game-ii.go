@@ -1,3 +1,8 @@
+/*
+    approach: bottom up dp
+    time: o(n)
+    space: o(n)
+*/
 func jump(nums []int) int {
     dp := make([]int, len(nums))
     for i := 0; i < len(dp); i++{dp[i] = math.MaxInt64-100}
