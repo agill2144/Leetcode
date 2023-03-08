@@ -6,8 +6,8 @@ func jump(nums []int) int {
     for i := len(nums)-1; i >= 0; i-- {
         numJumps := nums[i]
         for j := numJumps; j >= 1; j-- {
-            if j+i < len(nums) {
-                dp[i] = min(dp[i], dp[i+j]+1)
+            if i+j < len(nums) {
+                dp[i] = min(dp[i], 1+dp[i+j])
             }
         }
     }
