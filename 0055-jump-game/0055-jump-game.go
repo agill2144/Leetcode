@@ -1,18 +1,30 @@
 func canJump(nums []int) bool {
-    dp := make([]bool, len(nums))
-    dp[len(dp)-1] = true
-    for i := len(dp)-2; i >= 0; i-- {
-        numJumps := nums[i]
-        for j := numJumps; j >= 1; j-- {
-            if i+j < len(nums) && dp[i+j] {
-                dp[i] = true
-                break
-            }
+    n := len(nums)
+    target := n-1
+    for i := n-2; i >= 0; i-- {
+        if i + nums[i] >= target {
+            target = i
         }
     }
-    
-    return dp[0]
+    return target == 0
 }
+
+// func canJump(nums []int) bool {
+//     dp := make([]bool, len(nums))
+//     dp[len(dp)-1] = true
+//     for i := len(dp)-2; i >= 0; i-- {
+//         numJumps := nums[i]
+//         for j := numJumps; j >= 1; j-- {
+//             if i+j < len(nums) && dp[i+j] {
+//                 dp[i] = true
+//                 break
+//             }
+//         }
+//     }
+    
+//     return dp[0]
+// }
+
 // func canJump(nums []int) bool {
 //     memo := map[int]bool{}
 //     var dfs func(start int) bool
