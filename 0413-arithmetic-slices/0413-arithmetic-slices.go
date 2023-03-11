@@ -1,14 +1,38 @@
+/*
+    approach: bottom up dp; space optimized
+    time: o(n)
+    space: o(1)
+*/
 func numberOfArithmeticSlices(nums []int) int {
-    dp := make([]int, len(nums))
+    curr := 0
     count := 0
     for i := 2; i < len(nums); i++ {
-        if nums[i]-nums[i-1] == nums[i-1]-nums[i-2] {
-            dp[i] = dp[i-1]+1
-            count += dp[i]
+        if nums[i] - nums[i-1] == nums[i-1] - nums[i-2] {
+            curr++
+        } else {
+            curr = 0
         }
+        count += curr
     }
     return count
 }
+
+/*
+    approach: bottom up dp
+    time: o(n)
+    space: o(n)
+*/
+// func numberOfArithmeticSlices(nums []int) int {
+//     dp := make([]int, len(nums))
+//     count := 0
+//     for i := 2; i < len(nums); i++ {
+//         if nums[i]-nums[i-1] == nums[i-1]-nums[i-2] {
+//             dp[i] = dp[i-1]+1
+//             count += dp[i]
+//         }
+//     }
+//     return count
+// }
 
 /*
     approach: brute force
