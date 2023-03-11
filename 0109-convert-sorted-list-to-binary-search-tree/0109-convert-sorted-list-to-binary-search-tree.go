@@ -20,6 +20,7 @@ func sortedListToBST(head *ListNode) *TreeNode {
         if left == right {return nil}
         
         // logic
+        // find mid given start = left and end = right
         slow := left
         fast := left
         // find mid point
@@ -27,8 +28,11 @@ func sortedListToBST(head *ListNode) *TreeNode {
             slow = slow.Next
             fast = fast.Next.Next
         }
+        // mid is at slow now
         root := &TreeNode{Val: slow.Val}
+        // left of slow is left subTree
         root.Left = dfs(left, slow)
+        // right of slow is right subTree
         root.Right = dfs(slow.Next, right)
         return root
     }
