@@ -10,36 +10,30 @@ func getDirections(root *TreeNode, startValue int, destValue int) string {
     lca := lowestCommonAncestor(root, startValue, destValue)
     var startPath []string
     var endPath []string
-    var dfs func(r *TreeNode, start, end int, path []string) 
-    dfs = func(r *TreeNode, start, end int, path []string) {
+    var dfs func(r *TreeNode, target int, path []string) []string 
+    dfs = func(r *TreeNode, target int, path []string) []string {
         // base
-        if r == nil {return}
-        if startPath != nil && endPath != nil {return}
+        if r == nil {return nil}
         
         // logic
-        if r.Val == start || r.Val == end {
+        if r.Val == target {
             newL := make([]string, len(path))
-            copy(newL, path)            
-            // newL = append(newL, "T")
-            if r.Val == start {
-                startPath = newL
-            } else {
-                endPath = newL
-            } 
+            copy(newL, path)
+            return newL
         }
-        if startPath != nil && endPath != nil {return}
 
         path = append(path,"L")
-        dfs(r.Left, start, end, path)
+        if ok := dfs(r.Left, target, path); ok != nil {return ok}
         path = path[:len(path)-1]
 
         path = append(path, "R")
-        dfs(r.Right, start, end, path)
+        if ok := dfs(r.Right, target, path); ok != nil {return ok}
         path = path[:len(path)-1]
         
+        return nil
     }
-    dfs(lca, startValue, destValue, nil)
-    
+    startPath = dfs(lca, startValue, nil)
+    endPath = dfs(lca, destValue, nil)
     // start
     out := ""
     for i := len(startPath)-1; i>=0; i-- {
