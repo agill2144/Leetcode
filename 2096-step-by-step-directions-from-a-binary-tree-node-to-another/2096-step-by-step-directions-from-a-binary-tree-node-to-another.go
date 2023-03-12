@@ -1,79 +1,69 @@
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
 func getDirections(root *TreeNode, startValue int, destValue int) string {
-    /*
-        Get LCA (lowest common ancestor for start & dest)
-        Get start & dest path from LCA 
-        Combine the path
-    */
-
     lca := lowestCommonAncestor(root, startValue, destValue)
-    startPath, destPath := []string{}, []string{}
-    dfs(lca, startValue, &startPath)
-    dfs(lca, destValue, &destPath)
+    var startPath []string
+    var endPath []string
+    var dfs func(r *TreeNode, target int, path *[]string) bool 
+    dfs = func(r *TreeNode, target int, path *[]string)  bool {
+        // base
+        if r == nil {return false}
+        
+        // logic
+        if r.Val == target {
+            return true
+        }
 
-    return invert(startPath)+strings.Join(destPath,"")
-}
+        *path = append(*path,"L")
+        if ok := dfs(r.Left, target, path); ok {return ok}
+        *path = (*path)[:len(*path)-1]
 
-func invert (path []string) string{
-    //sLen := len(path)
-	var upPath strings.Builder
-    for _=range path{
-        upPath.WriteString("U")
-    }
-    return upPath.String()
-}
-
-func dfs(cur *TreeNode, val int, path *[]string) bool{
-    if cur == nil{
+        *path = append(*path, "R")
+        if ok := dfs(r.Right, target, path); ok {return ok}
+        *path = (*path)[:len(*path)-1]
+        
         return false
     }
-
-    if cur.Val == val {
-        return true
+    dfs(lca, startValue, &startPath)
+    dfs(lca, destValue, &endPath)
+    // start
+    out := new(strings.Builder)
+    for i := len(startPath)-1; i>=0; i-- {
+        out.WriteString("U")
     }
-
-    *path = append(*path, "L")
-    hasValue := dfs(cur.Left, val, path)
-    if hasValue {
-        return true
+    for i := 0; i < len(endPath); i++ {
+        out.WriteString(endPath[i])
     }
-    *path = (*path)[:len(*path)-1]
-
-    *path = append(*path, "R")
-    hasValue = dfs(cur.Right, val, path)
-    if hasValue {
-        return true
-    }
-    *path = (*path)[:len(*path)-1]
-
-    return false
-
+    return out.String()
 }
 
-func lowestCommonAncestor(root *TreeNode, s,d int) *TreeNode{
+func lowestCommonAncestor(root *TreeNode, p, q int) *TreeNode {
+    var dfs func(r *TreeNode) *TreeNode 
+    dfs = func(r *TreeNode) *TreeNode {
+        // base
+        if r == nil {return nil}
+        if r.Val == p || r.Val == q {return r}
 
-    if root == nil{
+        // logic
+        left := dfs(r.Left)
+        right := dfs(r.Right)
+
+        if left != nil && right != nil {
+            return r
+        }
+
+        if left == nil && right == nil {return nil}
+        if left != nil && right == nil {return left}
+        if left == nil && right != nil {return right}
         return nil
     }
-
-    if root.Val == s || root.Val == d {
-        return root
-    }
-
-    left := lowestCommonAncestor(root.Left, s, d)
-    right := lowestCommonAncestor(root.Right, s, d)
-
-    if left!=nil && right!=nil{
-        return root
-    }
-
-    if left == nil {
-        return right
-    }
-
-    if right == nil{
-        return left
-    }
-
-    return nil
-
+    return dfs(root)
 }
+
+
