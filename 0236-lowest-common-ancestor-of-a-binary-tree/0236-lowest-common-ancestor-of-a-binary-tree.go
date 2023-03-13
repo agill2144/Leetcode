@@ -6,25 +6,40 @@
  *     Right *TreeNode
  * }
  */
-func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
-    var dfs func(r *TreeNode) *TreeNode 
-    dfs = func(r *TreeNode) *TreeNode {
-        // base
-        if r == nil {return nil}
-        if r == p || r == q {return r}
+ func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
+        
+     var dfs func(r, target *TreeNode, path []*TreeNode) []*TreeNode
+     dfs = func(r, target *TreeNode, path []*TreeNode) []*TreeNode {
+         // base
+         if r == nil {return nil}
+         
+         // logic
+         path = append(path, r)
 
-        // logic
-        left := dfs(r.Left)
-        right := dfs(r.Right)
-
-        if left != nil && right != nil {
-            return r
-        }
-
-        if left == nil && right == nil {return nil}
-        if left != nil && right == nil {return left}
-        if left == nil && right != nil {return right}
-        return nil
-    }
-    return dfs(root)
+         if r == target {
+             newL := make([]*TreeNode, len(path))
+             copy(newL, path)
+             return newL
+         }
+         if ok := dfs(r.Left, target, path); ok != nil {return ok}
+         if ok := dfs(r.Right, target, path); ok != nil {return ok}
+         path = path[:len(path)-1]
+         return nil
+     }
+     
+     pathToP := dfs(root, p, nil)
+     pathToQ := dfs(root, q, nil)
+     var lastCommon *TreeNode
+     pPtr := 0
+     qPtr := 0
+     for pPtr < len(pathToP) && qPtr < len(pathToQ) {
+         if pathToP[pPtr] == pathToQ[qPtr] {
+             lastCommon = pathToP[pPtr]
+             pPtr++
+             qPtr++
+         } else {
+             break
+         }
+     }
+     return lastCommon
 }
