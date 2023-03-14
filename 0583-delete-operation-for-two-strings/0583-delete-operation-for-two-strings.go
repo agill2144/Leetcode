@@ -1,3 +1,17 @@
+/*
+    same question as edit distance
+    except only 1 choice given in this and this is delete a char
+    
+    when two characters match, nothing to delete
+    when two characters do not match;
+    - try deleting from word1 - you will see repeated subproblem
+    - try deleting from word2 - you will see repeated subproblem
+    - pick min of above two repeating problem answers + 1(for deleting either of the char)
+    
+    time: o(mn)
+    space: o(mn)
+    
+*/
 func minDistance(word1 string, word2 string) int {
     m := len(word1)+1
     n := len(word2)+1
