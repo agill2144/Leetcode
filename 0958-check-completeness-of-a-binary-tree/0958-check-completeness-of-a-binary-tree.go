@@ -6,6 +6,11 @@
  *     Right *TreeNode
  * }
  */
+// insert all nil nodes blindly, and as soon as we run into a nil node, flag it and do not add its child
+// if we run into a regular node and we have already seen a nil node, then this cannot be a complete tree
+// because a regular node should have came before a nil node if that regular node was on the farthest left side possible.
+// This works because in bfs we process left to right. that is left first.
+// if while processing from left to right, we encounter a nil node, flag it ( nothing to the right of this should be a regular node )
 func isCompleteTree(root *TreeNode) bool {
     if root == nil {return true}
 
