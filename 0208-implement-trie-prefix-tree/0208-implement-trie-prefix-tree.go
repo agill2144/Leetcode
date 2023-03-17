@@ -1,49 +1,46 @@
-type trieNode struct {
-    isEnd bool
-    childs [26]*trieNode
-}
 type Trie struct {
-    root *trieNode
+    isEnd bool
+    childrens [26]*Trie
 }
 
 
 func Constructor() Trie {
-    root := new(trieNode)
-    root.childs = [26]*trieNode{}
-    return Trie{root: root}
+    return Trie{
+        childrens: [26]*Trie{},
+    }
 }
 
 
 func (this *Trie) Insert(word string)  {
-    curr := this.root
+    curr := this
     for i := 0; i < len(word); i++ {
-        idx := word[i]-'a'
-        if curr.childs[idx] == nil {
-            curr.childs[idx] = &trieNode{childs: [26]*trieNode{}}
+        charIdx := word[i]-'a'
+        if curr.childrens[charIdx] == nil {
+            curr.childrens[charIdx] = &Trie{childrens: [26]*Trie{}}
         }
-        curr = curr.childs[idx]
+        curr = curr.childrens[charIdx]
     }
     curr.isEnd = true
 }
 
 
 func (this *Trie) Search(word string) bool {
-    curr := this.root
+    curr := this
     for i := 0; i < len(word); i++ {
-        idx := word[i]-'a'
-        if curr.childs[idx] == nil { return false }
-        curr = curr.childs[idx]
+        charIdx := word[i]-'a'
+        if curr.childrens[charIdx] == nil {return false}
+        curr = curr.childrens[charIdx]
     }
     return curr.isEnd
 }
 
 
 func (this *Trie) StartsWith(prefix string) bool {
-    curr := this.root
+    curr := this
     for i := 0; i < len(prefix); i++ {
-        idx := prefix[i]-'a'
-        if curr.childs[idx] == nil { return false }
-        curr = curr.childs[idx]
+        charIdx := prefix[i]-'a'
+        if curr.childrens[charIdx] == nil {return false}
+        curr = curr.childrens[charIdx]
     }
     return true
 }
