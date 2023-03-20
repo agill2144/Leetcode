@@ -10,17 +10,18 @@ func pruneTree(root *TreeNode) *TreeNode {
     var dfs func(r *TreeNode) bool
     dfs = func(r *TreeNode) bool {
         // base
-        if r == nil {return false}
+        if r == nil {return true}
+        
         
         // logic
         left := dfs(r.Left)
-        if !left {r.Left = nil}
-
+        if left {r.Left = nil}
         right := dfs(r.Right)
-        if !right {r.Right = nil}
-                
-        return r.Val == 1 || left || right 
+        if right {r.Right = nil}
+        if left && right && r.Val == 0 {return true}
+        return false
     }
-    if ok := dfs(root); ok {return root}
-    return nil
+    ok := dfs(root)
+    if ok && root.Val == 0 {return nil}
+    return root
 }
