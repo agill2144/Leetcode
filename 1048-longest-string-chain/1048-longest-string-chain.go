@@ -21,6 +21,10 @@ func longestStrChain(words []string) int {
    
     
     longestChain := 1
+    // why start from 1, because for words in bucket[0],
+    // their best answer WILL ALWAYS BE size 1
+    // because there is nothing to look back for words at 0th position
+    // to try and form other smaller substrings
     for i := 1; i < len(bucket); i++ {
         for _, word := range bucket[i] {
             if len(word) == 1 {continue}
