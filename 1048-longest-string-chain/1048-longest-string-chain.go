@@ -21,7 +21,7 @@ func longestStrChain(words []string) int {
    
     
     longestChain := 1
-    for i := 0; i < len(bucket); i++ {
+    for i := 1; i < len(bucket); i++ {
         for _, word := range bucket[i] {
             if len(word) == 1 {continue}
             for j := 0; j < len(word); j++ {
