@@ -2,9 +2,13 @@ func longestStrChain(words []string) int {
     // sort.Slice(words, func(i, j int)bool{
     //     return len(words[i]) < len(words[j])
     // })
+
+    // we can also bucket sort this
+    // each word at max is of len 16
+    // we map each len to idx which will contain 
+    // a list words of that size
     bucket := make([][]string, 17)
     dpMap := map[string]int{}
-
     for i := 0; i < len(words); i++ {
         word := words[i]
         if bucket[len(word)] == nil {
