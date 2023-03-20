@@ -1,16 +1,15 @@
 func canPlaceFlowers(flowerbed []int, n int) bool {
     if n == 0 {return true}
-    if flowerbed == nil || len(flowerbed) == 0 {return false}
     
     for i := 0; i < len(flowerbed); i++ {
-        if n == 0 {return true}
-        prevEmpty := (i == 0)|| (flowerbed[i-1] == 0)
-        nextEmpty := (i == len(flowerbed)-1) || (flowerbed[i+1] == 0)
-        currEmpty := flowerbed[i] == 0
+        isEmpty := flowerbed[i] == 0
+        leftEmpty := i == 0 || flowerbed[i-1] == 0
+        rightEmpty := i == len(flowerbed)-1 || flowerbed[i+1] == 0
         
-        if currEmpty && prevEmpty && nextEmpty {
+        if isEmpty && leftEmpty && rightEmpty {
             flowerbed[i] = 1
             n--
+            if n == 0 {return true}
         }
     }
     return n == 0
