@@ -1,3 +1,6 @@
+// time: o(v+e)
+// space: o(v+e) for adjList
+
 func minScore(n int, roads [][]int) int {
     adjList := map[int][][]int{}
     for i := 0; i < len(roads); i++ {
@@ -14,6 +17,7 @@ func minScore(n int, roads [][]int) int {
     visited[1] = true
     //              <edge, weight>
     q := [][]int{{1,math.MaxInt64}}
+    
     
     for len(q) != 0 {
         dq := q[0]
