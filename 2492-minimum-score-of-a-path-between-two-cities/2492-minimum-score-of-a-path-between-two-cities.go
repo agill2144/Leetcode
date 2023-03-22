@@ -1,5 +1,5 @@
 
-
+// approach: dfs
 func minScore(n int, roads [][]int) int {
     adjList := map[int][][]int{}
     for i := 0; i < len(roads); i++ {
@@ -11,22 +11,17 @@ func minScore(n int, roads [][]int) int {
     }
     visited := map[int]struct{}{}
     ans := math.MaxInt64
-    var dfs func(node []int)
-    dfs = func(node []int) {
+    var dfs func(node int)
+    dfs = func(node int) {
         // base
-        if node == nil {return}
-        n := node[0]
-        w := node[1]
-        if w < ans {
-            ans = w
-        }
-        if _, ok := visited[n]; ok {return}
-        visited[n] = struct{}{}
-        for _, edge := range adjList[n] {
-            dfs(edge)
+        if _, ok := visited[node]; ok {return}
+        visited[node] = struct{}{}
+        for _, edge := range adjList[node] {
+            if edge[1] < ans { ans = edge[1] }
+            dfs(edge[0])
         } 
     }
-    dfs([]int{1, math.MaxInt64})
+    dfs(1)
     return ans
 }
 
