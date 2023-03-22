@@ -41,6 +41,14 @@
 
 
 
+// brute force bottom up
+// simply simulate/follow the example
+// collect curr leaves
+// return back whether a node should be deleted by parent or not
+// a node can only be deleted by a parent if that node is a leaf node
+// a parent will itself whether its a leaf or not FIRST
+// then parent will check whether left / right child needs to be deleted ( delete them if yes , child return values will tell us that )
+
 func findLeaves(root *TreeNode) [][]int {
     out := [][]int{}
     
@@ -50,22 +58,19 @@ func findLeaves(root *TreeNode) [][]int {
         if r == nil {return nil, false}
         
         // logic
-        path := []int{}
-        if r.Left == nil && r.Right == nil {
-            path = append(path, r.Val)
-            return path, true
-        }        
+                
         
         leftLeaves, leftIsLeaf := dfs(r.Left)
         rightLeaves, rightIsLeaf := dfs(r.Right)
         currIsLeaf := r.Left == nil && r.Right == nil
         
-        path = append(path, leftLeaves...)
-        path = append(path, rightLeaves...)
-        if leftIsLeaf {r.Left = nil}
-        if rightIsLeaf {r.Right = nil}
+        currLeaves := []int{}
+        if leftIsLeaf {currLeaves = append(currLeaves, r.Left.Val); r.Left = nil}
+        if rightIsLeaf {currLeaves = append(currLeaves, r.Right.Val); r.Right = nil}
+        currLeaves = append(currLeaves, leftLeaves...)
+        currLeaves = append(currLeaves, rightLeaves...)
         
-        return path, currIsLeaf 
+        return currLeaves, currIsLeaf 
     }
     
     for root.Left != nil || root.Right != nil {
