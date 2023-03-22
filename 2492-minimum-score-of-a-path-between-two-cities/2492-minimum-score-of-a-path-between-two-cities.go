@@ -1,5 +1,8 @@
 
 // approach: dfs
+// we just need min edge weight from a path that start from 1
+// there is a gurantee that there is a path from 1 to dest(len of roads)
+
 func minScore(n int, roads [][]int) int {
     adjList := map[int][][]int{}
     for i := 0; i < len(roads); i++ {
@@ -17,6 +20,9 @@ func minScore(n int, roads [][]int) int {
         if _, ok := visited[node]; ok {return}
         visited[node] = struct{}{}
         for _, edge := range adjList[node] {
+            // this edge may be visited, but if its weight is smaller, we need to save it
+            // if the edge is already visited and we do not check its weight before recursing, we will miss on a smaller edge weight
+            // therefore the edge weight check is being done here and not before the loop starts / after marking it visited        
             if edge[1] < ans { ans = edge[1] }
             dfs(edge[0])
         } 
