@@ -9,15 +9,23 @@
     It is impossible to connect a graph that has fewer than n - 1 edges. 
     Otherwise, it is always possible to connect the graph.
     
+    What I didnt understand
+    - I tried to find redundant connections ( i.e cycles ) and disconnect ONLY those and connect those to other components
+    - no, we are looking for number of connectedComponents and count number of edges to connect them
+    - This line "You can extract certain cables between two directly connected computers, and place them between any pair of disconnected computers to make them directly connected"
+        suggests to disconnect existing ones to connect new ones, but logically we can only disconnect existing edge if it was redundant.
+    
     - count number of connected components
     - to connect all individual connected components,
     - we would need to numConnectedComponents-1 edges
     
-    1---2
-    |       
-    |      4---5
-    3
-           6
+    1--2
+    | /    4---5
+    |/
+    3 
+        6
+        |
+        7
            
     The above input has 3 connected components
     TO CONNECT ALL, how many edges do we need?
