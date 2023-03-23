@@ -62,13 +62,13 @@ func makeConnected(n int, connections [][]int) int {
             dfs(node, curr)
         }
     }
-    numConnected := 0
+    disconnectedComponentsCount := 0
     for i := 0; i < n; i++ {
         if _, ok := visited[i]; !ok {
-            numConnected++
+            disconnectedComponentsCount++
             dfs(i, -1)
         }
     }
-    if cycles < numConnected-1 {return -1}
-    return numConnected-1
+    if cycles < disconnectedComponentsCount-1 {return -1}
+    return disconnectedComponentsCount-1
 }
