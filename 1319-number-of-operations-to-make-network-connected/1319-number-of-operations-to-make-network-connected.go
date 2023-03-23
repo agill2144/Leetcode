@@ -62,22 +62,22 @@ func makeConnected(n int, connections [][]int) int {
             dfs(node, curr)
         }
     }
-    disconnectedComponentsCount := 0
+    numConnectedComp := 0
     for i := 0; i < n; i++ {
         if _, ok := visited[i]; !ok {
-            disconnectedComponentsCount++
+            numConnectedComp++
             dfs(i, -1)
         }
     }
     
     // if there are no disconnected components
     // we do not need to connect anything
-    if disconnectedComponentsCount == 0 {return 0}
+    if numConnectedComp == 0 {return 0}
     
     // or if there are disconnected components
-    // and we do not have enough cyclic eges(disconnectedComponentsCount-1);
+    // and we do not have enough cyclic eges(numConnectedComp-1);
     // we cannot connect it
-    if cycles < disconnectedComponentsCount-1  {return -1}
+    if cycles < numConnectedComp-1  {return -1}
 
-    return disconnectedComponentsCount-1
+    return numConnectedComp-1
 }
