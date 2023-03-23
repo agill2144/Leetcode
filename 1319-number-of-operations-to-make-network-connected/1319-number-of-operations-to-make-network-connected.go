@@ -45,12 +45,13 @@ func makeConnected(n int, connections [][]int) int {
         adjList[connections[i][0]] = append(adjList[connections[i][0]], connections[i][1])
         adjList[connections[i][1]] = append(adjList[connections[i][1]], connections[i][0])        
     }
-    
+    cycles := 0
     visited := map[int]struct{}{}
     var dfs func(curr, prev int)
     dfs = func(curr, prev int) {
         // base
         if _, ok := visited[curr]; ok {
+            cycles++            
             return
         }
         
@@ -68,5 +69,6 @@ func makeConnected(n int, connections [][]int) int {
             dfs(i, -1)
         }
     }
+    if cycles < numConnected-1 {return -1}
     return numConnected-1
 }
