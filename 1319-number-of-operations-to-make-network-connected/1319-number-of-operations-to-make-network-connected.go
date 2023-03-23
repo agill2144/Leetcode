@@ -75,7 +75,7 @@ func makeConnected(n int, connections [][]int) int {
     if numConnectedComp == 0 {return 0}
     
     // or if there are disconnected components
-    // and we do not have enough cyclic eges(numConnectedComp-1);
+    // and we do not have enough redundant/cyclic edges to connect all components into 1 single (numConnectedComp-1);
     // we cannot connect it
     if cycles < numConnectedComp-1  {return -1}
 
