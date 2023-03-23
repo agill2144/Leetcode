@@ -69,6 +69,15 @@ func makeConnected(n int, connections [][]int) int {
             dfs(i, -1)
         }
     }
-    if cycles < disconnectedComponentsCount-1 {return -1}
+    
+    // if there are no disconnected components
+    // we do not need to connect anything
+    if disconnectedComponentsCount == 0 {return 0}
+    
+    // or if there are disconnected components
+    // and we do not have enough cyclic eges(disconnectedComponentsCount-1);
+    // we cannot connect it
+    if cycles < disconnectedComponentsCount-1  {return -1}
+
     return disconnectedComponentsCount-1
 }
