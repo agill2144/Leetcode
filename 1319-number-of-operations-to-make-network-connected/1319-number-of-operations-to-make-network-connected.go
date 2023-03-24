@@ -34,6 +34,7 @@
     connect 3-6
     
     Therefore to make number of individual connected components connect to each other, we need numConnectedComponents-1 edges in total
+    JUST LIKE TO CONNECT N NODES TOGETHER, WE NEED ATLEAST N-1 EDGES 
     
     time: o(v+e)
     space: o(v+e)
