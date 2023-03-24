@@ -12,7 +12,7 @@ func minReorder(n int, connections [][]int) int {
     var dfs func(node, prev int)
     dfs = func(node, prev int) {
         // base
-        
+        if _, ok := visited[node]; ok {return}
         
         // logic
         visited[node] = struct{}{}
