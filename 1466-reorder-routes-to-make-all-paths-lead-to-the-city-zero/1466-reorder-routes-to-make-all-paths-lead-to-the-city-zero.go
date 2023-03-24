@@ -26,7 +26,8 @@ func minReorder(n int, connections [][]int) int {
             // since we have turned this into an undirected graph
             // if this nei is the same as prev node we came from
             // skip 
-            if nei[0] == prev {continue}
+            // if nei[0] == prev {continue}
+            if _, ok := visited[nei[0]]; ok {continue}
             
             // otherwise take the count value
             count += nei[1]
