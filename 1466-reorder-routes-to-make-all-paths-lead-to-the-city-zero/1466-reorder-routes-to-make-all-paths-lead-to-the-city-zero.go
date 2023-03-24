@@ -3,7 +3,13 @@ func minReorder(n int, connections [][]int) int {
     for i := 0; i < len(connections); i++ {
         src := connections[i][0]
         dest := connections[i][1]
+        // src->dest has a outgoing connection from src to dest
+        // we want this inverted (src<-dest)
+        // if src->dest is an outgoing connection and we want to invert this,
+        // we need to count this as 1 change ( therefore the extra 1 representing its an outgoing connection )
         adjList[src] = append(adjList[src], []int{dest, 1})
+        // when its a connection we want, we dont want to count this as a change, therefore the outgoing connection count for this
+        // edge is 0
         adjList[dest] = append(adjList[dest], []int{src, 0})
     }
     
@@ -16,10 +22,16 @@ func minReorder(n int, connections [][]int) int {
         
         // logic
         visited[node] = struct{}{}
-        for _, edge := range adjList[node] {
-            if edge[0] == prev {continue}
-            count += edge[1]
-            dfs(edge[0], node)
+        for _, nei := range adjList[node] {
+            // since we have turned this into an undirected graph
+            // if this nei is the same as prev node we came from
+            // skip 
+            if nei[0] == prev {continue}
+            
+            // otherwise take the count value
+            count += nei[1]
+            // recurse on next nei whose prev is this node
+            dfs(nei[0], node)
         }
     }
     dfs(0,-1)
