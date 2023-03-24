@@ -16,8 +16,7 @@ func minReorder(n int, connections [][]int) int {
         
         // logic
         visited[node] = struct{}{}
-        pair := [2]int{node, prev}
-        if _, ok := set[pair]; !ok && prev != -1 {
+        if _, ok := set[[2]int{node, prev}]; !ok && prev != -1 {
             count++
         }
         for _, edge := range adjList[node] {
