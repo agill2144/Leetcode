@@ -27,7 +27,6 @@ func numDistinctIslands(grid [][]int) int {
         for j := 0; j < n; j++ {
             if grid[i][j] == 1 {
                 path := new(strings.Builder)
-                path.WriteString("S")
                 dfs(i,j, path)
                 paths[path.String()] = struct{}{}
             }
