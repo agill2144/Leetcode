@@ -35,6 +35,12 @@ func countPairs(n int, edges [][]int) int64 {
     for i := 0; i < n; i++ {
         if _, ok := visited[i]; !ok {
             size := dfs(i, -1)
+            // the math logic is
+            // we have n total nodes
+            // we have located size nodes
+            // remaining are n-size, that means n-size * size are total missing edges
+            // however once we have considered a component already, we need to remove its size from the above math
+            // therefore maintaining totalComponentsSoFar so we can remove it
             total += (nInt64-size-totalComponentsSoFar)*size
             totalComponentsSoFar += size
         }
