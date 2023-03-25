@@ -1,6 +1,10 @@
 func countPairs(n int, edges [][]int) int64 {
-    // the question is easy, count number of nodes in a connected components
+    // the question is easy, count number of nodes in a connected component
     // and the missing edges for each pair in all disconnected components
+
+    // for example if we have the 3 connected components of size [ 2,3,1 ]
+    // then the number of missing edges from each node to other node in all other components are: (2x3)+(2x1)+(3x1)
+    // we can brute force the math like the above ^    
     // the math piece at the end stumbled me :/ 
     
     
