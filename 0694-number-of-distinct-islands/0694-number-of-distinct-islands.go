@@ -18,10 +18,8 @@ func numDistinctIslands(grid [][]int) int {
         // logic
         grid[r][c] = 0
         for _, dir := range dirs {
-            nr := dir[0].(int) + r
-            nc := dir[1].(int) + c
             path.WriteString(dir[2].(string))
-            dfs(nr, nc, path)
+            dfs(dir[0].(int) + r, dir[1].(int) + c, path)
         }
     }
     
