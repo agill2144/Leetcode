@@ -6,6 +6,7 @@
  * }
  */
 
+// classic dfs :shrug
 func crawl(startUrl string, htmlParser HtmlParser) []string {
     startUrlSplit := strings.Split(startUrl, "/")
     hostName := "http://"+startUrlSplit[2]
