@@ -15,13 +15,13 @@ func crawl(startUrl string, htmlParser HtmlParser) []string {
     dfs = func(url string) {
         // base
         if _, ok := visited[url]; ok {return}
+        visited[url] = struct{}{}
         if !strings.HasPrefix(url, hostName) {
             return
         }
         
         // logic
         result[hostName] = append(result[hostName], url)
-        visited[url] = struct{}{}
         urls := htmlParser.GetUrls(url)
         for _, u := range urls {
             dfs(u)
