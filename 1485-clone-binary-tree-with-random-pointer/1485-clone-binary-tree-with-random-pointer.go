@@ -7,7 +7,10 @@
  *     Random *Node
  * }
  */
-
+// approach: 1 pass dfs, create random node if orig node has a random ptr and index the random node
+// ensure that if random ptr exists, check if we have already created that random node first, use it if have created it already
+// otherwise create a new one, index it
+// connect it
 func copyRandomBinaryTree(root *Node) *NodeCopy {
     origToCp := map[*Node]*NodeCopy{}
     var dfs func(r *Node) *NodeCopy
