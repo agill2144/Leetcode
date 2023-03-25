@@ -6,9 +6,13 @@ func numDistinctIslands(grid [][]int) int {
     m := len(grid)
     n := len(grid[0])
     
-    var dfs func(r, c int, path *string)
-    dfs = func(r, c int, path *string){
+    var dfs func(r, c int, path *strings.Builder)
+    dfs = func(r, c int, path *strings.Builder){
         // base
+        if r < 0 || r == m || c < 0 || c == n || grid[r][c] != 1 {
+            path.WriteString("-")
+            return
+        }
         
         
         // logic
@@ -16,20 +20,18 @@ func numDistinctIslands(grid [][]int) int {
         for _, dir := range dirs {
             nr := dir[0].(int) + r
             nc := dir[1].(int) + c
-            if nr >= 0 && nr < m && nc >= 0 && nc < n && grid[nr][nc] == 1 {
-                *path += dir[2].(string)
-                dfs(nr, nc, path)
-            }
-            *path += "E"
+            path.WriteString(dir[2].(string))
+            dfs(nr, nc, path)
         }
     }
     
     for i := 0; i < m; i++ {
         for j := 0; j < n; j++ {
             if grid[i][j] == 1 {
-                path := "S"
-                dfs(i,j, &path)
-                paths[path] = struct{}{}
+                path := new(strings.Builder)
+                path.WriteString("S")
+                dfs(i,j, path)
+                paths[path.String()] = struct{}{}
             }
         }
     }
