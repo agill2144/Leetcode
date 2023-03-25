@@ -16,27 +16,30 @@ func copyRandomBinaryTree(root *Node) *NodeCopy {
         if r == nil {return nil}
         
         // logic
-        rootCopy := &NodeCopy{Val: r.Val}
-        origToCp[r] = rootCopy
+        
+        
+        rootCopy, exists := origToCp[r]
+        if !exists {
+            rootCopy = &NodeCopy{Val: r.Val}
+            origToCp[r] = rootCopy
+        }
+        if r.Random != nil {
+            randomCp, ok := origToCp[r.Random]
+            if !ok {
+                randomCp = &NodeCopy{Val: r.Random.Val}
+                origToCp[r.Random] = randomCp
+            }
+            rootCopy.Random = randomCp
+            
+        }            
+        
+
+        
         rootCopy.Left = dfs(r.Left)
         rootCopy.Right = dfs(r.Right)
         return rootCopy
     }
     cp := dfs(root)
     
-    var dfsRandomConnector func(r *Node)
-    dfsRandomConnector = func(r *Node) {
-        // base
-        if r == nil {return}
-        
-        // logic
-        if r.Random != nil {
-            origToCp[r].Random = origToCp[r.Random]
-        }
-        dfsRandomConnector(r.Left)
-        dfsRandomConnector(r.Right)
-    }
-    
-    dfsRandomConnector(root)
     return cp
 }
