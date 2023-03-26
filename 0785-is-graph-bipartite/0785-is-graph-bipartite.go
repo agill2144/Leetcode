@@ -1,3 +1,5 @@
+// graph coloring pattern to detect bipartite graph
+// no two adjacent nodes can have the same cololrs
 func isBipartite(graph [][]int) bool {
     colors := make([]int, len(graph))
     q := []int{}
