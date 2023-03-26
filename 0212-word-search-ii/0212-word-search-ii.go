@@ -7,7 +7,7 @@ func findWords(board [][]byte, words []string) []string {
     for i := 0; i < len(words); i++ {
         insert(root, words[i])
     }
-    outSet := map[string]struct{}{}
+    out := []string{}
     dirs := [][]int{{1,0},{-1,0},{0,1},{0,-1}}
     var dfs func(t *trieNode, r, c int, path string)
     dfs = func(t *trieNode, r, c int, path string)  {
@@ -22,7 +22,11 @@ func findWords(board [][]byte, words []string) []string {
         
         newT := search(t, char)
         if newT == nil {return}
-        if newT.isEnd { outSet[path] = struct{}{} }
+        if newT.isEnd && !newT.addedToAns{
+            out = append(out, path)
+            // mark this word used , this is acting as our set
+            newT.addedToAns = true
+        }
 
         // visit cell
         board[r][c] = '#'
@@ -38,10 +42,6 @@ func findWords(board [][]byte, words []string) []string {
             dfs(root, i,j, "")
         }
     }
-    out := []string{}
-    for k, _ := range outSet {
-        out = append(out, k)
-    }
     return out
 }
 
@@ -50,7 +50,7 @@ func findWords(board [][]byte, words []string) []string {
 type trieNode struct {
     isEnd bool
     childs [26]*trieNode
-    
+    addedToAns bool
 }
 
 
