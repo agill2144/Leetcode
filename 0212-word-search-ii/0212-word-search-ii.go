@@ -17,16 +17,13 @@ func findWords(board [][]byte, words []string) []string {
         // logic
         path += string(board[r][c])
         tmp := board[r][c]
-        board[r][c] = '#'
         
         found, isEnd := search(root, path)
-        if !found {
-            // backtrack when exiting early
-            board[r][c] = tmp
-            return
-        }
+        if !found {return}
         if isEnd { outSet[path] = struct{}{} }
-        
+
+        // visit cell
+        board[r][c] = '#'
         for _, dir := range dirs {
             dfs(r+dir[0], c+dir[1], path)
         }
