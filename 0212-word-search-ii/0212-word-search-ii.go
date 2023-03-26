@@ -13,19 +13,24 @@ func findWords(board [][]byte, words []string) []string {
     dfs = func(r, c int, path string)  {
         // base
         if r < 0 || r == m || c < 0 || c == n || board[r][c] == '#' {return}
-        
-        
+
         // logic
         path += string(board[r][c])
-        found, isEnd := search(root, path)
-        if !found {return}
-        if isEnd { outSet[path] = struct{}{} }
-        
         tmp := board[r][c]
         board[r][c] = '#'
+        
+        found, isEnd := search(root, path)
+        if !found {
+            // backtrack when exiting early
+            board[r][c] = tmp
+            return
+        }
+        if isEnd { outSet[path] = struct{}{} }
+        
         for _, dir := range dirs {
             dfs(r+dir[0], c+dir[1], path)
         }
+        // backtrack
         board[r][c] = tmp
     }
     
