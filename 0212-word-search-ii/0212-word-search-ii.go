@@ -9,23 +9,25 @@ func findWords(board [][]byte, words []string) []string {
     }
     outSet := map[string]struct{}{}
     dirs := [][]int{{1,0},{-1,0},{0,1},{0,-1}}
-    var dfs func(r, c int, path string)
-    dfs = func(r, c int, path string)  {
+    var dfs func(t *trieNode, r, c int, path string)
+    dfs = func(t *trieNode, r, c int, path string)  {
         // base
         if r < 0 || r == m || c < 0 || c == n || board[r][c] == '#' {return}
 
         // logic
-        path += string(board[r][c])
         tmp := board[r][c]
+        char := string(tmp)
+        path += string(board[r][c])
         
-        found, isEnd := search(root, path)
-        if !found {return}
-        if isEnd { outSet[path] = struct{}{} }
+        
+        newT := search(t, char)
+        if newT == nil {return}
+        if newT.isEnd { outSet[path] = struct{}{} }
 
         // visit cell
         board[r][c] = '#'
         for _, dir := range dirs {
-            dfs(r+dir[0], c+dir[1], path)
+            dfs(newT, r+dir[0], c+dir[1], path)
         }
         // backtrack
         board[r][c] = tmp
@@ -33,7 +35,7 @@ func findWords(board [][]byte, words []string) []string {
     
     for i := 0; i < m; i++ {
         for j := 0; j < n; j++ {
-            dfs(i,j, "")
+            dfs(root, i,j, "")
         }
     }
     out := []string{}
@@ -64,12 +66,12 @@ func insert(root *trieNode, word string)  {
     curr.isEnd = true
 }
 
-func search(root *trieNode, prefix string) (bool, bool) {
+func search(root *trieNode, prefix string) *trieNode {
     curr := root
     for _, char := range prefix {
         idx := char-'a'
-        if curr.childs[idx] == nil {return false, false}
+        if curr.childs[idx] == nil {return nil}
         curr = curr.childs[idx]
     }
-    return true, curr.isEnd
+    return curr
 }
