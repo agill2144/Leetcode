@@ -7,38 +7,37 @@
  * }
  */
 
+// time: o(n)
+// space: o(1)
 func copyRandomList(head *Node) *Node {
     if head == nil {return nil}
     // 1-2-3-4-5
+    deepCpMap := map[*Node]*Node{}
+    deepCp := &Node{Val: 0}
+    tail := deepCp
     curr := head
     for curr != nil {
         next := curr.Next
-        dupe := &Node{Val: curr.Val}
-        curr.Next = dupe
-        dupe.Next = next
-        curr = next
-    }
-
-    curr = head
-    for curr != nil {
-        next := curr.Next.Next
-        if curr.Random != nil {
-            curr.Next.Random = curr.Random.Next
+        
+        
+        newNode, ok := deepCpMap[curr]
+        if !ok {
+            newNode = &Node{Val: curr.Val}
+            deepCpMap[curr] = newNode
         }
-        curr = next
-    }
-    
-    out := &Node{Val: 0}
-    curr = head
-    tail := out
-    for curr != nil && curr.Next != nil {
-        next := curr.Next.Next
-        deepCp := curr.Next
-        deepCp.Next = nil
-        curr.Next = next
-        tail.Next = deepCp
+        
+        if curr.Random != nil {
+            randomNode, ok := deepCpMap[curr.Random]
+            if !ok {
+                randomNode = &Node{Val: curr.Random.Val}
+                deepCpMap[curr.Random] = randomNode
+            }
+            newNode.Random = randomNode
+        }
+
+        tail.Next = newNode
         tail = tail.Next
         curr = next
     }
-    return out.Next
+    return deepCp.Next
 }
