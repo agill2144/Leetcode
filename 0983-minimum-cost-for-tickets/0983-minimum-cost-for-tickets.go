@@ -6,9 +6,9 @@ func mincostTickets(days []int, costs []int) int {
     thirtyDayPass := costs[2]
     
     j := 0
-    for i := 0; i < len(days); i++ {
+    for i := 0; i < len(days); i++ { // o(n)
         // ensure j is at the same position as current day ( days[i] )
-        for j != days[i] {
+        for j != days[i] { // worst case input looks like [1,365] and we have ran a o(365 size loop) - which is constant!
             if j != 0 {
                 dp[j] = dp[j-1]
             }
@@ -27,6 +27,8 @@ func mincostTickets(days []int, costs []int) int {
         j++
            
     }
+    // total time: o(n x 365) or o(n)
+    // total space: o(365) or o(1)
     return dp[len(dp)-1]
 }
 
