@@ -23,24 +23,23 @@ func findCircleNum(isConnected [][]int) int {
     }
     
     visited := map[int]struct{}{}
-    var dfs func(node int)
-    dfs = func(node int) {
+    var dfs func(node int, prev int)
+    dfs = func(node int, prev int) {
         // base
         if _, ok := visited[node]; ok {return}
         
         // logic
         visited[node] = struct{}{}
-        for _, x := range adjList[node] {
-            // optimization: no need to further recurse if x is already visited
-            if _, ok := visited[x]; ok {continue}
-            dfs(x)
+        for _, nei := range adjList[node] {
+            if nei == prev {continue}
+            dfs(nei, node)
         }
     }
     
     count := 0
     for i := 0; i < n; i++ {
         if _, ok := visited[i]; !ok {
-            dfs(i)
+            dfs(i,-1)
             count++
         }
     }
