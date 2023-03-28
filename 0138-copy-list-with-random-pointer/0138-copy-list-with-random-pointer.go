@@ -20,15 +20,15 @@ func copyRandomList(head *Node) *Node {
         next := curr.Next
         
         
-        newNode, ok := deepCpMap[curr]
-        if !ok {
+        newNode, exists := deepCpMap[curr]
+        if !exists {
             newNode = &Node{Val: curr.Val}
             deepCpMap[curr] = newNode
         }
         
         if curr.Random != nil {
-            randomNode, ok := deepCpMap[curr.Random]
-            if !ok {
+            randomNode, exists := deepCpMap[curr.Random]
+            if !exists {
                 randomNode = &Node{Val: curr.Random.Val}
                 deepCpMap[curr.Random] = randomNode
             }
