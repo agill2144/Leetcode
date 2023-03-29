@@ -33,9 +33,20 @@ func findRedundantConnection(edges [][]int) []int {
             dfs(nei, node)
         }
     }
+    
+    // EVEN tho the graph is connected, we still need to run this ON ALL NODES
+    // because its possible that the pair we discover as redundant from node 1 might
+    // not be the only edge ( can be but there can be edge that we discovered from other side 
+    // that is at a largerst idx position input )
+    // if there are multiple such edges, we have to return the one that appears the last
+    // lesson learned, we can run dfs on all nodes and reset visited each time 
+    // to find ALL edges from all sides that maybe redundant
+    // time: o(n) to form adjList + o(n) to loop * o(n) for dfs
+    // total time: o(n) + o(n^2) = o(n^2)
+    // space: o(n) adjList + o(n) recursion stack
     for i := 1; i < len(edges); i++ {
         visited = map[int]struct{}{}
-        dfs(i, -1)        
+        dfs(i, -1)
     }
     return ans
 }
