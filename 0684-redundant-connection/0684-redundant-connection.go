@@ -1,3 +1,4 @@
+// brute force dfs
 func findRedundantConnection(edges [][]int) []int {
     set := map[[2]int]int{}
     adjList := map[int][]int{}
@@ -37,7 +38,7 @@ func findRedundantConnection(edges [][]int) []int {
     // EVEN tho the graph is connected, we still need to run this ON ALL NODES
     // because its possible that the pair we discover as redundant from node 1 might
     // not be the only edge ( can be but there can be edge that we discovered from other side 
-    // that is at a largerst idx position input )
+    // that is at a larger idx position input )
     // if there are multiple such edges, we have to return the one that appears the last
     // lesson learned, we can run dfs on all nodes and reset visited each time 
     // to find ALL edges from all sides that maybe redundant
