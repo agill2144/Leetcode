@@ -1,33 +1,39 @@
 func eventualSafeNodes(graph [][]int) []int {
-    outdegrees := make([]int, len(graph))
-    for i := 0; i < len(graph); i++ {
-        outdegrees[i] += len(graph[i])
-    }
-    terminalNodes := map[int]struct{}{}
-    for i := 0; i < len(outdegrees); i++ {
-        if outdegrees[i] == 0 {terminalNodes[i] = struct{}{}}
-    }
-    var dfs func(node int, path map[int]struct{}) bool
-    dfs = func(node int, path map[int]struct{}) bool {
+    toPtrBool := func(b bool) *bool {return &b}
+
+    safeNodes := make([]*bool, len(graph))
+    visited := make([]bool, len(graph))
+    var dfs func(node int, path []bool) bool 
+    dfs = func(node int, path []bool) bool {
         // base
-        if _, ok := terminalNodes[node]; ok {return true}
-        
+        if path[node] {return true}
+        if visited[node] {
+            // a visited node could be connected to a cycle, if thats the case, its also not safe...
+            if safeNodes[node] != nil && *safeNodes[node] == false {return true}
+            return false
+        }
         
         // logic
-        path[node] = struct{}{}
+        path[node] = true
+        visited[node] = true
         for _, nei := range graph[node] {
-            if _, ok := path[nei]; ok {return false}            
-            if isSafe := dfs(nei, path); !isSafe {return false}
+            ok := dfs(nei, path)
+            if ok {safeNodes[node] = toPtrBool(false); return true}
         }
-        delete(path, node)
-        return true
+        path[node] = false
+        safeNodes[node] = toPtrBool(true)
+        return false
     }
+    for i := 0; i < len(graph); i++ {
+        if !visited[i] {
+            path := make([]bool, len(graph))
+            dfs(i, path)
+        }
+    }
+        
     out := []int{}
-    for i := len(graph)-1; i >= 0; i-- {
-        isSafe := dfs(i, map[int]struct{}{})
-        if isSafe {terminalNodes[i] = struct{}{}; out = append(out, i)}
-        // fmt.Println("end of: ", i, safeNodes)
+    for i := 0; i < len(graph); i++ {
+        if *safeNodes[i] {out = append(out, i)}
     }
-    sort.Ints(out)
     return out
 }
