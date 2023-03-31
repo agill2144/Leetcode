@@ -4,12 +4,14 @@ func eventualSafeNodes(graph [][]int) []int {
     safeNodes := make([]*bool, len(graph))
     visited := make([]bool, len(graph))
     var dfs func(node int, path []bool) bool 
+
+    // hasCycleOrConnectedToCycle
     dfs = func(node int, path []bool) bool {
         // base
         if path[node] {return true}
         if visited[node] {
             // a visited node could be connected to a cyclic node, if thats the case, its also not safe...
-            if safeNodes[node] != nil && *safeNodes[node] == false {return true}
+            if safeNodes[node] != nil {return !*safeNodes[node]}
             return false
         }
         
