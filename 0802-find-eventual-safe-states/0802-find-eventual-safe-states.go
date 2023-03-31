@@ -1,40 +1,32 @@
 func eventualSafeNodes(graph [][]int) []int {
-    toPtrBool := func(b bool) *bool {return &b}
+    var ans []int
+    // [node]0:white/1:grey/2:black
+    visited := make(map[int]int, len(graph))
+    // check each each starting point if it has a cycle
+    for start := 0; start < len(graph); start++ {
+        if !hasCycle(graph, start, visited) {
+            ans = append(ans, start)
+        }
+    }
+    return ans
+}
 
-    safeNodes := make([]*bool, len(graph))
-    visited := make([]bool, len(graph))
-    var dfs func(node int, path []bool) bool 
-
-    // hasCycleOrConnectedToCycle
-    dfs = func(node int, path []bool) bool {
-        // base
-        if path[node] {return true}
-        if visited[node] {
-            // a visited node could be connected to a cyclic node, if thats the case, its also not safe...
-            if safeNodes[node] != nil {return !*safeNodes[node]}
-            return false
+// hasCycle dfs will check graph for cycles from this node.
+func hasCycle(graph [][]int, node int, visited map[int]int) bool {
+    // mark node as visiting
+    visited[node] = 1 // begin visiting this node
+    // check children for cycle
+    for _, child := range graph[node] {
+        // If this node path has been checked, skip it with answer.
+        if visited[child] == 1 {
+            return true 
         }
-        
-        // logic
-        path[node] = true
-        visited[node] = true
-        for _, nei := range graph[node] {
-            if dfs(nei, path) {safeNodes[node] = toPtrBool(false); return true}
-        }
-        path[node] = false
-        safeNodes[node] = toPtrBool(true)
-        return false
-    }
-    for i := 0; i < len(graph); i++ {
-        if !visited[i] {
-            path := make([]bool, len(graph))
-            dfs(i, path)
+        // Only visit a path if it hasn't been visited already.
+        if visited[child] == 0 && hasCycle(graph, child, visited) {
+            return true
         }
     }
-        
-    out := []int{}
-    for i := 0; i < len(graph); i++ {
-        if *safeNodes[i] {out = append(out, i)}
-    }
-    return out
+    // mark node as visited
+    visited[node] = 2
+    return false
 }
