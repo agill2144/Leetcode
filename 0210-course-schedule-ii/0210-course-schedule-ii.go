@@ -16,27 +16,27 @@ func findOrder(numCourses int, prerequisites [][]int) []int {
     var dfs func(node int, path []bool) bool
     dfs = func(node int, path []bool) bool {
         // base
-        // found a cycle
-        if path[node] {return true}
+        // found a cycle; return false to indicate this is not a valid path
+        if path[node] {return false} 
         
         // skip already visited node
-        if visited[node] {return false}
+        if visited[node] {return true}
         
         // logic
         path[node] = true
         visited[node] = true
         for _, nei := range adjList[node] {
-            if dfs(nei, path) {return true}
+            if !dfs(nei, path) {return true}
         }
         
         path[node] = false
         st = append(st, node)
-        return false
+        return true
     }
     for i := 0; i < numCourses; i++ {
         if !visited[i] {
             path := make([]bool, numCourses)
-            if dfs(i,path) {return nil}
+            if !dfs(i,path) {return nil}
         }
     }
     if len(st) != numCourses {return nil}
