@@ -2,20 +2,20 @@ func eventualSafeNodes(graph [][]int) []int {
     toPtrBool := func(b bool) *bool {return &b}
 
     safeNodes := make([]*bool, len(graph))
+    visited := make([]bool, len(graph))
     var dfs func(node int, path []bool) bool 
-
-    // hasCycleOrConnectedToCycle
     dfs = func(node int, path []bool) bool {
         // base
         if path[node] {return true}
-        if safeNodes[node] != nil {
+        if visited[node] {
             // a visited node could be connected to a cyclic node, if thats the case, its also not safe...
-            return !*safeNodes[node]
+            if safeNodes[node] != nil && *safeNodes[node] == false {return true}
+            return false
         }
         
         // logic
         path[node] = true
-        safeNodes[node] = toPtrBool(false)
+        visited[node] = true
         for _, nei := range graph[node] {
             if dfs(nei, path) {safeNodes[node] = toPtrBool(false); return true}
         }
@@ -24,7 +24,7 @@ func eventualSafeNodes(graph [][]int) []int {
         return false
     }
     for i := 0; i < len(graph); i++ {
-        if safeNodes[i] == nil {
+        if !visited[i] {
             path := make([]bool, len(graph))
             dfs(i, path)
         }
