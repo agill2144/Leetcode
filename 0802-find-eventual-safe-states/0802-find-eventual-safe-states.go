@@ -8,7 +8,7 @@ func eventualSafeNodes(graph [][]int) []int {
         // base
         if path[node] {return true}
         if visited[node] {
-            // a visited node could be connected to a cycle, if thats the case, its also not safe...
+            // a visited node could be connected to a cyclic node, if thats the case, its also not safe...
             if safeNodes[node] != nil && *safeNodes[node] == false {return true}
             return false
         }
@@ -17,8 +17,7 @@ func eventualSafeNodes(graph [][]int) []int {
         path[node] = true
         visited[node] = true
         for _, nei := range graph[node] {
-            ok := dfs(nei, path)
-            if ok {safeNodes[node] = toPtrBool(false); return true}
+            if dfs(nei, path) {safeNodes[node] = toPtrBool(false); return true}
         }
         path[node] = false
         safeNodes[node] = toPtrBool(true)
