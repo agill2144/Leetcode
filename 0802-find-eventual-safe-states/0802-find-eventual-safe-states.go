@@ -1,38 +1,41 @@
 func eventualSafeNodes(graph [][]int) []int {
-    toPtrBool := func(b bool) *bool {return &b}
-
-    safeNodes := make([]*bool, len(graph))
     visited := make([]bool, len(graph))
-    var dfs func(node int, path []bool) bool 
-    dfs = func(node int, path []bool) bool {
+    valid := make([]*bool, len(graph))
+    
+    toPtrBool := func(b bool) *bool {return &b}
+    var isValid func(node int, path []bool) bool
+    isValid = func(node int, path []bool) bool {
         // base
-        if path[node] {return true}
+        if path[node] {return false}
         if visited[node] {
-            // a visited node could be connected to a cyclic node, if thats the case, its also not safe...
-            if safeNodes[node] != nil && *safeNodes[node] == false {return true}
-            return false
+            if valid[node] != nil {return *valid[node]}
+            return true
         }
         
         // logic
         path[node] = true
         visited[node] = true
         for _, nei := range graph[node] {
-            if dfs(nei, path) {safeNodes[node] = toPtrBool(false); return true}
+            if !isValid(nei, path) {
+                valid[node] = toPtrBool(false)
+                return false
+            }
         }
+        
         path[node] = false
-        safeNodes[node] = toPtrBool(true)
-        return false
+        valid[node] = toPtrBool(true)
+        return true
     }
+    
     for i := 0; i < len(graph); i++ {
         if !visited[i] {
             path := make([]bool, len(graph))
-            dfs(i, path)
+            isValid(i, path)
         }
     }
-        
     out := []int{}
     for i := 0; i < len(graph); i++ {
-        if *safeNodes[i] {out = append(out, i)}
+        if *valid[i] {out = append(out, i)}
     }
     return out
 }
