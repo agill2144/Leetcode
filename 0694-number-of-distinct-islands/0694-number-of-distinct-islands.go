@@ -2,7 +2,7 @@ func numDistinctIslands(grid [][]int) int {
     dirs := [][]interface{}{{1,0,"D"},{-1,0,"U"},{0,1,"R"},{0,-1,"L"}}
     m := len(grid)
     n := len(grid[0])
-    set := map[string]int{}
+    set := map[string]struct{}{}
     
     var dfs func(r, c int, path *strings.Builder)
     dfs = func(r, c int, path *strings.Builder) {
@@ -21,7 +21,7 @@ func numDistinctIslands(grid [][]int) int {
             if grid[i][j] == 1 {
                 path := new(strings.Builder)
                 dfs(i,j,path)
-                set[path.String()]++
+                set[path.String()]=struct{}{}
             }
         }
     }
