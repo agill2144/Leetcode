@@ -1,36 +1,29 @@
 func numDistinctIslands(grid [][]int) int {
-    // the way to store distinct islands is by storing the path we took
-    paths := map[string]struct{}{}
-    dirs := [][]interface{}{{0,1,"R"},{1,0,"D"},{0,-1,"L"},{-1,0,"U"}}
-    
+    dirs := [][]interface{}{{1,0,"D"},{-1,0,"U"},{0,1,"R"},{0,-1,"L"}}
     m := len(grid)
     n := len(grid[0])
+    set := map[string]int{}
     
-    var dfs func(r, c int, path *strings.Builder)
-    dfs = func(r, c int, path *strings.Builder){
+    var dfs func(r, c int, path *string)
+    dfs = func(r, c int, path *string) {
         // base
-        if r < 0 || r == m || c < 0 || c == n || grid[r][c] != 1 {
-            path.WriteString("-")
-            return
-        }
-        
+        if r < 0 || r == m || c < 0 || c == n || grid[r][c] != 1 {return}
         
         // logic
-        grid[r][c] = 0
+        grid[r][c] = -1
         for _, dir := range dirs {
-            path.WriteString(dir[2].(string))
-            dfs(dir[0].(int) + r, dir[1].(int) + c, path)
+            *path = *path+dir[2].(string)
+            dfs(r+dir[0].(int), c+dir[1].(int), path)
         }
     }
-    
     for i := 0; i < m; i++ {
         for j := 0; j < n; j++ {
             if grid[i][j] == 1 {
-                path := new(strings.Builder)
-                dfs(i,j, path)
-                paths[path.String()] = struct{}{}
+                path := ""
+                dfs(i,j,&path)
+                set[path]++
             }
         }
     }
-    return len(paths)
+    return len(set)
 }
