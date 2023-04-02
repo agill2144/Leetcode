@@ -1,5 +1,5 @@
 func numDistinctIslands(grid [][]int) int {
-    dirs := [][]interface{}{{1,0,"D"},{-1,0,"U"},{0,1,"R"},{0,-1,"L"}}
+    dirs := [][]interface{}{{0,-1,"L"},{1,0,"D"},{0,1,"R"},{-1,0,"U"}}
     m := len(grid)
     n := len(grid[0])
     set := map[string]struct{}{}
