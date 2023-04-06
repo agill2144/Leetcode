@@ -4,7 +4,7 @@ func partitionString(s string) int {
     count := 1
     for i := 0; i < len(s); i++ {
         char := s[i]
-        if val, ok := charIdx[char]; ok && val >= left {
+        if lastSeenAt, ok := charIdx[char]; ok && left <= lastSeenAt {
             count++
             left = i
         }
