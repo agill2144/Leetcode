@@ -18,6 +18,7 @@ func eventualSafeNodes(graph [][]int) []int {
         for _, nei := range graph[node] {
             if !isValid(nei, path) {
                 valid[node] = toPtrBool(false)
+                valid[nei] = toPtrBool(false)
                 return false
             }
         }
