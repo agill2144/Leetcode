@@ -20,6 +20,9 @@ func eventualSafeNodes(graph [][]int) []int {
         q = q[1:]
         for _, nei := range revAdjList[dq] {
             outdegrees[nei]--
+            // if an node's number of outgoing edges becomes 0, that means this node has 
+            // all paths that lead to a safe/terminal node
+            // i.e no cycles in ALL of its path, therefore a safe node
             if outdegrees[nei] == 0 {out = append(out, nei); q = append(q, nei)}
         }
     }
