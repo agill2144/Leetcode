@@ -1,20 +1,16 @@
 func isHappy(n int) bool {
-    seen := map[int]bool{}
-    var dfs func(n int) bool
-    dfs = func(n int) bool {
-        // base
-        if n == 1 {
-            return true
-        }
+    totalMap := map[int]struct{}{}
+    for true {
         total := 0
-        for n > 0 {
-            total += (n%10) * (n%10)
+        for n != 0 {
+            lastDig := n % 10
+            total += lastDig * lastDig
             n /= 10
         }
-        _, ok := seen[total]
-        if ok { return false }
-        seen[total] = false
-        return dfs(total)
+        if total == 1 {return true}
+        if _, ok := totalMap[total]; ok {return false}
+        totalMap[total] = struct{}{}
+        n = total
     }
-    return dfs(n)
+    return false
 }
