@@ -11,7 +11,6 @@ func simplifyPath(path string) string {
         
         st = append(st, ele)
     }
-    if len(st) == 0 {return "/"}
     
     out := new(strings.Builder)
     out.WriteString("/")
