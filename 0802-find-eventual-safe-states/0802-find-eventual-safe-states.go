@@ -1,4 +1,35 @@
+func eventualSafeNodes(graph [][]int) []int {
+    n := len(graph)
+    outdegrees := make([]int, n)
+    revAdjList := map[int][]int{}
+    q := []int{}
+    out := []int{}
+    for i := 0; i < n; i++ {
+        outdegrees[i] = len(graph[i])
+        if outdegrees[i] == 0 {q = append(q, i)}
+        for _, edge := range graph[i] {
+            revAdjList[edge] = append(revAdjList[edge], i)
+        }
+    }
+    if len(q) == 0 {return nil}
+    for len(q) != 0 {
+        dq := q[0]
+        q = q[1:]
+        out = append(out, dq)
+        for _, nei := range revAdjList[dq] {
+            outdegrees[nei]--
+            if outdegrees[nei] == 0 {
+                q = append(q, nei)
+            }
+        }
+    }
+    sort.Ints(out)
+    return out
+}
+
 /*
+    a node is eventually safe if all it's outgoing edges are to nodes that are eventually safe.
+    
     approach: DFS cycle detection
     - A node is a safe node if all their paths lead to a terminal or another safe node
     - i.e all of a node's path did not end up in a cycle.
@@ -20,44 +51,47 @@
             - true = explored and valid node
         - if we dont use ptr to bool, the whole array will have false values
         - and then we wont be able to identify invalid vs not-yet-explored nodes.
-*/
-func eventualSafeNodes(graph [][]int) []int {
-    n := len(graph)
-    visited := make([]bool, n)
-    valid := make([]*bool, n)
-    toPtrBool := func(b bool) *bool {return &b}
-    
-    var dfs func(node int, path []bool ) bool
-    dfs = func(node int, path []bool ) bool {
-        // base
-        if path[node] {return false}
-        if visited[node] {
-            if valid[node] != nil {return *valid[node] }
-            return true
-        }
         
-        // logic
-        visited[node] = true
-        path[node] = true
-        for _, nei := range graph[node] {
-            if !dfs(nei, path) {
-                valid[node] = toPtrBool(false)
-                path[node] = false
-                return false
-            }
-        }
-        valid[node] = toPtrBool(true)
-        path[node] = false
-        return true
-    }
-    for i := 0; i < n; i++ {
-        if !visited[i] {
-            dfs(i, make([]bool, n))
-        }
-    }
-    out := []int{}
-    for i := 0; i < n; i++ {
-        if *valid[i] {out = append(out, i)}
-    }
-    return out
-}
+    time: o(v+e)
+    space: o(v+e)
+*/
+// func eventualSafeNodes(graph [][]int) []int {
+//     n := len(graph)
+//     visited := make([]bool, n)
+//     valid := make([]*bool, n)
+//     toPtrBool := func(b bool) *bool {return &b}
+    
+//     var dfs func(node int, path []bool ) bool
+//     dfs = func(node int, path []bool ) bool {
+//         // base
+//         if path[node] {return false}
+//         if visited[node] {
+//             if valid[node] != nil {return *valid[node] }
+//             return true
+//         }
+        
+//         // logic
+//         visited[node] = true
+//         path[node] = true
+//         for _, nei := range graph[node] {
+//             if !dfs(nei, path) {
+//                 valid[node] = toPtrBool(false)
+//                 path[node] = false
+//                 return false
+//             }
+//         }
+//         valid[node] = toPtrBool(true)
+//         path[node] = false
+//         return true
+//     }
+//     for i := 0; i < n; i++ {
+//         if !visited[i] {
+//             dfs(i, make([]bool, n))
+//         }
+//     }
+//     out := []int{}
+//     for i := 0; i < n; i++ {
+//         if *valid[i] {out = append(out, i)}
+//     }
+//     return out
+// }
