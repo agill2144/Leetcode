@@ -1,38 +1,40 @@
 func eventualSafeNodes(graph [][]int) []int {
-    visited := make([]bool, len(graph))
-    out := map[int]*bool{}
-    toPtrBool := func(b bool)*bool {return &b }
-    var dfs func(node int, path []bool) bool
-    dfs = func(node int, path []bool) bool {
+    n := len(graph)
+    visited := make([]bool, n)
+    valid := make([]*bool, n)
+    toPtrBool := func(b bool) *bool {return &b}
+    
+    var dfs func(node int, path []bool ) bool
+    dfs = func(node int, path []bool ) bool {
         // base
         if path[node] {return false}
         if visited[node] {
-            val := out[node]
-            if val != nil {return *val}
+            if valid[node] != nil {return *valid[node] }
             return true
         }
         
         // logic
-        visited[node] =true
-        path[node] = true 
+        visited[node] = true
+        path[node] = true
         for _, nei := range graph[node] {
             if !dfs(nei, path) {
-                out[node] = toPtrBool(false)
+                valid[node] = toPtrBool(false)
+                path[node] = false
                 return false
             }
         }
+        valid[node] = toPtrBool(true)
         path[node] = false
-        out[node] = toPtrBool(true)
         return true
     }
-    for i := 0; i < len(graph); i++ {
+    for i := 0; i < n; i++ {
         if !visited[i] {
-            dfs(i, make([]bool, len(graph)))
+            dfs(i, make([]bool, n))
         }
     }
-    result := []int{}
-    for i := 0; i < len(graph); i++ {
-        if out[i] != nil && *out[i] {result = append(result, i)}
+    out := []int{}
+    for i := 0; i < n; i++ {
+        if *valid[i] {out = append(out, i)}
     }
-    return result
+    return out
 }
