@@ -5,11 +5,11 @@ func eventualSafeNodes(graph [][]int) []int {
     q := []int{}
     out := []int{}
     for i := 0; i < n; i++ {
-        for _, edge := range graph[i] {
-            revAdjList[edge] = append(revAdjList[edge], i)
-            indegrees[i]++
-        }
+        indegrees[i] = len(graph[i])
         if indegrees[i] == 0{q = append(q, i)}
+        for _, edge := range graph[i] {
+            revAdjList[edge] = append(revAdjList[edge], i)            
+        }
     }
     if len(q) == 0 {return nil}
     for len(q) != 0 {
