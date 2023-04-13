@@ -1,15 +1,15 @@
 func eventualSafeNodes(graph [][]int) []int {
     n := len(graph)
-    outdegrees := make([]int, n)
+    indegrees := make([]int, n)
     revAdjList := map[int][]int{}
     q := []int{}
     out := []int{}
     for i := 0; i < n; i++ {
-        outdegrees[i] = len(graph[i])
-        if outdegrees[i] == 0 {q = append(q, i)}
         for _, edge := range graph[i] {
             revAdjList[edge] = append(revAdjList[edge], i)
+            indegrees[i]++
         }
+        if indegrees[i] == 0{q = append(q, i)}
     }
     if len(q) == 0 {return nil}
     for len(q) != 0 {
@@ -17,8 +17,8 @@ func eventualSafeNodes(graph [][]int) []int {
         q = q[1:]
         out = append(out, dq)
         for _, nei := range revAdjList[dq] {
-            outdegrees[nei]--
-            if outdegrees[nei] == 0 {
+            indegrees[nei]--
+            if indegrees[nei] == 0 {
                 q = append(q, nei)
             }
         }
