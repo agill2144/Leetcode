@@ -1,3 +1,18 @@
+/*
+    approach:
+    - convert directed to undirected graph
+    - store input given edges in a set so they are searchable
+    - and run a dfs from node 0 on a directed graph
+        - where we have access to prev node as part of its signature
+    - the idea becomes, we can search in our set whether an edge from node->prev exists
+    - and since we are trying to reorient some roads such that each city can visit the city 0
+    - then we just need to make sure adjacent node of 0 can visit 0
+        if not, count++
+        - then their adjacent nodes need to be able to visit current node and then continue recursing
+    
+    time: o(v+e)
+    space: o(v+e)
+*/
 func minReorder(n int, connections [][]int) int {
     adjList := map[int][]int{}
     set := map[[2]int]struct{}{}
