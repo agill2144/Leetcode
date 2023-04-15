@@ -46,8 +46,6 @@ func alienOrder(words []string) string {
             }
         }
     }
-    for i := 0; i < len(indegrees); i++ {
-        if indegrees[i] > 0 {return ""}
-    }
+    if len(out.String()) != len(adjList) {return ""}
     return out.String()
 }
