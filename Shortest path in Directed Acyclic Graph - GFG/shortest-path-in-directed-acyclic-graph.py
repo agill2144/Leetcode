@@ -16,34 +16,31 @@ class Solution:
                 adjList[src] = [[dest, dist]]
         out = [0]*n
     
-        def bfs(dest):
-            visited = {0:0}
-            # <node, dist>
+        visited = {0:0}
+        def dfs(node, dest, dist):
+            # base
+            if node == dest:
+                return dist
+            if node in visited:
+                if visited[node] < dist:
+                    return math.inf
+            # logic
             minDist = math.inf
-            q = [[0,0]]
-            while len(q) != 0:
-                dq = q[0]
-                q = q[1:]
-                node = dq[0]
-                dist = dq[1]
-                if node == dest:
-                    if dist < minDist:
-                        minDist = dist
-                for nei in adjList.get(node, []):
-                    visitedDist = visited.get(nei[0])
-                    newDist = nei[1] + dist
-                    if visitedDist is None or newDist < visitedDist:
-                        visited[nei[0]] = newDist
-                        q.append([nei[0], newDist])
-            if minDist == math.inf:
-                return -1
+            visited[node] = dist
+            for nei in adjList.get(node, []):
+                minDist = min(dfs(nei[0], dest, dist+nei[1]), minDist)
             return minDist
     
         for i in range(n):
-            out[i] = bfs(i)
+            out[i] = dfs(0, i, 0)
+            if out[i] == math.inf:
+                out[i] = -1
         return out
     
-
+    def min(x, y):
+        if x < y:
+            return x
+        return y
 #{ 
  # Driver Code Starts
 #Initial Template for Python 3
