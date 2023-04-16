@@ -9,6 +9,9 @@ find distance from 0 to each node
 
 - no need for a visited array, because this is a DAG ( directed acyclic graph )
 - if we cannot reach a specific node, from 0, then the min distance for that node will be -1 denoting not-reachable
+
+time: o(v+e)
+space: o(v+e)
 */
 func shortestPathDAGDFS(n, m int, edges [][]int) []int {
 	adjList := map[int][][]int{}
