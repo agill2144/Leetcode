@@ -1,5 +1,8 @@
 func alienOrder(words []string) string {
     adjList := map[byte][]byte{}
+    
+    // [ "a", "a" ]
+    
     for i := 0; i < len(words); i++ {
         for j := 0; j < len(words[i]); j++ {
             adjList[words[i][j]] = []byte{}
@@ -9,31 +12,29 @@ func alienOrder(words []string) string {
     for i := 0; i < len(words)-1; i++ {
         word1 := words[i]
         word2 := words[i+1]
-        w1, w2 := 0,0
         
-        for w1 < len(word1) && w2 < len(word2) {
-            w1Char := word1[w1]
-            w2Char := word2[w2]
+        if strings.HasPrefix(word1, word2) && len(word2) < len(word1) {
+            // invalid order
+            return ""
+        }
+        
+        for j := 0; j < len(word1) && j < len(word2); j++ {
+            w1Char := word1[j]
+            w2Char := word2[j]
             if w1Char != w2Char {
                 adjList[w1Char] = append(adjList[w1Char], w2Char)
                 indegrees[w2Char-'a']++
                 break
             }
-            w1++
-            w2++
         }
-        if w2 == len(word2) && w1 < len(word1) {return ""}
     }
-    
     q := []byte{}
     for key, _ := range adjList {
         if indegrees[key-'a'] == 0 {
             q = append(q, key)
         }
     }
-    if len(q) == 0 {
-        return ""
-    }
+    if len(q) == 0 {return ""}
     out := new(strings.Builder)
     for len(q) != 0 {
         dq := q[0]
@@ -46,6 +47,8 @@ func alienOrder(words []string) string {
             }
         }
     }
-    if len(out.String()) != len(adjList) {return ""}
+    for i := 0; i < 26; i++ {
+        if indegrees[i] != 0 {return ""}
+    }
     return out.String()
 }
