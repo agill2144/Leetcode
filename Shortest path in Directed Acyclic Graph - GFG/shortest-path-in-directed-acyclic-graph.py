@@ -10,37 +10,31 @@ class Solution:
             src = edges[i][0]
             dest = edges[i][1]
             dist = edges[i][2]
-            if src in adjList:
-                adjList[src].append([dest, dist])
-            else:
-                adjList[src] = [[dest, dist]]
-        out = [0]*n
-    
-        visited = {0:0}
-        def dfs(node, dest, dist):
-            # base
-            if node == dest:
-                return dist
-            if node in visited:
-                if visited[node] < dist:
-                    return math.inf
-            # logic
-            minDist = math.inf
-            visited[node] = dist
+            if src not in adjList:
+                adjList[src] = []
+            adjList[src].append([dest, dist])
+        
+        src = 0
+        out = [math.inf] * n
+        out[src] = 0
+        q = [[0, 0]]
+        while q:
+            node, dist = q.pop(0)
             for nei in adjList.get(node, []):
-                minDist = min(dfs(nei[0], dest, dist+nei[1]), minDist)
-            return minDist
-    
+                neiNode = nei[0]
+                neiDist = nei[1]
+                newDist = dist + neiDist
+                if newDist < out[neiNode]:
+                    out[neiNode] = newDist
+                    q.append([neiNode, newDist])
+        
+        # if there were unreachable nodes
+        # update their min dist to -1 as it denotes not-reachable.
         for i in range(n):
-            out[i] = dfs(0, i, 0)
             if out[i] == math.inf:
                 out[i] = -1
+        
         return out
-    
-    def min(x, y):
-        if x < y:
-            return x
-        return y
 #{ 
  # Driver Code Starts
 #Initial Template for Python 3
