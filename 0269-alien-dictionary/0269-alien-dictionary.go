@@ -47,6 +47,7 @@ func alienOrder(words []string) string {
             }
         }
     }
+    // if there are still dependents not fully resolved, that means there was a cycle.
     for i := 0; i < 26; i++ {
         if indegrees[i] != 0 {return ""}
     }
