@@ -3,7 +3,8 @@ type ZigzagIterator struct {
     v1 []int
     v2 []int
 }
-
+// if there were k lists like [ [],[],[],[],[],[],[] ]
+// then we would our listId in queue would be the index position for each list
 func Constructor(v1, v2 []int) *ZigzagIterator {
     q := [][]int{}
     if len(v1) != 0 {
