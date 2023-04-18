@@ -1,46 +1,48 @@
 type ZigzagIterator struct {
-    v1, v2 []int
-    p1, p2 int
-    p1Moved bool
+    q [][]int
+    v1 []int
+    v2 []int
 }
 
 func Constructor(v1, v2 []int) *ZigzagIterator {
-    return &ZigzagIterator{
-        v1: v1, v2 : v2,
-        p1: 0, p2 : 0,
-        p1Moved: false,
+    q := [][]int{}
+    if len(v1) != 0 {
+        q = append(q, []int{1,0})
     }
-}
-
-func (this *ZigzagIterator) moveP1() int {
-    out := this.v1[this.p1]
-    this.p1++
-    this.p1Moved = true
-    return out    
-}
-func (this *ZigzagIterator) moveP2() int {
-    out := this.v2[this.p2]
-    this.p2++
-    this.p1Moved = false
-    return out    
+    if len(v2) != 0 {
+        q = append(q, []int{2,0})
+    }
+    return &ZigzagIterator{
+        q: q, // [ [listID, ptr] ]
+        v1: v1,
+        v2: v2,
+    }
 }
 
 func (this *ZigzagIterator) next() int {
-    if !this.p1Moved {
-        if this.p1 < len(this.v1) {
-            return this.moveP1()
+    dq := this.q[0]
+    this.q = this.q[1:]
+    listId := dq[0]
+    ptr := dq[1]
+    var out int
+    if listId == 1  {
+        out = this.v1[ptr]
+        ptr++
+        if ptr < len(this.v1) {
+            this.q = append(this.q, []int{listId, ptr})
         }
-        return this.moveP2()
-    } else {
-        if this.p2 < len(this.v2) {
-            return this.moveP2()
+    } else  {
+        out = this.v2[ptr]
+        ptr++
+        if ptr < len(this.v2) {
+            this.q = append(this.q, []int{listId, ptr})
         }
-        return this.moveP1()
     }
+    return out
 }
 
 func (this *ZigzagIterator) hasNext() bool {
-    return this.p1 < len(this.v1) || this.p2 < len(this.v2)
+    return len(this.q) != 0
 }
 
 /**
