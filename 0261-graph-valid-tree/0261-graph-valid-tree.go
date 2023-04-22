@@ -1,37 +1,39 @@
-/*
-    graph is a valid tree if
-    1. fully connected
-    2. contains no cycles
-
-    we can simply do a dfs to check for cycles from node 0
-    if graph is fully connected then the number of visited nodes
-    in visited set should equal to n
-
-    time: o(v+e)
-    space: o(v+e)
-*/
 func validTree(n int, edges [][]int) bool {
+    // a valid tree is a tree where there are no circles
+    // and all components are connected
+    
     adjList := map[int][]int{}
     for i := 0; i < len(edges); i++ {
-        adjList[edges[i][0]] = append(adjList[edges[i][0]], edges[i][1])
-        adjList[edges[i][1]] = append(adjList[edges[i][1]], edges[i][0])        
-    }
-    visited := map[int]struct{}{}
-    var dfs func(node, prev int) bool
-    dfs = func(node, prev int) bool {
-        // base
-        if _, ok := visited[node]; ok {return true} // cycle detected
-        
-        // logic
-        visited[node] = struct{}{}
-        for _, nei := range adjList[node]{
-            if nei == prev {continue}
-            if hasCycle := dfs(nei, node); hasCycle {return true}
-        }
-        return false
+        src := edges[i][0]
+        dest := edges[i][1]
+        adjList[src] = append(adjList[src], dest)
+        adjList[dest] = append(adjList[dest], src)
     }
     
-    ok := dfs(0, -1)
-    if ok {return false}
-    return n == len(visited)
+    visited := make([]bool, n)
+    count := 0
+    var dfs func(node, prev int, path []bool) bool
+    dfs = func(node, prev int, path []bool) bool {
+        // base
+        if path[node] {return false}
+        if visited[node] {return true}
+        
+        // logic
+        visited[node] = true
+        count++
+        path[node] = true
+        for _, nei := range adjList[node] {
+            if nei == prev {continue}
+            if !dfs(nei, node, path) {return false}
+        }
+        path[node] = false
+        return true
+    }
+    for i := 0; i < n; i++ {
+        if !visited[i] {
+            if count != 0 {return false}
+            if !dfs(i, -1, make([]bool, n)) {return false}
+        }
+    }
+    return count == n
 }
