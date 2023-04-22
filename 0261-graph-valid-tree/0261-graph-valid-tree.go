@@ -12,28 +12,20 @@ func validTree(n int, edges [][]int) bool {
     
     visited := make([]bool, n)
     count := 0
-    var dfs func(node, prev int, path []bool) bool
-    dfs = func(node, prev int, path []bool) bool {
+    var dfs func(node, prev int) bool
+    dfs = func(node, prev int) bool {
         // base
-        if path[node] {return false}
-        if visited[node] {return true}
+        if visited[node] {return false}
         
         // logic
         visited[node] = true
         count++
-        path[node] = true
         for _, nei := range adjList[node] {
             if nei == prev {continue}
-            if !dfs(nei, node, path) {return false}
+            if !dfs(nei, node) {return false}
         }
-        path[node] = false
         return true
     }
-    for i := 0; i < n; i++ {
-        if !visited[i] {
-            if count != 0 {return false}
-            if !dfs(i, -1, make([]bool, n)) {return false}
-        }
-    }
+    if !dfs(0, -1) {return false}
     return count == n
 }
