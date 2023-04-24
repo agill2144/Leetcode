@@ -4,37 +4,38 @@ from typing import List
 import math
 
 class Solution:
-    def shortestPath(self, n : int, m : int, edges : List[List[int]]) -> List[int]:
+    def shortestPath(self, n, m, edges):
         adjList = {}
         for i in range(len(edges)):
             src = edges[i][0]
             dest = edges[i][1]
-            dist = edges[i][2]
+            wt = edges[i][2]
             if src not in adjList:
                 adjList[src] = []
-            adjList[src].append([dest, dist])
+            adjList[src].append([dest, wt])
         
+        visited = [False] * n
         src = 0
-        out = [math.inf] * n
-        out[src] = 0
-        q = [[0, 0]]
-        while q:
-            node, dist = q.pop(0)
-            for nei in adjList.get(node, []):
-                neiNode = nei[0]
-                neiDist = nei[1]
-                newDist = dist + neiDist
-                if newDist < out[neiNode]:
-                    out[neiNode] = newDist
-                    q.append([neiNode, newDist])
+        dist = [math.inf] * n
+        def dfs(node, currWt):
+            # base
+            if visited[node] and currWt >= dist[node]:
+                return
+            
+            # logic
+            dist[node] = currWt
+            visited[node] = True
+            if node in adjList:
+                for nei in adjList[node]:
+                    dfs(nei[0], currWt+nei[1])
         
-        # if there were unreachable nodes
-        # update their min dist to -1 as it denotes not-reachable.
+        dfs(src, 0)
         for i in range(n):
-            if out[i] == math.inf:
-                out[i] = -1
-        
-        return out
+            if dist[i] == math.inf:
+                dist[i] = -1
+        return dist
+
+
 #{ 
  # Driver Code Starts
 #Initial Template for Python 3
