@@ -1,3 +1,4 @@
+// "walk over every non-obstacle square exactly once" in a path
 // Note: WE MUST VISIT ALL CELLS THAT ARE REACHABLE FOR A PATH TO COUNT AS 1
 func uniquePathsIII(grid [][]int) int {
     
