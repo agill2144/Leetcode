@@ -24,7 +24,7 @@ func uniquePathsIII(grid [][]int) int {
         if r < 0 || r == len(grid) || c < 0 || c == len(grid[0]) || grid[r][c] == -1 || grid[r][c] == 50 {
             return
         }
-        if grid[r][c] == 2 && cellsReached == reachableCells {count++; return}
+        if grid[r][c] == 2 && cellsReached == reachableCells-1 {count++; return}
         
         // logic
         tmp := grid[r][c]
@@ -35,6 +35,6 @@ func uniquePathsIII(grid [][]int) int {
         }
         grid[r][c] = tmp
     }
-    dfs(sr, sc, 1)
+    dfs(sr, sc, 0)
     return count
 }
