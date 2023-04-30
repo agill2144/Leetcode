@@ -9,15 +9,11 @@ func shortestAlternatingPaths(n int, redEdges [][]int, blueEdges [][]int) []int 
     
     adjList := map[int][][]int{}
     for i := 0; i < len(redEdges); i++ {
-        src := redEdges[i][0]
-        dest := redEdges[i][1]
-        adjList[src] = append(adjList[src], []int{dest, 2})
+        adjList[redEdges[i][0]] = append(adjList[redEdges[i][0]], []int{redEdges[i][1], 2})
     }
 
     for i := 0; i < len(blueEdges); i++ {
-        src := blueEdges[i][0]
-        dest := blueEdges[i][1]
-        adjList[src] = append(adjList[src], []int{dest, 1})
+        adjList[blueEdges[i][0]] = append(adjList[blueEdges[i][0]], []int{blueEdges[i][1], 1})
     }
     visited := make([][]bool, n)
     for i := 0; i < n; i++ {
@@ -35,9 +31,7 @@ func shortestAlternatingPaths(n int, redEdges [][]int, blueEdges [][]int) []int 
         node := dq[0]
         dist := dq[1]
         color := dq[2]
-        if dist < res[node] {
-            res[node] = dist
-        }
+        if dist < res[node] {res[node] = dist}
         for _, nei := range adjList[node] {
             neiNode := nei[0]
             neiColor := nei[1]
