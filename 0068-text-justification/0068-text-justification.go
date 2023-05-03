@@ -3,33 +3,33 @@ func fullJustify(words []string, maxWidth int) []string {
     i := 0
     n := len(words)
     for i < n {
-        lineLen := len(words[i])
+        charCount := len(words[i])
         j := i+1
         for j < n {
             numWords := j-i+1
             minSpaces := numWords-1
-            newLineLen := lineLen + len(words[j]) + minSpaces
-            if newLineLen > maxWidth {break}
-            lineLen += len(words[j])
+            newCharCount := charCount + len(words[j]) + minSpaces
+            if newCharCount > maxWidth {break}
+            charCount += len(words[j])
             j++
         }
-        diff := maxWidth-lineLen
+        remainingCount := maxWidth-charCount
         numWords := j-i
         // if its the last line OR number of words in this line is only 1, then we add all spaces to the right
         if numWords == 1 || j >= n {
-            out = append(out, addSpacesToRight(i, j, words, diff))
+            out = append(out, addSpacesToRight(i, j, words, remainingCount))
         // otherwise spread out the spaces evenly as possible, and whatever is left after even distribution, left will be assigned more spaces than the slots on the right
         } else {
-            out = append(out, addSpacesToMiddleEvenly(i,j, words, diff))
+            out = append(out, addSpacesToMiddleEvenly(i,j, words, remainingCount))
         }
         i = j        
     }
     return out
 }
 
-func addSpacesToRight(i, j int, words []string, diff int) string {
+func addSpacesToRight(i, j int, words []string, remainingCount int) string {
     tmp := new(strings.Builder)
-    remainingSpaces := diff - (j-i-1)
+    remainingSpaces := remainingCount - (j-i-1)
     for k := i; k < j; k++ {
         tmp.WriteString(words[k])
         if k < j-1 {
@@ -40,11 +40,11 @@ func addSpacesToRight(i, j int, words []string, diff int) string {
     return tmp.String()
 }
 
-func addSpacesToMiddleEvenly(i, j int, words []string, diff int) string {
+func addSpacesToMiddleEvenly(i, j int, words []string,remainingCount int) string {
     tmp := new(strings.Builder)
     numSpaces :=  j-i-1
-    spaceSize := diff/numSpaces
-    extraSpaces := diff%numSpaces
+    spaceSize := remainingCount/numSpaces
+    extraSpaces := remainingCount%numSpaces
     for k := i; k < j; k++ {
         tmp.WriteString(words[k])
         totalSpaces := spaceSize
