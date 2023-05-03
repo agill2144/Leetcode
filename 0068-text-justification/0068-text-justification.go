@@ -15,8 +15,10 @@ func fullJustify(words []string, maxWidth int) []string {
         }
         diff := maxWidth-lineLen
         numWords := j-i
+        // if its the last line OR number of words in this line is only 1, then we add all spaces to the right
         if numWords == 1 || j >= n {
             out = append(out, addSpacesToRight(i, j, words, diff))
+        // otherwise spread out the spaces evenly as possible, and whatever is left after even distribution, left will be assigned more spaces than the slots on the right
         } else {
             out = append(out, addSpacesToMiddleEvenly(i,j, words, diff))
         }
