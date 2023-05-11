@@ -1,3 +1,4 @@
+// DP: Longest Common Subsequence pattern
 func maxUncrossedLines(nums1 []int, nums2 []int) int {
     n1 := len(nums1)
     n2 := len(nums2)
