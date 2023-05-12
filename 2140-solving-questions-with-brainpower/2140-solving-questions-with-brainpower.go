@@ -1,3 +1,4 @@
+// house robber pattern but start from the back and look right
 func mostPoints(questions [][]int) int64 {
     dp := make([]int64, len(questions))
     dp[len(questions)-1] = int64(questions[len(questions)-1][0])
