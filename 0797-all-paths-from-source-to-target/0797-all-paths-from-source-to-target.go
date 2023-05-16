@@ -1,6 +1,6 @@
 func allPathsSourceTarget(graph [][]int) [][]int {
-    dest := len(graph)-1
     out := [][]int{}
+    dest := len(graph)-1
     var dfs func(node int, path []int)
     dfs = func(node int, path []int) {
         // base
@@ -12,13 +12,14 @@ func allPathsSourceTarget(graph [][]int) [][]int {
             return
         }
         
+        
         // logic
         path = append(path, node)
         for _, nei := range graph[node] {
             dfs(nei, path)
         }
+        path = path[:len(path)-1]
     }
-    dfs(0, nil)
+    dfs(0, []int{})
     return out
-    
 }
