@@ -60,8 +60,11 @@ func alienOrder(words []string) string {
         }
     }
     
+    // check if there are any nodes that could not be processed
+    // this means there were cycles, when thats the case, we can return ""
     for i := 0; i < len(indegrees); i++ {
         if indegrees[i] > 0 {return ""}
     }
+    
     return out.String()
 }
