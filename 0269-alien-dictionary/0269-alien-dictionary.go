@@ -2,57 +2,48 @@ func alienOrder(words []string) string {
     adjList := map[byte][]byte{}
     
     for i := 0; i < len(words); i++ {
-        word := words[i]
-        for k := 0; k < len(word); k++ {
-            adjList[word[k]] = []byte{}
+        for k := 0; k < len(words[i]); k++ {
+            adjList[words[i][k]] = []byte{}
         }
     }
+    
+    indegrees := make([]int, 26)
     for i := 0; i < len(words)-1; i++ {
-        word1 := words[i]
-        word2 := words[i+1]        
+        parent := words[i]
+        child := words[i+1]
         
-        w1, w2 := 0,0
-        
-        for w1 < len(word1) && w2 < len(word2) {
-            if word1[w1] != word2[w2] {
-                adjList[word1[w1]] = append(adjList[word1[w1]], word2[w2])
+        p := 0
+        c := 0
+        for p < len(parent) && c < len(child) {
+            if parent[p] != child[c] {
+                adjList[parent[p]] = append(adjList[parent[p]], child[c])
+                indegrees[child[c]-'a']++
                 break
             }
-            w1++
-            w2++
+            p++; c++
         }
-        
-        // invalid input
-        if w2 == len(word2) && w1 < len(word1) {return ""}
+        if p < len(parent) && c >= len(child) {return ""}
     }
-    st := []byte{}
-    visited := map[byte]struct{}{}
-    var dfs func(node byte, path map[byte]struct{}) bool
-    dfs = func (node byte, path map[byte]struct{}) bool {
-        // base
-        if _, ok := path[node]; ok {return false}
-        if _, ok := visited[node]; ok {return true}
-        
-        // logic
-        visited[node] = struct{}{}
-        path[node] = struct{}{}
-        for _, nei := range adjList[node] {
-            if !dfs(nei, path) {return false}
-        }
-        st = append(st, node)
-        delete(path, node)
-        return true
-    }
-    for k, _ := range adjList {
-        if _, ok := visited[k]; !ok {
-            if !dfs(k, map[byte]struct{}{}) {return ""}
-        }
+    
+    q := []byte{}
+    for key, _ := range adjList {
+        if indegrees[key-'a'] == 0 {q = append(q, key)}
     }
     out := new(strings.Builder)
-    for len(st) != 0 {
-        top := st[len(st)-1]
-        st = st[:len(st)-1]
-        out.WriteByte(top)
+    for len(q) != 0 {
+        dq := q[0]
+        q = q[1:]
+        out.WriteByte(dq)
+        for _, nei := range adjList[dq] {
+            indegrees[nei-'a']--
+            if indegrees[nei-'a'] == 0 {
+                q = append(q, nei)
+            }
+        }
+    }
+    
+    for i := 0; i < len(indegrees); i++ {
+        if indegrees[i] > 0 {return ""}
     }
     return out.String()
 }
