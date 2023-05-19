@@ -11,7 +11,7 @@ func alienOrder(words []string) string {
     for i := 0; i < len(words)-1; i++ {
         parent := words[i]
         child := words[i+1]
-        
+        if len(parent) > len(child) && strings.HasPrefix(parent, child) {return ""}
         p := 0
         c := 0
         for p < len(parent) && c < len(child) {
@@ -22,7 +22,7 @@ func alienOrder(words []string) string {
             }
             p++; c++
         }
-        if p < len(parent) && c >= len(child) {return ""}
+        // if p < len(parent) && c >= len(child) {return ""}
     }
     
     q := []byte{}
