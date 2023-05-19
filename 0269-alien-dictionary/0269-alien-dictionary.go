@@ -11,7 +11,6 @@ func alienOrder(words []string) string {
     for i := 0; i < len(words)-1; i++ {
         parent := words[i]
         child := words[i+1]
-        if len(parent) > len(child) && strings.HasPrefix(parent, child) {return ""}
         p := 0
         c := 0
         for p < len(parent) && c < len(child) {
@@ -22,10 +21,29 @@ func alienOrder(words []string) string {
             }
             p++; c++
         }
-        // if p < len(parent) && c >= len(child) {return ""}
+        // when words are sorted alphabetically but incorrectly sorted by length
+        // i.e [abcdef, abc]
+        // abc should come before abcdef, therefore this is invalid
+        // and this is when our parent ptr is still inbound while child is out-of-bounds, in that case, return ""
+        if p < len(parent) && c >= len(child) {return ""}
     }
     
     q := []byte{}
+    /*
+       why not use indegrees array as is?
+       - the indegrees array is an int array
+       - some characters may not exist in the input word list but their indegrees is 0
+       - and we do not care about all characters that have 0 incoming edges
+       - we only care about characters from our input word list that has indgrees of 0
+       
+       why loop over keys?
+       - because adjList has a format of {parent: child} , parent --> child
+       - which means, child will always have an incoming edge
+       - and we only want to find our start nodes that have incoming edge of 0
+       - those nodes will never be the child nodes, they can be the parent ones
+       - therefore looping over keys of adjList to find out nodes we care about
+       
+    */ 
     for key, _ := range adjList {
         if indegrees[key-'a'] == 0 {q = append(q, key)}
     }
