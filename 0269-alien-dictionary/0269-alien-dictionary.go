@@ -27,6 +27,9 @@ func alienOrder(words []string) string {
     }
     visited := make([]bool, 26)
     st := []byte{}
+    
+    // classic cycle detection on directed graph
+    // using dfs
     var dfs func(node byte, path []bool) bool
     dfs = func(node byte, path []bool) bool {
         // base
