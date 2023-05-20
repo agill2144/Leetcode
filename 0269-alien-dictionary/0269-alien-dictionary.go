@@ -6,7 +6,6 @@ func alienOrder(words []string) string {
             adjList[word[k]] = []byte{}
         }
     }
-    indegrees := make([]int, 26)
     for i := 0; i < len(words)-1; i++ {
         parent := words[i]
         child  := words[i+1]
@@ -14,7 +13,6 @@ func alienOrder(words []string) string {
         for p < len(parent) && c < len(child) {
             if parent[p] != child[c] {
                 adjList[parent[p]] = append(adjList[parent[p]], child[c])
-                indegrees[child[c]-'a']++
                 break
             }
             p++
@@ -23,31 +21,36 @@ func alienOrder(words []string) string {
         if p < len(parent) && c == len(child) {return ""}
     }
     
-    q := []byte{}
     visited := make([]bool, 26)
+    st := []byte{}
+    var dfs func(node byte, path []bool) bool
+    dfs = func(node byte, path []bool) bool {
+        // base
+        if path[node-'a'] {return false}
+        if visited[node-'a'] {return true}
+        
+        // logic
+        visited[node-'a'] = true
+        path[node-'a'] = true
+        for _, nei := range adjList[node] {
+            if !dfs(nei, path) {return false}
+        }
+        st = append(st, node)
+        path[node-'a'] = false
+        return true
+    }
+    
+    p := make([]bool, 26)
     for k, _ := range adjList {
-        if indegrees[k-'a'] == 0 {
-            q = append(q, k)
-            visited[k-'a'] = true
+        if !visited[k-'a'] {
+            if !dfs(k, p) {return ""}
         }
     }
     
     out := new(strings.Builder)
-    for len(q) != 0 {
-        dq := q[0]
-        q = q[1:]
-        out.WriteByte(dq)
-        for _, nei := range adjList[dq] {
-            indegrees[nei-'a']--
-            if indegrees[nei-'a'] == 0 && !visited[nei-'a'] {
-                q = append(q, nei)
-                visited[nei-'a'] = true
-            }
-        }
-    }
-    
-    for i := 0; i < len(indegrees); i++ {
-        if indegrees[i] > 0 {return ""}
+    for len(st) != 0 {
+        out.WriteByte(st[len(st)-1])
+        st = st[:len(st)-1]
     }
     return out.String()
 }
