@@ -4,36 +4,60 @@ from typing import List
 import math
 
 class Solution:
-    def shortestPath(self, n, m, edges):
+    def shortestPath(self, n : int, m : int, edges : List[List[int]]) -> List[int]:
         adjList = {}
         for i in range(len(edges)):
             src = edges[i][0]
             dest = edges[i][1]
             wt = edges[i][2]
-            if src not in adjList:
-                adjList[src] = []
-            adjList[src].append([dest, wt])
+            if src in adjList:
+                adjList[src].append([dest, wt])
+            else:
+                adjList[src] = [[dest, wt]]
         
         visited = [False] * n
-        src = 0
-        dist = [math.inf] * n
-        def dfs(node, currWt):
-            # base
-            if visited[node] and currWt >= dist[node]:
+        st = []
+        
+        def dfs(node):
+            if visited[node]:
                 return
             
-            # logic
-            dist[node] = currWt
             visited[node] = True
             if node in adjList:
                 for nei in adjList[node]:
-                    dfs(nei[0], currWt+nei[1])
+                    dfs(nei[0])
+            
+            st.append(node)
         
-        dfs(src, 0)
         for i in range(n):
-            if dist[i] == math.inf:
-                dist[i] = -1
+            if not visited[i]:
+                dfs(i)
+        
+        src = 0
+        while len(st) != 0 and st[-1] != src:
+            st.pop()
+        
+        dist = [math.inf] * n
+        dist[src] = 0
+        while len(st) != 0:
+            top = st[-1]
+            st.pop()
+            currDist = dist[top]
+            if top in adjList:
+                for neiList in adjList[top]:
+                    nei = neiList[0]
+                    neiDist = neiList[1]
+                    newDist = currDist + neiDist
+                    if newDist < dist[nei]:
+                        dist[nei] = newDist
+        
+        
+        for idx, ele in enumerate(dist):
+            if ele == math.inf:
+                dist[idx] = -1
+        
         return dist
+
 
 
 #{ 
