@@ -1,3 +1,6 @@
+// classic dfs and bfs
+// identify the first island and mark it visited using dfs and at same time add its cords into a queue
+// using the queue, perform level order to find the shortest path to nearest 1
 func shortestBridge(grid [][]int) int {
     n := len(grid)
     dirs := [][]int{{1,0},{-1,0},{0,-1},{0,1}}
