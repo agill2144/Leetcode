@@ -3,25 +3,24 @@ func leadsToDestination(n int, edges [][]int, source int, destination int) bool 
     for i := 0; i < len(edges); i++ {
         adjList[edges[i][0]] = append(adjList[edges[i][0]], edges[i][1])
     }
-    visited := map[int]struct{}{}
-    var dfs func(node int, path map[int]struct{}) bool
-    dfs = func(node int, path map[int]struct{}) bool {
+    visited := make([]bool, n)
+    var dfs func(node int, path []bool) bool
+    dfs = func(node int, path []bool) bool {
         // base
-        if _, inPath := path[node]; inPath {return false}
-        if _, isVisited := visited[node]; isVisited{return true}
+        if path[node] {return false}
+        if visited[node] {return true}
         if len(adjList[node]) == 0 {
             return destination == node
         }
         
         // logic
-        visited[node] = struct{}{}
-        path[node] = struct{}{}
-        if len(adjList[node]) == 0 {return false}
+        visited[node] = true
+        path[node] = true
         for _, neighbor := range adjList[node] {
-            if ok := dfs(neighbor, path); !ok {return false}
+            if !dfs(neighbor, path) {return false}
         }
-        delete(path, node)
+        path[node] = false
         return true
     }
-    return dfs(source, map[int]struct{}{})
+    return dfs(source, make([]bool, n))
 }
