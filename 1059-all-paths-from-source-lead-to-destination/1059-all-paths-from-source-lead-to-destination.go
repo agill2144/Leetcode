@@ -7,17 +7,21 @@ func leadsToDestination(n int, edges [][]int, source int, destination int) bool 
     var dfs func(node int, path []bool) bool
     dfs = func(node int, path []bool) bool {
         // base
+        
+        // we want to return false in 2 cases
+        // we have a cycle
+        // we reached a leaf node down some path and that leaf node is not our destination
+        
         if path[node] {return false}
+        if len(adjList[node]) == 0 && node != destination {return false}
         if visited[node] {return true}
-        if len(adjList[node]) == 0 {
-            return destination == node
-        }
+        
         
         // logic
         visited[node] = true
         path[node] = true
-        for _, neighbor := range adjList[node] {
-            if !dfs(neighbor, path) {return false}
+        for _, nei := range adjList[node] {
+            if !dfs(nei, path) {return false}
         }
         path[node] = false
         return true
