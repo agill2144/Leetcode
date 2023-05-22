@@ -8,25 +8,22 @@ func networkDelayTime(times [][]int, n int, k int) int {
     }
     allTimes := make([]int, n+1)
     for i := 0; i < n+1; i++ {allTimes[i] = math.MaxInt64}
-    pq := &minHeap{items: [][]int{}}
-    heap.Push(pq, []int{k, 0})
     allTimes[k] = 0
+    pq := &minHeap{items: [][]int{{k,0}}}
+
     for pq.Len() != 0 {
         dq := heap.Pop(pq).([]int)
         node := dq[0]
         time := dq[1]
-        // fmt.Println("dq: ",dq)
         for _, nei := range adjList[node] {
             neiNode := nei[0]
             neiTime := nei[1]
-            // fmt.Println(nei, allTimes[neiNode], neiTime+time)
             if time+neiTime < allTimes[neiNode] {
                 allTimes[neiNode] = time+neiTime
                 heap.Push(pq, []int{neiNode, time+neiTime})
             }
         }
     }
-    // fmt.Println(allTimes)
     out := 0
     for i := 1; i < len(allTimes); i++ {
         if allTimes[i] > out {out = allTimes[i]}
@@ -36,7 +33,7 @@ func networkDelayTime(times [][]int, n int, k int) int {
 }
 
 type minHeap struct {
-    items [][]int // node, time
+    items [][]int // {node, time}
 }
 
 /*
