@@ -17,11 +17,12 @@ func findCheapestPrice(n int, flights [][]int, src int, dst int, k int) int {
         currSteps := dq[2]
         if currNode == dst {return currCost}
         steps[currNode] = currSteps
-        
         for _, adjNodeList := range adjList[currNode] {
             adjNode := adjNodeList[0]
             adjNodeCost := adjNodeList[1]+currCost
             adjNodeSteps := currSteps+1
+            // if this node is already visited, only process if we are reaching with shorter amount of steps
+            // and make sure we are within k+1 steps limit
             if adjNodeSteps <= k+1 && adjNodeSteps < steps[adjNode] {
                 heap.Push(pq, []int{adjNode, adjNodeCost, adjNodeSteps})
             }
