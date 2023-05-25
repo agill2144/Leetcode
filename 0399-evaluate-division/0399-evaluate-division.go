@@ -32,14 +32,11 @@ func calcEquation(equations [][]string, values []float64, queries [][]string) []
     v := map[string]struct{}{}
     // o(q) * o(numberOfEquations)
     for i := 0; i < len(queries); i++ {
-        query := queries[i]
-        src := query[0]
-        dest := query[1]
+        src := queries[i][0]
+        dest := queries[i][1]
         if _, ok := adjList[src]; !ok {ans = append(ans, -1.0); continue}
         if _, ok := adjList[dest]; !ok {ans = append(ans, -1.0); continue}
         ans = append(ans, dfs(src, dest, 1.0, v))
-        
-    
     }
     return ans
 }
