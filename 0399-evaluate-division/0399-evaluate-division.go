@@ -11,7 +11,6 @@ func calcEquation(equations [][]string, values []float64, queries [][]string) []
         adjList[a] = append(adjList[a], &adjNode{node: b, weight: w})
         adjList[b] = append(adjList[b], &adjNode{node: a, weight: 1.0/w})
     }
-    ans := []float64{}
     
     var dfs func(node, end string, prod float64, visited map[string]struct{}) float64
     dfs = func(node, end string, prod float64, visited map[string]struct{}) float64 {
@@ -23,7 +22,12 @@ func calcEquation(equations [][]string, values []float64, queries [][]string) []
         visited[node] = struct{}{}
         for _, nei := range adjList[node] {
             newProd := prod * nei.weight
-            if val := dfs(nei.node, end, newProd, visited); val != -1.0 {delete(visited,node); return val}
+            val := dfs(nei.node, end, newProd, visited)
+            // exit early if we found the ans, dont forget to backtrack!
+            if val != -1.0 {
+                delete(visited,node) 
+                return val
+            }
         }
         delete(visited, node)
         return -1.0
@@ -31,12 +35,13 @@ func calcEquation(equations [][]string, values []float64, queries [][]string) []
 
     v := map[string]struct{}{}
     // o(q) * o(numberOfEquations)
+    ans := make([]float64, len(queries))
     for i := 0; i < len(queries); i++ {
         src := queries[i][0]
         dest := queries[i][1]
-        if _, ok := adjList[src]; !ok {ans = append(ans, -1.0); continue}
-        if _, ok := adjList[dest]; !ok {ans = append(ans, -1.0); continue}
-        ans = append(ans, dfs(src, dest, 1.0, v))
+        if _, ok := adjList[src]; !ok {ans[i] = -1.0; continue}
+        if _, ok := adjList[dest]; !ok {ans[i] = -1.0; continue}
+        ans[i] = dfs(src, dest, 1.0, v)
     }
     return ans
 }
