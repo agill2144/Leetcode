@@ -16,14 +16,12 @@ func calcEquation(equations [][]string, values []float64, queries [][]string) []
     var dfs func(node, end string, prod float64, visited map[string]struct{}) float64
     dfs = func(node, end string, prod float64, visited map[string]struct{}) float64 {
         // base
-        if node == end {
-            return prod
-        }
+        if node == end {return prod}
+        if _, ok := visited[node]; ok {return -1.0}
         
         // logic
         visited[node] = struct{}{}
         for _, nei := range adjList[node] {
-            if _, ok := visited[nei.node]; ok {continue}
             newProd := prod * nei.weight
             if val := dfs(nei.node, end, newProd, visited); val != -1.0 {delete(visited,node); return val}
         }
@@ -32,6 +30,7 @@ func calcEquation(equations [][]string, values []float64, queries [][]string) []
     }
 
     v := map[string]struct{}{}
+    // o(q) * o(numberOfEquations)
     for i := 0; i < len(queries); i++ {
         query := queries[i]
         src := query[0]
