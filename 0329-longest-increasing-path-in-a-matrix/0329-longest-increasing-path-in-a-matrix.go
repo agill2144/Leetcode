@@ -20,15 +20,14 @@ func longestIncreasingPath(matrix [][]int) int {
         }
         
         // logic
-        ans := count
+        memo[r][c] = count
         for _, dir := range dirs {
             nr := r+dir[0]
             nc := c+dir[1]
             if nr >= 0 && nr < m && nc >= 0 && nc < n && matrix[nr][nc] > matrix[r][c] {        
-                ans = max(ans, dfs(nr, nc, 1)+1)
+                memo[r][c] = max(memo[r][c], dfs(nr, nc, 1)+1)
             }
         }
-        memo[r][c] = ans    
         return memo[r][c]
     }
     
