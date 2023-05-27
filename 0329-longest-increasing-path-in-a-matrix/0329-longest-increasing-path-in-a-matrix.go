@@ -6,16 +6,16 @@ func longestIncreasingPath(matrix [][]int) int {
     
     memo := make([][]int, m)
     for i := 0; i < m; i++ {memo[i] = make([]int, n)}
-    for i := 0; i < m; i++ {
-        for j := 0; j < n; j++ {
-            memo[i][j] = -1 // not-yet-solved
-        }
-    }
+//     for i := 0; i < m; i++ {
+//         for j := 0; j < n; j++ {
+//             memo[i][j] = -1 // not-yet-solved
+//         }
+//     }
     
     var dfs func(r, c, count int) int
     dfs = func(r, c, count int) int {
         // base
-        if memo[r][c] != -1 {
+        if memo[r][c] != 0 {
             return memo[r][c]
         }
         
