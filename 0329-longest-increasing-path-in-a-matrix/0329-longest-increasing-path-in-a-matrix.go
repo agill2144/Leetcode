@@ -15,22 +15,20 @@ func longestIncreasingPath(matrix [][]int) int {
     var dfs func(r, c, count int) int
     dfs = func(r, c, count int) int {
         // base
-        
-        // logic
         if memo[r][c] != -1 {
             return memo[r][c]
-        } else {
-            ans := count
-            for _, dir := range dirs {
-                nr := r+dir[0]
-                nc := c+dir[1]
-                if nr >= 0 && nr < m && nc >= 0 && nc < n && matrix[nr][nc] > matrix[r][c] {        
-                    ans = max(ans, dfs(nr, nc, 1)+1)
-                }
-            }
-            memo[r][c] = ans
         }
-    
+        
+        // logic
+        ans := count
+        for _, dir := range dirs {
+            nr := r+dir[0]
+            nc := c+dir[1]
+            if nr >= 0 && nr < m && nc >= 0 && nc < n && matrix[nr][nc] > matrix[r][c] {        
+                ans = max(ans, dfs(nr, nc, 1)+1)
+            }
+        }
+        memo[r][c] = ans    
         return memo[r][c]
     }
     
