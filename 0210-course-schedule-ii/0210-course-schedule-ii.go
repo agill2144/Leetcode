@@ -7,32 +7,35 @@ func findOrder(numCourses int, prerequisites [][]int) []int {
         indegrees[b]++
         adjList[a] = append(adjList[a], b)
     }
-    
-    q := []int{}
-    totalTaken := 0
-    // fmt.Println(indegrees, adjList)
-    for i := 0; i < len(indegrees); i++ {
-        if indegrees[i] == 0 {
-            q = append(q, i)
-            totalTaken++
+    visited := make([]bool, numCourses)
+    var dfs func(node int, path []bool) bool
+    st := []int{}
+    dfs = func(node int, path []bool) bool {
+        // base
+        if path[node] {return false}
+        if visited[node] {return true}
+        
+        // logic
+        path[node] = true
+        visited[node] = true
+        for _, nei := range adjList[node] {
+            if !dfs(nei, path) {return false}
+        }
+        st = append(st, node)
+        path[node] = false
+        return true
+    }
+    p := make([]bool, numCourses)
+    for i := 0; i < numCourses; i++ {
+        if !visited[i] {
+            if !dfs(i, p) {return nil}
         }
     }
-    if len(q) == 0 {return nil}
-    
     out := []int{}
-    for len(q) != 0 {
-        dq := q[0]
-        q = q[1:]
-        out = append(out, dq)
-        for _, nei := range adjList[dq] {
-            indegrees[nei]--
-            if indegrees[nei] == 0 {
-                totalTaken++
-                q = append(q, nei)
-            }
-        }
+    for len(st) != 0 {
+        top := st[len(st)-1]
+        st = st[:len(st)-1]
+        out = append(out,top)
     }
-    
-    if totalTaken != numCourses {return nil}
     return out
 }
