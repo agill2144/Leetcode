@@ -44,3 +44,5 @@ func eventualSafeNodes(graph [][]int) []int {
     sort.Ints(out)
     return out
 }
+
+// o(v) + o(v+e) + o(v) + o(vlogv)
