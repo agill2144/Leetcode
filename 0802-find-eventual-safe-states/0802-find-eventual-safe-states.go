@@ -1,8 +1,9 @@
 func eventualSafeNodes(graph [][]int) []int {
-    safeNodes := map[int]bool{}
+    safeNodes := make([]*bool, len(graph))
+    toPtrBool := func(b bool) *bool {return &b} 
     for i := 0; i < len(graph); i++ {
         if len(graph[i]) == 0 {
-            safeNodes[i] = true
+            safeNodes[i] = toPtrBool(true)
         }
     }
     
@@ -10,8 +11,8 @@ func eventualSafeNodes(graph [][]int) []int {
     dfs = func(node int, path []bool) bool {
         // base
         if path[node] {return false}
-        if val, ok := safeNodes[node]; ok {
-            return val
+        if safeNodes[node] != nil {
+            return *safeNodes[node]
         }
         
         // logic
@@ -19,29 +20,28 @@ func eventualSafeNodes(graph [][]int) []int {
         for _, nei := range graph[node] {
             if !dfs(nei, path) {
                 path[node] = false
-                safeNodes[node] = false
+                safeNodes[node] = toPtrBool(false)
                 return false
             }
         }
         path[node] = false
-        safeNodes[node] = true
+        safeNodes[node] = toPtrBool(true)
         return true
     }
 
     path := make([]bool, len(graph))
     for i := 0; i < len(graph); i++ {
-        if _, ok := safeNodes[i]; !ok {
+        if safeNodes[i] == nil {
             dfs(i, path)
         }
     }
     
     out := []int{}
-    for k, v := range safeNodes {
-        if v {
-            out = append(out, k)
+    for i := 0; i < len(safeNodes); i++ {
+        if safeNodes[i] != nil && *safeNodes[i] {
+            out = append(out, i)
         }
     }
-    sort.Ints(out)
     return out
 }
 
