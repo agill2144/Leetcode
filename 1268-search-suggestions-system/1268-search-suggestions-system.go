@@ -34,7 +34,9 @@ func insert(root *Trie, word string)  {
         if curr.childrens[charIdx] == nil {
             curr.childrens[charIdx] = &Trie{childrens: [26]*Trie{}, words: []string{}}
         }
-        curr.childrens[charIdx].words = append(curr.childrens[charIdx].words, word)
+        if len(curr.childrens[charIdx].words) < 3 {
+            curr.childrens[charIdx].words = append(curr.childrens[charIdx].words, word)           
+        }
         curr = curr.childrens[charIdx]
         
     }
