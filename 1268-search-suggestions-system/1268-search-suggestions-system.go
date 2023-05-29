@@ -9,13 +9,8 @@ func suggestedProducts(products []string, searchWord string) [][]string {
     for i := 0; i < len(searchWord); i++ {
         wordSoFar.WriteByte(searchWord[i])
         tmp := searchInTrie(root, wordSoFar.String())
-        t := 0
-        tmp2 := []string{}
-        for t < 3 && t < len(tmp) {
-            tmp2 = append(tmp2, tmp[t])
-            t++
-        }
-        out = append(out, tmp2)
+       
+        out = append(out, tmp)
     } 
     return out
 }
