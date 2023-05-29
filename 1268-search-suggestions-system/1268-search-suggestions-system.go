@@ -38,16 +38,19 @@ func insert(root *trie, word string)  {
 
 func getKWordsWithPrefix(root *trie, k int, prefix string) []string {
     curr := root
+    // go to the trie node to start our dfs search from
     for i := 0; i < len(prefix); i++ {
         charIdx := prefix[i]-'a'
         if curr.childrens[charIdx] == nil {return nil}
         curr = curr.childrens[charIdx]
     }
+    
+    // do a dfs scan looking for endwords 
     words := []string{}
-    var dfs func(r *trie, path string)
-    dfs = func(r *trie, path string) {
+    var dfs func(r *trie, path string) bool
+    dfs = func(r *trie, path string) bool {
         // base
-        if len(words) == k {return}
+        if len(words) == k {return true}
 
         // logic
         if r.isEnd {
@@ -55,9 +58,10 @@ func getKWordsWithPrefix(root *trie, k int, prefix string) []string {
         }
         for i := 0; i < 26; i++ {
             if r.childrens[i] != nil {
-                dfs(r.childrens[i], path + string(i+'a'))
+                if ok := dfs(r.childrens[i], path + string(i+'a')); ok {return true}
             }
         }
+        return false
     }
     dfs(curr, prefix)
     return words
