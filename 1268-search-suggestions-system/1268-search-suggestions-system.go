@@ -1,6 +1,5 @@
 func suggestedProducts(products []string, searchWord string) [][]string {
-    sort.Strings(products)
-    root := &Trie{childrens: [26]*Trie{}}
+    root := &trie{childrens: [26]*trie{}}
     for _, word := range products {
         insert(root, word)
     }
@@ -8,26 +7,25 @@ func suggestedProducts(products []string, searchWord string) [][]string {
     wordSoFar := new(strings.Builder)
     for i := 0; i < len(searchWord); i++ {
         wordSoFar.WriteByte(searchWord[i])
-        tmp := searchInTrie(root, wordSoFar.String())
-       
+        tmp := getKWordsWithPrefix(root, 3, wordSoFar.String())
         out = append(out, tmp)
     } 
     return out
 }
 
-type Trie struct {
+type trie struct {
     isEnd bool
-    childrens [26]*Trie
+    childrens [26]*trie
     words []string
 }
 
 
-func insert(root *Trie, word string)  {
+func insert(root *trie, word string)  {
     curr := root
     for i := 0; i < len(word); i++ {
         charIdx := word[i]-'a'
         if curr.childrens[charIdx] == nil {
-            curr.childrens[charIdx] = &Trie{childrens: [26]*Trie{}, words: []string{}}
+            curr.childrens[charIdx] = &trie{childrens: [26]*trie{}, words: []string{}}
         }
         if len(curr.childrens[charIdx].words) < 3 {
             curr.childrens[charIdx].words = append(curr.childrens[charIdx].words, word)           
@@ -39,14 +37,30 @@ func insert(root *Trie, word string)  {
 }
 
 
-func searchInTrie(root *Trie, word string) []string {
+func getKWordsWithPrefix(root *trie, k int, prefix string) []string {
     curr := root
-    for i := 0; i < len(word); i++ {
-        char := word[i]
-        charIdx := char-'a'
+    for i := 0; i < len(prefix); i++ {
+        charIdx := prefix[i]-'a'
         if curr.childrens[charIdx] == nil {return nil}
         curr = curr.childrens[charIdx]
     }
-    return curr.words
+    words := []string{}
+    var dfs func(r *trie, path string)
+    dfs = func(r *trie, path string) {
+        // base
+        if len(words) == k {return}
+
+        // logic
+        if r.isEnd {
+            words = append(words, path)
+        }
+        for i := 0; i < 26; i++ {
+            if r.childrens[i] != nil {
+                dfs(r.childrens[i], path + string(i+'a'))
+            }
+        }
+    }
+    dfs(curr, prefix)
+    return words
 }
 
