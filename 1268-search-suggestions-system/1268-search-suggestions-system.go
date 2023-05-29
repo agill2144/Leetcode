@@ -1,4 +1,5 @@
 func suggestedProducts(products []string, searchWord string) [][]string {
+    sort.Strings(products)
     root := &Trie{childrens: [26]*Trie{}}
     for _, word := range products {
         insert(root, word)
@@ -34,7 +35,6 @@ func insert(root *Trie, word string)  {
             curr.childrens[charIdx] = &Trie{childrens: [26]*Trie{}, words: []string{}}
         }
         curr.childrens[charIdx].words = append(curr.childrens[charIdx].words, word)
-        sort.Strings(curr.childrens[charIdx].words)
         curr = curr.childrens[charIdx]
         
     }
