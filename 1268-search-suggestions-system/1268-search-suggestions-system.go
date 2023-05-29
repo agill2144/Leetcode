@@ -4,11 +4,10 @@ func suggestedProducts(products []string, searchWord string) [][]string {
         insert(root, word)
     }
     out := [][]string{}
-    wordSoFar := new(strings.Builder)
+    prefix := new(strings.Builder)
     for i := 0; i < len(searchWord); i++ {
-        wordSoFar.WriteByte(searchWord[i])
-        tmp := getKWordsWithPrefix(root, 3, wordSoFar.String())
-        out = append(out, tmp)
+        prefix.WriteByte(searchWord[i])
+        out = append(out, getKWordsWithPrefix(root, 3, prefix.String()))
     } 
     return out
 }
