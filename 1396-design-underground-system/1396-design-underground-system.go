@@ -4,14 +4,14 @@ type entry struct {
 }
 type UndergroundSystem struct {
     userEntries map[int]*entry
-    fromToAvgTimes map[string][]float64 // {runningTotal, numberOfEntries, avg}
+    fromToAvgTimes map[string][3]float64 // {runningTotal, numberOfEntries, avg}
 }
 
 
 func Constructor() UndergroundSystem {
     return UndergroundSystem{
         userEntries: map[int]*entry{},
-        fromToAvgTimes: map[string][]float64{},
+        fromToAvgTimes: map[string][3]float64{},
     }
 }
 
@@ -27,7 +27,7 @@ func (this *UndergroundSystem) CheckOut(id int, stationName string, t int)  {
     diff := float64(t-checkIn.time)
     key := fmt.Sprintf("%v-%v", checkIn.station, stationName)
     
-    newAvgTime := []float64{diff, 1, diff}
+    newAvgTime := [3]float64{diff, 1, diff}
     existingAvgTime, ok := this.fromToAvgTimes[key]
     if !ok {
         this.fromToAvgTimes[key] = newAvgTime
