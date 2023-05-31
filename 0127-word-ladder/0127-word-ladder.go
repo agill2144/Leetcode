@@ -5,25 +5,26 @@ func ladderLength(beginWord string, endWord string, wordList []string) int {
         - we could toss wordList into a set before creating the graph
         the begin word may / may not be part of wordList
         - putting wordList in a set will help eliminate the same duplicate problem
+        
+        for now, we are going to continue using the wordList as is with beginWord added
     */ 
-    wordSet := map[string]struct{}{beginWord: struct{}{}}
-    for i := 0; i < len(wordList); i++ {
-        if wordList[i] == endWord {hasEnd = true}
-        wordSet[wordList[i]] = struct{}{}
-    }    
-    // if endWord does not exist, return 0, there is no path to endWord
-    if !hasEnd {return 0}
-    
     adjList := map[string][]string{}
-    for parent, _ := range wordSet {
-        for child, _ := range wordSet {
-            if parent == child {continue} // skip adding same edges to the same node
-            p,c := 0,0
+    wordList = append(wordList, beginWord)
+    for i := 0; i < len(wordList); i++ {
+        parent := wordList[i]
+        if parent == endWord {
+            hasEnd = true
+            continue // no need to create adjNodes for endWord, we are not going past endWord
+        }
+        for j := 0; j < len(wordList); j++ {
+            if i == j {continue}
+            child := wordList[j]
+            p, c := 0, 0
             diff := 0
             for p < len(parent) && c < len(child) {
                 if parent[p] != child[c] {
                     diff++
-                }
+                } 
                 p++
                 c++
             }
@@ -32,8 +33,9 @@ func ladderLength(beginWord string, endWord string, wordList []string) int {
             }
         }
     }
+    // if endWord is not in wordList, there is no path to reach dest, return 0
     // if beginWord has no adj nodes, there is no path to traverse, return 0
-    if len(adjList[beginWord]) == 0 {return 0}
+    if !hasEnd || len(adjList[beginWord]) == 0 {return 0}
     
     visited := map[string]struct{}{beginWord: struct{}{}}
     q := []string{beginWord}
