@@ -24,17 +24,17 @@ func (this *UndergroundSystem) CheckIn(id int, stationName string, t int)  {
 
 func (this *UndergroundSystem) CheckOut(id int, stationName string, t int)  {
     checkIn := this.userEntries[id]
-    diff := float64(t-checkIn.time)
+    time := float64(t-checkIn.time)
     key := fmt.Sprintf("%v-%v", checkIn.station, stationName)
     
-    newAvgTime := [3]float64{diff, 1, diff}
+    newAvgTime := [3]float64{time, 1, time}
     existingAvgTime, ok := this.fromToAvgTimes[key]
     if !ok {
         this.fromToAvgTimes[key] = newAvgTime
         return
     }
     
-    newAvgTime[0] = existingAvgTime[0] + diff
+    newAvgTime[0] = existingAvgTime[0] + time
     newAvgTime[1] = existingAvgTime[1] + 1
     newAvgTime[2] = newAvgTime[0] / newAvgTime[1]
     this.fromToAvgTimes[key] = newAvgTime
