@@ -38,7 +38,7 @@ func (this *UndergroundSystem) CheckOut(id int, stationName string, t int)  {
     newAvgTime[1] = existingAvgTime[1] + 1
     newAvgTime[2] = newAvgTime[0] / newAvgTime[1]
     this.fromToAvgTimes[key] = newAvgTime
-    
+    delete(this.userEntries, id)
 }
 
 
