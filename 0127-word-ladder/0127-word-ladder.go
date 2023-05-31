@@ -1,3 +1,32 @@
+/*
+    approach: BFS graph traversal
+    - we have to find the shortest transformation sequence from beginWord to endWord
+    - this is like saying find the shortest path from startNode to endNode
+    - a single transformation sequence is going from word1 -> word2 with only 1 char difference
+    - meaning a node can is a adjNode if the number of different chars is exactly 1
+    - that means, we can create our adjList by checking each word with all other words
+        - i.e check if a node is a child of a given parent node
+    - what if endWord does not even exist in wordList
+        - while building graph, we will check if we run into the endWord and flip a flag 
+            indicating whether we have seen endWord or not. If the flag is not flipped, this
+            means there is no endWord in wordList. i.e no path to endWord. return 0
+    - what if there are no adj nodes from beginWord
+        - after building the graph, we can check whether we have any adj nodes to beginword
+        - if not, return 0, there is no path to traverse from beginWord
+    - finally, run a classic bfs, use level order traversal to keep track of number of transformations done so far
+        - alternatively, we can enqueue a pair <beginWord, lenSoFar>
+            - [ [hit,1] ... [cog,5] ]
+    
+    time: o(n)^2 + o(n)
+    - n = len of words in wordList
+    - n^2 to build graph
+    - n to do bfs
+    
+    space: o(n+e) + o(n) + o(n)
+    - o(n+e) for graph (n = len of wordList, e = total number of edges)
+    - o(n) for queue
+    - o(n) for visited set to avoid re-processing of nodes that are/were already in queue
+*/
 func ladderLength(beginWord string, endWord string, wordList []string) int {
     hasEnd := false    
     /*
