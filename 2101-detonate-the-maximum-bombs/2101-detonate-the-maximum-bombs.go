@@ -22,6 +22,7 @@ func maximumDetonation(bombs [][]int) int {
         }
     }
     // number of nodes in a path, and we have to find longest such path
+    maxNodesVisited := 0
     var dfs func(nodeIdx int, pathLen int, visited map[int]struct{})
     dfs = func(nodeIdx int, pathLen int, visited map[int]struct{}) {
         // base
@@ -30,16 +31,16 @@ func maximumDetonation(bombs [][]int) int {
         
         // logic
         visited[nodeIdx] = struct{}{}
+        if len(visited) > maxNodesVisited {maxNodesVisited = len(visited)}
         for _,nei := range adjList[nodeIdx] {
             dfs(nei, pathLen+1, visited)
         }
     }
     
-    maxNodesVisited := 0
     for i := 0; i < len(bombs); i++ {
         visited := map[int]struct{}{}
         dfs(i, 1, visited)
-        if len(visited) > maxNodesVisited {maxNodesVisited = len(visited)}
+        
     }
     return maxNodesVisited
 }
