@@ -4,6 +4,7 @@ we can compare the Euclidean distance between their centers and the radius of bo
 If the distance is less than or equal to the radius of bomb 1, then bomb 1 can detonate bomb 2.
 Note that this relationship is not commutative: bomb 1 detonating bomb 2 does not necessarily imply the converse is also true.
 
+I WOULD HAVE NEVER GUESSED THIS FORMULA.... but had the graph + toposort intuition 
 given we have 2 points to compare (x1,y1) and (x2,y2)
 dist = (x1-x2)^2 + (y1-y2)^2
 */
