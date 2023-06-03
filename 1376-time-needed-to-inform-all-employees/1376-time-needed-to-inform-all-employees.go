@@ -1,24 +1,25 @@
 func numOfMinutes(n int, headID int, manager []int, informTime []int) int {
-    adjList := map[int][]int{} // {empID : [subordinates] }
+    adjList := map[int][]int{}
     for i := 0; i < len(manager); i++ {
         emp := i
-        man := manager[i]
-        if man == -1 {continue} // this emp does not have a manager because they are the head
+        man := manager[emp]
+        if man == -1 {continue}
         adjList[man] = append(adjList[man], emp)
     }
-    maxTime := 0
-    var dfs func(node int, time int) 
-    dfs = func(node int, time int)  {
+    
+    var dfs func(node int) int
+    dfs = func(node int) int {
         // base
-        if time > maxTime {maxTime = time}
         
         // logic
+        currTime := informTime[node]
+        maxTimeFromNei := 0
         for _, nei := range adjList[node] {
-            dfs(nei, time + informTime[node])
+            if t := dfs(nei); t > maxTimeFromNei {
+                maxTimeFromNei = t
+            }
         }
+        return currTime + maxTimeFromNei
     }
-    
-    dfs(headID,0)
-    return maxTime
+    return dfs(headID)
 }
-
