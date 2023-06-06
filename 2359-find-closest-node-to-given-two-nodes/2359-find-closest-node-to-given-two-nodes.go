@@ -37,7 +37,7 @@ func bfs(start int, n int, edges []int) []int {
         currDist := dist[dq]
         nei := edges[dq] 
         neiDist := currDist+1
-        if nei != -1 && (!visited[nei] || neiDist < dist[nei]) {
+        if nei != -1 && (!visited[nei] ) {
             q = append(q, nei)
             dist[nei] = neiDist
             visited[nei] = true
