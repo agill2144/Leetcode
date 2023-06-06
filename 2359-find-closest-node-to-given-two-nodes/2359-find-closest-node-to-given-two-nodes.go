@@ -7,8 +7,8 @@ func closestMeetingNode(edges []int, node1 int, node2 int) int {
         adjList[src] = append(adjList[src], dest) 
     }
     n := len(edges)
-    node1Dist := bfs(node1, n, adjList)
-    node2Dist := bfs(node2, n, adjList)
+    node1Dist := bfs(node1, n, edges)
+    node2Dist := bfs(node2, n, edges)
     minDist := math.MaxInt64
     minDistNode := -1
     for i := 0; i < n; i++ {
@@ -24,7 +24,7 @@ func closestMeetingNode(edges []int, node1 int, node2 int) int {
     return minDistNode
 }
 
-func bfs(start int, n int, adjList map[int][]int) []int {
+func bfs(start int, n int, edges []int) []int {
     visited := make([]bool, n)
     dist := make([]int, n)
     for i := 0; i < len(dist); i++ {
@@ -38,18 +38,15 @@ func bfs(start int, n int, adjList map[int][]int) []int {
     for len(q) != 0 {
         dq := q[0]
         q = q[1:]
-        
-        node := dq
-        currDist := dist[node]
-        
-        for _, nei := range adjList[node] {
-            neiDist := currDist+1
-            if !visited[nei] || neiDist < dist[nei] {
-                q = append(q, nei)
-                dist[nei] = neiDist
-                visited[nei] = true
-            }
+        currDist := dist[dq]
+        nei := edges[dq] 
+        neiDist := currDist+1
+        if nei != -1 && (!visited[nei] || neiDist < dist[nei]) {
+            q = append(q, nei)
+            dist[nei] = neiDist
+            visited[nei] = true
         }
+        
     }
     return dist
 }
