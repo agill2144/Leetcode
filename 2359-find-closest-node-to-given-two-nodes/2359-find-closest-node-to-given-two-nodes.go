@@ -1,11 +1,4 @@
 func closestMeetingNode(edges []int, node1 int, node2 int) int {
-    adjList := map[int][]int{}
-    for i := 0; i < len(edges); i++ {
-        src := i
-        dest := edges[i]
-        if dest == -1 {continue}
-        adjList[src] = append(adjList[src], dest) 
-    }
     n := len(edges)
     node1Dist := bfs(node1, n, edges)
     node2Dist := bfs(node2, n, edges)
