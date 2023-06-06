@@ -6,15 +6,18 @@ func closestMeetingNode(edges []int, node1 int, node2 int) int {
     minDistNode := -1
     for i := 0; i < n; i++ {
         if node1Dist[i] != math.MaxInt64 && node2Dist[i] != math.MaxInt64 {
-            max := int(math.Max(float64(node1Dist[i]), float64(node2Dist[i])))
-            if  max < minDist {
+            if max(node1Dist[i], node2Dist[i]) < minDist {
                 minDistNode = i
-                minDist = max
+                minDist = max(node1Dist[i], node2Dist[i])
             }
         }
     }
-    
     return minDistNode
+}
+
+func max(x, y int) int {
+    if x > y {return x}
+    return y
 }
 
 func bfs(start int, n int, edges []int) []int {
