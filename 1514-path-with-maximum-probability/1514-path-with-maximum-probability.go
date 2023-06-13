@@ -8,7 +8,6 @@ func maxProbability(n int, edges [][]int, succProb []float64, start int, end int
         adjList[dest] = append(adjList[dest], []float64{src, srcToDestProb})
     }
     pq := &maxHeap{items: [][]float64{}}
-    maxProb := 0.0
     heap.Push(pq, []float64{float64(start), 1.0})
     probs := make([]float64, n)
     probs[start] = 0.0
@@ -18,8 +17,7 @@ func maxProbability(n int, edges [][]int, succProb []float64, start int, end int
         node := dq[0]
         prob := dq[1]
         if node == float64(end) {
-            if prob > maxProb {maxProb = prob}
-            return maxProb
+            return prob
         }
         
         for _, nei := range adjList[node] {
@@ -33,7 +31,7 @@ func maxProbability(n int, edges [][]int, succProb []float64, start int, end int
             }
         }
     }
-    return maxProb
+    return 0.0
 }
 
 
