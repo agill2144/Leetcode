@@ -10,7 +10,7 @@ func maxProbability(n int, edges [][]int, succProb []float64, start int, end int
     pq := &maxHeap{items: [][]float64{}}
     heap.Push(pq, []float64{float64(start), 1.0})
     probs := make([]float64, n)
-    probs[start] = 0.0
+    probs[start] = 1.0
     
     for pq.Len() != 0 {
         dq := heap.Pop(pq).([]float64)
@@ -24,7 +24,6 @@ func maxProbability(n int, edges [][]int, succProb []float64, start int, end int
             neiNode := nei[0]
             neiProb := nei[1]
             newNeiProb := prob * neiProb
-            
             if newNeiProb > probs[int(neiNode)] {
                 probs[int(neiNode)] = newNeiProb
                 heap.Push(pq, []float64{neiNode, newNeiProb})
