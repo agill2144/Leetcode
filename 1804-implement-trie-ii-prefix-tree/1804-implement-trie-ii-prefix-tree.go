@@ -80,6 +80,9 @@ func (this *Trie) Erase(word string)  {
         wordPtr++
         if dfs(r.childs[charIdx]) {
             r.prefixCount--
+            if r.childs[charIdx].count == 0 && r.childs[charIdx].prefixCount == 0 {
+                r.childs[charIdx] = nil
+            }
             return true
         }
         return false
