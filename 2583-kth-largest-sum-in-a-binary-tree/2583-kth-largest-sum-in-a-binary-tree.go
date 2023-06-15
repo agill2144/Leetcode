@@ -24,6 +24,13 @@ func kthLargestLevelSum(root *TreeNode, k int) int64 {
         nums = append(nums, levelSum)
     }
     
+    /*
+        options
+        1. sort
+        2. min heap
+        3. quick select
+    */
+    
     targetIdx := len(nums)-k
     if targetIdx < 0 || targetIdx == len(nums) {return -1}
     l := 0
