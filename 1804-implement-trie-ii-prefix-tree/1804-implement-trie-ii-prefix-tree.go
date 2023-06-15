@@ -80,6 +80,8 @@ func (this *Trie) Erase(word string)  {
         wordPtr++
         if dfs(r.childs[charIdx]) {
             r.prefixCount--
+            // parent will delete child node if both count and prefixCount of a child 
+            // has reached 0
             if r.childs[charIdx].count == 0 && r.childs[charIdx].prefixCount == 0 {
                 r.childs[charIdx] = nil
             }
