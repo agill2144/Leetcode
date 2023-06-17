@@ -6,17 +6,18 @@ func findMissingRanges(nums []int, lower int, upper int) [][]int {
     if nums[0] > lower {
         out = append(out, []int{lower, nums[0]-1})
     }
+    
     for i := 1; i < len(nums); i++ {
         curr := nums[i]
-        prev := nums[i-1]
-        if prev+1 == curr {continue}
-        start := prev+1
-        end := curr-1
-        out = append(out, []int{start, end})
-        
+        actualPrev := nums[i-1]
+        expectedPrev := curr-1
+        if expectedPrev != actualPrev {
+            out = append(out, []int{actualPrev+1,expectedPrev})
+        }
     }
     if nums[len(nums)-1] != upper {
         out = append(out, []int{nums[len(nums)-1]+1, upper})
     }
+
     return out
 }
