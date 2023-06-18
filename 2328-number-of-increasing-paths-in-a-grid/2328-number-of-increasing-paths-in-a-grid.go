@@ -1,3 +1,7 @@
+/*
+    identical to : https://leetcode.com/problems/longest-increasing-path-in-a-matrix/
+    instead of finding the longest one, count all the paths that exist
+*/
 func countPaths(grid [][]int) int {
     dirs := [][]int{{1,0},{-1,0},{0,-1},{0,1}}
     m := len(grid)
@@ -28,11 +32,8 @@ func countPaths(grid [][]int) int {
                 // if the neighboring cell is inbound
                 // and its value > current cell
                 // recurse and find out best ans for neighbor
-                // the +1 is part of the recursive call because
-                // the neighbor cell is increasing compared to current
-                // so if current cell longest-increasing path is of size 1 and
-                // we discovered a new adjacent cell to explore, the new size will be currentCount + 1
-                memo[r][c] = (memo[r][c] + dfs(nr, nc)) % mod
+                memo[r][c] += dfs(nr, nc)
+                memo[r][c] %= mod
             }
         }
         return memo[r][c]
@@ -42,7 +43,8 @@ func countPaths(grid [][]int) int {
     
     for i := 0; i < m; i++ {
         for j := 0; j < n; j++ {
-            total = (total + dfs(i, j) ) % mod
+            total += dfs(i, j)
+            total %= mod
         }
     }
     return total
