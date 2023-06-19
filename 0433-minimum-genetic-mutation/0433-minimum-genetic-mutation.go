@@ -11,6 +11,7 @@ func minMutation(startGene string, endGene string, bank []string) int {
     
     q := []string{startGene}
     level := 0
+    // BFS : o(b+e) * o(k)
     for len(q) != 0 {
         qSize := len(q)
         for qSize != 0 {
@@ -19,7 +20,9 @@ func minMutation(startGene string, endGene string, bank []string) int {
             
             if dq == endGene {return level}
             
+            // o(k)
             for i := 0; i < len(dq); i++ {
+                // o(4) ; i.e constant
                 for c := 0; c < len(choices); c++ {
                     nei := dq[:i] + choices[c] + dq[i+1:]
                     if _, ok := bankSet[nei]; ok {
