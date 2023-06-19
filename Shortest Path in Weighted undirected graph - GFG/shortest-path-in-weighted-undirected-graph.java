@@ -40,85 +40,65 @@ class Pair{
     }
 }
 class Solution {
-    public static List<Integer> shortestPath(int n, int m, int edges[][]) {
-
-        // Create an adjacency list of pairs of the form node1 -> {node2, edge weight}
-        // where the edge weight is the weight of the edge from node1 to node2.
-        ArrayList<ArrayList<Pair>> adj = new ArrayList<>(); 
-        for(int i = 0;i<=n;i++) {
-            adj.add(new ArrayList<>()); 
-        }
-        for(int i = 0;i<m;i++) {
-            adj.get(edges[i][0]).add(new Pair(edges[i][1], edges[i][2])); 
-            adj.get(edges[i][1]).add(new Pair(edges[i][0], edges[i][2])); 
-        }
-        
-        // Create a priority queue for storing the nodes along with distances 
-        // in the form of a pair { dist, node }.
-        PriorityQueue<Pair> pq = 
-        new PriorityQueue<Pair>((x,y) -> x.first - y.first);
-
-        // Create a dist array for storing the updated distances and a parent array
-        //for storing the nodes from where the current nodes represented by indices of
-        // the parent array came from.
-        int[] dist = new int[n+1]; 
-        int[] parent =new int[n+1]; 
-        for(int i = 1;i<=n;i++) {
-            dist[i] = (int)(1e9); 
-            parent[i] = i; 
+    public static List<Integer> shortestPath(int n, int m, int[][] edges) {
+        Map<Integer, List<int[]>> adjList = new HashMap<>();
+        for (int i = 0; i < edges.length; i++) {
+            int src = edges[i][0];
+            int dest = edges[i][1];
+            int w = edges[i][2];
+            adjList.putIfAbsent(src, new ArrayList<>());
+            adjList.putIfAbsent(dest, new ArrayList<>());
+            adjList.get(src).add(new int[]{dest, w});
+            adjList.get(dest).add(new int[]{src, w});
         }
         
-        dist[1] = 0; 
+        int start = 1;
+        int target = n;
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[1] - b[1]);
+        pq.offer(new int[]{start, 0});
+        int[] dist = new int[n + 1];
+        int[] parent = new int[n + 1];
+        Arrays.fill(dist, Integer.MAX_VALUE);
+        Arrays.fill(parent, -1);
+        dist[start] = 0;
+        parent[start] = start;
 
-        // Push the source node to the queue.
-        pq.add(new Pair(0, 1)); 
-        while(pq.size() != 0) {
-
-            // Topmost element of the priority queue is with minimum distance value.
-            Pair it = pq.peek(); 
-            int node = it.second;
-            int dis = it.first; 
-            pq.remove(); 
+        while (!pq.isEmpty()) {
+            int[] dq = pq.poll();
+            int currNode = dq[0];
+            int currW = dq[1];
+            if (currNode == target) {
+                break;
+            }
             
-            // Iterate through the adjacent nodes of the current popped node.
-            for(Pair iter : adj.get(node)) {
-                int adjNode = iter.first; 
-                int edW = iter.second;
-
-                // Check if the previously stored distance value is 
-                // greater than the current computed value or not, 
-                // if yes then update the distance value.
-                if(dis + edW < dist[adjNode]) {
-                    dist[adjNode] = dis + edW;
-                    pq.add(new Pair(dis + edW, adjNode)); 
-
-                    // Update the parent of the adjNode to the recent 
-                    // node where it came from.
-                    parent[adjNode] = node; 
+            if (adjList.containsKey(currNode)) {
+                for (int[] nei : adjList.get(currNode)) {
+                    int neiNode = nei[0];
+                    int neiWeight = nei[1] + currW;
+                    if (neiWeight < dist[neiNode]) {
+                        dist[neiNode] = neiWeight;
+                        parent[neiNode] = currNode;
+                        pq.offer(new int[]{neiNode, neiWeight});
+                    }
                 }
+                
             }
         }
+        List<Integer> path = new ArrayList<>();
 
-        // Store the final path in the ‘path’ array.
-        List<Integer> path = new ArrayList<>();  
-
-        // If distance to a node could not be found, return an array containing -1.
-        if(dist[n] == 1e9) {
-            path.add(-1); 
-            return path; 
+        if (dist[target] == Integer.MAX_VALUE) {
+            path.add(-1);
+            return path;
         }
         
-        int node = n;
-        // o(N)
-        while(parent[node] != node) {
-            path.add(node); 
-            node = parent[node]; 
+        int ptr = target;
+        while (ptr != parent[ptr]) {
+            path.add(ptr);
+            ptr = parent[ptr];
         }
-        path.add(1); 
-
-        // Since the path stored is in a reverse order, we reverse the array
-        // to get the final answer and then return the array.
-        Collections.reverse(path); 
+        path.add(start);
+        
+        Collections.reverse(path);
         return path;
     }
 }
