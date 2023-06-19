@@ -1,3 +1,4 @@
+// identical to word-ladder
 func minMutation(startGene string, endGene string, bank []string) int {
     adjList := map[string][]string{}
     foundEnd := false
