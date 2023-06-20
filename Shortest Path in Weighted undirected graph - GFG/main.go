@@ -1,3 +1,6 @@
+package main
+
+
 func main() {
     fmt.Println(shortestPath(5,6,[][]int{ {1,2,2}, {2,5,5}, {2,3,4}, {1,4,1},{4,3,3},{3,5,1} }))
 }
