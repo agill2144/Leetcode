@@ -31,74 +31,78 @@ import java.io.*;
 
 // User function Template for Java
 
-class Pair{
-    int first;
-    int second;
-    public Pair(int first,int second){
-        this.first = first;
-        this.second = second;
-    }
-}
 class Solution {
     public static List<Integer> shortestPath(int n, int m, int[][] edges) {
         Map<Integer, List<int[]>> adjList = new HashMap<>();
         for (int i = 0; i < edges.length; i++) {
-            int src = edges[i][0];
-            int dest = edges[i][1];
-            int w = edges[i][2];
-            adjList.putIfAbsent(src, new ArrayList<>());
-            adjList.putIfAbsent(dest, new ArrayList<>());
-            adjList.get(src).add(new int[]{dest, w});
-            adjList.get(dest).add(new int[]{src, w});
+            int u = edges[i][0], v = edges[i][1], w = edges[i][2];
+            adjList.putIfAbsent(u, new ArrayList<>());
+            adjList.putIfAbsent(v, new ArrayList<>());
+            adjList.get(u).add(new int[]{v, w});
+            adjList.get(v).add(new int[]{u, w});
         }
         
         int start = 1;
-        int target = n;
-        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[1] - b[1]);
-        pq.offer(new int[]{start, 0});
+        int end = n;
+        
         int[] dist = new int[n + 1];
         int[] parent = new int[n + 1];
+        
         Arrays.fill(dist, Integer.MAX_VALUE);
         Arrays.fill(parent, -1);
+        
         dist[start] = 0;
         parent[start] = start;
-
+        
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[1] - b[1]);
+        pq.offer(new int[]{start, 0});
+        
         while (!pq.isEmpty()) {
             int[] dq = pq.poll();
-            int currNode = dq[0];
-            int currW = dq[1];
-            if (currNode == target) {
-                break;
-            }
+            int node = dq[0];
+            int weight = dq[1];
             
-            if (adjList.containsKey(currNode)) {
-                for (int[] nei : adjList.get(currNode)) {
-                    int neiNode = nei[0];
-                    int neiWeight = nei[1] + currW;
-                    if (neiWeight < dist[neiNode]) {
-                        dist[neiNode] = neiWeight;
-                        parent[neiNode] = currNode;
-                        pq.offer(new int[]{neiNode, neiWeight});
-                    }
-                }
+            for (int[] nei : adjList.getOrDefault(node, new ArrayList<>())) {
+                int adjNode = nei[0];
+                int adjNodeWeight = nei[1] + weight;
                 
+                if (adjNodeWeight < dist[adjNode]) {
+                    dist[adjNode] = adjNodeWeight;
+                    parent[adjNode] = node;
+                    pq.offer(new int[]{adjNode, adjNodeWeight});
+                }
             }
-        }
-        List<Integer> path = new ArrayList<>();
-
-        if (dist[target] == Integer.MAX_VALUE) {
-            path.add(-1);
-            return path;
         }
         
-        int ptr = target;
+        if (dist[end] == Integer.MAX_VALUE) {
+            return Arrays.asList(-1);
+        }
+        
+        List<Integer> path = new ArrayList<>();
+        int ptr = end;
+        
         while (ptr != parent[ptr]) {
             path.add(ptr);
             ptr = parent[ptr];
         }
-        path.add(start);
         
-        Collections.reverse(path);
+        path.add(start);
+        reverseList(path);
+        
         return path;
+    }
+    
+    private static void reverseList(List<Integer> list) {
+        int left = 0;
+        int right = list.size() - 1;
+        
+        while (left < right) {
+            int temp = list.get(left);
+            list.set(left, list.get(right));
+            list.set(right, temp);
+            
+            left++;
+            right--;
+        }
     }
 }
