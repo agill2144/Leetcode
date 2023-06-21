@@ -16,8 +16,11 @@ func wordBreak(s string, wordDict []string) []string {
         for i := start; i < len(s); i++ {
             subStr := string(s[start:i+1])
             if _, ok := set[subStr]; ok {
+                // action
                 sent = append(sent, subStr)
+                // recurse
                 dfs(i+1, sent)
+                // backtrack
                 sent = sent[:len(sent)-1]
             }
         }
