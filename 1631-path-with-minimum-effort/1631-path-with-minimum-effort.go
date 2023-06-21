@@ -36,6 +36,11 @@ func minimumEffortPath(heights [][]int) int {
         cr := dq[0]
         cc := dq[1]
         currentEffort := dq[2]
+        // as soon as we run into our destination
+        // we CAN exit because this is PQ
+        // PQ will prioritize smaller distances therefore
+        // we are guranteed that if there are multiple ans in PQ, the smaller one will be processed first
+        // and we need the smallest ans
         if cr == m-1 && cc == n-1 {return currentEffort}
         
         for _, dir := range dirs {
