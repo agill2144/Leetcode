@@ -29,80 +29,69 @@ import java.io.*;
 // } Driver Code Ends
 
 
-// User function Template for Java
+
 
 class Solution {
     public static List<Integer> shortestPath(int n, int m, int[][] edges) {
-        Map<Integer, List<int[]>> adjList = new HashMap<>();
+        List<List<int[]>> adjList = new ArrayList<>(); // { parent : [[node, dist]] }
+        for (int i = 0; i <= n; i++) {
+            adjList.add(new ArrayList<>());
+        }
+        
         for (int i = 0; i < edges.length; i++) {
-            int u = edges[i][0], v = edges[i][1], w = edges[i][2];
-            adjList.putIfAbsent(u, new ArrayList<>());
-            adjList.putIfAbsent(v, new ArrayList<>());
+            int u = edges[i][0];
+            int v = edges[i][1];
+            int w = edges[i][2];
             adjList.get(u).add(new int[]{v, w});
             adjList.get(v).add(new int[]{u, w});
         }
         
         int start = 1;
         int end = n;
-        
         int[] dist = new int[n + 1];
-        int[] parent = new int[n + 1];
-        
         Arrays.fill(dist, Integer.MAX_VALUE);
-        Arrays.fill(parent, -1);
-        
+
         dist[start] = 0;
-        parent[start] = start;
-        
-        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[1] - b[1]);
-        pq.offer(new int[]{start, 0});
+        PriorityQueue<PQNode> pq = new PriorityQueue<>();
+        pq.offer(new PQNode(new ArrayList<>(Arrays.asList(start)), 0));
         
         while (!pq.isEmpty()) {
-            int[] dq = pq.poll();
-            int node = dq[0];
-            int weight = dq[1];
+            PQNode dq = pq.poll();
+            List<Integer> path = dq.path;
+            int currNode = path.get(path.size() - 1);
+            int currDist = dq.dist;
             
-            for (int[] nei : adjList.getOrDefault(node, new ArrayList<>())) {
+            if (currNode == end) {
+                return path;
+            }
+            
+            for (int[] nei : adjList.get(currNode)) {
                 int adjNode = nei[0];
-                int adjNodeWeight = nei[1] + weight;
-                
-                if (adjNodeWeight < dist[adjNode]) {
-                    dist[adjNode] = adjNodeWeight;
-                    parent[adjNode] = node;
-                    pq.offer(new int[]{adjNode, adjNodeWeight});
+                int adjNodeDist = nei[1] + currDist;
+                if (adjNodeDist < dist[adjNode]) {
+                    List<Integer> newPath = new ArrayList<>(path);
+                    newPath.add(adjNode);
+                    pq.offer(new PQNode(newPath, adjNodeDist));
+                    dist[adjNode] = adjNodeDist;
                 }
             }
         }
         
-        if (dist[end] == Integer.MAX_VALUE) {
-            return Arrays.asList(-1);
-        }
-        
-        List<Integer> path = new ArrayList<>();
-        int ptr = end;
-        
-        while (ptr != parent[ptr]) {
-            path.add(ptr);
-            ptr = parent[ptr];
-        }
-        
-        path.add(start);
-        reverseList(path);
-        
-        return path;
+        return new ArrayList<>(Arrays.asList(-1));
     }
     
-    private static void reverseList(List<Integer> list) {
-        int left = 0;
-        int right = list.size() - 1;
+    static class PQNode implements Comparable<PQNode> {
+        List<Integer> path;
+        int dist;
         
-        while (left < right) {
-            int temp = list.get(left);
-            list.set(left, list.get(right));
-            list.set(right, temp);
-            
-            left++;
-            right--;
+        public PQNode(List<Integer> path, int dist) {
+            this.path = path;
+            this.dist = dist;
+        }
+        
+        @Override
+        public int compareTo(PQNode other) {
+            return Integer.compare(this.dist, other.dist);
         }
     }
 }
