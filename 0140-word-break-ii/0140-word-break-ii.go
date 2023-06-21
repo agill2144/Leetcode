@@ -1,28 +1,30 @@
 func wordBreak(s string, wordDict []string) []string {
-
-    set := map[string]struct{}{}
-    for i := 0; i < len(wordDict); i++ { set[wordDict[i]] = struct{}{} }
-
+    wordSet := map[string]struct{}{}
+    for i := 0; i < len(wordDict); i++ {
+        wordSet[wordDict[i]] = struct{}{}
+    }
     out := []string{}
-    var dfs func(start int, sent []string)
-    dfs = func(start int, sent []string) {
+    
+    var dfs func(start int, sentence string) 
+    dfs = func(start int, sentence string) {
         // base
         if start == len(s) {
-            out = append(out, strings.Join(sent, " "))
+            out = append(out, sentence)
             return
         }
         
-        
         // logic
-        for i := start; i < len(s); i++ {
-            subStr := string(s[start:i+1])
-            if _, ok := set[subStr]; ok {
-                sent = append(sent, subStr)
-                dfs(i+1, sent)
-                sent = sent[:len(sent)-1]
+        for i := start ; i < len(s); i++ {
+            subStr := s[start:i+1]
+            if _, ok := wordSet[subStr]; ok {
+                newSent := sentence + " " + subStr
+                if sentence == "" {
+                    newSent = subStr
+                }
+                dfs(i+1, newSent)
             }
         }
     }
-    dfs(0, []string{})
+    dfs(0, "")
     return out
 }
