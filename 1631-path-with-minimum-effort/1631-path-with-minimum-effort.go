@@ -42,7 +42,8 @@ func minimumEffortPath(heights [][]int) int {
             nr := cr+dir[0]
             nc := cc+dir[1]
             if nr >= 0 && nr < m && nc >= 0 && nc < n {
-                maxEffortInThisPath := max(abs(heights[cr][cc]-heights[nr][nc]),currentEffort)
+                neiEffort := abs(heights[nr][nc] - heights[cr][cc])
+                maxEffortInThisPath := max(neiEffort, currentEffort)
                 if maxEffortInThisPath < distance[nr][nc] {
                     distance[nr][nc] = maxEffortInThisPath
                     heap.Push(pq, []int{nr,nc, maxEffortInThisPath})
