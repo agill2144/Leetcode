@@ -53,6 +53,9 @@ func minimumEffortPath(heights [][]int) int {
     return -1
 }
 
+// follow up, give me the path, use parent array to backtrack from end node :) 
+// or brute force ( put path in pq but deal with time and space complex of deep-copy)
+
 func abs(x int) int {
     if x < 0 {return x*-1}
     return x
