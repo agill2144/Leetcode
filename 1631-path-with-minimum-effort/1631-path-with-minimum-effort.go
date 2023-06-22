@@ -2,41 +2,64 @@ func minimumEffortPath(heights [][]int) int {
     m := len(heights)
     n := len(heights[0])
     
-    distances := make([][]int,m)
-    for i := 0; i < len(distances); i++ {
-        distances[i] = make([]int, n)
+    // in a path, we have to take abs diff between adjNode and keep max rolling
+    // find a path from src to dest and find the max effort 
+    // max effort is the max diff between any 2 adjnode within this path
+    // 1 2 2 2 5 = max diff = 3 (5-3)
+    // 1 2 8 3 5 = max diff = 6 (8-2)
+    // 1 3 5 3 5 = max diff = 2 (5-3)
+    // then we have to the min out of all the path 
+    // we can brute this using dfs and there is likely repeating subproblems ( DP hint )
+    // however this is also like a BFS / graph question
+    // kind of like ; find shortest path in binary matrix
+    // the only diff is we have weights involved in this question vs binary matrix was vanilla bfs ( level by level )
+    // shortest path with weights = dijkstra
+    
+    // dijsktra we need
+    // 1. pq
+    // 2. distance array that helps checked if a element is visited or not and if yes, whether we have a reached with smaller distance
+    pq := &minHeap{items: [][]int{}}
+    distance := make([][]int, m)
+    for i := 0; i < m; i++ {
+        distance[i] = make([]int, n)
         for j := 0; j < n; j++ {
-            distances[i][j] = math.MaxInt64
+            distance[i][j] = math.MaxInt64
         }
     }
-    distances[0][0] = 0
+    // distance of start node will always be 0
+    distance[0][0] = 0
     dirs := [][]int{{1,0},{-1,0},{0,1},{0,-1}}
-    pq := &minHeap{items: [][]int{{0,0,0}}}
+    heap.Push(pq, []int{0,0,0})
     
     for pq.Len() != 0 {
         dq := heap.Pop(pq).([]int)
         cr := dq[0]
         cc := dq[1]
-        // or we also use dq[2] becuase pq has distances as part of each path ( so it knows how to sort )
-        currentDist := distances[cr][cc] 
-    
+        currentDist := dq[2]
+        // as soon as we run into our destination
+        // we CAN exit because this is PQ
+        // PQ will prioritize smaller distances therefore
+        // we are guranteed that if there are multiple ans in PQ, the smaller one will be processed first
+        // and we need the smallest ans
         if cr == m-1 && cc == n-1 {return currentDist}
         
         for _, dir := range dirs {
-            nr := cr + dir[0]
-            nc := cc + dir[1]
+            nr := cr+dir[0]
+            nc := cc+dir[1]
             if nr >= 0 && nr < m && nc >= 0 && nc < n {
-                neiDist := abs(heights[cr][cc] - heights[nr][nc])
-                maxDistInPath := max(currentDist, neiDist)
-                if maxDistInPath < distances[nr][nc] {
-                    distances[nr][nc] = maxDistInPath
-                    heap.Push(pq, []int{nr,nc,maxDistInPath})
+                neiDist := abs(heights[nr][nc] - heights[cr][cc])
+                maxDistInPath := max(neiDist, currentDist)
+                if maxDistInPath < distance[nr][nc] {
+                    distance[nr][nc] = maxDistInPath
+                    heap.Push(pq, []int{nr,nc, maxDistInPath})
                 }
             }
         }
     }
     return -1
+
 }
+
 
 
 type minHeap struct {
