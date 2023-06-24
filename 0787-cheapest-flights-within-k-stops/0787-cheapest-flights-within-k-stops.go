@@ -36,13 +36,7 @@ func findCheapestPrice(n int, flights [][]int, src int, dst int, k int) int {
             }
         }
     }
-
-    ans := math.MaxInt64
-    for i := 0; i < len(nodeStops[dst]); i++ {
-        if nodeStops[dst][i] < ans {ans = nodeStops[dst][i]}
-    }
-    if ans == math.MaxInt64 {return -1}
-    return ans
+    return -1
 }
 
 
