@@ -1,5 +1,14 @@
+// 2d dijkstra ( k adds another dimension ), consider all possibilities
+// this is brute force, there is a better solution
+// time = o(v+e) + o(vk) + o(vk Log vk)
 func findCheapestPrice(n int, flights [][]int, src int, dst int, k int) int {
+    
     adjList := map[int][][]int{}
+    // v = n ( number of verticies)
+    // e = total number of edges
+    
+    // time = o(v+e)
+    // space = o(v+e)
     for i := 0; i < len(flights); i++ {
         from := flights[i][0]
         to := flights[i][1]
@@ -7,6 +16,8 @@ func findCheapestPrice(n int, flights [][]int, src int, dst int, k int) int {
         adjList[from] = append(adjList[from], []int{to, cost})
     }
     
+    // time = o(vk) 
+    // space = o(vk)
     nodeStops := make([][]int, n)
     for i := 0; i < len(nodeStops); i++ {
         nodeStops[i] = make([]int, k+2)
@@ -16,6 +27,7 @@ func findCheapestPrice(n int, flights [][]int, src int, dst int, k int) int {
     }
     
     nodeStops[src][0] = 0
+    // time = o(vk log vk)
     pq := &minHeap{items: [][]int{{src, 0, 0}}}
     for pq.Len() != 0 {
         dq := heap.Pop(pq).([]int)
@@ -36,6 +48,8 @@ func findCheapestPrice(n int, flights [][]int, src int, dst int, k int) int {
             }
         }
     }
+    
+    // total time = o()
     return -1
 }
 
