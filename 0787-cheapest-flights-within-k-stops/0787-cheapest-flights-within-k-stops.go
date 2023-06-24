@@ -23,7 +23,7 @@ func findCheapestPrice(n int, flights [][]int, src int, dst int, k int) int {
         currCost := dq[1]
         currStops := dq[2]
         if currNode == dst {
-            continue
+            return currCost
         }
         
         for _, nei := range adjList[currNode] {
@@ -36,7 +36,6 @@ func findCheapestPrice(n int, flights [][]int, src int, dst int, k int) int {
             }
         }
     }
-    // fmt.Println(nodeStops[dst])
 
     ans := math.MaxInt64
     for i := 0; i < len(nodeStops[dst]); i++ {
