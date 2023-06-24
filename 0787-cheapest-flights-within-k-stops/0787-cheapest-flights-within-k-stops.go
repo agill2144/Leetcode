@@ -20,7 +20,7 @@ func findCheapestPrice(n int, flights [][]int, src int, dst int, k int) int {
     // space = o(vk)
     nodeStops := make([][]int, n)
     for i := 0; i < len(nodeStops); i++ {
-        nodeStops[i] = make([]int, k+2)
+        nodeStops[i] = make([]int, k+1)
         for j := 0; j < len(nodeStops[i]); j++ {
             nodeStops[i][j] = math.MaxInt64
         }
@@ -28,12 +28,12 @@ func findCheapestPrice(n int, flights [][]int, src int, dst int, k int) int {
     
     nodeStops[src][0] = 0
     // time = o(vk log vk)
-    pq := &minHeap{items: [][]int{{src, 0, 0}}}
+    pq := &minHeap{items: [][]int{{src, 0, k}}}
     for pq.Len() != 0 {
         dq := heap.Pop(pq).([]int)
         currNode := dq[0]
         currCost := dq[1]
-        currStops := dq[2]
+        remaining := dq[2]
         if currNode == dst {
             return currCost
         }
@@ -41,10 +41,9 @@ func findCheapestPrice(n int, flights [][]int, src int, dst int, k int) int {
         for _, nei := range adjList[currNode] {
             node := nei[0]
             cost := currCost + nei[1]
-            stops := currStops + 1
-            if stops < len(nodeStops[0]) && cost < nodeStops[node][stops] {
-                nodeStops[node][stops] = cost
-                heap.Push(pq, []int{node, cost, stops})
+            if remaining >= 0 && cost < nodeStops[node][remaining] {
+                nodeStops[node][remaining] = cost
+                heap.Push(pq, []int{node, cost, remaining-1})
             }
         }
     }
