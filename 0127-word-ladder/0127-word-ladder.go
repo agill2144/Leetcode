@@ -1,46 +1,35 @@
 func ladderLength(beginWord string, endWord string, wordList []string) int {
-    adjList := map[string][]string{}
     foundEnd := false
-    wordList = append(wordList, beginWord)
+    wordSet := map[string]struct{}{}
     for i := 0; i < len(wordList); i++ {
-        parent := wordList[i]
-        if parent == endWord {foundEnd = true}
-        for j := 0; j < len(wordList); j++ {
-            if j == i {continue}
-            child := wordList[j]
-            diff := 0
-            p, c := 0,0
-            for p < len(parent) && c < len(child) {
-                if parent[p] != child[c] {diff++}
-                p++
-                c++
-            }
-            if diff == 1 {
-                adjList[parent] = append(adjList[parent], child)
-            }
-        }
+        word := wordList[i]
+        if word == endWord {foundEnd = true}
+        wordSet[word] = struct{}{}
     }
     if !foundEnd {return 0}
     
-    visited := map[string]struct{}{beginWord: struct{}{}}
-    level := 1
     q := []string{beginWord}
+    levels := 1
     for len(q) != 0 {
         qSize := len(q)
         for qSize != 0 {
             dq := q[0]
             q = q[1:]
-            if dq == endWord {return level}
-            for _, nei := range adjList[dq] {
-                if _, ok := visited[nei]; !ok {
-                    if nei == endWord {return level+1}
-                    visited[nei] = struct{}{}
-                    q = append(q, nei)
+            if dq == endWord {return levels}
+            for i := 0; i < len(dq); i++ {
+                for j := 0; j < 26; j++ {
+                    char := byte(j+'a')
+                    nei := dq[:i] + string(char) + dq[i+1:]
+                    if _, ok := wordSet[nei]; ok {
+                        if nei == endWord {return levels+1}
+                        delete(wordSet, nei)
+                        q = append(q, nei)
+                    }
                 }
             }
             qSize--
         }
-        level++
+        levels++
     }
     return 0
 }
