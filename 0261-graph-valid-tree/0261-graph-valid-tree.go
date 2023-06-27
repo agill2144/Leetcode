@@ -1,7 +1,5 @@
 func validTree(n int, edges [][]int) bool {
-    // a valid tree is a tree where there are no circles
-    // and all components are connected
-    
+    // graph is a valid tree if there is no cycle, and all nodes are connected
     adjList := map[int][]int{}
     for i := 0; i < len(edges); i++ {
         src := edges[i][0]
@@ -9,23 +7,28 @@ func validTree(n int, edges [][]int) bool {
         adjList[src] = append(adjList[src], dest)
         adjList[dest] = append(adjList[dest], src)
     }
-    
-    visited := make([]bool, n)
+
     count := 0
-    var dfs func(node, prev int) bool
-    dfs = func(node, prev int) bool {
+    visited := make([]bool, n)
+    var dfs func(node, prev int, path []bool) bool
+    dfs = func(node, prev int, path []bool) bool {
         // base
-        if visited[node] {return false}
+        if path[node] {return false}
+        if visited[node] {return true}
         
         // logic
         visited[node] = true
+        path[node] = true
         count++
         for _, nei := range adjList[node] {
             if nei == prev {continue}
-            if !dfs(nei, node) {return false}
+            if !dfs(nei, node, path) {return false}
         }
+        path[node] = false
         return true
     }
-    if !dfs(0, -1) {return false}
+    
+    if !dfs(0, -1, make([]bool, n)) {return false}
     return count == n
+    
 }
