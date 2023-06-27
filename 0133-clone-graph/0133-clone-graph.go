@@ -8,20 +8,24 @@
 
 func cloneGraph(node *Node) *Node {
     deepCp := map[*Node]*Node{}
-    var dfs func(root *Node)
-    dfs = func(root *Node) {
+    var dfs func(n *Node)
+    dfs = func(n *Node) {
         // base
-        if root == nil {return}
-        if _, ok := deepCp[root]; ok {return}
+        if n == nil {return}
         
         // logic
-        clone := &Node{Val: root.Val}
-        deepCp[root] = clone
-        for _, nei := range root.Neighbors {
-            dfs(nei)
-            clone.Neighbors = append(clone.Neighbors, deepCp[nei])
+        cp := &Node{Val: n.Val}
+        deepCp[n] = cp
+        for _, nei := range n.Neighbors {
+            if val, ok := deepCp[nei]; ok {
+                cp.Neighbors = append(cp.Neighbors, val)
+            } else {
+                dfs(nei)
+                cp.Neighbors = append(cp.Neighbors, deepCp[nei])
+            }
         }
     }
     dfs(node)
+
     return deepCp[node]
 }
