@@ -27,9 +27,8 @@ func countCompleteComponents(n int, edges [][]int) int {
     for i := 0; i < n; i++ {
         if !visited[i] {
             dfs(i, -1)
-            expected := nodesCount*(nodesCount-1)/2
-            if edgesCount/2 == expected {completeCount++}
-            
+            expected := nodesCount*(nodesCount-1)
+            if edgesCount == expected {completeCount++}
             nodesCount = 0
             edgesCount = 0
         }
