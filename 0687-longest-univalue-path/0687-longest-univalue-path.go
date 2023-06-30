@@ -6,6 +6,8 @@
  *     Right *TreeNode
  * }
  */
+
+// dont understand AT ALL BUT IMPORTANT enough to get bookmarked
 func longestUnivaluePath(root *TreeNode) int {
     maxLen := 0
     var dfs func(r *TreeNode) (int)
