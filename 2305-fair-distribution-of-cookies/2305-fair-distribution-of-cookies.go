@@ -12,15 +12,16 @@ func distributeCookies(cookies []int, k int) int {
         for i := start; i < len(childs); i++ {
             // action
             childs[i] += cookies[cookieIdx]
-            oldMax := max
-            if childs[i] > max {max = childs[i]}
+            
+            // we could just update the max arg, but then we would have to save the old value and backtrack
+            newMax := max
+            if childs[i] > newMax {newMax = childs[i]}
 
             // recurse
-            dfs(start, cookieIdx+1, childs, max)
+            dfs(start, cookieIdx+1, childs, newMax)
             
             // backtrack
             childs[i] -= cookies[cookieIdx]
-            max = oldMax
         }
     }
     dfs(0,0,make([]int, k),0)
