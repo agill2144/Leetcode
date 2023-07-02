@@ -15,13 +15,16 @@ func countSubTrees(n int, edges [][]int, labels string) []int {
         freqMap := map[byte]int{}
         for _, nei := range adjList[node] {
             if nei == prev {continue}
-            
+            // bottom up, take childs values
+            // merge with parent
             neiFreqMap := dfs(nei, node)
             for k, v := range neiFreqMap {
                 freqMap[k] += v
             }
         }
+        // update parent
         freqMap[labels[node]]++
+        // save parent count
         out[node] = freqMap[labels[node]]
         return freqMap
     }
