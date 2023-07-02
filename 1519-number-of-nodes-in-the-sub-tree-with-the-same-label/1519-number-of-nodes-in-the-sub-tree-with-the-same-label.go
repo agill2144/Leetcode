@@ -18,6 +18,8 @@ func countSubTrees(n int, edges [][]int, labels string) []int {
             // bottom up, take childs values
             // merge with parent
             neiFreqMap := dfs(nei, node)
+            //the time of this merge loop is  = o(26)
+            // there are only 26 labels ( a-z )
             for k, v := range neiFreqMap {
                 freqMap[k] += v
             }
