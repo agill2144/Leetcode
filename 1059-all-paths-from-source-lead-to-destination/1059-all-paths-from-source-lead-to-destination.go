@@ -22,6 +22,7 @@ func leadsToDestination(n int, edges [][]int, source int, destination int) bool 
             }
         }
         path[node] = false
+        if node == destination {return true}
         return true
     }
     return dfs(source, make([]bool, n))
