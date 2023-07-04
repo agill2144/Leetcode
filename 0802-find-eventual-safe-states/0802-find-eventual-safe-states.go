@@ -1,11 +1,12 @@
 func eventualSafeNodes(graph [][]int) []int {
     safeNodes := make([]bool, len(graph))
+    visited := make([]bool, len(graph))
     for i := 0; i < len(graph); i++ {
         if len(graph[i]) == 0 {
             safeNodes[i] = true
+            visited[i] = true
         }
     }
-    visited := make([]bool, len(graph))
     var dfs func(node int, path []bool) bool
     dfs = func(node int, path []bool) bool {
         // base
