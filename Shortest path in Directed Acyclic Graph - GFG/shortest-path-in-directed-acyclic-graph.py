@@ -1,3 +1,4 @@
+import heapq
 import math
 from typing import List
 
@@ -12,26 +13,28 @@ class Solution:
         
         src = 0
         dist = [math.inf] * n
-        for i in range(len(dist)):
-            dist[i] = math.inf
         dist[src] = 0
+        pq = [(0, 0)]  # min heap
         
-        def dfs(node):
-            currNodeDist = dist[node]
-            if node not in adjList:
-                return
-            for nei in adjList[node]:
-                adjNode = nei[0]
-                adjDist = nei[1] + currNodeDist
-                if adjDist < dist[adjNode]:
-                    dist[adjNode] = adjDist
-                    dfs(adjNode)
+        while pq:
+            currNode, currDist = heapq.heappop(pq)
+            
+            if currDist > dist[currNode]:
+                continue
+            
+            if currNode in adjList:
+                for nei in adjList[currNode]:
+                    adjNode, adjDist = nei[0], currDist + nei[1]
+                    if adjDist < dist[adjNode]:
+                        dist[adjNode] = adjDist
+                        heapq.heappush(pq, (adjNode, adjDist))
         
-        dfs(src)
         for i in range(len(dist)):
             if dist[i] == math.inf:
                 dist[i] = -1
+        
         return dist
+
 
 
 #{ 
