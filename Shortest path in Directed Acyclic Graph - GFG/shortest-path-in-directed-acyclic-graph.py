@@ -1,63 +1,37 @@
-#User function Template for python3
-
-from typing import List
 import math
+from typing import List
 
 class Solution:
-    def shortestPath(self, n : int, m : int, edges : List[List[int]]) -> List[int]:
+    def shortestPath(self, n: int, m: int, edges: List[List[int]]) -> List[int]:
         adjList = {}
         for i in range(len(edges)):
-            src = edges[i][0]
-            dest = edges[i][1]
-            wt = edges[i][2]
-            if src in adjList:
-                adjList[src].append([dest, wt])
-            else:
-                adjList[src] = [[dest, wt]]
-        
-        visited = [False] * n
-        st = []
-        
-        def dfs(node):
-            if visited[node]:
-                return
-            
-            visited[node] = True
-            if node in adjList:
-                for nei in adjList[node]:
-                    dfs(nei[0])
-            
-            st.append(node)
-        
-        for i in range(n):
-            if not visited[i]:
-                dfs(i)
+            u, v, w = edges[i][0], edges[i][1], edges[i][2]
+            if u not in adjList:
+                adjList[u] = []
+            adjList[u].append([v, w])
         
         src = 0
-        while len(st) != 0 and st[-1] != src:
-            st.pop()
-        
         dist = [math.inf] * n
+        for i in range(len(dist)):
+            dist[i] = math.inf
         dist[src] = 0
-        while len(st) != 0:
-            top = st[-1]
-            st.pop()
-            currDist = dist[top]
-            if top in adjList:
-                for neiList in adjList[top]:
-                    nei = neiList[0]
-                    neiDist = neiList[1]
-                    newDist = currDist + neiDist
-                    if newDist < dist[nei]:
-                        dist[nei] = newDist
         
+        def dfs(node):
+            currNodeDist = dist[node]
+            if node not in adjList:
+                return
+            for nei in adjList[node]:
+                adjNode = nei[0]
+                adjDist = nei[1] + currNodeDist
+                if adjDist < dist[adjNode]:
+                    dist[adjNode] = adjDist
+                    dfs(adjNode)
         
-        for idx, ele in enumerate(dist):
-            if ele == math.inf:
-                dist[idx] = -1
-        
+        dfs(src)
+        for i in range(len(dist)):
+            if dist[i] == math.inf:
+                dist[i] = -1
         return dist
-
 
 
 #{ 
