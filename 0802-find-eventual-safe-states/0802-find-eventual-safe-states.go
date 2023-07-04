@@ -1,12 +1,16 @@
+// time = o(v) + o(v+e) + o(v) = o(2v) + o(v+e)
+// space = o(v) + o(v) + o(v) + o(v) = o(4v) = o(v)
 func eventualSafeNodes(graph [][]int) []int {
     safeNodes := make([]bool, len(graph))
     visited := make([]bool, len(graph))
+    // o(v)
     for i := 0; i < len(graph); i++ {
         if len(graph[i]) == 0 {
             safeNodes[i] = true
             visited[i] = true
         }
     }
+    
     var dfs func(node int, path []bool) bool
     dfs = func(node int, path []bool) bool {
         // base
@@ -28,6 +32,7 @@ func eventualSafeNodes(graph [][]int) []int {
         return true
     }
     p := make([]bool, len(graph))
+    // o(v+e)
     for i := 0; i < len(graph); i++ {
         if !visited[i] {
             dfs(i,p)
@@ -35,6 +40,7 @@ func eventualSafeNodes(graph [][]int) []int {
     }
     
     out := []int{}
+    // o(v)
     for i := 0; i < len(safeNodes); i++ {
         if safeNodes[i] {
             out = append(out, i)
