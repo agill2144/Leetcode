@@ -1,10 +1,12 @@
+// time = o(v+e) + o(v+e) + o(v)
+// space = o(v) + o(v) + o(v+e)
 func eventualSafeNodes(graph [][]int) []int {
     n := len(graph)
-    outdegrees := make([]int, n)
-    safeNodes := make([]bool, n)
-    adjList := map[int][]int{}
+    outdegrees := make([]int, n) // o(v) space
+    safeNodes := make([]bool, n) // o(v) space
+    adjList := map[int][]int{} // o(v+e) space
     q := []int{}
-    for i := 0; i < n; i++ {
+    for i := 0; i < n; i++ { // o(v+e) time
         outdegrees[i] = len(graph[i])
         if outdegrees[i] == 0 {q = append(q, i); safeNodes[i] = true}
         adjNei := i
@@ -13,7 +15,7 @@ func eventualSafeNodes(graph [][]int) []int {
             adjList[node] = append(adjList[node], adjNei)
         }
     }
-    
+    // o(v+e) time
     for len(q) != 0 {
         dq := q[0]
         q = q[1:]        
@@ -26,6 +28,7 @@ func eventualSafeNodes(graph [][]int) []int {
         }
     }
     out := []int{}
+    // o(v) time
     for i := 0; i < len(safeNodes); i++ {
         if safeNodes[i] {out = append(out, i)}
     }
