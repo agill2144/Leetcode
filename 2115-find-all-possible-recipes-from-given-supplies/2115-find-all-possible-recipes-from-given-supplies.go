@@ -11,22 +11,21 @@ func findAllRecipes(recipes []string, ingredients [][]string, supplies []string)
         allIng := ingredients[i]
         recipe := recipes[i]
         
-        // only if we have all ing
-        haveAll := true
-        for _, ing := range allIng {
-            if !supplySet.contains(ing) {
-                haveAll = false
-                break
-            }
-        }
-        if !haveAll {continue}
+        // // only if we have all ing
+        // haveAll := true
+        // for _, ing := range allIng {
+        //     if !supplySet.contains(ing) {
+        //         haveAll = false
+        //         break
+        //     }
+        // }
+        // if !haveAll {continue}
         indegrees[recipe] += len(allIng)
         
         for _, ing := range allIng {
             adjList[ing] = append(adjList[ing], recipe) 
         }
     }
-    // fmt.Println(indegrees)
 
     q := []string{}
     for _, supply := range supplies {
