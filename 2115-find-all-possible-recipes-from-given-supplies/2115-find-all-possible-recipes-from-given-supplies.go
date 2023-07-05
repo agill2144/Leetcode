@@ -1,26 +1,19 @@
 func findAllRecipes(recipes []string, ingredients [][]string, supplies []string) []string {
  
-    supplySet := newSet()
     recipeSet := newSet()
-    for i := 0; i < len(recipes); i++ {recipeSet.add(recipes[i]); supplySet.add(recipes[i])}    
-    for i := 0; i < len(supplies); i++ {supplySet.add(supplies[i])}
+    for i := 0; i < len(recipes); i++ {recipeSet.add(recipes[i])}    
     
     indegrees := map[string]int{}
     adjList := map[string][]string{}
     for i := 0; i < len(recipes); i++ {
         allIng := ingredients[i]
         recipe := recipes[i]
-        
-        // // only if we have all ing
-        // haveAll := true
-        // for _, ing := range allIng {
-        //     if !supplySet.contains(ing) {
-        //         haveAll = false
-        //         break
-        //     }
-        // }
-        // if !haveAll {continue}
         indegrees[recipe] += len(allIng)
+        
+        // recipe depends on its ingredients
+        // therefore each ing is independent
+        // adjList = {independent : [dependents]}
+        // adjList = {$ing : [recipe]}
         
         for _, ing := range allIng {
             adjList[ing] = append(adjList[ing], recipe) 
@@ -37,6 +30,7 @@ func findAllRecipes(recipes []string, ingredients [][]string, supplies []string)
         dq := q[0]
         q = q[1:]
         
+        // is this a recipe? if yes, add it, as its successfully created
         if recipeSet.contains(dq) {
             out = append(out, dq)
         }
