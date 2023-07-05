@@ -26,7 +26,7 @@ func ladderLength(beginWord string, endWord string, wordList []string) int {
                 // o(26) ; i.e o(1)
                 for j := 0; j < 26; j++ {
                     char := string(byte(j+'a'))
-                    // o(k)
+                    // o(k); slicing takes o(k) time
                     nei := dq[:i] + char + dq[i+1:]
                     if nei == endWord {return levels+1}
                     if _, ok := wordSet[nei]; ok {
