@@ -1,19 +1,31 @@
 func findAllRecipes(recipes []string, ingredients [][]string, supplies []string) []string {
  
+    /*
+        v = num of recipes
+        
+        s = num of supplies
+        k = avg num of ingredients per recipe
+    */
+    
+    // time and space = o(r)
     recipeSet := newSet()
     for i := 0; i < len(recipes); i++ {recipeSet.add(recipes[i])}
     
-    indegrees := map[string]int{}
-    adjList := map[string][]string{}
+    
+    indegrees := map[string]int{} // space = o(r)
+    adjList := map[string][]string{} // space = o(k+r)
+
+    // time = o(k+r)
     for i := 0; i < len(recipes); i++ {
         allIng := ingredients[i]
         recipe := recipes[i]
         indegrees[recipe] += len(allIng)
         
         // recipe depends on its ingredients
-        // therefore each ing is independent
+        // therefore each ing is independent 
+        // therefore ingredient -> recipe
         // adjList = {independent : [dependents]}
-        // adjList = {$ing : [recipe]}
+        // adjList = {$ing : [$recipe]}
         
         for _, ing := range allIng {
             adjList[ing] = append(adjList[ing], recipe) 
@@ -26,11 +38,16 @@ func findAllRecipes(recipes []string, ingredients [][]string, supplies []string)
     // therefore ingredients list could contain supplies + other recipe names
     // supplies are on their own standing, no edges, no indegrees, they do not have any recipes within them
     // therefore starting with supplies
+    
+    // time = o(s)
+    // space in queue initially = o(s)
     for _, supply := range supplies {
         q = append(q, supply)
     }
     
     out := []string{}
+    
+    // time = o(i+v)
     for len(q) != 0 {
         dq := q[0]
         q = q[1:]
