@@ -1,7 +1,7 @@
 func findAllRecipes(recipes []string, ingredients [][]string, supplies []string) []string {
  
     recipeSet := newSet()
-    for i := 0; i < len(recipes); i++ {recipeSet.add(recipes[i])}    
+    for i := 0; i < len(recipes); i++ {recipeSet.add(recipes[i])}
     
     indegrees := map[string]int{}
     adjList := map[string][]string{}
@@ -21,6 +21,11 @@ func findAllRecipes(recipes []string, ingredients [][]string, supplies []string)
     }
 
     q := []string{}
+    // why start from supplies and not with indegrees with 0 ?
+    // ingredients list could also have other recipes 
+    // therefore ingredients list could contain supplies + other recipe names
+    // supplies are on their own standing, no edges, no indegrees, they do not have any recipes within them
+    // therefore starting with supplies
     for _, supply := range supplies {
         q = append(q, supply)
     }
