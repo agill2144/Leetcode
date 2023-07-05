@@ -26,6 +26,7 @@ func ladderLength(beginWord string, endWord string, wordList []string) int {
                 // o(26) ; i.e o(1)
                 for j := 0; j < 26; j++ {
                     char := string(byte(j+'a'))
+                    // o(k)
                     nei := dq[:i] + char + dq[i+1:]
                     if nei == endWord {return levels+1}
                     if _, ok := wordSet[nei]; ok {
@@ -38,7 +39,7 @@ func ladderLength(beginWord string, endWord string, wordList []string) int {
         }
         levels++
     }
-    // total time = o(n) + o(nk)
+    // total time = o(n) + o(n * k^2)
     // total space = o(n) wordSet, o(n) for queue 
     
     return 0
