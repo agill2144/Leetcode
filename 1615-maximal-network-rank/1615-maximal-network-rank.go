@@ -1,5 +1,6 @@
 func maximalNetworkRank(n int, roads [][]int) int {
     adjList := map[int]*set{}
+    // o(v+e) time and space
     for i := 0; i < len(roads); i++ {
         u,v := roads[i][0], roads[i][1]
         
@@ -20,9 +21,9 @@ func maximalNetworkRank(n int, roads [][]int) int {
     // "Notice that all the cities do not have to be connected"
     // this means we can pick 2 nodes far away from each other , we are looking for
     // which 2 nodes produce the max number of edges , therefore trying all
+    // time = o(v^2)
     for i := 0; i < n; i++ {
         for j := i+1; j < n; j++ {
-            // if j == i {continue}
             u, v := i, j
             uAdjNodes := adjList[u]
             if uAdjNodes == nil {uAdjNodes=newSet()}
@@ -35,6 +36,9 @@ func maximalNetworkRank(n int, roads [][]int) int {
             if total > maxCount {maxCount = total}        
         }
     }
+    
+    // total time = o(v+e) + o(v^2)
+    // space = o(v+e)
     return maxCount
 }
 
