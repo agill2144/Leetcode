@@ -21,8 +21,8 @@ func maximalNetworkRank(n int, roads [][]int) int {
     // this means we can pick 2 nodes far away from each other , we are looking for
     // which 2 nodes produce the max number of edges , therefore trying all
     for i := 0; i < n; i++ {
-        for j := 0; j < n; j++ {
-            if j == i {continue}
+        for j := i+1; j < n; j++ {
+            // if j == i {continue}
             u, v := i, j
             uAdjNodes := adjList[u]
             if uAdjNodes == nil {uAdjNodes=newSet()}
