@@ -8,6 +8,7 @@ func maxConsecutiveAnswers(answerKey string, k int) int {
         if char == "T" {tCount++}
         if char == "F" {fCount++}
         winSize := i-left+1
+        // make sure whether our window has 1 possible ans
         for winSize-tCount > k && winSize-fCount > k {
             leftChar := string(answerKey[left])
             if leftChar == "T" {tCount--}
@@ -15,6 +16,7 @@ func maxConsecutiveAnswers(answerKey string, k int) int {
             left++
             winSize = i-left+1
         }
+        // save the window size if better 
         if (winSize-tCount <= k || winSize-fCount <= k) && winSize > maxWindowSize {
             maxWindowSize = winSize
         } 
