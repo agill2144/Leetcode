@@ -31,20 +31,17 @@ import java.io.*;
 
 // User function Template for Java
 
-
 class Solution {
     public static List<Integer> shortestPath(int n, int m, int[][] edges) {
-        List<int[]>[] adjList = new ArrayList[n + 1];
-        for (int i = 0; i <= n; i++) {
-            adjList[i] = new ArrayList<>();
-        }
-
-        for (int i = 0; i < m; i++) {
+        Map<Integer, List<int[]>> adjList = new HashMap<>();
+        for (int i = 0; i < edges.length; i++) {
             int u = edges[i][0];
             int v = edges[i][1];
             int w = edges[i][2];
-            adjList[u].add(new int[]{v, w});
-            adjList[v].add(new int[]{u, w});
+            adjList.putIfAbsent(u, new ArrayList<>());
+            adjList.putIfAbsent(v, new ArrayList<>());
+            adjList.get(u).add(new int[] {v, w});
+            adjList.get(v).add(new int[] {u, w});
         }
 
         int src = 1;
@@ -52,54 +49,54 @@ class Solution {
         int[] dist = new int[n + 1];
         Arrays.fill(dist, Integer.MAX_VALUE);
         dist[src] = 0;
-        List<Integer> destPath = new ArrayList<>();
-        List<QueueNode> q = new ArrayList<>();
-        q.add(new QueueNode(new ArrayList<>(Arrays.asList(src)), 0));
+        PriorityQueue<QueueNode> pq = new PriorityQueue<>();
+        pq.offer(new QueueNode(new ArrayList<>(Arrays.asList(src)), 0));
 
-        while (!q.isEmpty()) {
-            QueueNode dq = q.remove(0);
+        while (!pq.isEmpty()) {
+            QueueNode dq = pq.poll();
             List<Integer> currPath = dq.path;
             int currNode = currPath.get(currPath.size() - 1);
-            int currDist = dq.distSoFar;
-
-            if (dist[currNode] < currDist) {
-                continue;
-            }
+            int currDist = dq.dist;
 
             if (currNode == dest) {
-                if (currDist <= dist[currNode]) {
-                    destPath = new ArrayList<>(currPath);
-                }
+                return currPath;
+            }
+
+            if (currDist > dist[currNode]) {
                 continue;
             }
 
-            List<int[]> adjNodes = adjList[currNode];
-            for (int[] nei : adjNodes) {
-                int adjNode = nei[0];
-                int adjNodeDist = currDist + nei[1];
-
-                if (adjNodeDist < dist[adjNode]) {
-                    dist[adjNode] = adjNodeDist;
-                    List<Integer> newPath = new ArrayList<>(currPath);
-                    newPath.add(adjNode);
-                    q.add(new QueueNode(newPath, adjNodeDist));
+            List<int[]> adjNodes = adjList.get(currNode);
+            if (adjNodes != null) {
+                for (int[] nei : adjNodes) {
+                    int adjNode = nei[0];
+                    int adjNodeDist = currDist + nei[1];
+    
+                    if (adjNodeDist < dist[adjNode]) {
+                        dist[adjNode] = adjNodeDist;
+                        List<Integer> newPath = new ArrayList<>(currPath);
+                        newPath.add(adjNode);
+                        pq.offer(new QueueNode(newPath, adjNodeDist));
+                    }
                 }
             }
         }
 
-        if (destPath.size() == 0) {
-            return new ArrayList<>(Arrays.asList(-1));
-        }
-        return destPath;
+        return Arrays.asList(-1);
     }
 
-    static class QueueNode {
+    static class QueueNode implements Comparable<QueueNode> {
         List<Integer> path;
-        int distSoFar;
+        int dist;
 
-        public QueueNode(List<Integer> path, int distSoFar) {
+        public QueueNode(List<Integer> path, int dist) {
             this.path = path;
-            this.distSoFar = distSoFar;
+            this.dist = dist;
+        }
+
+        @Override
+        public int compareTo(QueueNode other) {
+            return Integer.compare(this.dist, other.dist);
         }
     }
 }
