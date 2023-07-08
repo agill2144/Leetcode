@@ -29,69 +29,78 @@ import java.io.*;
 // } Driver Code Ends
 
 
+// User function Template for Java
 
 
 class Solution {
     public static List<Integer> shortestPath(int n, int m, int[][] edges) {
-        List<List<int[]>> adjList = new ArrayList<>(); // { parent : [[node, dist]] }
+        List<int[]>[] adjList = new ArrayList[n + 1];
         for (int i = 0; i <= n; i++) {
-            adjList.add(new ArrayList<>());
+            adjList[i] = new ArrayList<>();
         }
-        
-        for (int i = 0; i < edges.length; i++) {
+
+        for (int i = 0; i < m; i++) {
             int u = edges[i][0];
             int v = edges[i][1];
             int w = edges[i][2];
-            adjList.get(u).add(new int[]{v, w});
-            adjList.get(v).add(new int[]{u, w});
+            adjList[u].add(new int[]{v, w});
+            adjList[v].add(new int[]{u, w});
         }
-        
-        int start = 1;
-        int end = n;
+
+        int src = 1;
+        int dest = n;
         int[] dist = new int[n + 1];
         Arrays.fill(dist, Integer.MAX_VALUE);
+        dist[src] = 0;
+        List<Integer> destPath = new ArrayList<>();
+        List<QueueNode> q = new ArrayList<>();
+        q.add(new QueueNode(new ArrayList<>(Arrays.asList(src)), 0));
 
-        dist[start] = 0;
-        PriorityQueue<PQNode> pq = new PriorityQueue<>();
-        pq.offer(new PQNode(new ArrayList<>(Arrays.asList(start)), 0));
-        
-        while (!pq.isEmpty()) {
-            PQNode dq = pq.poll();
-            List<Integer> path = dq.path;
-            int currNode = path.get(path.size() - 1);
-            int currDist = dq.dist;
-            
-            if (currNode == end) {
-                return path;
+        while (!q.isEmpty()) {
+            QueueNode dq = q.remove(0);
+            List<Integer> currPath = dq.path;
+            int currNode = currPath.get(currPath.size() - 1);
+            int currDist = dq.distSoFar;
+
+            if (dist[currNode] < currDist) {
+                continue;
             }
-            
-            for (int[] nei : adjList.get(currNode)) {
+
+            if (currNode == dest) {
+                if (currDist <= dist[currNode]) {
+                    destPath = new ArrayList<>(currPath);
+                }
+                continue;
+            }
+
+            List<int[]> adjNodes = adjList[currNode];
+            for (int[] nei : adjNodes) {
                 int adjNode = nei[0];
-                int adjNodeDist = nei[1] + currDist;
+                int adjNodeDist = currDist + nei[1];
+
                 if (adjNodeDist < dist[adjNode]) {
-                    List<Integer> newPath = new ArrayList<>(path);
-                    newPath.add(adjNode);
-                    pq.offer(new PQNode(newPath, adjNodeDist));
                     dist[adjNode] = adjNodeDist;
+                    List<Integer> newPath = new ArrayList<>(currPath);
+                    newPath.add(adjNode);
+                    q.add(new QueueNode(newPath, adjNodeDist));
                 }
             }
         }
-        
-        return new ArrayList<>(Arrays.asList(-1));
-    }
-    
-    static class PQNode implements Comparable<PQNode> {
-        List<Integer> path;
-        int dist;
-        
-        public PQNode(List<Integer> path, int dist) {
-            this.path = path;
-            this.dist = dist;
+
+        if (destPath.size() == 0) {
+            return new ArrayList<>(Arrays.asList(-1));
         }
-        
-        @Override
-        public int compareTo(PQNode other) {
-            return Integer.compare(this.dist, other.dist);
+        return destPath;
+    }
+
+    static class QueueNode {
+        List<Integer> path;
+        int distSoFar;
+
+        public QueueNode(List<Integer> path, int distSoFar) {
+            this.path = path;
+            this.distSoFar = distSoFar;
         }
     }
 }
+
