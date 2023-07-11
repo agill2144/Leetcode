@@ -12,6 +12,11 @@ func distanceK(root *TreeNode, target *TreeNode, k int) []int {
     // A TREE IS A UNDIRECTED GRAPH
     // when you see tree, also consider undirected graph
     
+    // other appraoch is create parent ptrs so then we can traverse from target 
+    // start from dfs(target, 1)
+    // each recursion will dfs(r.Left, currDist+1), dfs(r.Right, currDist+1), dfs(r.parent, currDist+1)
+    // save when currDist becomes k, and return back since going further when currDist is already k, will not help
+    
     adjList := map[*TreeNode][]*TreeNode{}
     var buildGraph func(r *TreeNode, parent *TreeNode)
     buildGraph = func(r *TreeNode, parent *TreeNode) {
