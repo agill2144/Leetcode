@@ -14,7 +14,7 @@
     
 //     // other appraoch is create parent ptrs so then we can traverse from target
 //     // but we cannot modify input TreeNode struct, as it does not have "parent" field
-//     // ok then use a hashmap to keep track of each parent per node :shrug
+//     // ok then use a hashmap to keep track of each parent per node :shrug ( implemented as another approach below )
 //     // then ( whichever way we have parent ptrs )
 //     // start from dfs(target, 0)
 //     // each recursion will dfs(r.Left, currDist+1), dfs(r.Right, currDist+1), dfs(r.parent, currDist+1)
