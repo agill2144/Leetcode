@@ -26,7 +26,6 @@ func amountOfTime(root *TreeNode, start int) int {
     }
     
     buildGraph(root, nil)
-    fmt.Println(adjList)
     q := []int{start}
     visited := map[int]struct{}{}
     visited[start] = struct{}{}
