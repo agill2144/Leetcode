@@ -27,6 +27,7 @@ func str2tree(s string) *TreeNode {
             i++
             root.Left = dfs()
         }
+        // if we come back from left child and this is another open bracket, then this is right child
         if i < len(s) && s[i] == '(' && root.Left != nil {
             i++
             root.Right = dfs()
