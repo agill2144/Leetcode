@@ -10,6 +10,16 @@ func distanceToCycle(n int, edges [][]int) []int {
     cyclicNodes := make([]bool, n)
     visited := make([]bool, n)
     cyclicNode := -1
+
+    // N nodes will be connected to a cycle
+    // but only handful of those N make the actual cycle
+    // therefore we want to make sure, we only mark the nodes that FORM
+    // a cycle
+    // as soon as we run into a node that creates a cycle, we mark that node,
+    // and return back telling previous nodes that they are part of a cycle
+    // Once our recursion comes to the marked cyclic node, we mark identifying the cyclic nodes as "done"
+    // thats what this flag is for
+    
     done := false
     var dfs func(node, prev int) bool
     dfs = func(node, prev int) bool {
