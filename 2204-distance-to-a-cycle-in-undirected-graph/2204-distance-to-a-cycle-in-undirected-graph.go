@@ -29,15 +29,15 @@ func distanceToCycle(n int, edges [][]int) []int {
         return true
     }
     dfs(0, -1)
-    visited = make([]bool, n)     
     dist := make([]int, n)
     q := [][]int{}
 
     for i := 0; i < len(cyclicNodes); i++ {
         if cyclicNodes[i] {
             dist[i] = 0
-            visited[i] = true
             q = append(q, []int{i, 0})
+        } else {
+            dist[i] = -1 // not yet visited
         }
     }
     for len(q) != 0 {
@@ -46,10 +46,9 @@ func distanceToCycle(n int, edges [][]int) []int {
         node := dq[0]
         currDist := dq[1]
         for _, nei := range adjList[node] {
-            if !visited[nei] {
+            if dist[nei] == -1 {
                 dist[nei] = currDist+1
                 q = append(q, []int{nei, currDist+1})
-                visited[nei] = true
             }
         }
     }
