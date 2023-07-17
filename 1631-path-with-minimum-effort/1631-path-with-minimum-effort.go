@@ -7,11 +7,32 @@
 // also means better ans for other cells connected to it
 // Instead we need to prioritize smaller efforts first instead to avoid redundant processing of the same cell over and over again
 // Graph with edge weights + shortest path + minimize something + vanilla bfs has to reprocess same cells again = Dijkstra is the ans
+
+// in a path, we have to take abs diff between adjNode and keep max rolling
+// find a path from src to dest and find the max effort 
+// max effort is the max diff between any 2 adjnode within this path
+// 1 2 2 2 5 = max diff = 3 (5-3)
+// 1 2 8 3 5 = max diff = 6 (8-2)
+// 1 3 5 3 5 = max diff = 2 (5-3)
+// then we have to the min out of all the path 
+// we can brute this using dfs and there is likely repeating subproblems ( DP hint )
+// however this is also like a BFS / graph question
+// kind of like ; find shortest path in binary matrix
+// the only diff is we have weights involved in this question vs binary matrix was vanilla bfs ( level by level )
+// shortest path with weights = dijkstra
+
+// dijsktra we need
+// 1. pq
+// 2. distance array that helps checked if a element is visited or not and if yes, whether we have a reached with smaller distance
+
 func minimumEffortPath(heights [][]int) int {
     m := len(heights)
     n := len(heights[0])
     
     // this is like classic dist array but rebranded as "Efforts"
+
+    // time = o(mn)
+    // space = o(mn)
     efforts := make([][]int, m)
     for i := 0; i < m; i++ {
         efforts[i] = make([]int, n)
@@ -19,12 +40,23 @@ func minimumEffortPath(heights [][]int) int {
             efforts[i][j] = math.MaxInt64
         }
     }
+    
     efforts[0][0] = 0
     dirs := [][]int{{1,0},{-1,0},{0,-1},{0,1}}
+
+    // space = o(mn) ( number of vertices )
     pq := &minHeap{items: [][]int{{0,0,0}}}
+    
+    // time = o(mnLogmn); remember dijkstra's TC = o(ELogV) ; logV = log$HeapSize which is V
     for pq.Len() != 0 {
         dq := heap.Pop(pq).([]int)
         cr,cc,currEffort := dq[0],dq[1],dq[2]
+
+        // as soon as we run into our destination
+        // we CAN exit because this is PQ
+        // PQ will prioritize smaller distances therefore
+        // we are guranteed that if there are multiple ans in PQ, the smaller one will be processed first
+        // and we need the smallest ans
         if cr == m-1 && cc == n-1 {return currEffort}
         
         for _, dir := range dirs {
