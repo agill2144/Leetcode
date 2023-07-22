@@ -6,6 +6,23 @@
  *     Right *TreeNode
  * }
  */
+// Successor = "after node" ( next node but smallest)
+// Predecessor = "before node" (prev node but biggest)
+
+func successor(r *TreeNode) *TreeNode {
+    if r == nil {return nil}
+    r = r.Right
+    for r.Left != nil {r = r.Left}
+    return r
+}
+
+func predecessor(r *TreeNode) *TreeNode {
+    if r == nil {return nil}
+    r = r.Left
+    for r.Right != nil {r = r.Right}
+    return r
+}
+
 func deleteNode(root *TreeNode, key int) *TreeNode {
     if root == nil {return root}
         
