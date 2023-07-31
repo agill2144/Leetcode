@@ -1,29 +1,34 @@
 from typing import List
 
+from typing import List
+
 class Solution:
     # Function to detect cycle in an undirected graph.
     def isCycle(self, V: int, adj: List[List[int]]) -> bool:
         visited = [False] * V
-        q = []  # <node, prev>
 
+        def dfs(node, prev):
+            # Base case
+            if visited[node]:
+                return False
+
+            # Mark the current node as visited
+            visited[node] = True
+
+            # Explore the neighbors (adjacent nodes)
+            for nei in adj[node]:
+                if nei == prev:
+                    continue
+                if not dfs(nei, node):
+                    return False
+
+            return True
+
+        # Perform DFS for each unvisited node
         for i in range(V):
             if not visited[i]:
-                visited[i] = True
-                q.append([i, -1])
-                while len(q) != 0:
-                    dq = q[0]
-                    q = q[1:]
-                    currNode = dq[0]
-                    prev = dq[1]
-
-                    for nei in adj[currNode]:
-                        if nei == prev:
-                            continue
-                        if visited[nei]:
-                            return True
-
-                        visited[nei] = True
-                        q.append([nei, currNode])
+                if not dfs(i, -1):
+                    return True
 
         return False
 
