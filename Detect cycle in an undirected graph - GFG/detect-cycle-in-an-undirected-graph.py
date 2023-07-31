@@ -1,40 +1,36 @@
 from typing import List
+
 class Solution:
-    #Function to detect cycle in an undirected graph.
-	def isCycle(self, V: int, adj: List[List[int]]) -> bool:
-	    visited = [False]*V
-	    
-	    def dfs(node: int, prev: int, path: List[bool]) -> bool:
-	        # base
-	        if path[node]:
-	           return False
-	        if visited[node]:
-	            return True
-	        
-	        # logic
-	        path[node] = True
-	        for nei in adj[node]:
-	            if nei == prev:
-	                continue
-	            if not dfs(nei, node, path):
-	                return False
-	        path[node] = False
-	        return True
-	   
-	    p = [False]*V
-	    for i in range(V):
-	        if not visited[i]:
-	            if not dfs(i,-1, p):
-	                return True
-	   
-	    return False
-	   
-	       
-	       
+    # Function to detect cycle in an undirected graph.
+    def isCycle(self, V: int, adj: List[List[int]]) -> bool:
+        visited = [False] * V
+        q = []  # <node, prev>
+
+        for i in range(V):
+            if not visited[i]:
+                visited[i] = True
+                q.append([i, -1])
+                while len(q) != 0:
+                    dq = q[0]
+                    q = q[1:]
+                    currNode = dq[0]
+                    prev = dq[1]
+
+                    for nei in adj[currNode]:
+                        if nei == prev:
+                            continue
+                        if visited[nei]:
+                            return True
+
+                        visited[nei] = True
+                        q.append([nei, currNode])
+
+        return False
 
 
 #{ 
  # Driver Code Starts
+
 if __name__ == '__main__':
 
 	T=int(input())
