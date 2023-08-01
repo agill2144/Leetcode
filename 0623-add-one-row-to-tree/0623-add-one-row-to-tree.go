@@ -17,6 +17,7 @@ func addOneRow(root *TreeNode, val int, depth int) *TreeNode {
     dfs = func(r *TreeNode, currDepth int)  {
         // base
         if r == nil {return}
+        if currDepth == depth {return}
         
         // logic
         if currDepth == depth-1 {
