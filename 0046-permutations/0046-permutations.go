@@ -12,9 +12,12 @@ func permute(nums []int) [][]int {
         
         // logic
         for i := start; i < len(nums); i++ {
-            nums[i],nums[start] = nums[start],nums[i]
+            // action
+            nums[i], nums[start] = nums[start], nums[i]
+            // recurse
             dfs(start+1)
-            nums[i],nums[start] = nums[start],nums[i]
+            // backtrack            
+            nums[i], nums[start] = nums[start], nums[i]
         }
     }
     dfs(0)
