@@ -17,20 +17,19 @@ func letterCombinations(digits string) []string {
     dfs = func(ptr int, word string) {
         // base
         if ptr == len(digits) {
-            if len(word) == len(digits) {out = append(out, word)}
+            out = append(out, word)
             return
         }
         
         // logic
-        for i := ptr; i < len(digits); i++ {
-            currDig := digits[i]
-            chars := digMap[currDig]
-            for j := 0; j < len(chars); j++ {
-                word += chars[j]
-                dfs(i+1, word)
-                word = word[:len(word)-1]
-            }
+        currDig := digits[ptr]
+        chars := digMap[currDig]
+        for j := 0; j < len(chars); j++ {
+            word += chars[j]
+            dfs(ptr+1, word)
+            word = word[:len(word)-1]
         }
+        
     }
     dfs(0, "")
     return out
