@@ -18,6 +18,7 @@ func (this *MinStack) Push(val int)  {
     if len(this.min) == 0 || val <= *this.min[len(this.min)-1] {
         this.min = append(this.min, ptrVal)
     }
+    
 }
 
 
