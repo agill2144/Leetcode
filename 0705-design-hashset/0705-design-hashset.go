@@ -1,68 +1,139 @@
-package main
 
-const outterArraySize = 1000
-const innerArraySize = 1001
+const (
+    arraySize int = 1001
+)
 
-/*
-   TODO:
-   1. Why is inner array size bigger by just 1 ?
-   - because the edge case when $key is the largest key being added to the set.
-   - If our biggest key is 10^6 and our hashIdx for outter array resolves to $i , then hashIdx for array[$i] will resolve to 1000 - which will be out of bounds, therefore +1 in the nested array
-   2. Why is our double hashing func using / operator instead of % operator ( like the 1st hashing func )
-   - This is because using the same hash func in the nested array will result into a collision in the nested array
-   - so something SHOULD BE DIFFERENT than the outter array
-*/
-
-// time: o(1)
-// space: o(1)
-func hashIdx(key int) int  { return key % outterArraySize }
-func hashIdx2(key int) int { return key / innerArraySize }
-
+// using chaining to avoid collision
 type MyHashSet struct {
-	items [][]bool
+    items []*dll  
 }
+
 
 func Constructor() MyHashSet {
-	items := make([][]bool, 1000)
-	return MyHashSet{
-		items: items,
-	}
+    return MyHashSet{
+        items: make([]*dll, arraySize),
+    }
 }
 
-// time: o(1)
-// space: o(1)
-func (this *MyHashSet) Add(key int) {
-	idx := hashIdx(key)
-	idx2 := hashIdx2(key)
-	if this.items[idx] == nil {
-        if idx == 0 {
-            this.items[idx] = make([]bool, outterArraySize+1)
-        } else {
-            this.items[idx] = make([]bool, outterArraySize)
-        }
-		
-	}
-	this.items[idx][idx2] = true
+func(this *MyHashSet) hashIdx(key int) int {
+    return key % arraySize
 }
 
-// time: o(1)
-// space: o(1)
-func (this *MyHashSet) Remove(key int) {
-	idx := hashIdx(key)
-	idx2 := hashIdx2(key)
-	if this.items[idx] == nil {
-		return
-	}
-	this.items[idx][idx2] = false
+
+func (this *MyHashSet) Add(key int)  {
+    idx := this.hashIdx(key)
+    if this.items[idx] == nil {
+        this.items[idx] = newDLL()
+    }
+    exists := this.items[idx].searchAndReturnNode(key)
+    if exists != nil {return}
+    this.items[idx].addToTail(key)
 }
 
-// time: o(1)
-// space: o(1)
+
+func (this *MyHashSet) Remove(key int)  {
+    idx := this.hashIdx(key)
+    if this.items[idx] == nil {return}
+    
+    nodeToDelete := this.items[idx].searchAndReturnNode(key)
+    if nodeToDelete != nil {
+        this.items[idx].deleteNode(nodeToDelete)
+    }
+}
+
+
 func (this *MyHashSet) Contains(key int) bool {
-	idx := hashIdx(key)
-	idx2 := hashIdx2(key)
-	if this.items[idx] == nil {
-		return false
-	}
-	return this.items[idx][idx2]
+    idx := this.hashIdx(key)
+    if this.items[idx] == nil {return false}    
+    nodeToDelete := this.items[idx].searchAndReturnNode(key)
+    return nodeToDelete != nil    
+}
+
+
+/**
+ * Your MyHashSet object will be instantiated and called as such:
+ * obj := Constructor();
+ * obj.Add(key);
+ * obj.Remove(key);
+ * param_3 := obj.Contains(key);
+ */
+
+type listNode struct {
+    key int
+    next *listNode
+    prev *listNode
+}
+
+type dll struct {
+    head *listNode
+    tail *listNode
+}
+
+func newDLL() *dll {
+    return &dll{}
+}
+
+func (d *dll) addToHead(key int) {
+    newHead := &listNode{key: key}
+    if d.head == nil {
+        d.head = newHead
+        d.tail = newHead
+        return
+    }
+    newHead.next = d.head
+    d.head.prev = newHead
+    d.head = newHead
+}
+
+func (d *dll) addToTail(key int) {
+    newTail := &listNode{key: key}
+    if d.head == nil {
+        d.head = newTail
+        d.tail = newTail
+        return
+    }
+    newTail.prev = d.tail
+    d.tail.next = newTail
+    d.tail = newTail
+}
+
+
+func (d *dll) deleteNode(node *listNode) {
+    if d.head == nil {
+        panic("DLL is emtpy")
+    }
+    if d.head == node {
+        newHead := d.head.next
+        d.head = newHead
+        if d.tail == node {
+            d.tail = newHead
+        }
+        return
+    }
+    next := node.next
+    prev := node.prev
+    node.next = nil
+    node.prev = nil
+
+    
+    // tail node
+    if node == d.tail {
+        prev.next = nil
+        d.tail = prev
+        return
+    }
+    
+    // middle node
+    next.prev = prev
+    prev.next = next
+}
+
+func (d *dll) searchAndReturnNode(key int) *listNode {
+    if d.head == nil {return nil}
+    curr := d.head
+    for curr != nil {
+        if curr.key == key {return curr}
+        curr = curr.next
+    }
+    return nil
 }
