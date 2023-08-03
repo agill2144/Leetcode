@@ -1,3 +1,5 @@
+// approach: use 2 stacks
+
 type MinStack struct {
     st []*int
     min []*int
