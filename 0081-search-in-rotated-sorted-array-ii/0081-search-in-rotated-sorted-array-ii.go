@@ -7,7 +7,7 @@ func search(nums []int, target int) bool {
         if nums[mid] == target {return true}
         
         if nums[mid] == nums[left] && nums[mid] == nums[right] {
-            // when we cannot determine a sorted half, shrink our window!
+            // when we cannot determine a sorted half, shrink our window! FUCKING SHIT
             left++
             right--
             continue
