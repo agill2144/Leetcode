@@ -21,10 +21,15 @@ func largestPalindromic(num string) string {
         top := heap.Pop(mx).(string)
         freq := freqMap[top]
         
+        // when we have left over counts for a key, push it to other pq
         if freq == 1 || freq % 2 != 0 {
             heap.Push(usedKeys, top)
-            if freq == 1 {continue}
         }
+        
+        // the only time where we cannot use a key to build the palindrome is when freq is only 1
+        if freq == 1 {continue}
+        
+        // when a value to push to output is 0 and this is the first value in output, cannot have leading 0s
         if top == "0" {
             if left == 0 {
                 delete(freqMap, top)
@@ -33,19 +38,18 @@ func largestPalindromic(num string) string {
         }
         
         if freq % 2 == 0 {
-            k := 0
-            for k < freq {
+            for freq != 0 {
                 out[left] = &top
                 out[right] = &top
                 left++
                 right--
-                k+=2
+                freq-=2
             }
             delete(freqMap, top)
         } else if freq > 1 {
             n := freq-1
             k := 0
-            for k < freq-1 {
+            for k < n {
                 out[left] = &top
                 out[right] = &top
                 left++
@@ -55,7 +59,8 @@ func largestPalindromic(num string) string {
             freqMap[top] = freq-n
         }
     }
-    
+    // keys we could not use the first time, because of their odd or 1 freq count
+    // take the biggest one
     if usedKeys.Len() >= 1 {
         top := heap.Pop(usedKeys).(string)
         if out[left] == nil {
@@ -64,12 +69,11 @@ func largestPalindromic(num string) string {
             out[right] = &top
         }
     }
+    // build out the final string
     outStr := new(strings.Builder)
     for i := 0; i < len(out); i++ {
         if out[i] != nil {
-           
             outStr.WriteString(*out[i])
-        
         }
     }
     if outStr.String() =="" {return "0"}
