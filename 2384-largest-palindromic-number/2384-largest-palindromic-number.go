@@ -1,3 +1,5 @@
+
+// use heaps to be build largest possible palindrome
 func largestPalindromic(num string) string {
  
     freqMap := map[string]int{}
@@ -28,7 +30,7 @@ func largestPalindromic(num string) string {
         
         // the only time where we cannot use a key to build the palindrome is when freq is only 1
         if freq == 1 {continue}
-        
+        // or
         // when a value to push to output is 0 and this is the first value in output, cannot have leading 0s
         if top == "0" {
             if left == 0 {
