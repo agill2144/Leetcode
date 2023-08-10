@@ -3,7 +3,6 @@
 // our target is surrounded by n-1 dupes, therefore our left and right ptr see most of the elements , i.e seeing all elements
 // avg tc = o(logn)
 // space = o(1)
-
 func search(nums []int, target int) bool {
     left := 0
     right := len(nums)-1
