@@ -1,3 +1,4 @@
+// only do this after https://leetcode.com/problems/subarray-sum-equals-k/
 func checkSubarraySum(nums []int, k int) bool {
     rSum := 0
     remainderIdx := map[int]int{0:-1}
