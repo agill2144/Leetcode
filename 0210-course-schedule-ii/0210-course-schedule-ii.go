@@ -32,8 +32,9 @@ func findOrder(numCourses int, prerequisites [][]int) []int {
         visited[node] = true
         path[node] = true
         for _, nei := range adjList[node] {
-                if !dfs(nei, path) {return false}            
-            
+            if path[nei] {return false}
+            if visited[nei] {continue}
+            if !dfs(nei, path) {return false}            
         }
         st = append(st, node)
         path[node] = false
@@ -52,5 +53,5 @@ func findOrder(numCourses int, prerequisites [][]int) []int {
         st[i], st[len(st)-1-i] = st[len(st)-1-i], st[i]
     }
     return st
-    
+        
 }
