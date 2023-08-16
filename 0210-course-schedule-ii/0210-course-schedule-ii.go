@@ -21,7 +21,8 @@ func findOrder(numCourses int, prerequisites [][]int) []int {
     visited := make([]bool, numCourses)
     st := []int{}
     
-    // time = o(v+e), we 
+    // time = o(v+e), we go thru all v nodes and process each of their edges
+    // space = o(v) 
     var dfs func(node int, path []bool) bool
     dfs = func(node int, path []bool) bool {
         // base
@@ -32,8 +33,6 @@ func findOrder(numCourses int, prerequisites [][]int) []int {
         visited[node] = true
         path[node] = true
         for _, nei := range adjList[node] {
-            if path[nei] {return false}
-            if visited[nei] {continue}
             if !dfs(nei, path) {return false}            
         }
         st = append(st, node)
@@ -41,7 +40,11 @@ func findOrder(numCourses int, prerequisites [][]int) []int {
         return true
     }
     
+    // time = o(v)
+    // space = o(v)
     p := make([]bool, numCourses)
+
+    // time = o(v)
     for i := 0; i < numCourses; i++ {
         if !visited[i] {
             if !dfs(i, p) {return nil}
@@ -49,9 +52,14 @@ func findOrder(numCourses int, prerequisites [][]int) []int {
     }
     // could not take all courses
     if len(st) != numCourses {return nil}
+    
+    // time = o(v/2) = o(v)
     for i := 0; i < len(st)/2; i++ {
         st[i], st[len(st)-1-i] = st[len(st)-1-i], st[i]
     }
+    
+    // total time = o(v+e)
+    // space = o(v+e)
     return st
         
 }
