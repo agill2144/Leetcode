@@ -6,13 +6,10 @@
 // time : o(n) * o(n) = o(n^2)
 func threeSum(nums []int) [][]int {
     out := [][]int{}
-    set := map[int]struct{}{}
     outSeen := map[[3]int]struct{}{}
     
     for i := 0; i < len(nums); i++ { // o(n)
         outterNum := nums[i]
-        if _, ok := set[outterNum]; ok {continue}
-        set[outterNum] = struct{}{}
         target := 0-outterNum
         
         seen := map[int]struct{}{}
