@@ -3,9 +3,14 @@ func threeSum(nums []int) [][]int {
     uniqTripSet := map[[3]int]struct{}{}
     // we are not using a idx map, becuase we have to form triplets using their values instead of idx
     ans := [][]int{}
+    outterSet := map[int]struct{}{}
     for i := 0; i < len(nums); i++ {
         ithVal := nums[i]
+        if _, ok := outterSet[ithVal]; ok {continue}
+        outterSet[ithVal] = struct{}{}
         target := 0-ithVal
+
+        // 2Sum complement search from this point
         set := map[int]struct{}{}
         for j := i+1; j < len(nums); j++ {
             jthVal := nums[j]
@@ -21,6 +26,7 @@ func threeSum(nums []int) [][]int {
             }
             set[jthVal] = struct{}{}
         }
+        
     }
     return ans
 }
