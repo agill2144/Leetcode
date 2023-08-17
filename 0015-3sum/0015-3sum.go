@@ -1,5 +1,6 @@
 
-
+// time = o(nlogn) sort + o(n^2) 2Sum two Ptr
+// space = o(1) if sort is not taking any space ( ie. not using merge sort for instance )
 func threeSum(nums []int) [][]int {
     sort.Ints(nums)
     out := [][]int{}
