@@ -1,32 +1,30 @@
 func threeSum(nums []int) [][]int {
-    // To keep track on uniq triplets
-    uniqTripSet := map[[3]int]struct{}{}
-    // we are not using a idx map, becuase we have to form triplets using their values instead of idx
-    ans := [][]int{}
-    outterSet := map[int]struct{}{}
-    for i := 0; i < len(nums); i++ {
-        ithVal := nums[i]
-        if _, ok := outterSet[ithVal]; ok {continue}
-        outterSet[ithVal] = struct{}{}
-        target := 0-ithVal
-
-        // 2Sum complement search from this point
-        set := map[int]struct{}{}
-        for j := i+1; j < len(nums); j++ {
-            jthVal := nums[j]
-            diff := target-jthVal
-            if _, ok := set[diff]; ok {
-                triplet := []int{ithVal,jthVal,diff}
-                sort.Ints(triplet)
-                tmp := [3]int{triplet[0], triplet[1], triplet[2]}
-                if _, ok := uniqTripSet[tmp]; !ok {
-                    ans = append(ans, triplet) 
-                    uniqTripSet[tmp] = struct{}{}
+    out := [][]int{}
+    set := map[int]struct{}{}
+    outSeen := map[[3]int]struct{}{}
+    
+    for i := 0; i < len(nums); i++ { // o(n)
+        outterNum := nums[i]
+        if _, ok := set[outterNum]; ok {continue}
+        set[outterNum] = struct{}{}
+        target := 0-outterNum
+        
+        seen := map[int]struct{}{}
+        for j := i+1; j < len(nums); j++ { // o(n)
+            compl := target-nums[j]  
+            if _, ok := seen[compl]; ok {
+                triplet := []int{outterNum, nums[j], compl}
+                sort.Ints(triplet) // (o3log3)
+                tmp := [3]int{triplet[0], triplet[1], triplet[2]} 
+                if _, ok := outSeen[tmp]; !ok {
+                    outSeen[tmp] = struct{}{}
+                    out = append(out, triplet)
                 }
             }
-            set[jthVal] = struct{}{}
+            seen[nums[j]] = struct{}{}
         }
-        
-    }
-    return ans
+    } 
+    // total time = o(n) x o(n) x o(3log3) = o(n^2)
+    // space = o(n) + o(n) + o(n) ; 3 sets
+    return out
 }
