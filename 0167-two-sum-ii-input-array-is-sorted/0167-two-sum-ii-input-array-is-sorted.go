@@ -1,11 +1,11 @@
 // binary search the complement
+// time = o(n) * o(logN)
+// space = o(1)
 func twoSum(nums []int, target int) []int {
     for i := 0; i < len(nums); i++ {
         diff := target - nums[i]
-        // fmt.Println("searching for: ", diff)
-        val := binarySearch(diff, nums)
+        val := binarySearch(diff, i+1, nums)
         if val != i && val != -1 {
-            // fmt.Println("found at idx: ", val, i)
             if i < val {
                 return []int{i+1, val+1}            
             } else {
@@ -18,8 +18,7 @@ func twoSum(nums []int, target int) []int {
 }
 
 
-func binarySearch(target int , nums []int) int {
-    left := 0
+func binarySearch(target int, left int, nums []int) int {
     right := len(nums)-1
     for left <= right {
         mid := left + (right-left)/2
