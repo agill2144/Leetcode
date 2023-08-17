@@ -1,3 +1,9 @@
+// for each ith element, do twoSum using complement search
+// what will be the target for the twoSum complement search; 
+//  - what number do we need to add to ith element for it to equal to 0
+//  - 0-ithNumber
+// so our twoSum complement search will search for 0-ithNumber ( i being the outerloop idx )
+// time : o(n) * o(n) = o(n^2)
 func threeSum(nums []int) [][]int {
     out := [][]int{}
     set := map[int]struct{}{}
@@ -28,3 +34,4 @@ func threeSum(nums []int) [][]int {
     // space = o(n) + o(n) + o(n) ; 3 sets
     return out
 }
+
