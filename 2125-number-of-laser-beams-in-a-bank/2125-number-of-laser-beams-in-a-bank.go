@@ -14,6 +14,7 @@ func numberOfBeams(bank []string) int {
             total += (curr*prev)
         }
         if curr == 0 {
+            // no lasers on this row, keep the prev one going, do not reset prev to 0(curr)
             continue
         }
         prev = curr
