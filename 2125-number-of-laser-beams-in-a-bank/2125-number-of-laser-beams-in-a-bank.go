@@ -1,3 +1,6 @@
+// simulate and count
+// time = o(mn) ; m = len(bank); n = len of each string
+// space = o(1)
 func numberOfBeams(bank []string) int {
     prev := 0
     m := len(bank)
