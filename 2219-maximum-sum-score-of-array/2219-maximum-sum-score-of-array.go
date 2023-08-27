@@ -1,17 +1,14 @@
 func maximumSumScore(nums []int) int64 {
-    // 2 pass
-    // 1. get the total sum
-    // 2. use the total sum to apply the 2 rules
-    var total int64
-    for i := 0; i < len(nums); i++ {total += int64(nums[i])}
-    var maxScore int64 = math.MinInt64 
-    var runningSum int64
-    
+    var total  int64 = 0
     for i := 0; i < len(nums); i++ {
-        runningSum += int64(nums[i])
-        remainingRightSum := total-runningSum + int64(nums[i])
-        maxScore = max(maxScore, max(runningSum, remainingRightSum))
-
+        total += int64(nums[i])
+    }
+    var maxScore int64 = math.MinInt64
+    var rSum int64 = 0
+    for i := 0; i < len(nums); i++ {
+        rSum += int64(nums[i])
+        right := (total-rSum) + int64(nums[i])
+        maxScore = max(maxScore, max(rSum, right))
     }
     return maxScore
 }
