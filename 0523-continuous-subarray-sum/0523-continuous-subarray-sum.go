@@ -27,7 +27,7 @@ func checkSubarraySum(nums []int, k int) bool {
     sum := 0
     for i := 0; i < len(nums); i++ {
         sum += nums[i]
-        remainder := sum % k
+        remainder := (sum % k + k) % k
         
         idx, ok := remainderIdx[remainder]
         if ok && i-(idx+1)+1 >= 2{
