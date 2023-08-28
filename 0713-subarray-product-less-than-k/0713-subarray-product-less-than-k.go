@@ -22,20 +22,32 @@
         - count number of subarrays 
 */
 func numSubarrayProductLessThanK(nums []int, k int) int {
-    if nums == nil || len(nums) == 0 || k <= 1 {
-        return 0
-    }
-
-    prod := 1
+    if nums == nil || len(nums) == 0 {return 0}
+    /*
+        k = 1; nums = [1,2,3,4,1]
+        in this case prod will always be atleast 1
+        but we want strictly less than k ( not including k)
+        
+        k = 1; nums = [1,1,1,1]
+        same problem as above
+        - our running prod will always be atleast 1 and never less than 1
+        
+        k = 1; nums = [0,1]
+        - cannot have 0's because of the constraints
+        - nums[i] >= 1 && <= 1000
+    */
+    if k <= 1 {return 0}
+    
     left := 0
     count := 0
-    for right := 0; right < len(nums); right++ {
-        prod *= nums[right]
+    prod := 1
+    for i := 0; i < len(nums); i++ {
+        prod *= nums[i]
         for prod >= k {
             prod /= nums[left]
             left++
         }
-        count += right-left+1
+        count += i-left+1
     }
     return count
 }
