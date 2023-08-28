@@ -1,16 +1,16 @@
 func subarraysDivByK(nums []int, k int) int {
-    remainderFreq := map[int]int{0:1}
-    sum := 0
     count := 0
+    freq := map[int]int{0:1}
+    sum := 0
     for i := 0; i < len(nums); i++ {
         sum += nums[i]
-        remainder := sum % k
-        if remainder < 0 {remainder += k}
-        val, ok := remainderFreq[remainder]
+        rem := sum % k 
+        if rem < 0 {rem += k}
+        val, ok := freq[rem]
         if ok {
             count += val
         }
-        remainderFreq[remainder]++
+        freq[rem]++
     }
     return count
 }
