@@ -20,6 +20,9 @@
         
         What are we looking to return once we do have a window of running prod < k ?
         - count number of subarrays 
+        
+        time = o(n)
+        space = o(1)
 */
 func numSubarrayProductLessThanK(nums []int, k int) int {
     if nums == nil || len(nums) == 0 {return 0}
