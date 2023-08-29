@@ -1,14 +1,6 @@
 /*
     approach: running sum / prefix sum
-    - We need a subarray sum divisible by k
-    - Which means we need to maintain sum
-    - but this is running sum from 0 to some x idx
-    - and it may or may not be divisible by k
-    - But what about the other subarrays between ( not including ) idx 0 and idx x ?
-    - how do we find those ?
-    - in brute force, we used nested iterations to form every single subarray
     - to get rid of nested iterations, consider; binarySearch, hashing, DP, SlidingWindow, TwoPtrs, RunningSum
-    
     - This problem sounds closer to runningSum as we do not have a definitive as to when to shrink our sliding window
     - at each runningSum, we will be checking if this runningSum is divisible by k
     - If the remainder is 0, great, it means from idx 0 to this idx there is a subarray which is divisble by k
@@ -61,6 +53,13 @@ func checkSubarraySum(nums []int, k int) bool {
 
 /*
     approach : brute force
+    - We need a subarray sum divisible by k
+    - Which means we need to maintain sum
+    - but this is running sum from 0 to some x idx
+    - and it may or may not be divisible by k
+    - But what about the other subarrays between ( not including ) idx 0 and idx x ?
+    - how do we find those ?
+    - in brute force, we used nested iterations to form every single subarray
     - using nested iterations, form all possible subarray
     - and check if its a good subarray    
     time = o(n^2)
