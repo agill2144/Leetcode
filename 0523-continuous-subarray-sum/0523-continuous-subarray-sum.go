@@ -4,6 +4,7 @@ func checkSubarraySum(nums []int, k int) bool {
     for i := 0; i < len(nums); i++ {
         sum += nums[i]
         rem := sum % k
+        if rem < 0 {rem += k}
         val, ok := remaindersIdx[rem]
         if ok && i-(val+1)+1 >= 2 {
             return true
