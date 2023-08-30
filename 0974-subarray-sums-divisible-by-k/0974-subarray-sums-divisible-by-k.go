@@ -4,8 +4,7 @@ func subarraysDivByK(nums []int, k int) int {
     count := 0
     for i := 0; i < len(nums); i++ {
         sum += nums[i]
-        rem := sum % k
-        if rem < 0 {rem += k}
+        rem := (sum % k + k) % k
         val, ok := remaindersIdx[rem]
         if ok {
             count+=val
