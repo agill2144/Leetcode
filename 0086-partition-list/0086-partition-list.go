@@ -13,14 +13,16 @@ func partition(head *ListNode, x int) *ListNode {
     
     curr := head
     for curr != nil {
+        next := curr.Next
+        curr.Next = nil
         if curr.Val >= x {
-            rightTail.Next = &ListNode{Val: curr.Val}
+            rightTail.Next = curr
             rightTail = rightTail.Next
         } else {
-            leftTail.Next = &ListNode{Val: curr.Val}
+            leftTail.Next = curr
             leftTail = leftTail.Next
         }
-        curr = curr.Next
+        curr = next
     }
     left = left.Next
     right = right.Next
