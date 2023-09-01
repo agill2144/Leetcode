@@ -4,21 +4,22 @@
  */
 func solution(knows func(a int, b int) bool) func(n int) int {
     return func(n int) int {
-        degrees := make([]int, n)
+        a := 0
         for i := 0; i < n; i++ {
-            a := i
-            for j := 0; j < n; j++ {
-                if i == j {continue}
-                b := j
-                if knows(a, b) {
-                    degrees[a]--
-                    degrees[b]++
-                }
+            if knows(a, i) {
+                // if a knows b, that means a->b, so now b is the new possibility
+                // a celeberity must NOT know anyone, if a know b, a is no longer the right ans
+                a = i
             }
         }
-        for i := 0; i < len(degrees); i++ {
-            if degrees[i] == n-1 {return i} 
+        
+        // now check if everyone else know a
+        for i := 0; i < n; i++ {
+            if i == a {continue}
+            if knows(a, i) || !knows(i, a) {return -1}
         }
-        return -1
+        
+        return a
+
     }
 }
