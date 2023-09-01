@@ -1,4 +1,8 @@
-
+/*
+    approach: sort + two ptrs
+    time = o(nlogn) + o(n^2)
+    space = depending on the sorting algo, o(n) for merge sort
+*/
 func threeSum(nums []int) [][]int {
     sort.Ints(nums)
     out := [][]int{}
@@ -17,7 +21,6 @@ func threeSum(nums []int) [][]int {
         */
         if i != 0 && nums[i] == nums[i-1] {continue}
         
-        // from here I understand
         left := i+1
         right := len(nums)-1
         for left < right {
