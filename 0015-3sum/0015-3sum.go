@@ -3,7 +3,21 @@ func threeSum(nums []int) [][]int {
     sort.Ints(nums)
     out := [][]int{}
     for i := 0; i < len(nums); i++ {
+        
+        /*
+            why this ?
+            - ith position in output array is fixed at idx 0 (look at when we save in output array)
+            - which means if an ith value at idx 0 formed a triplet, AND i loop moves forward AND
+            - the ith value is the same again ( as prev idx ), 
+            - does it make sense to use the same ith value at 0th idx again
+                - because same ith value as prev, will form another triplet
+                - but this new triplet was already saved from previous ith idx
+                - therefore we skip ith value if it matches prev idx
+            - All because ith value is fixed to idx 0
+        */
         if i != 0 && nums[i] == nums[i-1] {continue}
+        
+        // from here I understand
         left := i+1
         right := len(nums)-1
         for left < right {
