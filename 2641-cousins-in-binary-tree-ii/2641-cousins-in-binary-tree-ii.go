@@ -29,6 +29,13 @@ func replaceValueInTree(root *TreeNode) *TreeNode {
         if r == root {r.Val = 0}
         nextLevelSum ,ok := levelSum[level+1]
         if ok {
+            // if we have next level's sum
+            // $this node knows its childs
+            // these 2 childs are siblings ( they belong to the same parent )
+            // so standing at $this node, we can get sibling sum 
+            // and remove sibling sum from nextLevelTotalSum
+            // that will be sum of all cousins in the next level
+            // then $this node can set its child values to the diff value
             siblingSum := 0
             if r.Left != nil {siblingSum += r.Left.Val}
             if r.Right != nil {siblingSum += r.Right.Val}
