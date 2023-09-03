@@ -7,35 +7,35 @@
  * }
  */
 func isCousins(root *TreeNode, x int, y int) bool {
-    var (
-        xParent *TreeNode
-        xLevel int
-        yParent *TreeNode
-        yLevel int
-    )
-    
-    var dfs func(r *TreeNode, p *TreeNode, level int)
-    dfs = func(r *TreeNode, p *TreeNode, level int) {
-        // base
-        if r == nil {return}
-        
-        // logic
-        if r.Val == x {
-            xParent = p
-            xLevel = level
+    var xParent *TreeNode
+    var yParent *TreeNode
+    q := [][]*TreeNode{{root, nil}}    
+    for len(q) != 0 {
+        qSize := len(q)
+        for qSize != 0 {
+            dq := q[0]
+            q = q[1:]
+            node := dq[0]
+            parent := dq[1]
+
+            if node.Val == x {
+                xParent = parent
+            }
+            if node.Val == y {
+                yParent = parent
+            }
+            
+            if node.Left != nil {
+                q = append(q, []*TreeNode{node.Left, node})
+            }
+            if node.Right != nil {
+                q = append(q, []*TreeNode{node.Right, node})
+            }
+            qSize--
         }
-        if r.Val == y {
-            yParent = p
-            yLevel = level
-        }
-        
-        if xParent != nil && yParent != nil {return}
-        
-        dfs(r.Left, r, level+1)
-        dfs(r.Right, r, level+1)
+        if xParent == nil && yParent == nil {continue}
+        if (xParent == nil && yParent != nil) || (xParent != nil && yParent == nil) {return false} 
+        return xParent != yParent
     }
-    dfs(root, nil, 0)
-    
-    return xParent != nil && yParent != nil && xLevel == yLevel && xParent != yParent
-    
+    return false
 }
