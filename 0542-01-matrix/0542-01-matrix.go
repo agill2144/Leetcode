@@ -2,16 +2,14 @@ func updateMatrix(matrix [][]int) [][]int {
     dirs := [][]int{{1,0},{-1,0},{0,1},{0,-1}}
     m := len(matrix)
     n := len(matrix[0])
-
-    visited := make([][]bool, m)
-    for i := 0; i < m; i++ {visited[i] = make([]bool, n)}
     
     q := [][]int{}
     for i := 0; i < m; i++ {
         for j := 0; j < n; j++ {
             if matrix[i][j] == 0 {
                 q = append(q, []int{i,j})
-                visited[i][j] = true
+            } else {
+                matrix[i][j] = -1 // unvisited cells 
             }
         }
     }
@@ -26,10 +24,9 @@ func updateMatrix(matrix [][]int) [][]int {
         for _, dir := range dirs {
             nr := cr + dir[0]
             nc := cc + dir[1]
-            if nr >= 0 && nr < m && nc >= 0 && nc < n && !visited[nr][nc]{
+            if nr >= 0 && nr < m && nc >= 0 && nc < n && matrix[nr][nc] == -1{
                 matrix[nr][nc] = currDist+1
                 q = append(q, []int{nr,nc})
-                visited[nr][nc] = true
             }
         }
     }
