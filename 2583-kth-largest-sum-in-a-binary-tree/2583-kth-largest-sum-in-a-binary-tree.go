@@ -32,6 +32,7 @@ func kthLargestLevelSum(root *TreeNode, k int) int64 {
     */
     
     // quick select
+    if k > len(nums) {return -1}
     targetIdx := len(nums)-k
     if targetIdx < 0 || targetIdx == len(nums) {return -1}
     l := 0
