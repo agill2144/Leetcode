@@ -3,14 +3,13 @@ func checkSubarraySum(nums []int, k int) bool {
     sum := 0
     for i := 0; i < len(nums); i++ {
         sum += nums[i]
-        remainder := sum % k
-        if remainder == 0 && i >= 1 {return true}
-        val, ok := remainderIdx[remainder]
-        if ok && i-(val+1)+1 >= 2 {
+        r := sum % k
+        idx, ok := remainderIdx[r]
+        if ok && i-(idx+1)+1 >= 2 {
             return true
         }
         if !ok {
-            remainderIdx[remainder] = i
+            remainderIdx[r] = i
         }
     }
     return false
