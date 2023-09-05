@@ -7,41 +7,69 @@
  * }
  */
 
+/*
+    approach: single pass
+    - we need total level sum
+    - we need each sibling sum
+    - we know the level sum at level 0 is the root value itself
+    - we do not know the next level by first taking a pass just to get the level sum of each level.
+    - turns out we can do this while running a BFS
+    - have each parent node do 2 things ( at each level )
+        1. Look down at its child and get their child sum
+            - this is the sibling sum for each of its child
+            - and then the parent enqueue these childs with their siblingSum ; a pair < node, siblingSum >
+            - in next level, when these childs are dq'd we would have the exact sibling sum to remove from total level sum
+            - now we need the total level sum
+        2. At each level, when we are computing the sibling sum by looking down, 
+            - we can keep adding these sum to a temp var
+            - once a level is finished, we promote the this temp value to a $levelSum var
+            - so that when next level starts, and we dq a node, the dq'd node will have the exact sibling sum 
+            - and the $level sum var will have this levels total sum
+            - now we can replace the dq'd nodes value with its cousins sum ; $levelSum - $siblingSum
+            - And when this node is updated, this node is also a parent of some childs, repeat #1 and #2
+
+    time = o(n)
+*/
 
 func replaceValueInTree(root *TreeNode) *TreeNode {
     if root == nil {return nil}
 
     type queueNode struct{
         node *TreeNode
-        siblingSum int
+        sum int // siblingSum
     }
-    
-    q := []*queueNode{&queueNode{node:root, siblingSum:root.Val}} // <node,siblingSum>
     levelSum := root.Val
+    q := []*queueNode{&queueNode{root,root.Val}}
     for len(q) != 0 {
         nextLevelSum := 0
         qSize := len(q)
         for qSize != 0 {
             dq := q[0]
             q = q[1:]
-            
-            // replace this node's value with new value
-            dq.node.Val = levelSum-dq.siblingSum
+            node := dq.node
+            node.Val = levelSum-dq.sum
             
             nextSiblingSum := 0
-            if dq.node.Left != nil {nextSiblingSum += dq.node.Left.Val}
-            if dq.node.Right != nil {nextSiblingSum += dq.node.Right.Val}
+            // why cant we also enqueue left node and right node here?
+            // we cant, because with each node, we need to set its total sibling sum
+            // which is left+right, thats why we figure the sibling sum first, then only we add it
+            if node.Left != nil {nextSiblingSum += node.Left.Val}
+            if node.Right != nil {nextSiblingSum += node.Right.Val}
+            
+            // add sibling sum for next level sum
             nextLevelSum += nextSiblingSum
             
-            if dq.node.Left != nil {
-                q = append(q, &queueNode{dq.node.Left, nextSiblingSum})
+            // enqueue childs with their exact sibling sum
+            if node.Left != nil {
+                q = append(q, &queueNode{node.Left,nextSiblingSum})
             }
-            
-            if dq.node.Right != nil {
-                q = append(q, &queueNode{dq.node.Right, nextSiblingSum})
+            if node.Right != nil {
+                q = append(q, &queueNode{node.Right,nextSiblingSum})
             }
             qSize--
         }
+        // level is finished
+        // promote nextLevelSum to levelSum 
         levelSum = nextLevelSum
     }
     return root
