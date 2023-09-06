@@ -18,7 +18,6 @@ func pathSum(root *TreeNode, targetSum int) int {
         
         // logic
         rSum += r.Val
-        if rSum == targetSum {count++}
         diff := rSum-targetSum
         val, ok := path[diff]
         if ok {
@@ -29,7 +28,7 @@ func pathSum(root *TreeNode, targetSum int) int {
         dfs(r.Right, rSum, path)
         path[rSum]--
     }
-    dfs(root, 0, map[int]int{})
+    dfs(root, 0, map[int]int{0:1})
     return count
 }
 
