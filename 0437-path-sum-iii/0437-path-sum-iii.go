@@ -7,25 +7,34 @@
  * }
  */
 func pathSum(root *TreeNode, targetSum int) int {
+    if root == nil {return 0}
     count := 0
-    var dfs func(r *TreeNode, rSum int, path map[int]int)
-    dfs = func(r *TreeNode, rSum int, path map[int]int) {
+    var dfs func(r *TreeNode, sum int)
+    dfs = func(r *TreeNode, sum int) {
         // base
         if r == nil {return}
         
         // logic
-        rSum += r.Val
-        comp := rSum - targetSum
-        val, ok := path[comp]
-        if ok {
-            count+= val
+        sum += r.Val
+        if sum == targetSum {
+            count++
         }
-        path[rSum]++
-        
-        dfs(r.Left, rSum, path)
-        dfs(r.Right, rSum, path)
-        path[rSum]--
+        dfs(r.Left, sum)
+        dfs(r.Right, sum)
     }
-    dfs(root, 0, map[int]int{0:1})
+    
+    var dfs2 func(r *TreeNode)
+    dfs2 = func(r *TreeNode) {
+        // base
+        if r == nil {return}
+        
+        // logic
+        dfs(r, 0)
+        dfs2(r.Left)
+        dfs2(r.Right)
+    }
+    
+    dfs2(root)
     return count
 }
+
