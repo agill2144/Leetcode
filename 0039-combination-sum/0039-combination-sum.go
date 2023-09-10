@@ -1,117 +1,24 @@
-/*
-    approach : for-loop based recursion.
-    - Since we have to find all combinations, we need to start with a number
-    - And then with that number , find all other numbers that add up to target.
-    - We are allowed to re-use the same number as many times as we want.
-    - For example: [2,3,5] ; target = 8
-    - We need to pick each number 1 by 1 and try other possible numbers that sum up to 8
-    - Pick 2 : [2(i),3,5]
-        - Now with [2], go find other elements that when summed with these elements add up to target.
-        - Since we can re-use the same number over and over again,
-        - We can get [2,2,2,2] == 8
-        - [2,2,2,2] - is only possible with parent path [2,2,2]
-        - NOW go back to parent path ([2,2,2] i.e backtrack) and try next element that a parent may have 
-            - parent idx is still at [2(i),3,5]
-        - When recursion goes back to parent, IT RESUMES PARENT FOR LOOP THAT WAS PAUSED!
-        - WHICH MEANS OUR RECURSION RUNS WITHIN EACH ITERATION
-        - Parent for loop starts, sets up path, and recurses, and its child starts and does the same thing until some base conditions are met.
-        - Once a child for loop is done, it resumes parent for loop, and makes parent i go i++
-        - Which means the next path when parent path was [2,2,2] at [2(i),3,5] 
-        - Parent moves i++ -- so [2,3(i),5]
-        - New element is added in that parent path [2,2,3]
-        - target is reduced by 3
-        - and parent calls the recursive function again, FROM WITHIN THE FOR LOOP
-        - Child func call starts, child may / may not meet base conditions and may / may-not start its for loop and become a parent for childs it spins up.
-        - Like this the recursion continues.
-    
-    
-    Time complexity explanation ( for loop based and or 0/1 recursion based )
-
-    - Find out the max depth of our decision tree
-        - o(t), t = target
-        - When our target goes negative, we go back to parent call
-    - Then at the deepest level ( leaf ) , how many iterations happen in that lowest level recursive call
-        - o(n), n = len(nums);
-    - So we first made o(t) recursive calls and then ran a o(n) loop ; total loops / calls = o(t+n)
-    - In a way we ARE saying “choose ith element or not choose ith element”
-        - Therefore there are 2 branches for each ith element
-
-        ```bash
-         i
-        [x,x,x]
-        when i = 0; we chose this number and recursed
-        once the recursive call came back, we said, "remove it from our path" 
-        and choose the next number
-
-        So yes, we have a choose and not/choose scenario at each ith element in
-        for loop based recursion
-        ```
-
-
-    Therefore time = 2^(t+n)
-
-    Space complexity explanation
-
-    - o(t) for the recursive stack
-    - and o(t) for the path tracking
-    - However, at each recursive call, we could be saving the o(t) size path
-    - therefore space = o(t^2)
-    
-*/
-
-// 0/1 recursion
-// func combinationSum(candidates []int, target int) [][]int {
-    
-//     var result [][]int
-//     var helper func(paths []int, i, t int)
-//     helper = func(paths []int, i, t int) {
-//         // base
-//         if t == 0 {
-//             newL := make([]int, len(paths))
-//             copy(newL, paths)
-//             result = append(result, newL)
-//             return
-//         }
-//         if t < 0 || i >= len(candidates) {return}
-        
-//         // logic
-//         // not choose
-//         helper(paths, i+1, t)
-//         // choose
-//         paths = append(paths, candidates[i])
-//         helper(paths,i, t-candidates[i])
-//         paths = paths[:len(paths)-1]
-//     }
-//     helper(nil,0, target)
-//     return result
-// }
-
-
-// for loop based
 func combinationSum(candidates []int, target int) [][]int {
-    var result [][]int
-    var dfs func(paths []int, start int, t int)
-    dfs = func(paths []int, start, t int) {
+    out := [][]int{}
+    var dfs func(start, t int, path []int)
+    dfs = func(start, t int, path []int) {
         // base
-        if t == 0 {
-            newL := make([]int, len(paths))
-            copy(newL, paths)
-            result = append(result, newL)
+        if t <= 0 {
+            if t == 0 {
+                newL := make([]int, len(path))
+                copy(newL, path)
+                out = append(out, newL)
+            }
             return
         }
-        if t < 0 {return}
         
         // logic
         for i := start; i < len(candidates); i++ {
-            // action
-            paths  = append(paths, candidates[i])
-            // recurse
-            dfs(paths, i, t-candidates[i])
-            // backtrack
-            paths = paths[:len(paths)-1]
+            path = append(path, candidates[i])
+            dfs(i, t-candidates[i], path)
+            path = path[:len(path)-1]
         }
-        
     }
-    dfs(nil, 0, target)
-    return result
+    dfs(0, target, []int{})
+    return out
 }
