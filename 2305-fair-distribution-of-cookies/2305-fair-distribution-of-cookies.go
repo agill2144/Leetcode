@@ -1,44 +1,30 @@
 func distributeCookies(cookies []int, k int) int {
-    totalMax:=1000000 // keep current best result
-    childs:=make([]int,k)
-
-    var dfs func(ind int)int 
-    dfs = func(ind int)int { //ind is index of cookies
-        if len(cookies)==ind{ // all cookies are distributed, so find unfairness
-            maximal:=0
-            for i:=0;i<len(childs);i++{
-                maximal = max(maximal,childs[i])
-            }
-            totalMax = min(totalMax,maximal) // update best result
-            return maximal
+    out := math.MaxInt64
+    var dfs func(start int, cookieIdx int, childs []int, max int)
+    dfs = func(start int, cookieIdx int, childs []int, max int) {
+        // base
+        if cookieIdx == len(cookies) {
+            if max < out {out = max}
+            return
         }
-
-        minimal:=1000000
-        cook:=cookies[ind]
-        for i:=0;i<len(childs);i++{
-            childs[i]+=cook
-            if childs[i]<totalMax{ // skip variants that leads to worse result
-                minimal = min(minimal,dfs(ind+1))
+        
+        // logic
+        for i := start; i < len(childs); i++ {
+            // action
+            childs[i] += cookies[cookieIdx]
+            
+            // we could just update the max arg, but then we would have to save the old value and backtrack
+            newMax := max
+            
+            if childs[i] > newMax {newMax = childs[i]}
+            if newMax < out {
+                // recurse
+                dfs(start, cookieIdx+1, childs, newMax)
             }
-            childs[i]-=cook
+            // backtrack
+            childs[i] -= cookies[cookieIdx]
         }
-        return minimal
     }
-
-    dfs(0)
-    return totalMax
-}
-
-func max( a,b int)int {
-    if a<b {
-        return b
-    }
-    return a
-}
-
-func min (a, b int)int{
-    if a<b {
-        return a
-    }
-    return b
+    dfs(0,0,make([]int, k),0)
+    return out
 }
