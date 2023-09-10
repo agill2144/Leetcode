@@ -25,11 +25,37 @@
         - Like this the recursion continues.
     
     
-    time and space are exponential, at each idx, we recurse until target is met or we are past the target.
-    Each iteration has a potential of expanding exponentially.
-    
-    time: 2^(target+candidates)
-    space: 2^(target+candidates)
+    Time complexity explanation ( for loop based and or 0/1 recursion based )
+
+    - Find out the max depth of our decision tree
+        - o(t), t = target
+        - When our target goes negative, we go back to parent call
+    - Then at the deepest level ( leaf ) , how many iterations happen in that lowest level recursive call
+        - o(n), n = len(nums);
+    - So we first made o(t) recursive calls and then ran a o(n) loop ; total loops / calls = o(t+n)
+    - In a way we ARE saying “choose ith element or not choose ith element”
+        - Therefore there are 2 branches for each ith element
+
+        ```bash
+         i
+        [x,x,x]
+        when i = 0; we chose this number and recursed
+        once the recursive call came back, we said, "remove it from our path" 
+        and choose the next number
+
+        So yes, we have a choose and not/choose scenario at each ith element in
+        for loop based recursion
+        ```
+
+
+    Therefore time = 2^(t+n)
+
+    Space complexity explanation
+
+    - o(t) for the recursive stack
+    - and o(t) for the path tracking
+    - However, at each recursive call, we could be saving the o(t) size path
+    - therefore space = o(t^2)
     
 */
 
