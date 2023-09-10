@@ -3,7 +3,7 @@
 func getFactors(n int) [][]int {
     if n == 1 {return nil}
     factors := []int{}
-    for i := 2; i < n-1; i++ {
+    for i := 2; i <= n/2; i++ {
         if n % i == 0 {
             factors = append(factors, i)
         }
