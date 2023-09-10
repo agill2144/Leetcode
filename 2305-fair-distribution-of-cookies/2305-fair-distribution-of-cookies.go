@@ -15,8 +15,8 @@ func distributeCookies(cookies []int, k int) int {
             
             // we could just update the max arg, but then we would have to save the old value and backtrack
             newMax := max
-            
             if childs[i] > newMax {newMax = childs[i]}
+            // only recurse if this is a better min to save,
             if newMax < out {
                 // recurse
                 dfs(start, cookieIdx+1, childs, newMax)
