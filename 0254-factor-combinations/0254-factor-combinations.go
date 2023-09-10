@@ -1,3 +1,5 @@
+// 2 pass, get a list a factors
+// then just run backtracking
 func getFactors(n int) [][]int {
     if n == 1 {return nil}
     factors := []int{}
