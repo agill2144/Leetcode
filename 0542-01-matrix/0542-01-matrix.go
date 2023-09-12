@@ -1,43 +1,33 @@
 func updateMatrix(mat [][]int) [][]int {
     m := len(mat)
     n := len(mat[0])
-    topDirs := [][]int{{-1,0},{0,-1}}
-    for i := 0; i < m; i++ {
+    q := [][]int{}
+    visited := make([][]bool, m)
+    for i := 0; i < m ;i++ {
+        visited[i] = make([]bool, n)
         for j := 0; j < n; j++ {
-            if mat[i][j] == 1 {
-                minDist :=  math.MaxInt64-10
-                for _, dir := range topDirs {
-                    nr := i+dir[0]
-                    nc := j+dir[1]
-                    if nr >= 0 && nr < m && nc >= 0 && nc < n && mat[nr][nc] < minDist {
-                        minDist = mat[nr][nc]
-                    }
-                }
-                mat[i][j] = minDist+1
+            if mat[i][j] == 0 {
+                q = append(q, []int{i,j})
+                visited[i][j] = true
             }
         }
     }
-    
-    bottomDirs := [][]int{{1,0},{0,1}}
-    for i := m-1; i >= 0; i-- {
-        for j := n-1; j >= 0; j-- {
-            if mat[i][j] != 0 {
-                minDist := math.MaxInt64-10
-                for _, dir := range bottomDirs {
-                    nr := i+dir[0]
-                    nc := j+dir[1]
-                    if nr < m && nc < n && mat[nr][nc] < minDist {
-                        minDist = mat[nr][nc]
-                    }
-                }
-                mat[i][j] = min(mat[i][j], minDist+1)
-            }
+    if len(q) == 0 {return mat}
+    dirs := [][]int{{1,0},{-1,0},{0,1},{0,-1}}    
+    for len(q) != 0 {
+        dq := q[0]
+        q = q[1:]
+        cr := dq[0]
+        cc := dq[1]
+        for _, dir := range dirs {
+            nr := cr+dir[0]
+            nc := cc+dir[1]
+            if nr >= 0 && nr < m && nc >= 0 && nc < n && mat[nr][nc] == 1 && !visited[nr][nc] {
+                mat[nr][nc] = mat[cr][cc] + 1
+                visited[nr][nc] = true
+                q = append(q, []int{nr, nc})
+            }  
         }
-    }
+    }   
     return mat
-}
-
-func min(x, y int) int {
-    if x < y {return x}
-    return y
 }
