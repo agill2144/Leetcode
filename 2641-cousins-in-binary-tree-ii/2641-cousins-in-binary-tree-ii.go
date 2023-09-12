@@ -8,37 +8,36 @@
  */
 func replaceValueInTree(root *TreeNode) *TreeNode {
     if root == nil {return root}
-    levelSum := map[int]int{}
-    var dfs1 func(r *TreeNode, level int)
-    dfs1 = func(r *TreeNode, level int) {
-        // base
-        if r == nil {return}
-        
-        // logic
-        levelSum[level] += r.Val
-        dfs1(r.Left, level+1)
-        dfs1(r.Right, level+1)
-    }
-    dfs1(root, 0)
     
-    var dfs2 func(r *TreeNode, level int)
-    dfs2 = func(r *TreeNode, level int) {
-        // base
-        if r == nil {return}
-        
-        // logic
-        nextLevelSum, ok := levelSum[level+1]
-        if !ok {return}
-        siblingSum := 0
-        if r.Left != nil {siblingSum += r.Left.Val}
-        if r.Right != nil {siblingSum += r.Right.Val}
-        cousinSum := nextLevelSum - siblingSum
-        if r.Left != nil {r.Left.Val = cousinSum}
-        if r.Right != nil {r.Right.Val = cousinSum}
-        dfs2(r.Left, level+1)
-        dfs2(r.Right, level+1)
+    type qNode struct {
+        node *TreeNode
+        siblingSum int
     }
-    dfs2(root, 0)
-    root.Val = 0
+    q := []*qNode{&qNode{root,root.Val}}
+    levelSum := root.Val
+    for len(q) != 0 {
+        nextLevelSum := 0
+        qSize := len(q) 
+        for qSize != 0 {
+            dq := q[0]
+            q = q[1:]
+            node := dq.node
+            node.Val = levelSum-dq.siblingSum
+            
+            nextSiblingSum := 0
+            if node.Left != nil {nextSiblingSum += node.Left.Val}
+            if node.Right != nil {nextSiblingSum += node.Right.Val}
+            nextLevelSum += nextSiblingSum
+            
+            if node.Left != nil {
+                q = append(q, &qNode{node.Left, nextSiblingSum})
+            }
+            if node.Right != nil {
+                q = append(q, &qNode{node.Right, nextSiblingSum})
+            }
+            qSize--
+        }
+        levelSum = nextLevelSum
+    }
     return root
 }
