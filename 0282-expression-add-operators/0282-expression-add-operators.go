@@ -13,8 +13,8 @@ func addOperators(num string, target int) []string {
         // logic
         for i := start; i < len(num); i++ {
             currNumStr := string(num[start:i+1])
-            currNum, _ := strconv.Atoi(currNumStr)
             if len(currNumStr) > 1 && currNumStr[0] == '0' {continue}
+            currNum, _ := strconv.Atoi(currNumStr)
             
             if expr == "" {
                 dfs(i+1, currNum, +currNum, expr+currNumStr)
