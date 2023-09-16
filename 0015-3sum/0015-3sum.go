@@ -1,22 +1,26 @@
 func threeSum(nums []int) [][]int {
-    set := map[[3]int]struct{}{}
+    sort.Ints(nums)
     out := [][]int{}
     for i := 0; i < len(nums); i++ {
-        target := 0-nums[i]
-        numSet := map[int]struct{}{}
-        for j := i+1; j < len(nums); j++ {
-            comp := target-nums[j]
-            if _, ok := numSet[comp]; ok {
-                
-                tmp := []int{nums[i], nums[j], comp}
-                sort.Ints(tmp)
-                if _, ok := set[[3]int{tmp[0], tmp[1], tmp[2]}]; !ok {
-                    set[[3]int{tmp[0], tmp[1], tmp[2]}] = struct{}{}
-                    out = append(out, tmp)
-                }
+        if i != 0 && nums[i] == nums[i-1] {continue}
+        left := i+1
+        right := len(nums)-1
+        for left < right {
+            sum := nums[i] + nums[left] + nums[right]
+            if sum == 0 {
+                out = append(out, []int{nums[i], nums[left], nums[right]})
+                left++
+                for left <= right && nums[left] == nums[left-1] {left++}
+                right--
+                for right >= left && nums[right]==nums[right+1] {right--}
+            } else if sum > 0 {
+                right--
+            } else {
+                left++
             }
-            numSet[nums[j]] = struct{}{}
         }
     }
     return out
+
+
 }
