@@ -1,15 +1,29 @@
+// n = len(candidates)
+// t = target
 func combinationSum2(candidates []int, target int) [][]int {
+
+    // space = o(n)
     freq := map[int]int{}
+        
+    // time = o(n)
     for i := 0; i < len(candidates); i++ {
         freq[candidates[i]]++
     }
+    
+    // space = o(n)
     deduped := [][]int{}
+
+    // time = o(n)
     for k, v := range freq {
         deduped = append(deduped, []int{k,v})
     }
     
     out := [][]int{}
     var dfs func(start int, t int, path []int)
+
+    
+    // time = 2^(t+n)
+    // space = t for recursive stack * t for new path ; t^2
     dfs = func(start, t int, path []int) {
         // base
         if t <= 0 {
