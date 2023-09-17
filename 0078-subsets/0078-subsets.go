@@ -10,23 +10,14 @@
     o(n) recursion stack * o(n) for new deepCp array ; n^2 
 */
 func subsets(nums []int) [][]int {
-    out := [][]int{}
-    var dfs func(start int, path []int)
-    dfs = func(start int, path []int) {
-        // base
-        newPath := make([]int, len(path))
-        copy(newPath, path)
-        out = append(out, newPath)
-        
-        
-        // logic
-        for i := start; i < len(nums); i++ {
-            // action
-            path = append(path, nums[i])
-            dfs(i+1, path)
-            path = path[:len(path)-1]
+    out := [][]int{{}}
+    for i := 0; i < len(nums); i++ {
+        for _, curr := range out {
+            newP := make([]int, len(curr))
+            copy(newP, curr)
+            newP = append(newP, nums[i])
+            out = append(out, newP)
         }
     }
-    dfs(0, nil)
     return out
 }
