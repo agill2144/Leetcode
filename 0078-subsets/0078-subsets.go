@@ -1,52 +1,32 @@
 /*
-    approach: backtracking and for-loop recursion
-    time: o(2^n) x o(n)
-        - the extra o(n) is from creating a deep copy of path in each recursion
-    space: o(n) from recursion stack + o(n) for each path at each recursion
-*/
-// func subsets(nums []int) [][]int {
-//     out := [][]int{}
-//     var dfs func(start int, path []int)
-//     dfs = func(start int, path []int) {
-//         // base
-            
-//         newL := make([]int, len(path))
-//         copy(newL, path)
-//         out = append(out, newL)
-        
-//         // logic
-//         for i := start; i < len(nums); i++ {
-//             path = append(path, nums[i])
-//             dfs(i+1,path)
-//             path = path[:len(path)-1]
-//         }
-//     }
-//     dfs(0, nil)
-//     return out
-// }
-
-/*
-    approach: make a copy of list each time and append nums[i] to it.
-    - start with out array with an empty array { {} }
-    - then for each ith number, loop over all the lists we have so far in output array
-    - make a deep copy of each list
-    - add ith number
-    - save this new list to output array 
-    time: o(2^n) x o(n) 
-        - the largest nested loop will be for the last ith number in nums array
-        - that loop will run o(2^n-1) iterations
-        - the extra o(n) is for deep copy
-    space: o(2^n-1) ; the last iteration will create a newL of size 2^n-1, and this will be largest aux array.
+    approach: for loop based recursion / backtracking
+    - like combination sum
+    - form all possible combinations
+    - at each recursive call, we have an ans to save
+    
+    time ; n* 2^n
+    n * because at each recursive call, we create another array , deepCp and save the ans
+    space ;
+    o(n) recursion stack * o(n) for new deepCp array ; n^2 
 */
 func subsets(nums []int) [][]int {
-    out := [][]int{{}}
-    for i := 0; i < len(nums); i++ {
-        for _, list := range out {
-            newL := make([]int, len(list))
-            copy(newL, list)
-            newL = append(newL, nums[i])
-            out = append(out, newL)
+    out := [][]int{}
+    var dfs func(start int, path []int)
+    dfs = func(start int, path []int) {
+        // base
+        newPath := make([]int, len(path))
+        copy(newPath, path)
+        out = append(out, newPath)
+        
+        
+        // logic
+        for i := start; i < len(nums); i++ {
+            // action
+            path = append(path, nums[i])
+            dfs(i+1, path)
+            path = path[:len(path)-1]
         }
     }
+    dfs(0, nil)
     return out
 }
