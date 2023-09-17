@@ -1,5 +1,5 @@
 /*
-    approach: backtracking
+    approach: backtracking using extra array
     - recursively place an element at each idx
     - we have to place each element at a specific index
     - place 1 at idx 0, then 2 at idx 0, then 3 at idx 0
