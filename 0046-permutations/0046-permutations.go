@@ -1,25 +1,32 @@
 func permute(nums []int) [][]int {
+    
     out := [][]int{}
-    var dfs func(start int)
-    dfs = func(start int) {
+    var dfs func(path []int)
+    dfs = func(path []int) {
         // base
-        if start == len(nums) {
-            newL := make([]int, len(nums))
-            copy(newL, nums)
-            out = append(out, newL)
+        if len(path) == len(nums) {
+            newPath := make([]int, len(path))
+            copy(newPath, path)
+            out = append(out, newPath)
             return
         }
         
         // logic
-        for i := start; i < len(nums); i++ {
-            // action
-            nums[i], nums[start] = nums[start], nums[i]
-            // recurse
-            dfs(start+1)
-            // backtrack            
-            nums[i], nums[start] = nums[start], nums[i]
+        for i := 0; i < len(nums); i++ {
+            if !listContains(path, nums[i]) {
+                path = append(path, nums[i])
+                dfs(path)
+                path = path[:len(path)-1]
+            }
         }
     }
-    dfs(0)
+    dfs(nil)
     return out
+}
+
+func listContains(list []int, x int) bool {
+    for _, ele := range list {
+        if ele == x {return true}
+    }
+    return false
 }
