@@ -1,13 +1,12 @@
 func permute(nums []int) [][]int {
-    
     out := [][]int{}
     var dfs func(path []int)
     dfs = func(path []int) {
         // base
         if len(path) == len(nums) {
-            newPath := make([]int, len(path))
-            copy(newPath, path)
-            out = append(out, newPath)
+            newP := make([]int, len(path))
+            copy(newP, path)
+            out = append(out, newP)
             return
         }
         
@@ -24,9 +23,9 @@ func permute(nums []int) [][]int {
     return out
 }
 
-func listContains(list []int, x int) bool {
-    for _, ele := range list {
-        if ele == x {return true}
+func listContains(list []int, ele int) bool {
+    for _, x := range list{ 
+        if x == ele {return true}
     }
     return false
-}
+} 
