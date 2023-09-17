@@ -1,15 +1,15 @@
 func checkSubarraySum(nums []int, k int) bool {
-    remainderIdx := map[int]int{0:-1}
+    remainders := map[int]int{}
     sum := 0
     for i := 0; i < len(nums); i++ {
         sum += nums[i]
-        r := sum % k
-        idx, ok := remainderIdx[r]
-        if ok && i-(idx+1)+1 >= 2 {
-            return true
-        }
-        if !ok {
-            remainderIdx[r] = i
+        if sum % k == 0 && i >= 1 {return true}
+        rem := sum % k 
+        idx, ok := remainders[rem]
+        if ok {
+            if i-(idx+1)+1 >= 2 {return true}
+        } else {
+            remainders[rem] = i
         }
     }
     return false
