@@ -6,6 +6,15 @@
     - but this is permutation, we dont care about the order, just generate all
     - therefore we dont need the control of where a recursion starts its for loop on
     - as long as that element has freq avail, add to path, recurse
+    
+    **Instead of treating each number in nums as a candidate in permutation,
+    (becuase a number can be repeated multiple times, and treating each copy as a candidate,
+    we will end up generating multiple duplicate permutations)
+    we only consider each UNIQUE number as a candidate
+    - therefore the groupping into a hashmap
+    
+    time = o(n*n!)
+    space = o(n^2)
 */
 func permuteUnique(nums []int) [][]int {
 
