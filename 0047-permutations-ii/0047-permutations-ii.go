@@ -1,33 +1,39 @@
+/*
+    approach: dedupe using freq map
+    - just like combination sum with dupes,
+    - we need to group together the dupes
+    - we can further use a index based data structre like an array to control which elment we go to next
+    - but this is permutation, we dont care about the order, just generate all
+    - therefore we dont need the control of where a recursion starts its for loop on
+    - as long as that element has freq avail, add to path, recurse
+*/
 func permuteUnique(nums []int) [][]int {
-    // same problem as combination sum with dupes
-    // group the dupes together, exhaust them until we no longer can use them, 
-    // only then move forward to next set of elements
+
     freq := map[int]int{}
     for i := 0; i < len(nums); i++ {
-        freq[nums[i]]++
-    }
-    deduped := [][]int{}
-    for k,v := range freq {
-        deduped = append(deduped, []int{k,v})
+        freq[nums[i]]++    
     }
     out := [][]int{}
     var dfs func(path []int)
-    dfs = func(path []int) {
+    dfs = func(path []int)  {
         // base
         if len(path) == len(nums) {
-            newPath := make([]int, len(path))
-            copy(newPath, path)
-            out = append(out, newPath)
+            deepCp := make([]int, len(path))
+            copy(deepCp, path)
+            out = append(out, deepCp)
             return
         }
         
         // logic
-        for i := 0; i < len(deduped); i++ {
-            if deduped[i][1] == 0 {continue}
-            path = append(path, deduped[i][0])
-            deduped[i][1]--
+        for k, v := range freq {
+            if v == 0 {continue}
+            // action
+            path = append(path, k)
+            freq[k]--
+            // recurse
             dfs(path)
-            deduped[i][1]++
+            // backtrack
+            freq[k]++
             path = path[:len(path)-1]
         }
     }
