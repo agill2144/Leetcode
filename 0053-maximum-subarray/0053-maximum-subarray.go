@@ -1,18 +1,14 @@
 func maxSubArray(nums []int) int {
-    if nums == nil || len(nums) == 0 {return 0}
-    
-    curr := nums[0]
-    maxTotal := nums[0]
-    
+    rs := nums[0]
+    maxSum := nums[0]
     for i := 1; i < len(nums); i++ {
-        newCurr := max(nums[i], curr + nums[i])
-        curr = newCurr
-        if curr > maxTotal {maxTotal = curr}
+        rs += nums[i]
+        rs = max(rs, nums[i])
+        maxSum = max(rs, maxSum)
     }
-    return maxTotal    
+    return maxSum
 }
-
 func max(x, y int) int {
-    if x > y {return x} 
+    if x > y {return x}
     return y
 }
