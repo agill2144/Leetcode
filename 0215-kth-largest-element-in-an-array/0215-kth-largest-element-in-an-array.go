@@ -11,6 +11,8 @@
         -
 */
 func findKthLargest(nums []int, k int) int {
+    if k > len(nums) {return -1}
+    
     targetIdx := len(nums)-k
     l := 0
     r := len(nums)-1
