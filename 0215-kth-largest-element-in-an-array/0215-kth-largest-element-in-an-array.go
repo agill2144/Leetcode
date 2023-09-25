@@ -12,11 +12,12 @@
 */
 func findKthLargest(nums []int, k int) int {
     if k > len(nums) {return -1}
-    
     targetIdx := len(nums)-k
+    
     l := 0
     r := len(nums)-1
     for l <= r {
+        
         nextSmaller := l
         pivotIdx := r
         for i := l; i < pivotIdx; i++ {
@@ -35,10 +36,10 @@ func findKthLargest(nums []int, k int) int {
         } else {
             r = nextSmaller-1
         }
+        
     }
     return -1
-}
-/*
+}/*
     approach: min heap
     - use min heap to keep track of k elements
     time = o(nlogk)
