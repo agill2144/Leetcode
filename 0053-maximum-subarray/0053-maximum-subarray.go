@@ -16,7 +16,8 @@ func maxSubArray(nums []int) int {
             runningStart = i+1
         }
     }
-    fmt.Println(nums[start:end+1])
+    _ = start
+    _ = end
     return maxSum
 }
 
