@@ -1,12 +1,12 @@
 func maxProfit(prices []int) int {
-    max := 0
-    buy := prices[0]
-    for i := 1; i < len(prices); i++ {
-        sell := prices[i]
-        if sell-buy > max {max = sell-buy}
-        if sell < buy {
-            buy = sell
+    minBuyPrice := math.MaxInt64
+    profit := 0
+    for i := 0; i < len(prices); i++ {
+        sellPrice := prices[i]
+        if sellPrice - minBuyPrice > profit {profit = sellPrice - minBuyPrice}
+        if prices[i] < minBuyPrice {
+            minBuyPrice = prices[i]
         }
     }
-    return max
+    return profit
 }
