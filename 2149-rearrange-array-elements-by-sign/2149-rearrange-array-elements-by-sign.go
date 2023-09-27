@@ -1,7 +1,7 @@
 func rearrangeArray(nums []int) []int {
     out := make([]int, len(nums))
-    pPtr := 0
-    nPtr := 1
+    pPtr := 0 // positive ptr
+    nPtr := 1 // negative ptr
     for i := 0; i < len(nums); i++{
         // collect all negatives
         if nums[i] < 0 {
