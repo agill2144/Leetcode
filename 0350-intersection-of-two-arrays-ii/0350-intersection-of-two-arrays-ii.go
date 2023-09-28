@@ -1,8 +1,55 @@
 /*
     collecting equal values from both arrays
+    since the values matter, their positioning does not matter, we can always sort!
+    sort opens up 2 options = two ptrs and binary search
+    
+    appraoch: binary search
+    - we can search for the same number in the other array
+*/
+
+func intersect(nums1 []int, nums2 []int) []int {
+    if len(nums2) > len(nums1) {return intersect(nums2, nums1)}
+    sort.Ints(nums1)
+    sort.Ints(nums2)
+    
+    // nums1 is always the larger array
+    out := []int{}
+    left := 0
+    for i := 0 ; i < len(nums2); i++ {
+        idx := binarySearch(nums1, nums2[i],left)
+        if idx != -1 {
+            out = append(out, nums2[i])
+            left = idx+1
+        }
+    }
+    return out
+}
+
+// left most position of target
+func binarySearch(nums []int, target int, left int) int {
+    idx := -1
+    right := len(nums)-1
+    for left <= right {
+        mid := left + (right-left)/2
+        if nums[mid] == target {
+            idx = mid
+            right = mid-1
+        } else if target < nums[mid] {
+            right = mid-1
+        } else {
+            left = mid+1
+        }
+    }
+    return idx
+}
+
+
+/*
+    collecting equal values from both arrays
+    since the values matter, their positioning does not matter, we can always sort!
+    sort opens up 2 options = two ptrs and binary search
+
     approach: two pointers
-    - since the values matter, their positioning does not matter, we can always sort!
-    - sort opens up 2 options = two ptrs and binary search
     - put ptrs on each array
     - and if the ptr values are same in both array
     - save this value, move both ptrs ahead
@@ -18,25 +65,25 @@
     time = o(n1logn1) + o(n2logn2) + o(min(n1,n2))
     space = o(n1) + o(n2)
 */
-func intersect(nums1 []int, nums2 []int) []int {
-    sort.Ints(nums1)
-    sort.Ints(nums2)
-    n1 := 0
-    n2 := 0
-    out := []int{}
-    for n1 < len(nums1) && n2 < len(nums2) {
-        if nums1[n1] == nums2[n2] {
-            out = append(out, nums1[n1])
-            n1++
-            n2++
-        } else if nums1[n1] < nums2[n2] {
-            n1++
-        } else {
-            n2++
-        }
-    }
-    return out
-}
+// func intersect(nums1 []int, nums2 []int) []int {
+//     sort.Ints(nums1)
+//     sort.Ints(nums2)
+//     n1 := 0
+//     n2 := 0
+//     out := []int{}
+//     for n1 < len(nums1) && n2 < len(nums2) {
+//         if nums1[n1] == nums2[n2] {
+//             out = append(out, nums1[n1])
+//             n1++
+//             n2++
+//         } else if nums1[n1] < nums2[n2] {
+//             n1++
+//         } else {
+//             n2++
+//         }
+//     }
+//     return out
+// }
 
 /*
     approach: we are collecting equal numbers from both array
