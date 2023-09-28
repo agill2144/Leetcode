@@ -5,6 +5,32 @@
     
     appraoch: binary search
     - we can search for the same number in the other array
+    - CAREFUL, we cannot run binarySearch on entire array for each number
+        - why not ? lets say
+                             i
+            smaller array = [1,1,2]
+            larger array = [1,2,3,4]
+        - first we search for 1 in larger array and we find it at idx 0
+
+                               i
+            smaller array = [1,1,7]
+            larger array = [1,2,3,4]
+        - then we search for another 1 in larger array and we again find it at idx 0
+        - but 1 is only present in larger array once and smaller array has it twice
+        - so we end up using it again and saying [1,1] are common elements in both
+        - when the ans should have been just [1]
+        
+        fix #1
+        a naive fix can be to keep track of indices returned from binary search in a hashset
+        so that if we see an idx that we have already saved, we wont save it again
+        
+        fix #2
+        we can shrink our binary search window each time we get a idx from it
+        - that is, when we get a ans from binarySearch, 
+            we will save this idx+1 in a var and use it next time as left position in binary search
+        
+        time = o(n1logn1) + o(n2logn2) + o(n2)*o(logn1)
+        
 */
 
 func intersect(nums1 []int, nums2 []int) []int {
