@@ -37,11 +37,12 @@
         - runningStart moves slowly
         - runningStart moves ahead when we start forming a new subarray
         - therefore runningStart is like a slow ptr
-        - while i ptr is the end of a subarray
-    - when we save a runningSum that are saving as maxSum
+        - while i ptr is the end of a subarray ( i.e the fast ptr )
+    - when we save a runningSum is better than maxSum
         - we have slow ptr = start of subarray
         - we have ith ptr = end of subarray
-    - slow ptr moves forward when we have decided to form a new subarray        
+    - slow ptr moves forward when we have decided to form a new subarray
+        - i.e if runningSum is negative, reset runningSum and move slow to i+1 ( forming new subarray )
         
 */
 func maxSubArray(nums []int) int {
