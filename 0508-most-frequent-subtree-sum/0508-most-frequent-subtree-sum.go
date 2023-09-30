@@ -34,7 +34,7 @@ func findFrequentTreeSum(root *TreeNode) []int {
     }
     dfs(root)
     out := []int{}
-    // collect 
+    // collect all the sums that have maxCount
     for sum, count := range sumCounter {
         if count == maxCount {
             out = append(out, sum)
