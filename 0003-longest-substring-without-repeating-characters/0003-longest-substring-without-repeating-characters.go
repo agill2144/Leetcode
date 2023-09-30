@@ -1,3 +1,29 @@
+/*
+    classic sliding window - "find the length of the longest substring"
+    sliding window type = Dynamic ( we need the longest one possible )
+    
+    approach:
+    - instead of trying to slide the window from left side until the $this char is no longer part of our window
+    - we can just track where $this char was last seen at position in a map instead of set
+    
+    - if we are trying to insert a char
+    - and this char already exists in our window
+    - we cannot insert this char until the same char is no longer part of our window
+    - instead of slowly shrinking the left side 1 char at a time,
+    - if we kept track of where $this char exists, we can fast-forward our window sliding from left side
+    - eg window : {a:0, b:1, c:2, d:3}
+    - leftPtr = 0
+    - curr char to instert is "d"
+    - we cannot insert $currChar until "d" is no longer part of the window
+    - instead of moving leftPtr 1 by 1, we can tell leftPtr to go to idx 4 ( window["d"]+1 )
+    - this means, that char "d" is now no longer part of our window (i.e it does not exists within leftPtr and i ptr)
+    - and now we can insert this char in our window at ith position 
+    - windowState will become = {a:0, b:1, c:2, d:4}
+        - windowState is no longer in sync with the chars between leftPtr and i and THATS OKAY!
+    
+    time: o(n)
+    space: o(n) 
+*/
 func lengthOfLongestSubstring(s string) int {
     windowSize := 0
     left := 0
