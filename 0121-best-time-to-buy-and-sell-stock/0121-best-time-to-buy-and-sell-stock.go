@@ -1,36 +1,41 @@
 /*
-    asking for something optimal, having multiple options
+    we must buy the stock before selling on ith day
+    - so if we want to maximize profit on the ith day
+    - it makes sense to buy it on the cheapest possible day prior to ith day
+    - so for each ith selling price, we need to know the cheapest price before ith day
+    - i.e cheapest price on the left of ith position
+    - we can create a prefix array that maintains the cheapest price on the left of i
+    - and then we can use this prefix array to calc profit on ith day
+    - which will be prices[i]-prefix[i]
+        - prefix[i] will answer whats the cheapest price before ith position
     
-    approach: DP on stocks
-    - we can only sell the stock at a given day if we have bought it before that given day
-    - suppose we want to sell the stock on ith day, then it means we must have bought it before the ith day ( day 0 to day i-1 )
-    - it makes sense to buy it on the cheapest day before selling on day i
-        - therefore we need to find the cheapest price that we have seen before day i
-        - this cheapest price acts as our "buying price"
-    - for each ith selling day, we can search for a min number from 0 to i-1
-        - this would be n^2 time
-    - or we can keep a rolling minBuyPrice seen so far.
-        - that is, instead of going and checking each and everytime
-        - we can keep the min seen so far until i in a var "minBuyPrice"
-        - we can calc profit ( sellPrice - minBuyPrice ) and save if this profit is better than a max profit maintained so far
-        - since we are keeping a rolling min, we will update the minBuyPrice if current price is cheaper than earlier minBuyPrice
-    
-    time = o(n)
-    space = o(1)
+    time o(n)
+    space o(n)
 */
 func maxProfit(prices []int) int {
-    if len(prices) == 0 {return 0}
-    minBuyPrice := prices[0]
-    profit := 0
-    for i := 1; i < len(prices); i++ {
-        currentProfit := prices[i]-minBuyPrice
-        if currentProfit > profit {
-            profit = currentProfit
+    minBuyPrices := make([]int, len(prices))
+    for i := 0; i < len(prices); i++ {
+        if i == 0 {
+            minBuyPrices[i] = prices[i]+1
+            continue
         }
-        // update the rolling min seen so far
-        if prices[i] < minBuyPrice {
-            minBuyPrice = prices[i]
+        prevPrice := prices[i-1]
+        prevMin := minBuyPrices[i-1]
+        if prevPrice < prevMin {
+            minBuyPrices[i] = prevPrice
+        } else {
+            minBuyPrices[i] = prevMin
         }
     }
-    return profit
+    maxProfit := 0
+    for i := 0; i < len(prices); i++ {
+        buyPrice := minBuyPrices[i]
+        sellPrice := prices[i]
+        profit := sellPrice-buyPrice
+        if profit > maxProfit  {
+            maxProfit = profit
+        }
+    }
+    return maxProfit
+    
 }
