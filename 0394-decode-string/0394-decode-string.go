@@ -1,31 +1,31 @@
 func decodeString(s string) string {
-    str := []*strings.Builder{}
+    parentSt := []*strings.Builder{}
     numSt := []int{}
-    
-    curr := 0
-    currStr := new(strings.Builder)
+    num := 0
+    curr := new(strings.Builder)
     for i := 0; i < len(s); i++ {
-        if s[i] >= '0' && s[i] <= '9' {
-            curr = curr * 10 + int(s[i]-'0')
-        } else if s[i] >= 'a' && s[i] <= 'z' {
-            currStr.WriteByte(s[i])
+        if s[i] >= 'a' && s[i] <= 'z' {
+            curr.WriteByte(s[i])
+        } else if s[i] >= '0' && s[i] <= '9' {
+            num = num * 10 + int(s[i]-'0')
         } else if s[i] == '[' {
-            str = append(str, currStr)
-            numSt = append(numSt, curr)
-            curr = 0
-            currStr = new(strings.Builder)
+            parentSt = append(parentSt, curr)
+            numSt = append(numSt, num)
+            curr = new(strings.Builder)
+            num = 0
         } else if s[i] == ']' {
             k := numSt[len(numSt)-1]
             numSt = numSt[:len(numSt)-1]
             tmp := new(strings.Builder)
-            for i := 0; i < k; i++ {
-                tmp.WriteString(currStr.String())
+            for k != 0 {
+                tmp.WriteString(curr.String())
+                k--
             }
-            parent := str[len(str)-1]
-            str = str[:len(str)-1]
-            parent.WriteString(tmp.String())
-            currStr = parent
+            parentStr := parentSt[len(parentSt)-1]
+            parentSt = parentSt[:len(parentSt)-1]
+            parentStr.WriteString(tmp.String())
+            curr = parentStr
         }
     }
-    return currStr.String()
+    return curr.String()
 }
