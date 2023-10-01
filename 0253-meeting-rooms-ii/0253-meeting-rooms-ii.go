@@ -33,7 +33,9 @@
     - if we cannot, do not pop anything, it means all meetings are still going on and we need another room
         - just insert in this case
         
-    time = o(n*logHeapSize) = o(nlogn) ; worst case all time-slots are overlapping, and we allocate each slot its own room
+    time = o(nlogn) + o(n*logHeapSize) = o(nlogn) ;
+        - worst case all time-slots are overlapping, and we allocate each slot its own room
+        - therefore heapSize becomes n , therefore logHeapSize = logn
     space = o(n)
     
 */
