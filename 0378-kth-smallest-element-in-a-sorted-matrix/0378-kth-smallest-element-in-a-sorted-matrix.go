@@ -1,3 +1,42 @@
+func kthSmallest(matrix [][]int, k int) int {
+    m := len(matrix)
+    n := len(matrix[0])
+    left := matrix[0][0]
+    right := matrix[m-1][n-1]
+    
+    ans := -1
+    for left <= right {
+        mid := left + (right-left)/2
+        countLeftOfMid := countLessThanOrEqualToTarget(matrix, mid)
+        if countLeftOfMid < k {
+            left = mid+1
+        } else if countLeftOfMid >= k {
+            right = mid-1
+            ans = mid
+        }
+    }
+    return ans
+}
+
+func countLessThanOrEqualToTarget(matrix [][]int, target int) int {
+    m := len(matrix)
+    n := len(matrix[0])
+    r := m-1
+    c := 0
+    count := 0
+    
+    for r >= 0 && c < n {
+        if matrix[r][c] <= target {
+            count += r+1
+            c++
+        } else {
+            r--
+        }
+    }
+    return count
+    
+}
+
 /*
     anything kth smallest/largest, consider heap
     or when sorting and want to trim dowm time on sort, consider heap
@@ -17,33 +56,33 @@
     space = o(K)
     
 */
-func kthSmallest(matrix [][]int, k int) int {
-    m := len(matrix)
-    n := len(matrix[0])
-    mx := &maxHeap{items: []int{}}
-    for i := 0; i < m; i++ {
-        for j := 0; j < n; j++ {
-            heap.Push(mx, matrix[i][j])
-            if mx.Len() > k {
-                heap.Pop(mx)
-            }
-        }
-    }
-    return mx.items[0]
-}
+// func kthSmallest(matrix [][]int, k int) int {
+//     m := len(matrix)
+//     n := len(matrix[0])
+//     mx := &maxHeap{items: []int{}}
+//     for i := 0; i < m; i++ {
+//         for j := 0; j < n; j++ {
+//             heap.Push(mx, matrix[i][j])
+//             if mx.Len() > k {
+//                 heap.Pop(mx)
+//             }
+//         }
+//     }
+//     return mx.items[0]
+// }
 
-type maxHeap struct {
-	items []int
-}
-func (m *maxHeap) Less(i, j int) bool {return m.items[i] > m.items[j]}
-func (m *maxHeap) Swap(i, j int) {m.items[i],m.items[j] = m.items[j], m.items[i]}
-func (m *maxHeap) Len() int {return len(m.items)}
-func (m *maxHeap) Push(x interface{}) { m.items = append(m.items, x.(int))}
-func (m *maxHeap) Pop() interface{} {
-    out := m.items[len(m.items)-1]
-    m.items = m.items[:len(m.items)-1]
-    return out
-}
+// type maxHeap struct {
+// 	items []int
+// }
+// func (m *maxHeap) Less(i, j int) bool {return m.items[i] > m.items[j]}
+// func (m *maxHeap) Swap(i, j int) {m.items[i],m.items[j] = m.items[j], m.items[i]}
+// func (m *maxHeap) Len() int {return len(m.items)}
+// func (m *maxHeap) Push(x interface{}) { m.items = append(m.items, x.(int))}
+// func (m *maxHeap) Pop() interface{} {
+//     out := m.items[len(m.items)-1]
+//     m.items = m.items[:len(m.items)-1]
+//     return out
+// }
 
 /*
     approach: brute force
