@@ -54,6 +54,13 @@
     - swap the left element in the pair with the smallest element greater than that to its right
     - then reverse the sub array from the point of swap(after the left element in the pair) till the end
 
+
+    Replace the smallest number ( from right side ), find the smallest from right - this is the breachIdx
+    with the next biggest number possible - this is the next smallest after breachIdx value
+    than reverse the array after breachIdx+1 : end
+    
+    time = o(n)
+    space = o(1)
 */
 
 func nextPermutation(nums []int)  {
