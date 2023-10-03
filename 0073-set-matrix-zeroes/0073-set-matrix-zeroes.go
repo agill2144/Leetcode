@@ -8,7 +8,7 @@
         - we will use existing left edge and top edge of the matrix to keep track of 
             which rows and cols to be replaced with 0's
     
-    approach : keep track of rows and cols to be replaced in the same input matrix
+    approach: keep track of rows and cols to be replaced in the same input matrix
     
 */
 func setZeroes(matrix [][]int)  {
@@ -19,17 +19,10 @@ func setZeroes(matrix [][]int)  {
     for i := 0; i < m; i++ {
         for j := 0; j < n; j++ {
             if matrix[i][j] == 0 {
-                if i == 0 && j == 0  {
-                    rowZero = true
-                    colZero = true                    
-                } else if j == 0 {
-                    colZero = true
-                } else if i == 0 {
-                    rowZero = true
-                } else {
-                    matrix[i][0] = 0
-                    matrix[0][j] = 0
-                }
+                if i == 0 {rowZero = true}
+                if j == 0 {colZero = true}
+                if i != 0 {matrix[i][0] = 0}
+                if j != 0 {matrix[0][j] = 0}
             }
         }
     }
