@@ -1,4 +1,32 @@
+/*
+    The problem with blindly marking elements 0 is that
+    when we run into a 0 from input matrix
+    we will go thru that entire row and col and flip all values 0
+    and then our iteration goes to next cell of input matrix and finds EXTRA 0's 
+    we just put in.
+    This is the side effect of replacing a value with a different value while continuing to look for the same value
+    
+    Instead, we will come up with a new identifier that helps us avoid touching cells that are newely converted 0s
+    
+    approach:  in-place, 2 pass
+    - 1st pass
+        - when we run into a 0
+        - replace the entire row and col with new ID ( a new zero ID ) = math.MinInt
+        - the -Inf value acts as our new 0
+        - However another case is this
+        [1,2,0,3,4,0]
+        [5,6,7,8,9,1]
+        - when we run into our first 0 (r = 0; c = 2)
+        - by processing that row and col, our matrix will look like this
+        [-inf,-inf,0,-inf,-inf,-inf]
+        [5,     6, 7,  8,  9,     1]
+        - the new problem is we replaced a NOT-PROCESSED 0 (r=0,c=5) because of an earlier 0(r = 0,c=2)
+        - therefore we should not replace existing 0's with -inf values just yet
+        - Therefore skip cells that are 0's when processing a row and a col]    
+    - 2nd pass
+        - flip the -inf to 0
 
+*/
 func setZeroes(matrix [][]int)  {
     m := len(matrix)
     n := len(matrix[0])
