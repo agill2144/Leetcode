@@ -1,5 +1,56 @@
 /*
-    approach: mark the edges 
+    whenever we have to optimize on space, consider the 2 options
+    1. can we use the output space ? 
+        - we dont return anything, so no
+    2. can we use the input as our space ?
+        - maybe
+        - instead of saving those edges in a separate hashset,
+        - we will use existing left edge and top edge of the matrix to keep track of 
+            which rows and cols to be replaced with 0's
+    
+    approach : keep track of rows and cols to be replaced in the same input matrix
+    
+*/
+func setZeroes(matrix [][]int)  {
+    colZero := false
+    rowZero := false
+    m := len(matrix)
+    n := len(matrix[0])
+    for i := 0; i < m; i++ {
+        for j := 0; j < n; j++ {
+            if matrix[i][j] == 0 {
+                if i == 0 && j == 0  {
+                    rowZero = true
+                    colZero = true                    
+                } else if j == 0 {
+                    colZero = true
+                } else if i == 0 {
+                    rowZero = true
+                } else {
+                    matrix[i][0] = 0
+                    matrix[0][j] = 0
+                }
+            }
+        }
+    }
+    for i := 1; i < m; i++ {
+        for j := 1; j < n; j++ {
+            if matrix[i][0] == 0 || matrix[0][j] == 0 {
+                matrix[i][j] = 0
+            }
+        }
+    }
+    if rowZero {
+        for j := 0; j < n; j++ {matrix[0][j] = 0}
+    }
+    if colZero {
+        for i := 0; i< m; i++ {matrix[i][0] = 0}
+    }
+    
+}
+
+/*
+    approach: keep track of rows and cols to be replaced 
     - instead of marking the entire row and col with newZero value, each time we run into a 0
         - this caused o(mn * m+n)  time-complexity
         - there extra m+n for each cell
@@ -8,37 +59,39 @@
     - and then another pass of matrix traversal, in which for each cell we will check
         - does this row i needs to replaced with 0s ? or does this col j needs to replaced with 0s ?
         - whatever ds we use to keep track of rows and cols, it should make searching easy
-        - so a hashset
-    
+        - so a hashset to make searching easy
+    - thinking of saving the edges of the matrix ( row edge, col edge ) in a hashset
 
+    time = o(mn) + o(mn)
+    space = o(m) + o(n)
+    
+    better time complexity, but still using space
 */
-func setZeroes(matrix [][]int)  {
-    m := len(matrix)
-    n := len(matrix[0])
-    rows := map[int]struct{}{}
-    cols := map[int]struct{}{}
+// func setZeroes(matrix [][]int)  {
+//     m := len(matrix)
+//     n := len(matrix[0])
+//     rows := map[int]struct{}{}
+//     cols := map[int]struct{}{}
     
-    for i := 0; i < m; i++ {
-        for j := 0; j < n; j++ {
-            if matrix[i][j] == 0 {
-                rows[i] = struct{}{}
-                cols[j] = struct{}{}
-            }
-        }
-    }
+//     for i := 0; i < m; i++ {
+//         for j := 0; j < n; j++ {
+//             if matrix[i][j] == 0 {
+//                 rows[i] = struct{}{}
+//                 cols[j] = struct{}{}
+//             }
+//         }
+//     }
 
-    for i := 0; i < m; i++ {
-        for j := 0; j < n; j++ {
-            _, r := rows[i]
-            _, c := cols[j]
-            if r || c {
-                matrix[i][j] = 0
-            }
-        }
-    }
-    
-    
-}
+//     for i := 0; i < m; i++ {
+//         for j := 0; j < n; j++ {
+//             _, r := rows[i]
+//             _, c := cols[j]
+//             if r || c {
+//                 matrix[i][j] = 0
+//             }
+//         }
+//     }    
+// }
 
 /*
     The problem with blindly marking elements 0 is that
