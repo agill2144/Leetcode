@@ -1,21 +1,37 @@
+/*
+    approach: mark the edges 
+    - instead of marking the entire row and col with newZero value, each time we run into a 0
+        - this caused o(mn * m+n)  time-complexity
+        - there extra m+n for each cell
+    - we can instead keep track of which row and col should be replaced with 0s
+    - so first we will go thru entire matrix and identify which rows and cols should be replaced with 0s
+    - and then another pass of matrix traversal, in which for each cell we will check
+        - does this row i needs to replaced with 0s ? or does this col j needs to replaced with 0s ?
+        - whatever ds we use to keep track of rows and cols, it should make searching easy
+        - so a hashset
+    
+
+*/
 func setZeroes(matrix [][]int)  {
     m := len(matrix)
     n := len(matrix[0])
-    rows := make([]bool, m)
-    cols := make([]bool, n)
+    rows := map[int]struct{}{}
+    cols := map[int]struct{}{}
     
     for i := 0; i < m; i++ {
         for j := 0; j < n; j++ {
             if matrix[i][j] == 0 {
-                rows[i] = true
-                cols[j] = true
+                rows[i] = struct{}{}
+                cols[j] = struct{}{}
             }
         }
     }
 
     for i := 0; i < m; i++ {
         for j := 0; j < n; j++ {
-            if rows[i] || cols[j] {
+            _, r := rows[i]
+            _, c := cols[j]
+            if r || c {
                 matrix[i][j] = 0
             }
         }
