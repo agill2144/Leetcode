@@ -24,6 +24,6 @@ func setZeroes(matrix [][]int)  {
         }
     }
     
-    if rowZero { for i := 0; i < n; i++ {matrix[0][i] = 0} }
     if colZero { for i := 0; i < m; i++ {matrix[i][0] = 0} }
+    if rowZero { for i := 0; i < n; i++ {matrix[0][i] = 0} }
 }
