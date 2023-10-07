@@ -1,21 +1,27 @@
 func threeSum(nums []int) [][]int {
-    set := map[[3]int]struct{}{}
     out := [][]int{}
+    sort.Ints(nums)
     for i := 0; i < len(nums); i++ {
+        if i != 0 && nums[i] == nums[i-1] {continue}
         target := 0-nums[i]
-        comps := map[int]struct{}{}
-        for j := i+1; j < len(nums); j++ {
-            complement := target-nums[j]
-            if _, ok := comps[complement]; ok {
-                tmp := []int{nums[i], nums[j], complement}
-                sort.Ints(tmp)
-                if _, seen := set[[3]int{tmp[0], tmp[1], tmp[2]}]; !seen {
-                    set[[3]int{tmp[0], tmp[1], tmp[2]}] = struct{}{}
-                    out = append(out, tmp)
-                }
+        l := i+1
+        r := len(nums)-1
+        for l < r {
+            sum := nums[l] + nums[r]
+            if sum == target {
+                out = append(out, []int{nums[i], nums[l], nums[r]})
+                l++
+                for l < r && nums[l] == nums[l-1] {l++}
+                r--
+                for r > l && nums[r] == nums[r+1] {r--}
+                
+            } else if sum > target {
+                r--
+            } else {
+                l++
             }
-            comps[nums[j]] = struct{}{}
-         }
+        }
     }
     return out
+    
 }
