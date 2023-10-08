@@ -14,11 +14,10 @@ func reversePairs(nums []int) int {
         j := mid+1
         for i := left; i <= mid; i++ {
             for j <= right {
-                if nums[i] > nums[j]*2 {
-                    j++
-                } else {
+                if nums[i] <= nums[j]*2 {
                     break
                 }
+                j++
             }
             count += j-(mid+1)
         }
