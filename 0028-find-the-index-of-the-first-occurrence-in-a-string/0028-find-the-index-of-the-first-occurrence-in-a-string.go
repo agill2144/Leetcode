@@ -1,16 +1,37 @@
 func strStr(haystack string, needle string) int {
-    if len(needle) > len(haystack) {return -1}
-    if len(needle) == 0 {return -1}
-    windowStr := ""
-    left := 0
-    for right := 0; right < len(haystack); right++ {
-        windowStr += string(haystack[right])
-        if right-left+1 == len(needle) {
-            if windowStr[left:] == needle {
-                return left
+    lps := lps(needle)
+    i := 0 // haystack ptr
+    j := 0 // needle ptr
+    for i < len(haystack) {
+        if haystack[i] == needle[j] {
+            j++
+            i++
+            if j == len(needle) {
+                return i - len(needle)
             }
-            left++
+        } else if haystack[i] != needle[j] && j > 0 {
+            j = lps[j-1]
+        } else if haystack[i] != needle[j] && j == 0{
+            i++ // j is already at 0th idx, cant move that back anymore
         }
     }
     return -1
+}
+
+func lps(needle string) []int {
+    out := make([]int, len(needle))
+    i := 1 // suffix window right ptr
+    j := 0 // prefix window right ptr
+    for i < len(needle) {
+        if needle[i] == needle[j] {
+            j++
+            out[i] = j
+            i++
+        } else if needle[i] != needle[j] && j > 0 {
+            j = out[j-1]
+        } else if needle[i] != needle[j] && j == 0 {
+            i++
+        }
+    }
+    return out
 }
