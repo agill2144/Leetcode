@@ -1,3 +1,4 @@
+// The most magical fucking algo : KMP
 func strStr(haystack string, needle string) int {
     lps := lps(needle)
     i := 0 // haystack ptr
