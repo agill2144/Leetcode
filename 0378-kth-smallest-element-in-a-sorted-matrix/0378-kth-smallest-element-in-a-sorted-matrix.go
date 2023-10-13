@@ -1,27 +1,38 @@
 func kthSmallest(matrix [][]int, k int) int {
-    mx := &maxHeap{items: []int{}}
     m := len(matrix)
     n := len(matrix[0])
-    for i := 0; i < m; i++ {
-        for j := 0; j < n; j++ {
-            heap.Push(mx, matrix[i][j])
-            if mx.Len() > k {
-                heap.Pop(mx)
-            }
+    left := matrix[0][0]
+    right := matrix[m-1][n-1]
+    ans := -1
+    for left <= right {
+        mid := left + (right-left)/2
+        if countLessThanOrEqualTo(matrix, mid) < k {
+            left = mid+1
+        } else {
+            ans = mid
+            right = mid-1
         }
     }
-    return mx.items[0]
+    return ans
 }
 
-type maxHeap struct {
-	items []int
-}
-func (m *maxHeap) Less(i, j int) bool {return m.items[i] > m.items[j]}
-func (m *maxHeap) Swap(i, j int) {m.items[i],m.items[j] = m.items[j], m.items[i]}
-func (m *maxHeap) Len() int {return len(m.items)}
-func (m *maxHeap) Push(x interface{}) { m.items = append(m.items, x.(int))}
-func (m *maxHeap) Pop() interface{} {
-    out := m.items[len(m.items)-1]
-    m.items = m.items[:len(m.items)-1]
-    return out
+// use stair case search to find count <= target
+func countLessThanOrEqualTo(matrix [][]int,target int) int {
+    m := len(matrix)
+    n := len(matrix[0])
+    count := 0
+    r := m-1
+    c := 0
+    for r >= 0 && c < n {
+        if matrix[r][c] <= target {
+            // all elements above this cell are less than or equal to target
+            // therefore add all elements in this col
+            count += r+1
+            // and eval the next col
+            c++
+        } else {
+            r--
+        }
+    }
+    return count
 }
