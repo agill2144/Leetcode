@@ -1,27 +1,19 @@
 func setZeroes(matrix [][]int)  {
-    tmpZero := math.MaxInt64
     m := len(matrix)
     n := len(matrix[0])
-    
-    dirs := [][]int{{1,0},{-1,0},{0,-1},{0,1}}
+    rows := make([]bool, m)
+    cols := make([]bool, n)
     for i := 0; i < m; i++ {
         for j := 0; j < n; j++ {
             if matrix[i][j] == 0 {
-                for _, dir := range dirs {
-                    r := i + dir[0]
-                    c := j + dir[1]
-                    for r >= 0 && r < m && c >= 0 && c < n && matrix[r][c] != 0 {
-                        matrix[r][c] = tmpZero
-                        r += dir[0]
-                        c += dir[1]
-                    }
-                }
+                rows[i] = true
+                cols[j] = true
             }
         }
     }
     for i := 0; i < m; i++ {
         for j := 0; j < n; j++ {
-            if matrix[i][j] == tmpZero {
+            if rows[i] || cols[j] {
                 matrix[i][j] = 0
             }
         }
