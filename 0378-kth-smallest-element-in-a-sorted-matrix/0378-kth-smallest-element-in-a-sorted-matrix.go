@@ -6,7 +6,8 @@ func kthSmallest(matrix [][]int, k int) int {
     ans := -1
     for left <= right {
         mid := left + (right-left)/2
-        if countLessThanOrEqualTo(matrix, mid) < k {
+        countLeftOfMid := countLessThanOrEqualTo(matrix, mid)
+        if countLeftOfMid < k {
             left = mid+1
         } else {
             ans = mid
