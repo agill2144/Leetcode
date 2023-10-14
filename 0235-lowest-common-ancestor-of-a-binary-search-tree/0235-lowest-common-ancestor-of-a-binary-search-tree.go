@@ -8,18 +8,17 @@
  */
 
 func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
-    var dfs func(r *TreeNode) *TreeNode
-    dfs = func(r *TreeNode) *TreeNode {
-        // base
-        if r == nil {return nil}
-        
-        // logic
-        if r == p || r == q {return r}
-        if (p.Val > r.Val && q.Val < r.Val) || (p.Val < r.Val && q.Val > r.Val) {return r}
-        if p.Val > r.Val && q.Val > r.Val {
-            if node := dfs(r.Right); node != nil {return node}
+    for root != nil {
+        if root == p || root == q {
+            return root
         }
-        return dfs(r.Left)
+        if p.Val > root.Val && q.Val > root.Val {
+            root = root.Right
+        } else if p.Val < root.Val && q.Val < root.Val {
+            root = root.Left
+        } else {
+            return root
+        }
     }
-    return dfs(root)
+    return nil
 }
