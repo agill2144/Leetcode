@@ -1,10 +1,10 @@
 func calculate(s string) int {
-    strings.TrimSpace(s)
     st := []int{}
     curr := 0
     var lastOp byte = '+'
     for i := 0; i < len(s); i++ {
         char := s[i]
+        
         if char >= '0' && char <= '9' {
             curr = curr * 10 + int(char-'0')
         }
