@@ -18,7 +18,9 @@ func strStr(haystack string, needle string) int {
                 We need to find out whether there are chars that appear both in the front and back of the prev substr
                 Does the substr have a prefix thats also a suffix 
                 why?
-                *** because we will use prefix from pattern and suffix from haystack ****
+                *** because we will use prefix from pattern and suffix from src ****
+                and re-adjust needle to match the immediate prev chars of src string
+
                 the LPS array is telling us the LPS itself
                 if all chars upto this idx have matched, 
                     we need to know which chars from pattern can be re-mapped to just immediate chars of src string
