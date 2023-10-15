@@ -1,56 +1,38 @@
-// The most magical fucking algo : KMP
 func strStr(haystack string, needle string) int {
-    lps := findLPS(needle)
-    i := 0
-    j := 0
+    lps := getLPS(needle)
+    i := 0 // haystack ptr
+    j := 0 // needle ptr
+    
     for i < len(haystack) {
         if haystack[i] == needle[j] {
-            j++
             i++
+            j++
             if j == len(needle) {
                 return i-len(needle)
             }
         } else if haystack[i] != needle[j] && j > 0 {
-            /*
-                When you encounter a mismatch at haystack[i] and needle[j],
-                We have already matched ALL prev chars upto this idx ( both in haystack and needle )
-                
-                We need to find out whether there are chars that appear both in the front and back of the prev substr
-                Does the substr have a prefix thats also a suffix 
-                why?
-                *** because we will use prefix from pattern and suffix from src ****
-                and re-adjust needle to match the immediate prev chars of src string
-
-                the LPS array is telling us the LPS itself
-                if all chars upto this idx have matched, 
-                    we need to know which chars from pattern can be re-mapped to just immediate chars of src string
-                    i.e what is the longest prefix / suffix of prev char
-                    therefore lps[j-1]
-                
-            */
             j = lps[j-1]
-        } else if haystack[i] != needle[j] && j == 0 {
-            // j is already at 0th idx, cant move that back anymore
+        } else if j == 0 { 
             i++
         }
     }
     return -1
 }
 
-func findLPS(needle string) []int {
-    out := make([]int, len(needle))
-    j := 0
+func getLPS(pattern string) []int{
+    lps := make([]int, len(pattern))
     i := 1
-    for i < len(needle) {
-        if needle[i] == needle[j] {
+    j := 0
+    for i < len(pattern) {
+        if pattern[j] == pattern[i] {
             j++
-            out[i] = j
+            lps[i] = j
             i++
-        } else if needle[j] != needle[i] && j > 0 {
-            j = out[j-1]
-        } else if needle[j] != needle[i] && j == 0 {
+        } else if pattern[j] != pattern[i] && j > 0 {
+            j = lps[j-1]
+        } else {
             i++
         }
     }
-    return out
+    return lps
 }
