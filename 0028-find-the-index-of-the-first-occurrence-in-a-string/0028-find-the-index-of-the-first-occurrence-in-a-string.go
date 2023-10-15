@@ -13,9 +13,18 @@ func strStr(haystack string, needle string) int {
         } else if haystack[i] != needle[j] && j > 0 {
             /*
                 When you encounter a mismatch at haystack[i] and needle[j],
-                You adjust j based on the LPS (Longest Prefix Suffix) array. 
-                The LPS array helps you determine how much of the pattern
-                can be reused when a mismatch occurs.
+                We have already matched ALL prev chars upto this idx ( both in haystack and needle )
+                
+                We need to find out whether there are chars that appear both in the front and back of the prev substr
+                Does the substr have a prefix thats also a suffix 
+                why?
+                *** because we will use prefix from pattern and suffix from haystack ****
+                the LPS array is telling us the LPS itself
+                if all chars upto this idx have matched, 
+                    we need to know which chars from pattern can be re-mapped to just immediate chars of src string
+                    i.e what is the longest prefix / suffix of prev char
+                    therefore lps[j-1]
+                
             */
             j = lps[j-1]
         } else if haystack[i] != needle[j] && j == 0 {
