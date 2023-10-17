@@ -1,8 +1,7 @@
 func strStr(haystack string, needle string) int {
     lps := getLPS(needle)
-    i := 0 // haystack ptr
-    j := 0 // needle ptr
-    
+    i := 0
+    j := 0
     for i < len(haystack) {
         if haystack[i] == needle[j] {
             i++
@@ -12,14 +11,15 @@ func strStr(haystack string, needle string) int {
             }
         } else if haystack[i] != needle[j] && j > 0 {
             j = lps[j-1]
-        } else if j == 0 { 
+        } else {
             i++
         }
     }
     return -1
 }
 
-func getLPS(pattern string) []int{
+
+func getLPS(pattern string) []int {
     lps := make([]int, len(pattern))
     i := 1
     j := 0
@@ -28,7 +28,7 @@ func getLPS(pattern string) []int{
             j++
             lps[i] = j
             i++
-        } else if pattern[j] != pattern[i] && j > 0 {
+        } else if pattern[j] != pattern[i] && j > 0{
             j = lps[j-1]
         } else {
             i++
