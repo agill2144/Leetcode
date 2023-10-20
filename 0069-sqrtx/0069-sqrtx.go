@@ -1,5 +1,6 @@
 func mySqrt(x int) int {
-    if x == 0 {return 0}
+    if x < 2 {return x}
+    
     right := 1
     for right * right < x {
         right *= 2
