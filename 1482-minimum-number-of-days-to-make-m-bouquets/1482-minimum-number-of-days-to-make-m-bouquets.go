@@ -1,5 +1,5 @@
 func minDays(bloomDay []int, m int, k int) int {
-    if m*k > len(bloomDay) {return -1}
+    // if m*k > len(bloomDay) {return -1}
     left := math.MaxInt64
     right := math.MinInt64
     for i := 0; i < len(bloomDay); i++ {
@@ -27,7 +27,10 @@ func minDays(bloomDay []int, m int, k int) int {
                 count = 0
             }
         }
-        
+        // we want to find the earliest day where we can make m bouquets with each 
+        // containing k contagious flowers
+        // we found an ans or a day where its possible, but we may have overshot the minDay,
+        // therefore save this as a potential ans, and search left
         if numBouquets >= m {
             ans = mid
             right = mid-1
