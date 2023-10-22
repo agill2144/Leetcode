@@ -9,6 +9,8 @@
     - ITS a range, ranges are sorted
     - then binary search on that range
 
+    *The best way to identify the range, is to see it in brute force
+
     time = o(logx)
     space = o(1)
 */
