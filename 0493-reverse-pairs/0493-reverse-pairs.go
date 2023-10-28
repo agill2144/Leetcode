@@ -1,50 +1,70 @@
+/*
+    approach: divide and conquer ( merge sort )
+*/
 func reversePairs(nums []int) int {
     count := 0
     var dfs func(left, right int)
     dfs = func(left, right int) {
         // base
-        if left >= right {return}
+        if left >=  right {return}
         
         // logic
         mid := left + (right-left)/2
         dfs(left, mid)
         dfs(mid+1, right)
         
-        i := left
+        // left and right halves are sorted
+        // check if left (ith) element > right (jth) element
         j := mid+1
-        for i <= mid {
+        for i := left; i <= mid; i++ {
             for j <= right {
-                if nums[i] > nums[j]*2 {
-                    count += mid-i+1
+                if nums[i] > nums[j]*2{
+                    count += (mid-i+1)
                     j++
                 } else {
                     break
                 }
             }
-            i++
         }
         
-        merged := []int{}
+        // merge sorted array
+        aux := []int{}
         l := left
         r := mid+1
         for l <= mid && r <= right {
-            if nums[l] <= nums[r] {
-                merged = append(merged, nums[l])
+            if nums[l] < nums[r] {
+                aux = append(aux, nums[l])
                 l++
-            }  else {
-                merged = append(merged, nums[r])
+            } else {
+                aux = append(aux, nums[r])
                 r++
             }
         }
-        for l <= mid {merged = append(merged, nums[l]); l++}
-        for r <= right {merged = append(merged, nums[r]); r++}
-        ptr := 0
-        for i := left; i <= right; i++ {
-            nums[i] = merged[ptr]
-            ptr++
+        for l <= mid {aux = append(aux, nums[l]); l++}
+        for r <= right {aux = append(aux, nums[r]); r++}
+        auxPtr := 0
+        for i := left ; i <= right; i++ {
+            nums[i] = aux[auxPtr]
+            auxPtr++
         }
+        
     }
     dfs(0, len(nums)-1)
     return count
-    
 }
+
+// approach: brute force
+// check all possibe pairs
+// time = o(n^2)
+// space = o(1)
+// func reversePairs(nums []int) int {
+//     count := 0
+//     for i := 0; i < len(nums); i++ {
+//         for j := i+1; j < len(nums); j++ {
+//             if nums[i] > nums[j]*2 {
+//                 count++
+//             }
+//         }
+//     }
+//     return count
+// }
