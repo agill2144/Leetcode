@@ -18,9 +18,14 @@ func reversePairs(nums []int) int {
         j := mid+1
         for i := left; i <= mid; i++ {
             for j <= right {
+                // if ith val > jth val * 2 
+                // then all the next ith val (from left side, which are sorted )
+                // WILL also be greater, therefore count += rest of the elements from left side
                 if nums[i] > nums[j]*2{
                     count += (mid-i+1)
                     j++
+                // if left val is not > right val, break, because we need a bigger ith val
+                // leave j where it is
                 } else {
                     break
                 }
