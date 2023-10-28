@@ -1,3 +1,6 @@
+// greedy greedy greedy
+// time = o(n) + o(n) + o(n)
+// space = o(n)
 func movesToMakeZigzag(nums []int) int {
     n := len(nums)
     odd := make([]int, n)
