@@ -13,42 +13,29 @@
  *   }
  */
 
-// we care that the top is the next number
-// whenever we call next, save the current top, call iter.Next() to save next top element
-
 type PeekingIterator struct {
-    top int
     iter *Iterator
+    n int
 }
 
 func Constructor(iter *Iterator) *PeekingIterator {
-    out := &PeekingIterator{
-        top: -1,
-        iter: iter,
-    }
-    out.ensureTopIsSet()
-    return out
-}
-
-func (this *PeekingIterator) ensureTopIsSet() {
-    if this.iter.hasNext() {
-        this.top = this.iter.next()
-    } else {
-        // no more elements left 
-        this.top = -1
-    }
+    return &PeekingIterator{iter: iter, n: iter.next()}
 }
 
 func (this *PeekingIterator) hasNext() bool {
-    return this.top != -1
+    return this.n != -1
 }
 
 func (this *PeekingIterator) next() int {
-    out := this.top
-    this.ensureTopIsSet()
+    out := this.n
+    if this.iter.hasNext() {
+        this.n = this.iter.next()
+    } else {
+        this.n = -1
+    }
     return out
 }
 
 func (this *PeekingIterator) peek() int {
-    return this.top    
+    return this.n
 }
