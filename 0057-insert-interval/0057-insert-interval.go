@@ -3,7 +3,9 @@ func insert(intervals [][]int, newInterval []int) [][]int {
         return intervals
     }
     
+    
     intervals = append(intervals, newInterval)
+    // insertion sort, there is only 1 element to insert
     for i := len(intervals)-2; i >= 0; i-- {
         next := intervals[i+1]
         curr := intervals[i]
