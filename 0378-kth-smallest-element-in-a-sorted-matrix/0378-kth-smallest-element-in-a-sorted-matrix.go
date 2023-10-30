@@ -1,13 +1,23 @@
+/*
+    approach: binary search on answers
+    - we know the smallest element is at 0,0
+    - we know the largest element is at m-1,n-1
+    - and the numbers within the matrix are within this min,max range ( guranteed )
+    - so we have a range of numbers
+    - ranges are sorted, therefore we can use binary search
+    - how can mid be our answer?
+        - if there are >= k elements to the left of mid number
+        
+*/
 func kthSmallest(matrix [][]int, k int) int {
-    m := len(matrix)
-    n := len(matrix[0])
+    n := len(matrix)
     left := matrix[0][0]
-    right := matrix[m-1][n-1]
+    right := matrix[n-1][n-1]
     ans := -1
     for left <= right {
         mid := left + (right-left)/2
-        countLeftOfMid := countLessThanOrEqualTo(matrix, mid)
-        if countLeftOfMid < k {
+        numElementsOnLeft := count(matrix, mid)
+        if numElementsOnLeft < k {
             left = mid+1
         } else {
             ans = mid
@@ -17,23 +27,18 @@ func kthSmallest(matrix [][]int, k int) int {
     return ans
 }
 
-// use stair case search to find count <= target
-func countLessThanOrEqualTo(matrix [][]int,target int) int {
-    m := len(matrix)
-    n := len(matrix[0])
-    count := 0
-    r := m-1
+func count(matrix [][]int, target int) int {
+    n := len(matrix)
+    r := n-1
     c := 0
+    total := 0
     for r >= 0 && c < n {
         if matrix[r][c] <= target {
-            // all elements above this cell are less than or equal to target
-            // therefore add all elements in this col
-            count += r+1
-            // and eval the next col
+            total += r+1
             c++
         } else {
             r--
         }
     }
-    return count
+    return total
 }
