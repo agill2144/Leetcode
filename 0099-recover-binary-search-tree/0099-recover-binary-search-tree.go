@@ -7,28 +7,31 @@
  * }
  */
 func recoverTree(root *TreeNode)  {
-    var prev *TreeNode
+    if root == nil {return}
     var first *TreeNode
     var second *TreeNode
-
+    var prev *TreeNode
     var dfs func(r *TreeNode)
     dfs = func(r *TreeNode) {
         // base
         if r == nil {return}
         
+        
         // logic
         dfs(r.Left)
-        if prev != nil && prev.Val >= r.Val {
-            if first == nil {
-                first = prev
+        if prev != nil {
+            if prev.Val > r.Val {
+                if first == nil {
+                    first = prev
+                }
+                second = r
+                
             }
-            second = r
         }
         prev = r
         dfs(r.Right)
     }
     dfs(root)
-    if first != nil && second != nil {
-        first.Val, second.Val = second.Val, first.Val
-    }
+    first.Val, second.Val = second.Val, first.Val
+
 }
