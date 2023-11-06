@@ -3,28 +3,27 @@ func findAnagrams(s string, p string) []int {
     for i := 0; i < len(p); i++ {
         pMap[p[i]]++
     }
+    count := 0
     left := 0
     out := []int{}
-    count := len(pMap)
-    for i := 0; i < len(s); i++{
-        char := s[i]
-        if _, ok := pMap[char]; ok {
-            pMap[char]--
-            // we have a full match for this char ?
-            // decrement its counter
-            if pMap[char] == 0 {count--}
+    for i := 0; i < len(s); i++ {
+        val, ok := pMap[s[i]]
+        if ok {
+            pMap[s[i]]--
+            if val == 1 {
+                count++
+            }
         }
         
         if i-left+1 == len(p) {
-            // count will be 0 when all chars were fully matched 
-            // with current window
-            if count == 0 {
+            if count == len(pMap) {
                 out = append(out, left)
             }
             leftChar := s[left]
-            if _, ok := pMap[leftChar]; ok {
+            val, ok = pMap[leftChar]
+            if ok {
                 pMap[leftChar]++
-                if pMap[leftChar] == 1 {count++}
+                if val == 0 {count--}
             }
             left++
         }
