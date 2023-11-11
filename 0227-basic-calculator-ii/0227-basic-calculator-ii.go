@@ -1,30 +1,31 @@
 func calculate(s string) int {
-    contr := 0
-    calc := 0
+    st := []int{}
     curr := 0
     var lastOp byte = '+'
     for i := 0; i < len(s); i++ {
-        char := s[i]        
+        char := s[i]
         if char >= '0' && char <= '9' {
             curr = curr * 10 + int(char-'0')
         }
-        if char == '+' || char == '-' || char == '*' || char == '/' || i == len(s)-1 {
-            if lastOp == '+' {
-                calc += curr
-                contr = curr
-            } else if lastOp == '-' {
-                calc -= curr
-                contr = -curr
-            } else if lastOp == '*' {
-                calc = calc-contr + contr * curr
-                contr = contr * curr
+        
+        if char == '+' || char == '-' || char == '/' || char == '*' || i == len(s)-1 {
+            if lastOp == '*' {
+                st[len(st)-1] = curr * st[len(st)-1]
             } else if lastOp == '/' {
-                calc = calc-contr + contr / curr
-                contr = contr / curr
+                st[len(st)-1] = st[len(st)-1] / curr             
+            } else if lastOp == '-' {
+                st = append(st, -curr)
+            } else if lastOp == '+' {
+                st = append(st, curr)
             }
             curr = 0
             lastOp = char
         }
     }
-    return calc
+    total := 0
+    for len(st) != 0 {
+        total += st[len(st)-1]
+        st = st[:len(st)-1]
+    }
+    return total
 }
