@@ -1,15 +1,20 @@
 func maxProfit(prices []int) int {
-    buyPrice := prices[0]
-    maxProfit := 0
-    for i := 0; i < len(prices); i++ {
-        sell := prices[i]
-        profit := sell-buyPrice
-        if profit > maxProfit {
-            maxProfit = profit
-        }
-        if sell < buyPrice {
-            buyPrice = sell
-        }
+    nextLargerNumber := make([]int, len(prices))
+    for i := len(prices)-2; i >= 0; i-- {
+        currNext := nextLargerNumber[i+1]
+        nextNum := prices[i+1]
+        nextLargerNumber[i] = max(currNext, nextNum)
     }
-    return maxProfit
+    
+    out := 0
+    for i := 0; i < len(prices); i++ {
+        profit := nextLargerNumber[i]-prices[i]
+        out = max(out, profit)
+    }
+    return out
+}
+
+func max(x, y int) int {
+    if x > y {return x}
+    return y
 }
