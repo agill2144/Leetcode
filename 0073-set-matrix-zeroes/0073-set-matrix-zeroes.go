@@ -38,10 +38,8 @@ func setZeroes(matrix [][]int)  {
                 for _, dir := range dirs {
                     r := i+dir[0]
                     c := j+dir[1]
-                    for r >= 0 && r < m && c >= 0 && c < n {
-                        if matrix[r][c] != 0{
-                            matrix[r][c] = math.MinInt64
-                        }
+                    for r >= 0 && r < m && c >= 0 && c < n && matrix[r][c] != 0 {
+                        matrix[r][c] = math.MinInt64
                         r += dir[0]
                         c += dir[1]
                     }
