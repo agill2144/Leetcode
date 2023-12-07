@@ -1,4 +1,43 @@
 /*
+    The bottle neck of last solution is that when we run into a cell with val 0
+    we process the entire row and col for the cell immediately
+    i.e for each cell we run a m+n time to process
+    instead of processing it right away, lets punt on it and run another pass to do it later
+    this makes the time complexty from o(mn * m+n) to o(mn) + o(m+n)
+    
+    approach: marking edges in separate arrays
+    - we know when we run into a cell with 0
+    - we are supposed to flip that cells entire row and col to all 0's
+    - instead of processing all 4 dirs right away, lets keep track of all rows and egdes to flipped
+    - either we can use 2 hashsets or 2 bool arrays to mark edges of rows and cols
+    - once edges are marked, take another pass at the matrix
+    - if a cell is in a row or col who should be flipped ( check in the extra hashsets / arrays we created ), then flip that cell value to 0
+    
+    time = o(mn) + o(m+n)
+    space = o(m) + o(n)
+*/
+func setZeroes(matrix [][]int)  {
+    m := len(matrix)
+    n := len(matrix[0])
+    rows := make([]bool, m)
+    cols := make([]bool, n)
+    for i := 0; i < m; i++ {
+        for j := 0; j < n; j++ {
+            if matrix[i][j] == 0 {
+                rows[i] = true
+                cols[j] = true
+            }
+        }
+    }
+    for i := 0; i < m; i++ {
+        for j := 0; j < n; j++ {
+            if rows[i] || cols[j] {
+                matrix[i][j] = 0
+            }
+        }
+    }
+}
+/*
     The problem with blindly marking elements 0 is that
     when we run into a 0 from input matrix
     we will go thru that entire row and col and flip all values 0
@@ -27,33 +66,33 @@
         - flip the -inf to 0
 
 */
-func setZeroes(matrix [][]int)  {
-    m := len(matrix)
-    n := len(matrix[0])
-    dirs := [][]int{{1,0},{-1,0},{0,-1},{0,1}}
+// func setZeroes(matrix [][]int)  {
+//     m := len(matrix)
+//     n := len(matrix[0])
+//     dirs := [][]int{{1,0},{-1,0},{0,-1},{0,1}}
     
-    for i := 0; i < m; i++ {
-        for j := 0; j < n; j++ {
-            if matrix[i][j] == 0 {
-                for _, dir := range dirs {
-                    r := i+dir[0]
-                    c := j+dir[1]
-                    for r >= 0 && r < m && c >= 0 && c < n && matrix[r][c] != 0 {
-                        matrix[r][c] = math.MinInt64
-                        r += dir[0]
-                        c += dir[1]
-                    }
-                }
-            }
-        }
-    }
+//     for i := 0; i < m; i++ {
+//         for j := 0; j < n; j++ {
+//             if matrix[i][j] == 0 {
+//                 for _, dir := range dirs {
+//                     r := i+dir[0]
+//                     c := j+dir[1]
+//                     for r >= 0 && r < m && c >= 0 && c < n && matrix[r][c] != 0 {
+//                         matrix[r][c] = math.MinInt64
+//                         r += dir[0]
+//                         c += dir[1]
+//                     }
+//                 }
+//             }
+//         }
+//     }
     
-    for i := 0; i < m; i++ {
-        for j := 0; j < n; j++ {
-            if matrix[i][j] == math.MinInt64 {matrix[i][j] = 0 }
-        }
-    }
-}
+//     for i := 0; i < m; i++ {
+//         for j := 0; j < n; j++ {
+//             if matrix[i][j] == math.MinInt64 {matrix[i][j] = 0 }
+//         }
+//     }
+// }
 
 /*
     approach: brute force
