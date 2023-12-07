@@ -6,20 +6,28 @@
     1. use the return value ; but in case we are not returning anything, so this wont work
     2. use the input itself ; this we can do
     
-    approach: use input matrix to mark edges
-    - bring the edges inside
-    - the edges (rows and cols) that were separate arrays, bring them inside the matrix
-    - BUT doing so results into a clash at 0,0
-        - what will 0,0 tell us ? to flip 0th row or to flip 0th col or both ??
-        - to avoid 0,0 cell holding ans for 3 different questions, we will take 2 extra vars "rowZero" and "colZero" 
-        - which also means our edges will be 1 size smaller , because cell 0,0 answer is moved to 2 different vars
+    approach: keep track of rows and cols to be replaced in the same input matrix
+    - bringing the edges arrays inside the input matrix works well
+    - however position 0,0 will have a confusing value, how ?
+        - if in the 0th row, the edge gets marked with a 0
+        - and then in 2nd pass, each col at idx 0 will look up at the col edge ( 0,0 ) 
+        - and will replace itself with a 0
+        - this is incorrect, the 0,0 was replaced because of row 0 and should not have been used for col 0
+    - therefore instead of using cell 0,0 in input matrix , we will use 2 vars to keep mark row0 and col0
+    - rest of the matrix will still use the edges of matrix ( top and left ) to mark rows and cols that need to be replaced with 0's
     
+    
+    time = o(mn) + o(mn) + o(m) + o(n)
+    space = o(1)
+
 */
 func setZeroes(matrix [][]int)  {
     m := len(matrix)
     n := len(matrix[0])
     rowZero := false
     colZero := false
+    
+    // time = o(mn)
     for i := 0; i < m; i++ {
         for j := 0; j < n; j++ {
             if matrix[i][j] == 0 {
@@ -31,16 +39,19 @@ func setZeroes(matrix [][]int)  {
         }
     }
     
+    // time = o(mn)
     for i := 1; i < m; i++ {
         for j := 1; j < n; j++ {
             if matrix[i][0] == 0 || matrix[0][j] == 0 {
                 matrix[i][j] = 0
-            }
+            } 
         }
     }
     
-    if rowZero {for j := 0; j < n; j++ {matrix[0][j] = 0}}
-    if colZero {for i := 0; i < m; i++ {matrix[i][0] = 0}}
+    // time = o(m)
+    if colZero { for i := 0; i < m; i++ {matrix[i][0] = 0} }
+    // time = o(n)
+    if rowZero { for i := 0; i < n; i++ {matrix[0][i] = 0} }
     
 }
 /*
