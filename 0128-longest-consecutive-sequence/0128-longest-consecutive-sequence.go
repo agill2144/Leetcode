@@ -3,24 +3,27 @@ func longestConsecutive(nums []int) int {
     for i := 0; i < len(nums); i++ {
         set[nums[i]] = struct{}{}
     }
-    max := 0
+    out := 0
     for i := 0; i < len(nums); i++ {
-
-        curr := nums[i]
-        _, ok := set[curr-1]
-        if ok {continue} // we have a prev number to start with, skip this one
-        
-        count := 1
+        num := nums[i]
+        prev := num-1
+        // only proceed with this num if this is a starting of a seq
+        // i.e no number before this exists in nums array
+        // however if the prev number of this number exists, 
+        // skip because we would want to start from that prev num
+        if _, ok := set[prev]; ok {
+            continue
+        }
+        size := 1
         for true {
-            if _, ok := set[curr+1]; ok {
-                count++
-                curr++
+            if _, ok := set[num+1]; ok {
+                size++
+                num++
             } else {
                 break
             }
         }
-        if count > max {max = count}
-
+        if size > out {out = size}
     }
-    return max
+    return out
 }
