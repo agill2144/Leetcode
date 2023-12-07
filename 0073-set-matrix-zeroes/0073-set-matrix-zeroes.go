@@ -1,4 +1,49 @@
 /*
+    The bottle neck of last approach was using extra space m+n
+    time complexity wise, it was good, not more we can optimize.
+    
+    when dealing with optimizing space, we usually have 2 options
+    1. use the return value ; but in case we are not returning anything, so this wont work
+    2. use the input itself ; this we can do
+    
+    approach: use input matrix to mark edges
+    - bring the edges inside
+    - the edges (rows and cols) that were separate arrays, bring them inside the matrix
+    - BUT doing so results into a clash at 0,0
+        - what will 0,0 tell us ? to flip 0th row or to flip 0th col or both ??
+        - to avoid 0,0 cell holding ans for 3 different questions, we will take 2 extra vars "rowZero" and "colZero" 
+        - which also means our edges will be 1 size smaller , because cell 0,0 answer is moved to 2 different vars
+    
+*/
+func setZeroes(matrix [][]int)  {
+    m := len(matrix)
+    n := len(matrix[0])
+    rowZero := false
+    colZero := false
+    for i := 0; i < m; i++ {
+        for j := 0; j < n; j++ {
+            if matrix[i][j] == 0 {
+                if i == 0 {rowZero = true}
+                if j == 0 {colZero = true}
+                if i != 0 {matrix[i][0] = 0}
+                if j != 0 {matrix[0][j] = 0}
+            }
+        }
+    }
+    
+    for i := 1; i < m; i++ {
+        for j := 1; j < n; j++ {
+            if matrix[i][0] == 0 || matrix[0][j] == 0 {
+                matrix[i][j] = 0
+            }
+        }
+    }
+    
+    if rowZero {for j := 0; j < n; j++ {matrix[0][j] = 0}}
+    if colZero {for i := 0; i < m; i++ {matrix[i][0] = 0}}
+    
+}
+/*
     The bottle neck of last solution is that when we run into a cell with val 0
     we process the entire row and col for the cell immediately
     i.e for each cell we run a m+n time to process
@@ -16,27 +61,27 @@
     time = o(mn) + o(m+n)
     space = o(m) + o(n)
 */
-func setZeroes(matrix [][]int)  {
-    m := len(matrix)
-    n := len(matrix[0])
-    rows := make([]bool, m)
-    cols := make([]bool, n)
-    for i := 0; i < m; i++ {
-        for j := 0; j < n; j++ {
-            if matrix[i][j] == 0 {
-                rows[i] = true
-                cols[j] = true
-            }
-        }
-    }
-    for i := 0; i < m; i++ {
-        for j := 0; j < n; j++ {
-            if rows[i] || cols[j] {
-                matrix[i][j] = 0
-            }
-        }
-    }
-}
+// func setZeroes(matrix [][]int)  {
+//     m := len(matrix)
+//     n := len(matrix[0])
+//     rows := make([]bool, m)
+//     cols := make([]bool, n)
+//     for i := 0; i < m; i++ {
+//         for j := 0; j < n; j++ {
+//             if matrix[i][j] == 0 {
+//                 rows[i] = true
+//                 cols[j] = true
+//             }
+//         }
+//     }
+//     for i := 0; i < m; i++ {
+//         for j := 0; j < n; j++ {
+//             if rows[i] || cols[j] {
+//                 matrix[i][j] = 0
+//             }
+//         }
+//     }
+// }
 /*
     The problem with blindly marking elements 0 is that
     when we run into a 0 from input matrix
