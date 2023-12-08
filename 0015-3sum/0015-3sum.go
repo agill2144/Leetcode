@@ -1,27 +1,42 @@
 func threeSum(nums []int) [][]int {
+    set := map[[3]int]struct{}{}
     out := [][]int{}
-    sort.Ints(nums)
     for i := 0; i < len(nums); i++ {
-        if i != 0 && nums[i] == nums[i-1] {continue}
         target := 0-nums[i]
-        l := i+1
-        r := len(nums)-1
-        for l < r {
-            sum := nums[l] + nums[r]
-            if sum == target {
-                out = append(out, []int{nums[i], nums[l], nums[r]})
-                l++
-                for l < r && nums[l] == nums[l-1] {l++}
-                r--
-                for r > l && nums[r] == nums[r+1] {r--}
-                
-            } else if sum > target {
-                r--
-            } else {
-                l++
+        numsSet := map[int]struct{}{}
+        for j := i+1; j < len(nums); j++ {
+            newTarget := target-nums[j]
+            if _, ok := numsSet[newTarget]; ok {
+                tmp := [3]int{nums[i], nums[j], newTarget}
+                sort.Ints(tmp[:])
+                if _, ok := set[tmp]; !ok {
+                    set[tmp] = struct{}{}
+                    out = append(out, tmp[:])
+                }
             }
+            numsSet[nums[j]] = struct{}{}
         }
     }
     return out
-    
 }
+
+
+// func threeSum(nums []int) [][]int {
+//     set := map[[3]int]struct{}{}
+//     out := [][]int{}
+//     for i := 0; i < len(nums); i++ {
+//         for j := i+1; j < len(nums); j++ {
+//             for k := j+1; k < len(nums); k++ {
+//                 if nums[i] + nums[j] + nums[k] == 0 {
+//                     tmp := [3]int{nums[i], nums[j], nums[k]}
+//                     sort.Ints(tmp[:])
+//                     if _, ok := set[tmp]; !ok {
+//                         set[tmp] = struct{}{}
+//                         out = append(out, []int{tmp[0], tmp[1], tmp[2]})
+//                     }
+//                 }
+//             }
+//         }
+//     }
+//     return out
+// }
