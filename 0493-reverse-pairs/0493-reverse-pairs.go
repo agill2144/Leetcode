@@ -15,11 +15,11 @@ func reversePairs(nums []int) int {
         // right side = j
         // looking for nums[i] > nums[j]
         i := left
+        j := mid+1
         for i <= mid {
-            j := mid+1
             for j <= right {
                 if nums[i] > nums[j]*2 {
-                    count++
+                    count += (mid-i)+1
                     j++
                 } else {
                     break
