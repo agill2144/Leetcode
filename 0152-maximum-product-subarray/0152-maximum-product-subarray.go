@@ -1,12 +1,18 @@
 func maxProduct(nums []int) int {
-    max := math.MinInt64
     rp := 1
+    brp := 1
+    out := math.MinInt64
     for i := 0; i < len(nums); i++ {
-        for j := i; j < len(nums); j++ {
-            rp *= nums[j]
-            if rp > max {max = rp}
-        }
-        rp = 1
+        rp *= nums[i]
+        brp *= nums[len(nums)-1-i]
+        out = max(out, max(rp, brp))
+        if rp == 0 {rp = 1}
+        if brp == 0 {brp = 1}
     }
-    return max
+    return out
+}
+
+func max(x, y int) int {
+    if x > y {return x}
+    return y
 }
