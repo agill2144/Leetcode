@@ -1,21 +1,22 @@
 func pivotArray(nums []int, pivot int) []int {
-    left := []int{}
-    count := 0
+    out := []int{}
+    countEq := 0
     for i := 0; i < len(nums); i++ {
         if nums[i] < pivot {
-            left = append(left, nums[i])
+            out = append(out, nums[i])
         } else if nums[i] == pivot {
-            count++
+            countEq++
         }
     }
-    for count != 0 {
-        left = append(left, pivot)
-        count--
+    for countEq > 0 {
+        out = append(out, pivot)
+        countEq--
     }
+    
     for i := 0; i < len(nums); i++ {
         if nums[i] > pivot {
-            left = append(left, nums[i])
+            out = append(out, nums[i])
         }
-    }    
-    return left
+    }
+    return out
 }
