@@ -1,5 +1,7 @@
 // to further reduce time, we only care about 2 max numbers
 // maintain them in 2 vars
+// time = o(n)
+// space = o(1)
 func maxProduct(nums []int) int {
     first := math.MinInt64
     sec := math.MinInt64
@@ -15,7 +17,7 @@ func maxProduct(nums []int) int {
     return (first-1) * (sec-1)
 }
 
-// want to reduce sort time , consider heap
+// want to reduce sort time, consider heap
 // we only care about 2 elements, therefore heap time becomes o(nlog2) ; o(nlog)
 // space = o(2)
 // func maxProduct(nums []int) int {
