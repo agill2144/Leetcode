@@ -39,7 +39,7 @@ func subarraysDivByK(nums []int, k int) int {
     sum := 0
     for i := 0; i < len(nums); i++ {
         sum += nums[i]
-        rem := (sum % k + k) % k
+        rem := sum % k
         
         /*
             I still dont have a full grasp on this theory; 
