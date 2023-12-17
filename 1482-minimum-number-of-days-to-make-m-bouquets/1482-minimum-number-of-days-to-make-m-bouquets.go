@@ -2,32 +2,34 @@ func minDays(bloomDay []int, m int, k int) int {
     left := math.MaxInt64
     right := math.MinInt64
     for i := 0; i < len(bloomDay); i++ {
-        if bloomDay[i] < left {
-            left = bloomDay[i]
+        day := bloomDay[i]
+        if day < left {
+            left = day
         }
-        if bloomDay[i] > right {
-            right = bloomDay[i]
+        if day > right {
+            right = day
         }
     }
+    
     
     ans := -1
     for left <= right {
         mid := left + (right-left)/2
         
-        numBouquets := 0
         count := 0
+        bouquetsCreated := 0
         for i := 0; i < len(bloomDay); i++ {
             if bloomDay[i] <= mid {
                 count++
                 if count == k {
-                    numBouquets++
+                    bouquetsCreated++
                     count = 0
                 }
             } else {
                 count = 0
-            }   
+            }
         }
-        if numBouquets >= m {
+        if bouquetsCreated >= m {
             ans = mid
             right = mid-1
         } else {
