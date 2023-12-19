@@ -1,3 +1,32 @@
+/*
+    approach: brute force
+    - we want the earliest possible day, when we can make m bouquets with k adjacent flowers
+    - therefore we can be greedy and start from day 1
+        - better = start from the smallest possible day
+    - and go up to the last possible day when flowers are bloomed
+    - and then check how many adjacent flowers make bouquets
+    
+    time;
+    o(n) ; to find min and max day
+    o((max-min) * n) looping from min->max and within each iteration we are going over the array to count and check
+    therefore ; o(n) + (maxVal * n)
+    
+    space;
+    o(1)
+    
+    approach: binary search on answers
+    - in the above brute force, we see that we have a range!
+    - we are looking for an answer in a range of days ( earliest -> last possible day)
+    - this is a sorted range
+    - therefore the outter loop which took o(max-min) time, could be trimmed down to o(log(max-min))
+    - the inner for loop remains the same
+    
+    time;
+    o(n) ; to find left and right ptrs ( start and end of our potential ans range )
+    + o(log(max-min) * n)
+    
+    space; o(1)
+*/
 func minDays(bloomDay []int, m int, k int) int {
     left := math.MaxInt64
     right := math.MinInt64
