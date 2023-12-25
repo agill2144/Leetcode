@@ -1,13 +1,13 @@
 func maxProduct(nums []int) int {
     rp := 1
-    brp := 1
+    rrp := 1 // running prod from right side of array
     out := math.MinInt64
     for i := 0; i < len(nums); i++ {
         rp *= nums[i]
-        brp *= nums[len(nums)-1-i]
-        out = max(out, max(rp, brp))
+        rrp *= nums[len(nums)-1-i]
+        out = max(out, max(rp, rrp))
         if rp == 0 {rp = 1}
-        if brp == 0 {brp = 1}
+        if rrp == 0 {rrp = 1}
     }
     return out
 }
