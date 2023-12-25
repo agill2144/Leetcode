@@ -1,69 +1,21 @@
 func suggestedProducts(products []string, searchWord string) [][]string {
-    root := &trie{childrens: [26]*trie{}}
-    for _, word := range products {
-        insert(root, word)
-    }
+    sort.Strings(products)
+    left := 0
+    right := len(products)-1
+    str := new(strings.Builder)
     out := [][]string{}
-    prefix := new(strings.Builder)
     for i := 0; i < len(searchWord); i++ {
-        prefix.WriteByte(searchWord[i])
-        out = append(out, getKWordsWithPrefix(root, 3, prefix.String()))
-    } 
+        str.WriteByte(searchWord[i])
+        
+        for left < len(products) && !strings.HasPrefix(products[left],str.String()) {left++}
+        for right >= 0 && !strings.HasPrefix(products[right],str.String()) {right--}
+        if left >= len(products) || right < 0 {out = append(out, []string{}); continue}
+        
+        if right-left+1 > 3 {
+            out = append(out, products[left:right+1][:3])         
+        } else {
+            out = append(out, products[left:right+1])
+        }
+    }
     return out
 }
-
-type trie struct {
-    isEnd bool
-    childrens [26]*trie
-    words []string
-}
-
-
-func insert(root *trie, word string)  {
-    curr := root
-    for i := 0; i < len(word); i++ {
-        charIdx := word[i]-'a'
-        if curr.childrens[charIdx] == nil {
-            curr.childrens[charIdx] = &trie{childrens: [26]*trie{}, words: []string{}}
-        }
-        if len(curr.childrens[charIdx].words) < 3 {
-            curr.childrens[charIdx].words = append(curr.childrens[charIdx].words, word)           
-        }
-        curr = curr.childrens[charIdx]
-        
-    }
-    curr.isEnd = true
-}
-
-
-func getKWordsWithPrefix(root *trie, k int, prefix string) []string {
-    curr := root
-    // go to the trie node to start our dfs search from
-    for i := 0; i < len(prefix); i++ {
-        charIdx := prefix[i]-'a'
-        if curr.childrens[charIdx] == nil {return nil}
-        curr = curr.childrens[charIdx]
-    }
-    
-    // do a dfs scan looking for endwords 
-    words := []string{}
-    var dfs func(r *trie, path string) bool
-    dfs = func(r *trie, path string) bool {
-        // base
-        if len(words) == k {return true}
-
-        // logic
-        if r.isEnd {
-            words = append(words, path)
-        }
-        for i := 0; i < 26; i++ {
-            if r.childrens[i] != nil {
-                if ok := dfs(r.childrens[i], path + string(i+'a')); ok {return true}
-            }
-        }
-        return false
-    }
-    dfs(curr, prefix)
-    return words
-}
-
