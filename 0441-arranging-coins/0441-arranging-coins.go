@@ -3,7 +3,8 @@ func arrangeCoins(n int) int {
     right := n
     for left <= right {
         mid := left + (right-left)/2
-        if mid*(mid+1)/2 > n {
+        totalCoinsUsed := mid*(mid+1)/2
+        if totalCoinsUsed > n {
             right = mid-1
         } else {
             left = mid+1
