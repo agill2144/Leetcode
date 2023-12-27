@@ -18,10 +18,15 @@
 */
 func minCost(colors string, neededTime []int) int {
     total := 0
+    min := math.MaxInt64
     second := math.MaxInt64
-    min := neededTime[0]
-    count := 1
-    for i := 1; i < len(colors); i++ {
+    count := 0
+    for i := 0; i < len(colors); i++ {
+        if i == 0 {
+            count = 1
+            min = neededTime[i]
+            continue
+        }
         if colors[i] == colors[i-1] {
             count++
             // update min and second min timers
