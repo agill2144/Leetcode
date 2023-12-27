@@ -24,12 +24,15 @@ func minCost(colors string, neededTime []int) int {
     for i := 1; i < len(colors); i++ {
         if colors[i] == colors[i-1] {
             count++
+            // update min and second min timers
             if neededTime[i] < min {
                 second = min
                 min = neededTime[i]
             } else if neededTime[i] < second {
                 second = neededTime[i]
             }
+            
+            // have we seen 2 consecutive counts ?
             if count == 2 {
                 count = 1
                 total += min
@@ -37,6 +40,8 @@ func minCost(colors string, neededTime []int) int {
                 second = math.MaxInt64
             }
         } else {
+            // not consecutive, starting a new potential consecutive train
+            // reset everything
             count = 1
             min = neededTime[i]
             second = math.MaxInt64
