@@ -1,3 +1,6 @@
+// use balancing counter thats used to validate paranthesis
+// then draw it out to see when does it make sense to add '(' ; count >= 2
+// and when does it make sense to add ')' ; count >= 1
 func removeOuterParentheses(s string) string {
     if len(s) == 0 {return ""}
     out := new(strings.Builder)
