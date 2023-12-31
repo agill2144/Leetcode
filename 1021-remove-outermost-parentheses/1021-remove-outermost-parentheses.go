@@ -1,24 +1,28 @@
 func removeOuterParentheses(s string) string {
-    count := 0
+    if len(s) == 0 {return ""}
     out := new(strings.Builder)
+    count := 0
     for i := 0; i < len(s); i++ {
         if s[i] == '(' {
-            if count > 0 {
+            count++
+            if count >= 2 {
                 out.WriteByte(s[i])
             }
-            count++
         } else if s[i] == ')' {
             count--
-            if count > 0 {
+            if count >= 1 {
                 out.WriteByte(s[i])
-            }  
-
+            }
         }
-        
     }
-    
     return out.String()
 }
 
-// "(()())(())"
-//  121210
+/*
+
+(()())(())
+12
+(()
+
+
+*/
