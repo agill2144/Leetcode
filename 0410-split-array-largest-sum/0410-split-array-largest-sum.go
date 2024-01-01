@@ -1,3 +1,4 @@
+// time = o(n) + o( (log$totalSum-$maxNum+1)*n )
 func splitArray(nums []int, k int) int {
     left := math.MinInt64
     right := 0
