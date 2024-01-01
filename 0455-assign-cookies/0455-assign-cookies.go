@@ -1,3 +1,4 @@
+// sort and use two-ptrs to check
 func findContentChildren(g []int, s []int) int {
     sort.Ints(g)
     sort.Ints(s)
