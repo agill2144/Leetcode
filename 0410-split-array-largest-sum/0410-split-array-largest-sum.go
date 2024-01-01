@@ -9,9 +9,9 @@ func splitArray(nums []int, k int) int {
     ans := -1
     for left <= right {
         mid := left + (right-left)/2
-        splits := totalSplits(nums, mid)
+        partitionsPlaced := totalSplits(nums, mid)
 
-        if splits > k {
+        if partitionsPlaced > k-1 {
             left = mid + 1
         } else {
             ans = mid
@@ -23,13 +23,14 @@ func splitArray(nums []int, k int) int {
 
 func totalSplits(nums []int, maxSum int) int {
     rSum := 0
-    count := 0
+    partitions := 0
     for i := 0; i < len(nums); i++ {
         rSum += nums[i]
         if rSum > maxSum {
-            count++
+            partitions++
             rSum = nums[i]
         }
     }
-    return count+1
+    // return the number of paritions placed
+    return partitions
 }
