@@ -25,11 +25,10 @@ func totalSplits(nums []int, maxSum int) int {
     rSum := 0
     count := 0
     for i := 0; i < len(nums); i++ {
-        if rSum + nums[i] <= maxSum {
-            rSum += nums[i]
-        } else {
-            rSum = nums[i]
+        rSum += nums[i]
+        if rSum > maxSum {
             count++
+            rSum = nums[i]
         }
     }
     return count+1
