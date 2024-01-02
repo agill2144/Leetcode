@@ -6,16 +6,10 @@ func findKthPositive(arr []int, k int) int {
         correctVal := mid+1
         currentVal := arr[mid]
         missingOnLeftOfMid := currentVal-correctVal
-
-        if missingOnLeftOfMid >= k {
-            // number of missing numbers are more than k,
-            // therefore our kth missing will be on left side
-            right = mid-1
-        } else {
-            // number of missing numbers are less than k,
-            // therefore we need to search in an area where there are >= k missing numbers
-            // therefore search on right side
+        if missingOnLeftOfMid < k {
             left = mid+1
+        } else {
+            right = mid-1
         }
     }
     return left + k
