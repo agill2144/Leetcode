@@ -1,3 +1,23 @@
+/*
+    approach: binary search
+    - numbers are sorted in the array
+    - therefore something to do with binary search
+    - and we also know the starting number is supposed to be 1
+    - therefore we know that if we are at a idx ( mid ),
+        - its correct value at that position is position is supposed to idx+1 ( i.e mid+1 )
+    - NOW, we we need to see how many missing numbers we have had this far until mid
+        - we have current val ( arr[mid] )
+        - we have a "supposed-to-correct-val" (mid+1)
+        - and now we need to check how many numbers are missing in-between them
+        - that is, currentVal - correctVal
+        - if this diff is less than k, it means that we do not have enough missing numbers
+            - search right ; left = mid+1
+        - otherewise, it means we have had more than k missing numbers on the left of mid
+            - which means our kth is somewhere on the left hand side
+            - search left ; right = mid-1
+    - finally, when binary search breaks,
+        - our answer will left + k
+*/
 func findKthPositive(arr []int, k int) int {
     left := 0
     right := len(arr)-1
@@ -6,6 +26,7 @@ func findKthPositive(arr []int, k int) int {
         correctVal := mid+1
         currentVal := arr[mid]
         missingOnLeftOfMid := currentVal-correctVal
+        
         if missingOnLeftOfMid < k {
             left = mid+1
         } else {
