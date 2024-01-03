@@ -1,27 +1,23 @@
-// simulate and count
-// time = o(mn) ; m = len(bank); n = len of each string
-// space = o(1)
 func numberOfBeams(bank []string) int {
+    total := 0
     prev := 0
     m := len(bank)
     n := len(bank[0])
-    total := 0    
+    
     for i := 0; i < m; i++ {
+        
         curr := 0
         for j := 0; j < n; j++ {
-            if bank[i][j] == '1' {
-                curr++
-            }
+            if bank[i][j] == '1' {curr++}
         }
-        if i != 0 {
-            total += (curr*prev)
-        }
-        if curr == 0 {
-            // no lasers on this row, keep the prev one going, do not reset prev to 0(curr)
-            continue
-        }
-        prev = curr
         
+        // row is done
+        if prev != 0 {
+            total += (curr*prev)   
+        }
+        // the only time when we do not want to promote curr number of lasers to prev
+        // is when curr row had none
+        if curr != 0 {prev = curr}
     }
     return total
 }
