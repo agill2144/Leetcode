@@ -17,6 +17,7 @@ func numberOfBeams(bank []string) int {
         }
         // the only time when we do not want to promote curr number of lasers to prev
         // is when curr row had none
+        // which means, carry prev to next row
         if curr != 0 {prev = curr}
     }
     return total
