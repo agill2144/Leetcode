@@ -1,3 +1,4 @@
+// greedy
 func minOperations(nums []int) int {
     freq := map[int]int{}
     for i := 0; i < len(nums); i++ {freq[nums[i]]++}
@@ -14,6 +15,8 @@ func minOperations(nums []int) int {
         v = v % 3        
         // if there is anything left, perform 1 more operation; i.e increment operation count
         // ( divide by 2 ; even if its not perfectly divisible by 2 ; eg v=1)
+        // any number divided by 3 ( which is not perfectly divisible ), will ALWAYS leave a remainder of either 1 or 2
+        // therefore we can imply and blindly increment operation count by 1
         if v != 0 {total++}
     }
     return total
