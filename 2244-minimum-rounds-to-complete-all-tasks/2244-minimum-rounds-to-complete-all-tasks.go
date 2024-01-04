@@ -1,13 +1,15 @@
 func minimumRounds(tasks []int) int {
-    freqMap := map[int]int{}
+    freq := map[int]int{}
     for i := 0; i < len(tasks); i++ {
-        freqMap[tasks[i]]++
+        freq[tasks[i]]++        
     }
-    count := 0
-    for _, v := range freqMap{
+    total := 0
+    for _, v := range freq {
         if v == 1 {return -1}
-        if v % 3 == 0 {count += v / 3; continue}
-        count += (v / 3)+1
+        // greedy and always try to complete 3 tasks
+        total += (v/3)
+        v = v % 3
+        if v != 0 {total++}
     }
-    return count
+    return total
 }
