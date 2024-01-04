@@ -6,13 +6,15 @@ func minOperations(nums []int) int {
         // we need at min 2 or 3 dupes, if its not, return -1
         if v == 1 {return -1}
 
-        // always divide by 3 
-        // even if its not completely divisible, 14/3 = 4
+        // be greedy
+        // and always divide by 3 
+        // even if its not completely divisible by 3
         total += (v/3)
         // then update the value with whatever is left over
-        left := v % 3        
-        // if there is anything left, perform 1 more operation ( divide by 2)
-        if left != 0 {total++}
+        v = v % 3        
+        // if there is anything left, perform 1 more operation; i.e increment operation count
+        // ( divide by 2 ; even if its not perfectly divisible by 2 ; eg v=1)
+        if v != 0 {total++}
     }
     return total
 }
