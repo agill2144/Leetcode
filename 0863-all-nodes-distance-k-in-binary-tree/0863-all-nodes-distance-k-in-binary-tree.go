@@ -19,32 +19,22 @@ func distanceK(root *TreeNode, target *TreeNode, k int) []int {
         if r.Right != nil {adjList[r.Val] = append(adjList[r.Val], r.Right.Val); dfs(r.Right, r)}
     }
     dfs(root, nil)
-    
-    visited := map[int]struct{}{}
-    visited[target.Val] = struct{}{}
-    q := []int{target.Val}
-    levels := 0
     out := []int{}
-
-    for len(q) != 0 {
-        qSize := len(q)
-        for qSize != 0 {
-            dq := q[0]
-            q = q[1:]
-            if levels == k {
-                out = append(out, dq)
-                qSize--
-                continue
-            }
-            for _,nei := range adjList[dq] {
-                if _, ok := visited[nei]; !ok {
-                    q = append(q, nei)
-                    visited[nei] = struct{}{}
-                }
-            }
-            qSize--
+    var dfs2 func(node, prev, dist int)
+    dfs2 = func(node, prev, dist int) {
+        // base
+        if dist >= k {
+            if dist == k {out = append(out, node)}
+            return
         }
-        levels++
+        
+        // logic
+        for _, nei := range adjList[node] {
+            if nei == prev {continue}
+            dfs2(nei, node, dist+1)
+        }
     }
+    dfs2(target.Val, -1, 0)
     return out
+    
 }
