@@ -8,7 +8,7 @@ func maxDistance(position []int, m int) int {
         mid := left + (right-left)/2
         
         // mid is our at-min val
-        // how many balls can be placed if at-min the dist is mid
+        // how many balls can be placed if at-min the force is mid
         count := 1
         lastPlaced := 0
         for i := 1; i < len(position); i++ {
