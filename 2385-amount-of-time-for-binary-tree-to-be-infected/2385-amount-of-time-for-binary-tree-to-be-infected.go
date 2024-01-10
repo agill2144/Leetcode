@@ -7,45 +7,41 @@
  * }
  */
 func amountOfTime(root *TreeNode, start int) int {
-    // binary tree is an undirected graph
-    // start = start node in graph
-    // build adjList and start dfs/bfs from our start node ;) 
-    
     adjList := map[int][]int{}
-    var buildGraph func(r *TreeNode, parent *TreeNode)
-    buildGraph = func(r, parent *TreeNode) {
+    var dfs func(r *TreeNode, parent *TreeNode)
+    dfs = func(r, parent *TreeNode) {
         // base
         if r == nil {return}
         
         // logic
-        if parent != nil {adjList[r.Val] = append(adjList[r.Val], parent.Val)}
         if r.Left != nil {adjList[r.Val] = append(adjList[r.Val], r.Left.Val)}
         if r.Right != nil {adjList[r.Val] = append(adjList[r.Val], r.Right.Val)}
-        buildGraph(r.Left, r)
-        buildGraph(r.Right, r)
+        if parent != nil {adjList[r.Val] = append(adjList[r.Val], parent.Val)}
+        dfs(r.Left, r)
+        dfs(r.Right, r)
     }
     
-    buildGraph(root, nil)
-    q := []int{start}
+    // build adjList
+    dfs(root, nil)
+    // perform bfs
     visited := map[int]struct{}{}
     visited[start] = struct{}{}
-    
-    levels := 0
+    q := []int{start}
+    level := 0
     for len(q) != 0 {
         qSize := len(q)
         for qSize != 0 {
             dq := q[0]
             q = q[1:]
-            
             for _, nei := range adjList[dq] {
                 if _, ok := visited[nei]; !ok {
-                    q = append(q, nei)
                     visited[nei] = struct{}{}
+                    q = append(q, nei)
                 }
             }
             qSize--
         }
-        levels++
+        level++
     }
-    return levels-1
+    return level-1
 }
