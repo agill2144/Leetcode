@@ -55,12 +55,12 @@ func maximizeSweetness(sweetness []int, k int) int {
 //         rSum := 0
 //         for j := 0; j < len(sweetness); j++ {
 //             rSum += sweetness[j]
+            // as soon as atMin condition is met, put the split there and move on
 //             if rSum >= atMin {
 //                 count++
 //                 rSum = 0
 //             }
 //         }
-        
 //         if count >= k+1 {
 //             ans = i
 //         } else {
