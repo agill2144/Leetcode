@@ -10,6 +10,7 @@ func minimizeMax(nums []int, p int) int {
         // i.e atMax diff 
         mid := left + (right-left)/2
 
+        // evaluate mid
         // count pairs whose diff <= $mid
         count := 0
         for i := 0; i < len(nums)-1; i++ {
@@ -22,8 +23,12 @@ func minimizeMax(nums []int, p int) int {
             }
         }
         
+        // does mid work?
+        // mid works if we were able to make atleast p pair ( or more ) but atleast p
         if count >= p {
             ans = mid
+            // if worked, save it, search left -- everything to the right of this will work
+            // we want smallest such ans
             right = mid-1
         } else {
             left = mid+1
