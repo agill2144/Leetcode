@@ -1,20 +1,18 @@
+/*
+    approach: count
+    - use count method used to validate paranthesis
+    - keep a max ans saved after incrementing count
+*/
 func maxDepth(s string) int {
-    st := []byte{}
+    max := 0
     count := 0
-    maxCount := 0
     for i := 0; i < len(s); i++ {
-        if s[i] == '('{
-            st = append(st, s[i])
+        if s[i] == '(' {
             count++
         } else if s[i] == ')' {
-            st = st[:len(st)-1]
-            maxCount = max(count, maxCount)
             count--
         }
+        if count > max {max = count}
     }
-    return maxCount
-}
-func max(x, y int) int {
-    if x > y {return x }
-    return y
+    return max
 }
