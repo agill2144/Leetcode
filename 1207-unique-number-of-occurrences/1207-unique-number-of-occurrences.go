@@ -1,10 +1,12 @@
 func uniqueOccurrences(arr []int) bool {
-    freq := map[int]int{}
-    for i := 0; i < len(arr); i++ {freq[arr[i]]++}
-    set := map[int]struct{}{}
-    for _, v := range freq {
-        if _, ok := set[v]; ok {return false}
-        set[v] = struct{}{}
+    freqMap := map[int]int{}
+    for i := 0; i < len(arr); i++ {
+        freqMap[arr[i]]++
+    }
+    occ := map[int]struct{}{}
+    for _, v := range freqMap {
+        if _, ok := occ[v]; ok {return false}
+        occ[v] = struct{}{}
     }
     return true
 }
