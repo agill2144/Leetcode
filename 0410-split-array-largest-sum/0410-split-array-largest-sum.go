@@ -23,6 +23,9 @@ func splitArray(nums []int, k int) int {
         }
         
         // does $mid work?
+        // when does it not work?
+        // when we have to create more than k subarrays; it means our sum per subarry was so small that we needed more than k subarrays
+        // therefore increase subarray sum to reduce subarray count
         if count > k {
             left = mid+1
         } else {
