@@ -53,6 +53,7 @@ func maxLength(arr []string) int {
                 // backtrack
                 for j := 0; j < len(word); j++ {chars[int(word[j]-'a')] = false}
             }
+            // if we cant use this word, try the next ith word, continue for loop 
         }
     }
     dfs(0,0, make([]bool, 26))
