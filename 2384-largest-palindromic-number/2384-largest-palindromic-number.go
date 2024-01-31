@@ -1,5 +1,5 @@
 func largestPalindromic(num string) string {
-    freq := make([]int, 11) // idx -> num mapping
+    freq := map[int]int{}
     for i := 0; i < len(num); i++ {
         char := num[i]
         freq[int(char-'0')]++
@@ -7,10 +7,8 @@ func largestPalindromic(num string) string {
     out := new(strings.Builder)
     var middle string
     back := []string{}
-    for i := len(freq)-1; i >= 0; i-- {
-        if freq[i] <= 1 {
-            continue
-        }
+    for i := 9; i >= 0; i-- {
+        if _, ok := freq[i]; !ok {continue}
         count := freq[i] / 2
         freq[i] = freq[i] % 2
         for k := 0; k < count; k++ {
@@ -19,8 +17,8 @@ func largestPalindromic(num string) string {
             back = append(back, fmt.Sprintf("%v", i))
         }
     }
-    for i := len(freq)-1; i >= 0; i-- {
-        if freq[i] >= 1 {
+    for i := 9; i >= 0; i-- {
+        if count, ok := freq[i]; ok && count >= 1 {
             middle = fmt.Sprintf("%v", i)
             break
         }
