@@ -1,7 +1,9 @@
 func minWindow(s string, t string) string {
     tMap := map[byte]int{}
     for i := 0; i < len(t); i++ { tMap[t[i]]++ }
-    ans := ""
+    start := 0
+    end := 0
+    minSize := math.MaxInt64
     count := 0
     left := 0
     for i := 0; i < len(s); i++ {
@@ -15,8 +17,10 @@ func minWindow(s string, t string) string {
         }
         for count == len(tMap) {
             size := i-left+1
-            if ans == "" || size < len(ans) {
-                ans = s[left:i+1]
+            if size < minSize {
+                minSize = size
+                start = left
+                end = i
             }
             leftChar := s[left]
             val , ok := tMap[leftChar]
@@ -29,5 +33,7 @@ func minWindow(s string, t string) string {
             left++
         }
     }
-    return ans
+    if minSize == math.MaxInt64 {return ""}
+    
+    return s[start:end+1]
 }
