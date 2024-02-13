@@ -8,19 +8,21 @@
  */
 func sumNumbers(root *TreeNode) int {
     total := 0
-    var dfs func(r *TreeNode, path int)
-    dfs = func(r *TreeNode, path int) {
+    globalPath := 0
+    var dfs func(r *TreeNode)
+    dfs = func(r *TreeNode) {
         // base
         if r == nil {return}
 
         // logic
-        path = path*10+r.Val
-        dfs(r.Left,path)
-        dfs(r.Right, path)
+        globalPath = (globalPath * 10) + r.Val
+        dfs(r.Left)        
+        dfs(r.Right)
         if r.Left == nil && r.Right == nil {
-            total += path
+            total += globalPath
         }
+        globalPath /= 10
     }
-    dfs(root, 0)
+    dfs(root)
     return total
 }
