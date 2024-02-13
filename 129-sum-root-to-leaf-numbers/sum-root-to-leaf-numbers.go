@@ -20,11 +20,12 @@ func sumNumbers(root *TreeNode) int {
         // logic
         // action
         path = (path*10)+r.Val
+        
+        // recurse
+        dfs(r.Left)
         if r.Left == nil && r.Right == nil {
             total += path
         }
-        // recurse
-        dfs(r.Left)
         dfs(r.Right)
         
         // backtrack - i.e remove the last digit
