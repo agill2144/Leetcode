@@ -6,29 +6,53 @@
  *     Right *TreeNode
  * }
  */
+
 func smallestFromLeaf(root *TreeNode) string {
-    smallestStr := ""
-    var dfs func(r *TreeNode, path []int)
-    dfs = func(r *TreeNode, path []int) {
+    var dfs func(r *TreeNode, path []int) string
+    dfs = func(r *TreeNode, path []int) string {
         // base
-        if r == nil {return}
+        if r == nil {return "~"}
 
         // logic
         path = append(path, r.Val)
-        dfs(r.Left, path)
-        dfs(r.Right, path)
+        left := dfs(r.Left, path)
+        right := dfs(r.Right, path)
         if r.Left == nil && r.Right == nil {
-            rev := reverse(path)
-            // The result will be 0 if a == b, -1 if a < b, and +1 if a > b.
-            if smallestStr == "" || strings.Compare(rev, smallestStr) == -1 {
-                smallestStr = rev
-            }
+            return reverse(path)
         }
         path = path[:len(path)-1]
+        if strings.Compare(left, right) == -1 {return left}
+        return right
     }
-    dfs(root, nil)
-    return smallestStr
+    return dfs(root, nil)
 }
+
+/*
+    approach: dfs using global var
+*/
+// func smallestFromLeaf(root *TreeNode) string {
+//     smallestStr := ""
+//     var dfs func(r *TreeNode, path []int)
+//     dfs = func(r *TreeNode, path []int) {
+//         // base
+//         if r == nil {return}
+
+//         // logic
+//         path = append(path, r.Val)
+//         dfs(r.Left, path)
+//         dfs(r.Right, path)
+//         if r.Left == nil && r.Right == nil {
+//             rev := reverse(path)
+//             // The result will be 0 if a == b, -1 if a < b, and +1 if a > b.
+//             if smallestStr == "" || strings.Compare(rev, smallestStr) == -1 {
+//                 smallestStr = rev
+//             }
+//         }
+//         path = path[:len(path)-1]
+//     }
+//     dfs(root, nil)
+//     return smallestStr
+// }
 
 
 func reverse(p []int) string {
