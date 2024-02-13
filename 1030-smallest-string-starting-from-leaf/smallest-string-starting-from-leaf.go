@@ -11,12 +11,15 @@ func smallestFromLeaf(root *TreeNode) string {
     var dfs func(r *TreeNode, path []int) string
     dfs = func(r *TreeNode, path []int) string {
         // base
+        // return the last possible char so it fails in smallest comparison everytime
         if r == nil {return "~"}
 
         // logic
         path = append(path, r.Val)
         left := dfs(r.Left, path)
         right := dfs(r.Right, path)
+        // when we are at a leaf,
+        // reverse the path and return the reversed path in string
         if r.Left == nil && r.Right == nil {
             return reverse(path)
         }
