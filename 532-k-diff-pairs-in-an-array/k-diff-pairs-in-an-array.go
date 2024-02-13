@@ -28,7 +28,7 @@ func findPairs(nums []int, k int) int {
         } else if diff > k {
             // we are using slow and fast ptrs
             // slow will be behind fast . i.e value at slow will be smaller than the value at fast
-            // diff is too big, we have a sorted array
+            // and when diff is too big, we have a sorted array
             // move slow ahead to reduce the bigger diff, otherwise moving fast forward will only make the diff even bigger
             slow++
         } else {
