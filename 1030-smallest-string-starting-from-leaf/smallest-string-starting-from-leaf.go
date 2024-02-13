@@ -6,7 +6,9 @@
  *     Right *TreeNode
  * }
  */
-
+/*
+    approach: dfs without a global var
+*/
 func smallestFromLeaf(root *TreeNode) string {
     var dfs func(r *TreeNode, path []int) string
     dfs = func(r *TreeNode, path []int) string {
@@ -17,12 +19,12 @@ func smallestFromLeaf(root *TreeNode) string {
         // logic
         path = append(path, r.Val)
         left := dfs(r.Left, path)
-        right := dfs(r.Right, path)
         // when we are at a leaf,
         // reverse the path and return the reversed path in string
         if r.Left == nil && r.Right == nil {
             return reverse(path)
         }
+        right := dfs(r.Right, path)
         path = path[:len(path)-1]
         if strings.Compare(left, right) == -1 {return left}
         return right
