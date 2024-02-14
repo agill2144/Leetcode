@@ -24,7 +24,7 @@ func pathSum(root *TreeNode, targetSum int) [][]int {
                 copy(newP, path)
                 out = append(out, newP)
             }
-        }
+        }        
         path = path[:len(path)-1]
     }
     dfs(root, 0, nil)
