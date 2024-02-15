@@ -42,16 +42,13 @@
 
 func reverseList(head *ListNode) *ListNode {
     // base
-    if head == nil {return head}
+    if head == nil || head.Next == nil {return head}
 
     // logic
     result := reverseList(head.Next)
-    if head.Next != nil {
-        head.Next.Next = head
-        head.Next = nil
-    } else {
-        return head
-    }
+    head.Next.Next = head
+    head.Next = nil
+    
     return result
 
 }
