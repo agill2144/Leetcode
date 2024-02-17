@@ -1,6 +1,6 @@
 func furthestBuilding(heights []int, bricks int, ladders int) int {
     mx := &maxHeap{items: []int{}}
-    for i := 0; i < len(heights)-1; i++ {
+    for i := 0; i < len(heights)-1; i++ { //o(n)
         curr := heights[i]
         next := heights[i+1]
         if next <= curr {continue}
@@ -10,6 +10,7 @@ func furthestBuilding(heights []int, bricks int, ladders int) int {
         // always use bricks
         bricks -= diff
         // push the number of bricks used
+        // o(logn)
         heap.Push(mx, diff)
 
         // if we used more bricks than what we had
@@ -26,9 +27,12 @@ func furthestBuilding(heights []int, bricks int, ladders int) int {
             // we have ladders, re-write max-bricks-usage climb with a ladder instead
             ladders--
             // collect the bricks from last usage since it got replaced with ladder
+            // o(logn)
             bricks += heap.Pop(mx).(int)
         }
     }
+    // total time = o(n * logn+logn) = o(nlogn)
+    // space = o(n) ; maxHeap
     return len(heights)-1
 }
 
