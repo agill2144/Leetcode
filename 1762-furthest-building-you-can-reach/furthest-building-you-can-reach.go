@@ -1,3 +1,7 @@
+/*
+    greedy with heap
+    Re-write past history / usage / operation to accommodate for current operation
+*/
 func furthestBuilding(heights []int, bricks int, ladders int) int {
     mx := &maxHeap{items: []int{}}
     for i := 0; i < len(heights)-1; i++ { //o(n)
