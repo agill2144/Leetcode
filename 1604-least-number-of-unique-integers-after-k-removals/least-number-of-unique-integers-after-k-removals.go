@@ -1,6 +1,5 @@
 // time = o(n) + o(n) + o(nlogn) + o(n)
 // space = o(n) + o(n)
-
 func findLeastNumOfUniqueInts(arr []int, k int) int {
     freq := map[int]int{}
     for i := 0; i < len(arr); i++ {
