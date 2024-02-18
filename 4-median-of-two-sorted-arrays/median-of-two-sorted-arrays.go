@@ -1,5 +1,9 @@
 /*
-    approach: sorted = something to do with binary search
+    approach: sorted = binary search
+    let n1 be the smaller array
+
+    time = o(log min(n1,n1))
+    space = o(1)
 */
 
 func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
