@@ -2,7 +2,7 @@
     approach: sorted = binary search
     let n1 be the smaller array
 
-    time = o(log min(n1,n1))
+    time = o(log min(n1,n2))
     space = o(1)
 */
 
