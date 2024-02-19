@@ -12,19 +12,26 @@ func validateBinaryTreeNodes(n int, leftChild []int, rightChild []int) bool {
             indegrees[rightChild[i]]++
         }
     }
+    // root is a node with 0 incoming edges and should have left or right or both childs
     root := -1
     for i := 0; i < n; i++ {
         incomingEdges := indegrees[i]
         hasLeft := leftChild[i] != -1
         hasRight := rightChild[i] != -1
         if incomingEdges == 0 && (hasLeft || hasRight) {
+            // root was discovered but we found another root,
+            // if we find multiple such roots, return false right away
+            // a valid binary tree only has 1 root
             if root != -1 {return false}
             root = i
         }
     }
     if root == -1 {return false}
-    fmt.Println(root)
     visited := make([]bool, n)
+    // make sure we visited all of them
+    // if there were disconnected components
+    // we would not be able to visit all of them from single root
+    // therefore not a valid binary tree
     visitedCount := 0
     var dfs func(node int) bool
     dfs = func(node int) bool {
