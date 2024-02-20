@@ -29,20 +29,17 @@ func (this *Graph) ShortestPath(node1 int, node2 int) int {
         dq := heap.Pop(pq).([]int)
         node := dq[0]
         currCost := dq[1]
-        
         if currCost > cost[node] {continue}
-
-        if currCost < cost[node] {
-            cost[node] = currCost
-        }
-        
-
         if node == node2 {return cost[node2] }
 
         for _, nei := range this.adjList[node] {
             neiNode := nei[0]
             neiCost := nei[1]
-            heap.Push(pq, []int{neiNode, currCost+neiCost})
+            totalNeiCost := neiCost + currCost
+            if totalNeiCost < cost[neiNode] {
+                cost[neiNode] = totalNeiCost
+                heap.Push(pq, []int{neiNode, totalNeiCost})
+            }
         }
     }
     return -1
