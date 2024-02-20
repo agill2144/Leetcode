@@ -8,9 +8,6 @@
     - which also means you have to take course-1 first and then we can take course-0
     - 1->0
     - therefore a directed graph ( there may be cycles )
-
-    approach: top sort using BFS
-
 */
 
 
@@ -23,6 +20,8 @@ func canFinish(numCourses int, prerequisites [][]int) bool {
         // a depends on b
         // b is independent
         // a -> b
+        // parent -> child
+        // {independent : [dependents] }
         a := prerequisites[i][0]
         b := prerequisites[i][1]
         adjList[b] = append(adjList[b], a)
