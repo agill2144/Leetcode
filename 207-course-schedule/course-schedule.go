@@ -31,12 +31,10 @@ func canFinish(numCourses int, prerequisites [][]int) bool {
     // take all the courses that have no dependencies
     q := []int{}
     takenCount := 0
-    visited := make([]bool, numCourses)
     for i := 0; i < len(indegrees); i++ {
         if indegrees[i] == 0 {
             q = append(q, i)
             takenCount++
-            visited[i] = true
         }
     }
     if len(q) == 0 {return false}
@@ -47,11 +45,10 @@ func canFinish(numCourses int, prerequisites [][]int) bool {
         // once this course is done, we can reduce its dependency on all courses that dependent on it
         for _, nei := range adjList[dq] {
             indegrees[nei]--
-            if indegrees[nei] == 0 && !visited[nei] {
+            if indegrees[nei] == 0 {
                 // this $nei course has no more dependency, we can take it
                 q = append(q, nei)
                 takenCount++
-                visited[nei] = true
             }
         }
     }
