@@ -9,8 +9,12 @@
     - 1->0
     - therefore a directed graph ( there may be cycles )
 */
+
 /*
-    approach: top sort using BFS
+    approach: top sort using DFS
+    - dfs with cycle detection can be used for collecting the top sort
+    - if dfs detects a cycle, we cannot finish all courses
+        - this means there was a course that depends on a course we are currently taking
     v = num of courses
     e = total number of edges
     time = o(v+e)
