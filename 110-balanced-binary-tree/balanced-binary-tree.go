@@ -6,6 +6,11 @@
  *     Right *TreeNode
  * }
  */
+
+// height-balanced binary tree is when height diff between left and right child <= 1
+// for each node, we can get the heigh of left subtree and right subtree and calc diff
+// this will be o(n^2) ; top down solution
+// instead we can do this in linear fashing using bottom up
 func isBalanced(root *TreeNode) bool {
     var dfs func(r *TreeNode) (int, bool)
     dfs = func(r *TreeNode) (int, bool) {
