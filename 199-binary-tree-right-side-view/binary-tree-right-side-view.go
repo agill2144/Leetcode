@@ -6,7 +6,8 @@
  *     Right *TreeNode
  * }
  */
-
+// time = o(n)
+// space = o(h)
 func rightSideView(root *TreeNode) []int{
     out := []int{}
     var dfs func(r *TreeNode, depth int)
