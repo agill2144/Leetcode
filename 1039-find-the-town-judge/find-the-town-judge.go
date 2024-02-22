@@ -1,11 +1,12 @@
 func findJudge(n int, trust [][]int) int {
-    outdegrees := make([]int, n+1) // counts giving trusts/vote to others
-    indegrees := make([]int, n+1) // counts number of votes recieved
+    outdegrees := make([]int, n+1) // counts number of votes given to others ( i.e num of outgoing edges )
+    indegrees := make([]int, n+1) // counts number of votes recieved ( i.e num of incoming edges )
     for i := 0; i < len(trust); i++ {
         // a trusts b
+        // a -> b
         a,b := trust[i][0], trust[i][1]
-        indegrees[b]++
         outdegrees[a]++
+        indegrees[b]++
     }
     for i := 1; i < len(indegrees); i++ {
         votesRec := indegrees[i]
