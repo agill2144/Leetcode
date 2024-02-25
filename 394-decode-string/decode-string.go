@@ -38,7 +38,7 @@ func decodeString(s string) string {
                 return currS.String()
             }
         }
-        return currS.String()   
+        return currS.String()
     }
 
     return dfs()
