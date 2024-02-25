@@ -1,0 +1,32 @@
+func decodeString(s string) string {
+    numSt := []int{}
+    strSt := []*strings.Builder{}
+    currN := 0
+    currS := new(strings.Builder)
+
+    for i := 0; i < len(s); i++ {
+        char := s[i]
+        if char >= '0' && char <= '9' {
+            currN =  currN * 10 + int(char-'0')
+        } else if char >= 'a' && char <= 'z' {
+            currS.WriteByte(char)
+        } else if char == '[' {
+            numSt = append(numSt, currN)
+            strSt = append(strSt, currS)
+            currN = 0
+            currS = new(strings.Builder)
+        } else if char == ']' {
+            times := numSt[len(numSt)-1]
+            numSt = numSt[:len(numSt)-1]
+            tmp := new(strings.Builder)
+            for k := 0; k < times; k++ {
+                tmp.WriteString(currS.String())
+            }
+            parentStr := strSt[len(strSt)-1]
+            strSt = strSt[:len(strSt)-1]
+            parentStr.WriteString(tmp.String())
+            currS = parentStr
+        }
+    }
+    return currS.String()
+}
