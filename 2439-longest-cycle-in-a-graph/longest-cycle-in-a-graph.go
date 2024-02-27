@@ -17,7 +17,7 @@ func longestCycle(edges []int) int {
         dist[node] = distToThisNode
         dfs(edges[node], distToThisNode+1, dist, path)
         path[node] = false
-        // dist[node] = 0
+        dist[node] = 0
     }
     d := make([]int, len(edges))
     p := make([]bool, len(edges))
