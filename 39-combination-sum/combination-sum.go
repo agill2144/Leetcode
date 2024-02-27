@@ -3,8 +3,8 @@ func combinationSum(candidates []int, target int) [][]int {
     var dfs func(start int, t int, path []int)
     dfs = func(start, t int, path []int) {
         // base
-        if t <= 0 {
-            if t == 0 {
+        if t >= target {
+            if t == target {
                 newP := make([]int, len(path))
                 copy(newP, path)
                 out = append(out, newP)
@@ -20,10 +20,11 @@ func combinationSum(candidates []int, target int) [][]int {
         // action
         path = append(path, candidates[start])
         // recurse
-        dfs(start, t-candidates[start], path)
+        newSum := t+candidates[start]
+        dfs(start, newSum, path)
         // backtrack
         path = path[:len(path)-1]
     }
-    dfs(0,target,nil)
+    dfs(0,0,nil)
     return out
 }
