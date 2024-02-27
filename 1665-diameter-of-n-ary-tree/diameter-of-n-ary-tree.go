@@ -21,7 +21,7 @@ func diameter(root *Node) int {
             if depth > first {
                 second = first
                 first = depth
-            } else if depth > second {
+            } else if depth > second { // if depth is same as first but is a duplicate depth ( i.e better than current second )
                 second = depth
             }
         }
