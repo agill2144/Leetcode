@@ -17,7 +17,7 @@ func findShortestCycle(n int, edges [][]int) int {
             ans = min(ans, dist-dists[node])
             return
         }
-
+        // no point in going down a path whose dist is already > what we have saved
         if dist >= ans {return}
 
         // logic
