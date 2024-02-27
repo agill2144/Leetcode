@@ -1,42 +1,50 @@
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
 func minimumOperations(root *TreeNode) int {
-	ops := 0
-	for currNodes := []*TreeNode{root}; len(currNodes) > 0; {
-		nextNodes := make([]*TreeNode, 0, len(currNodes))
-		nums := make([]int, 0, len(currNodes))
-		for _, v := range currNodes {
-			nums = append(nums, v.Val)
-			if v.Left != nil {
-				nextNodes = append(nextNodes, v.Left)
-			}
-			if v.Right != nil {
-				nextNodes = append(nextNodes, v.Right)
-			}
-		}
-		ops += op(nums)
-		currNodes = nextNodes
-	}
-	return ops
+    totalSwaps := 0
+    if root == nil {
+        return totalSwaps
+    }
+    q := []*TreeNode{root}
+    for len(q) != 0 {
+        qSize := len(q)
+        level := []int{}
+        for qSize != 0 {
+            dq := q[0]
+            q = q[1:]
+            level = append(level, dq.Val)
+            if dq.Left != nil {q = append(q, dq.Left)}
+            if dq.Right != nil {q = append(q, dq.Right)}
+            qSize--
+        }
+        totalSwaps += countSwaps(level)
+    }
+    return totalSwaps
 }
 
-func op(nums []int) int {
-	swap := 0
-	posMap := make(map[int]int, len(nums))
-	for i, v := range nums {
-		posMap[v] = i
-	}
-	numsSorted := make([]int, len(nums))
-	copy(numsSorted, nums)
-	sort.Ints(numsSorted)
-	for i := range numsSorted {
-		if nums[i] != numsSorted[i] {
-			// swap once
-			swap++
-			wrongVal := nums[i]
-			wrongPos := posMap[numsSorted[i]]
-			nums[i], nums[wrongPos] = nums[wrongPos], nums[i]
-			posMap[nums[i]] = i
-			posMap[wrongVal] = wrongPos
-		}
-	}
-	return swap
+func countSwaps(nums []int) int {
+    n := len(nums)
+    valIdx := [][]int{}
+    for i := 0; i < n; i++ {
+        valIdx = append(valIdx, []int{nums[i], i})
+    }
+    sort.Slice(valIdx, func(i, j int)bool{
+        return valIdx[i][0] < valIdx[j][0]
+    })
+    swaps := 0
+    for i := 0; i < n; i++ {
+        idx := valIdx[i][1]
+        for idx != i {
+            valIdx[i], valIdx[idx] = valIdx[idx], valIdx[i]
+            idx = valIdx[i][1]
+            swaps++
+        }
+    }
+    return swaps
 }
