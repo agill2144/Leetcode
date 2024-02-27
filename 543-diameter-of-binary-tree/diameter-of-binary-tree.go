@@ -16,8 +16,7 @@ func diameterOfBinaryTree(root *TreeNode) int {
         // logic
         left := dfs(r.Left)
         right := dfs(r.Right)
-        
-        maxDia = max(maxDia, max(left+right, max(left, right)))
+        maxDia = max(maxDia, left+right)
         return max(left,right)+1
     }
     dfs(root)
