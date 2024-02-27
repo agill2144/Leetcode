@@ -34,38 +34,11 @@
 */
 
 // 0/1 recursion
-// func combinationSum(candidates []int, target int) [][]int {
-    
-//     var result [][]int
-//     var helper func(paths []int, i, t int)
-//     helper = func(paths []int, i, t int) {
-//         // base
-//         if t == 0 {
-//             newL := make([]int, len(paths))
-//             copy(newL, paths)
-//             result = append(result, newL)
-//             return
-//         }
-//         if t < 0 || i >= len(candidates) {return}
-        
-//         // logic
-//         // not choose
-//         helper(paths, i+1, t)
-//         // choose
-//         paths = append(paths, candidates[i])
-//         helper(paths,i, t-candidates[i])
-//         paths = paths[:len(paths)-1]
-//     }
-//     helper(nil,0, target)
-//     return result
-// }
-
-
-// for loop based
 func combinationSum(candidates []int, target int) [][]int {
+    
     var result [][]int
-    var dfs func(paths []int, start int, t int)
-    dfs = func(paths []int, start, t int) {
+    var helper func(paths []int, i, t int)
+    helper = func(paths []int, i, t int) {
         // base
         if t == 0 {
             newL := make([]int, len(paths))
@@ -73,19 +46,48 @@ func combinationSum(candidates []int, target int) [][]int {
             result = append(result, newL)
             return
         }
-        if t < 0 {return}
+        if t < 0 || i >= len(candidates) {return}
         
         // logic
-        for i := start; i < len(candidates); i++ {
-            // action
-            paths  = append(paths, candidates[i])
-            // recurse
-            dfs(paths, i, t-candidates[i])
-            // backtrack
-            paths = paths[:len(paths)-1]
-        }
-        
+        // choose
+        paths = append(paths, candidates[i])
+        helper(paths,i, t-candidates[i])
+        paths = paths[:len(paths)-1]
+
+
+        // not choose
+        helper(paths, i+1, t)
     }
-    dfs(nil, 0, target)
+    helper(nil,0, target)
     return result
 }
+
+
+// for loop based
+// func combinationSum(candidates []int, target int) [][]int {
+//     var result [][]int
+//     var dfs func(paths []int, start int, t int)
+//     dfs = func(paths []int, start, t int) {
+//         // base
+//         if t == 0 {
+//             newL := make([]int, len(paths))
+//             copy(newL, paths)
+//             result = append(result, newL)
+//             return
+//         }
+//         if t < 0 {return}
+        
+//         // logic
+//         for i := start; i < len(candidates); i++ {
+//             // action
+//             paths  = append(paths, candidates[i])
+//             // recurse
+//             dfs(paths, i, t-candidates[i])
+//             // backtrack
+//             paths = paths[:len(paths)-1]
+//         }
+        
+//     }
+//     dfs(nil, 0, target)
+//     return result
+// }
