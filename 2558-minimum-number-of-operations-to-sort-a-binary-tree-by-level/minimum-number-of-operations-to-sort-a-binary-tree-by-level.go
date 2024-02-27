@@ -1,56 +1,42 @@
-/**
- * Definition for a binary tree node.
- * type TreeNode struct {
- *     Val int
- *     Left *TreeNode
- *     Right *TreeNode
- * }
- */
 func minimumOperations(root *TreeNode) int {
-	result := 0
-	q := []*TreeNode{root}
-	for len(q) > 0 {
-		var lvlNums []int
-		for _, node := range q {
-			lvlNums = append(lvlNums, node.Val)
+	ops := 0
+	for currNodes := []*TreeNode{root}; len(currNodes) > 0; {
+		nextNodes := make([]*TreeNode, 0, len(currNodes))
+		nums := make([]int, 0, len(currNodes))
+		for _, v := range currNodes {
+			nums = append(nums, v.Val)
+			if v.Left != nil {
+				nextNodes = append(nextNodes, v.Left)
+			}
+			if v.Right != nil {
+				nextNodes = append(nextNodes, v.Right)
+			}
 		}
+		ops += op(nums)
+		currNodes = nextNodes
+	}
+	return ops
+}
 
-		sortedNums := make([]int, len(lvlNums))
-		copy(sortedNums, lvlNums)
-
-		sort.Ints(sortedNums)
-		for idx, val := range lvlNums {
-			lvlNums[idx] = sort.SearchInts(sortedNums, val)
-		}
-
-		visited := make([]bool, len(lvlNums))
-		for _, num := range lvlNums {
-			if visited[num] {
-				continue
-			}
-
-			tmp := -1
-			for false == visited[num] {
-				visited[num] = true
-				tmp++
-				num = lvlNums[num]
-			}
-
-			result += tmp
-		}
-
-		tmp := q
-		q = nil
-		for _, node := range tmp {
-			if nil != node.Left {
-				q = append(q, node.Left)
-			}
-
-			if nil != node.Right {
-				q = append(q, node.Right)
-			}
+func op(nums []int) int {
+	swap := 0
+	posMap := make(map[int]int, len(nums))
+	for i, v := range nums {
+		posMap[v] = i
+	}
+	numsSorted := make([]int, len(nums))
+	copy(numsSorted, nums)
+	sort.Ints(numsSorted)
+	for i := range numsSorted {
+		if nums[i] != numsSorted[i] {
+			// swap once
+			swap++
+			wrongVal := nums[i]
+			wrongPos := posMap[numsSorted[i]]
+			nums[i], nums[wrongPos] = nums[wrongPos], nums[i]
+			posMap[nums[i]] = i
+			posMap[wrongVal] = wrongPos
 		}
 	}
-
-	return result
+	return swap
 }
