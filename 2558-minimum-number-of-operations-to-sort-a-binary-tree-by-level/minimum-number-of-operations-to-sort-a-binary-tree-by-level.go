@@ -1,50 +1,51 @@
-/**
- * Definition for a binary tree node.
- * type TreeNode struct {
- *     Val int
- *     Left *TreeNode
- *     Right *TreeNode
- * }
- */
 func minimumOperations(root *TreeNode) int {
-    totalSwaps := 0
     if root == nil {
-        return totalSwaps
+        return 0
     }
-    q := []*TreeNode{root}
-    for len(q) != 0 {
-        qSize := len(q)
-        level := []int{}
-        for qSize != 0 {
-            dq := q[0]
-            q = q[1:]
-            level = append(level, dq.Val)
-            if dq.Left != nil {q = append(q, dq.Left)}
-            if dq.Right != nil {q = append(q, dq.Right)}
-            qSize--
+
+    out := 0
+    queue := []*TreeNode{root}
+    for len(queue) > 0 {
+        row := make([]int, 0, len(queue))
+        sz := len(queue)
+        for i := 0; i < sz; i++ {
+            top := queue[0]
+            queue = queue[1:]
+            row = append(row, top.Val)
+            if top.Left != nil {
+                queue = append(queue, top.Left)
+            }
+            if top.Right != nil {
+                queue = append(queue, top.Right)
+            }
         }
-        totalSwaps += countSwaps(level)
+        if len(row) == 4 {
+            out++
+            out--
+        }
+        out+=minSwapsToSort(row)
     }
-    return totalSwaps
+    return out
 }
 
-func countSwaps(nums []int) int {
-    n := len(nums)
-    valIdx := [][]int{}
-    for i := 0; i < n; i++ {
-        valIdx = append(valIdx, []int{nums[i], i})
+func minSwapsToSort(nums []int) int {
+    sorted := make([]int, len(nums))
+    copy(sorted, nums)
+    sort.Ints(sorted)
+    idx := make(map[int]int)
+    for i, num := range nums {
+        idx[num] = i
     }
-    sort.Slice(valIdx, func(i, j int)bool{
-        return valIdx[i][0] < valIdx[j][0]
-    })
-    swaps := 0
-    for i := 0; i < n; i++ {
-        idx := valIdx[i][1]
-        for idx != i {
-            valIdx[i], valIdx[idx] = valIdx[idx], valIdx[i]
-            idx = valIdx[i][1]
-            swaps++
+    out := 0
+
+    for i := range sorted {
+        if sorted[i] != nums[i] {
+            out++
+            newPos := idx[sorted[i]]
+            idx[nums[i]] = newPos
+            idx[nums[newPos]] = i
+            nums[i], nums[newPos] = nums[newPos], nums[i]
         }
     }
-    return swaps
+    return out
 }
