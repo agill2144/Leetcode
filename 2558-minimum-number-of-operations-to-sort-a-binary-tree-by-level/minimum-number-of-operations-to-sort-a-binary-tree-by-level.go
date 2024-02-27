@@ -1,38 +1,56 @@
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
 func minimumOperations(root *TreeNode) int {
-	result, queue := 0, []*TreeNode{root}
-	for len(queue) > 0 {
-		size, nums := len(queue), make([]int, 0)
-		for i := 0; i < size; i++ {
-			t := queue[0]
-			queue = queue[1:]
-			nums = append(nums, t.Val)
-			if t.Left != nil {
-				queue = append(queue, t.Left)
-			}
-			if t.Right != nil {
-				queue = append(queue, t.Right)
-			}
-		}
-		result += cnt(nums)
-	}
-	return result
-}
-
-func cnt(nums []int) int {
-	sorted := make([]int, len(nums))
-	copy(sorted, nums)
-	sort.Ints(sorted)
-	index := make(map[int]int)
-	for i, num := range nums {
-		index[num] = i
-	}
 	result := 0
-	for i, num := range nums {
-		if num != sorted[i] {
-			nums[i], nums[index[sorted[i]]] = nums[index[sorted[i]]], nums[i]
-			index[nums[i]], index[num] = i, index[sorted[i]]
-			result++
+	q := []*TreeNode{root}
+	for len(q) > 0 {
+		var lvlNums []int
+		for _, node := range q {
+			lvlNums = append(lvlNums, node.Val)
+		}
+
+		sortedNums := make([]int, len(lvlNums))
+		copy(sortedNums, lvlNums)
+
+		sort.Ints(sortedNums)
+		for idx, val := range lvlNums {
+			lvlNums[idx] = sort.SearchInts(sortedNums, val)
+		}
+
+		visited := make([]bool, len(lvlNums))
+		for _, num := range lvlNums {
+			if visited[num] {
+				continue
+			}
+
+			tmp := -1
+			for false == visited[num] {
+				visited[num] = true
+				tmp++
+				num = lvlNums[num]
+			}
+
+			result += tmp
+		}
+
+		tmp := q
+		q = nil
+		for _, node := range tmp {
+			if nil != node.Left {
+				q = append(q, node.Left)
+			}
+
+			if nil != node.Right {
+				q = append(q, node.Right)
+			}
 		}
 	}
+
 	return result
 }
