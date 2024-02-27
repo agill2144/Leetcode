@@ -18,6 +18,8 @@ func findShortestCycle(n int, edges [][]int) int {
             return
         }
         // no point in going down a path whose dist is already > what we have saved
+        // this is called "short-circuting" - do not chase a path if current ans is already worse 
+        // compared to what we have saved
         if dist >= ans {return}
 
         // logic
