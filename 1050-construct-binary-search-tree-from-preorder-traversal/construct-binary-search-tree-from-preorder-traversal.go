@@ -6,6 +6,17 @@
  *     Right *TreeNode
  * }
  */
+ /*
+    approach: brute force
+    - assuming the preorder is valid for a BST
+    - we can copy that into a new array, sort it
+    - this new sorted array is our inorder 
+    - now we have 1. preorder and 2. inorder arrays
+    - This question now becomes a traditional "construct tree using preorder and inorder"
+
+    time = o(n) + o(nlogn) + o(n) = o(nlogn)
+    space = o(n)
+ */
 func bstFromPreorder(preorder []int) *TreeNode {
     inorder := make([]int, len(preorder))
     copy(inorder, preorder)
