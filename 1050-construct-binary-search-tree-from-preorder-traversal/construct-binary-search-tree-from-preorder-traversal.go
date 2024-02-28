@@ -20,6 +20,9 @@
         - and max = no restriction
     - use the min and max to identify whether to place this child or not
     - recursively build left and right subtrees
+
+    time = o(n)
+    space = o(h) max height ; worst case its o(n) for a one-sided tree
 */
 func bstFromPreorder(preorder []int) *TreeNode {
     ptr := 0
