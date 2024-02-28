@@ -6,6 +6,17 @@
  *     Right *TreeNode
  * }
  */
+ /*
+    why we cant use dfs while maintain nodes in a col ( i.e width ) ?
+    - draw it out with 4 levels of tree and see the problem
+    - the order matters, top nodes in a col should be placed first
+    - with pre-order dfs, top nodes will not always be placed first
+    - therefore inorder to respect top nodes to be placed first, and then bottom nodes
+    - this is why we need bfs
+    - level order, top nodes are processed first and then bottom nodes
+    - to group together nodes per col, we can save them in a map { $colNum: [nodes..] }
+     
+ */
 func verticalOrder(root *TreeNode) [][]int {
     if root == nil {return nil}
     widthToNode := map[int][]int{}
