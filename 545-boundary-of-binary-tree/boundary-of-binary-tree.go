@@ -44,11 +44,12 @@ func boundaryOfBinaryTree(root *TreeNode) []int {
         if r == nil {return}
 
         // logic
-        leaves(r.Left)
-        leaves(r.Right)
         if isLeaf(r) {
             out = append(out, r.Val)
-        }
+        }        
+        leaves(r.Left)
+        leaves(r.Right)
+
     }
     leaves(root)
 
