@@ -6,6 +6,19 @@
  *     Right *TreeNode
  * }
  */
+
+/*
+    approach: brute force
+    - collect left view ( without leaves )
+    - collect ONLY leaves
+    - collect right view ( without leaves )
+        - but then reverse the right view
+        - therefore collect right view in a stack
+        - and process stack from top ( i.e reverse order of right view ; from bottom to top )
+    
+    time = o(n)
+    space = o(n)
+*/
 func boundaryOfBinaryTree(root *TreeNode) []int {
     out := []int{}
     if !isLeaf(root) {
