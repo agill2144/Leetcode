@@ -1,4 +1,4 @@
-<h2><a href="https://leetcode.com/problems/logger-rate-limiter/">359. Logger Rate Limiter</a></h2><h3>Easy</h3><hr><div><p>Design a logger system that receives a stream of messages along with their timestamps. Each <strong>unique</strong> message should only be printed <strong>at most every 10 seconds</strong> (i.e. a message printed at timestamp <code>t</code> will prevent other identical messages from being printed until timestamp <code>t + 10</code>).</p>
+<h2><a href="https://leetcode.com/problems/logger-rate-limiter">Logger Rate Limiter</a></h2> <img src='https://img.shields.io/badge/Difficulty-Easy-brightgreen' alt='Difficulty: Easy' /><hr><p>Design a logger system that receives a stream of messages along with their timestamps. Each <strong>unique</strong> message should only be printed <strong>at most every 10 seconds</strong> (i.e. a message printed at timestamp <code>t</code> will prevent other identical messages from being printed until timestamp <code>t + 10</code>).</p>
 
 <p>All messages will come in chronological order. Several messages may arrive at the same timestamp.</p>
 
@@ -10,22 +10,23 @@
 </ul>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
-<pre><strong>Input</strong>
-["Logger", "shouldPrintMessage", "shouldPrintMessage", "shouldPrintMessage", "shouldPrintMessage", "shouldPrintMessage", "shouldPrintMessage"]
-[[], [1, "foo"], [2, "bar"], [3, "foo"], [8, "bar"], [10, "foo"], [11, "foo"]]
+<pre>
+<strong>Input</strong>
+[&quot;Logger&quot;, &quot;shouldPrintMessage&quot;, &quot;shouldPrintMessage&quot;, &quot;shouldPrintMessage&quot;, &quot;shouldPrintMessage&quot;, &quot;shouldPrintMessage&quot;, &quot;shouldPrintMessage&quot;]
+[[], [1, &quot;foo&quot;], [2, &quot;bar&quot;], [3, &quot;foo&quot;], [8, &quot;bar&quot;], [10, &quot;foo&quot;], [11, &quot;foo&quot;]]
 <strong>Output</strong>
 [null, true, true, false, false, false, true]
 
 <strong>Explanation</strong>
 Logger logger = new Logger();
-logger.shouldPrintMessage(1, "foo");  // return true, next allowed timestamp for "foo" is 1 + 10 = 11
-logger.shouldPrintMessage(2, "bar");  // return true, next allowed timestamp for "bar" is 2 + 10 = 12
-logger.shouldPrintMessage(3, "foo");  // 3 &lt; 11, return false
-logger.shouldPrintMessage(8, "bar");  // 8 &lt; 12, return false
-logger.shouldPrintMessage(10, "foo"); // 10 &lt; 11, return false
-logger.shouldPrintMessage(11, "foo"); // 11 &gt;= 11, return true, next allowed timestamp for "foo" is 11 + 10 = 21
+logger.shouldPrintMessage(1, &quot;foo&quot;);  // return true, next allowed timestamp for &quot;foo&quot; is 1 + 10 = 11
+logger.shouldPrintMessage(2, &quot;bar&quot;);  // return true, next allowed timestamp for &quot;bar&quot; is 2 + 10 = 12
+logger.shouldPrintMessage(3, &quot;foo&quot;);  // 3 &lt; 11, return false
+logger.shouldPrintMessage(8, &quot;bar&quot;);  // 8 &lt; 12, return false
+logger.shouldPrintMessage(10, &quot;foo&quot;); // 10 &lt; 11, return false
+logger.shouldPrintMessage(11, &quot;foo&quot;); // 11 &gt;= 11, return true, next allowed timestamp for &quot;foo&quot; is 11 + 10 = 21
 </pre>
 
 <p>&nbsp;</p>
@@ -37,4 +38,3 @@ logger.shouldPrintMessage(11, "foo"); // 11 &gt;= 11, return true, next allowed 
 	<li><code>1 &lt;= message.length &lt;= 30</code></li>
 	<li>At most <code>10<sup>4</sup></code> calls will be made to <code>shouldPrintMessage</code>.</li>
 </ul>
-</div>
