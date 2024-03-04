@@ -22,7 +22,8 @@ func bagOfTokensScore(tokens []int, power int) int {
     // if no, play the token face-down and add the token value to power
     // if none of the above 2 works ( even after adding more power )
     // this is the best we can do and we can exit
-
+    // time = o(nlogn) + o(n)
+    // space = o(1)
     runningScore := 0
     score := 0
     left, right := 0, len(tokens)-1
