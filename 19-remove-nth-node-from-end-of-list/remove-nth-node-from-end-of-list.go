@@ -6,26 +6,22 @@
  * }
  */
 func removeNthFromEnd(head *ListNode, n int) *ListNode {
-    if head == nil {return head}
-    slow := head
-    fast := head
-    for i := 0; i < n; i++ {
-        fast = fast.Next
-    }
     var prev *ListNode
-    for fast != nil {
-        prev = slow
-        slow = slow.Next
-        fast = fast.Next
+    p1, p2 := head, head
+    for i := 0; i < n && p2 != nil ; i++ {
+        p2 = p2.Next
+    }
+    if p2 == nil {
+        // remove head
+        return p1.Next
     }
 
-    if slow == head {
-        return head.Next
+    for p2 != nil {
+        prev = p1
+        p1 = p1.Next
+        p2 = p2.Next
     }
-
-    if prev != nil {
-        prev.Next = slow.Next
-    }
-    slow.Next = nil
+    prev.Next = p1.Next
+    p1.Next = nil
     return head
 }
