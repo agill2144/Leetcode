@@ -6,7 +6,7 @@ type FileSystem struct {
 func Constructor() FileSystem {
     return FileSystem{
         root: &trieNode{
-            files: map[string]string{},
+            files: map[string]*strings.Builder{}, // {fileName: "fileContents"}
             childrens: map[string]*trieNode{},
         },
     }
@@ -57,9 +57,12 @@ func (this *FileSystem) AddContentToFile(filePath string, content string)  {
     justPath :=  strings.Join(pathList[:len(pathList)-1],"/")
     curr := mkdir(this.root,justPath)
     if curr.files == nil {
-        curr.files = map[string]string{}
+        curr.files = map[string]*strings.Builder{}
     }
-    curr.files[fileName] += content
+    if curr.files[fileName] == nil {
+        curr.files[fileName] = new(strings.Builder)
+    }
+    curr.files[fileName].WriteString(content)
 }
 
 
@@ -70,7 +73,7 @@ func (this *FileSystem) ReadContentFromFile(filePath string) string {
     for i := 1; i < len(pathList)-1; i++ {
         curr = curr.childrens[pathList[i]]
     }
-    return curr.files[fileName]
+    return curr.files[fileName].String()
 }
 
 
@@ -84,7 +87,7 @@ func (this *FileSystem) ReadContentFromFile(filePath string) string {
  */
 
 type trieNode struct {
-    files map[string]string
+    files map[string]*strings.Builder
     childrens map[string]*trieNode
 }
 
@@ -97,7 +100,7 @@ func mkdir(root *trieNode, path string) *trieNode {
     for i := 1; i < len(pathList); i++ {
         if curr.childrens[pathList[i]] == nil {
             curr.childrens[pathList[i]] = new(trieNode)
-            curr.childrens[pathList[i]].files = map[string]string{}
+            curr.childrens[pathList[i]].files = map[string]*strings.Builder{}
             curr.childrens[pathList[i]].childrens = map[string]*trieNode{}
         }
         curr = curr.childrens[pathList[i]]
