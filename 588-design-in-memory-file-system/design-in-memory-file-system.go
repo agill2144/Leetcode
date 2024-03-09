@@ -47,15 +47,14 @@ func (this *FileSystem) Ls(path string) []string {
 
 
 func (this *FileSystem) Mkdir(path string)  {
-    _ = mkdir(this.root, path)
+    _ = mkdir(this.root, path, false)
 }
 
 
 func (this *FileSystem) AddContentToFile(filePath string, content string)  {
     pathList := strings.Split(filePath, "/")
     fileName := pathList[len(pathList)-1]
-    justPath :=  strings.Join(pathList[:len(pathList)-1],"/")
-    curr := mkdir(this.root,justPath)
+    curr := mkdir(this.root,filePath, true)
     if curr.files == nil {
         curr.files = map[string]*strings.Builder{}
     }
@@ -91,13 +90,15 @@ type trieNode struct {
     childrens map[string]*trieNode
 }
 
-func mkdir(root *trieNode, path string) *trieNode {
+func mkdir(root *trieNode, path string, isFile bool) *trieNode {
     curr := root
     // path = "/"
     if len(path) == 1 {return curr}
     // path = "/a/b/c"
     pathList := strings.Split(path, "/") // ["", "a", "b", "c"]
-    for i := 1; i < len(pathList); i++ {
+    end := len(pathList)
+    if isFile {end--}
+    for i := 1; i < end; i++ {
         if curr.childrens[pathList[i]] == nil {
             curr.childrens[pathList[i]] = new(trieNode)
             curr.childrens[pathList[i]].files = map[string]*strings.Builder{}
