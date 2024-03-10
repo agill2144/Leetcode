@@ -1,5 +1,6 @@
 func longestWord(words []string) string {
     root := &trieNode{childs: [26]*trieNode{}}
+    // time = nk
     for i := 0; i < len(words); i++ {
         word := words[i]
         root.insert(word)
