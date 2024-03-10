@@ -1,4 +1,6 @@
 // sort sort
+// time = o(n1logn1) + o(n2logn2) + o(n1+n2)
+// space = o(1)
 func intersection(nums1 []int, nums2 []int) []int {
     sort.Ints(nums1)
     sort.Ints(nums2)
