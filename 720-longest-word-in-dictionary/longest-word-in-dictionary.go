@@ -1,29 +1,32 @@
 func longestWord(words []string) string {
     root := &trieNode{childs: [26]*trieNode{}}
-    // time = nk
     for i := 0; i < len(words); i++ {
         word := words[i]
         root.insert(word)
     }
-    out := ""
-    var dfs func(curr *trieNode)
-    dfs = func(curr *trieNode) {
+    var dfs func(curr *trieNode) string
+    dfs = func(curr *trieNode) string {
         // base
-        if curr.isEnd && len(curr.word) > len(out) {
-            out = curr.word
-        }
 
         // logic
+        longest := ""
+        if curr.isEnd {
+            // trie node has each word saved
+            longest = curr.word
+        } 
+
         for i := 0; i < len(curr.childs); i++ {
             if curr.childs[i] != nil && curr.childs[i].isEnd {
-                dfs(curr.childs[i])
+                valueFromDFS := dfs(curr.childs[i])
+                if len(valueFromDFS) > len(longest) {
+                    longest = valueFromDFS
+                }
             }
         }
+        return longest
     }
 
-    dfs(root)
-    return out
-
+    return dfs(root)
 }
 
 
