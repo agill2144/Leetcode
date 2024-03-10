@@ -3,12 +3,12 @@
     therefore we should collect all chars from order string that also exist in "s"
     because order matters, chars in $order must be placed first
     
-    appraoch: using a hashset
-    - store chars of s in a set
+    appraoch: using a freq map
+    - store chars of s in a freq map
     - loop thru the order string to collect chars that should be placed first
-    - if the order[i] does exist in s set, take it and add it to our output
-        - delete this char from set
-        - so that we know for sure its used
+    - if the order[i] does exist in s map, take it and add it to our output
+        - freq val times
+        - delete this key from s map
     - then loop over s string one last time, to collect remaining chars that did not exist in $order
     - there is a possibility that not all chars of $s exist in $order,
     - therefore we must also preserve the order of chars in $s that do not exist in $order
