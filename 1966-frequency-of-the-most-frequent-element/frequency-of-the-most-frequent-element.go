@@ -1,3 +1,6 @@
+// this is not a medium ... 
+// this is borderline hard .. wtf
+// https://www.youtube.com/watch?v=iOqH_JnXIOQ
 func maxFrequency(nums []int, k int) int {
     sort.Ints(nums)
     prefixSum := make([]int, len(nums))
