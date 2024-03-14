@@ -1,3 +1,4 @@
+// duplicate of: https://leetcode.com/problems/subarray-sum-equals-k/
 func numSubarraysWithSum(nums []int, goal int) int {
     count := 0
     rSum := 0
