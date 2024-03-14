@@ -19,6 +19,7 @@ func removeZeroSumSublists(head *ListNode) *ListNode {
         if ok {
             start := prev.Next
             for start != curr {
+                // need to clean up the map :/ 
                 for s, n := range sumToNode {
                     if n == start {
                         delete(sumToNode, s)
