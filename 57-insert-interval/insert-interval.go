@@ -18,15 +18,12 @@ func insert(intervals [][]int, newInterval []int) [][]int {
         }
     }
     idx++
-    // case1: no valid idx found
-    // case2: valid idx found
 
     tmp := [][]int{}
     i := 0
     for i < idx {tmp = append(tmp, intervals[i]);i++}
     tmp = append(tmp, newInterval)
     for i < len(intervals) {tmp = append(tmp, intervals[i]); i++}
-    fmt.Println(idx,tmp)
 
     // merge intervals code 
     out := [][]int{}
