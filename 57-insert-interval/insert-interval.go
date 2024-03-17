@@ -3,9 +3,6 @@ func insert(intervals [][]int, newInterval []int) [][]int {
         return [][]int{newInterval}
     }
 
-    sort.Slice(intervals, func(i,j int)bool{
-        return intervals[i][0] < intervals[j][0]
-    })
     left := 0
     right := len(intervals)-1
     idx := -1
