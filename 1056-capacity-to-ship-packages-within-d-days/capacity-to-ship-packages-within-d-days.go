@@ -1,3 +1,4 @@
+// time = o(n) + o( log(totalSum - maxWeight + 1) * n)
 func shipWithinDays(weights []int, days int) int {
     left := math.MinInt64
     right := 0
