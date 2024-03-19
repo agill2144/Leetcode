@@ -1,3 +1,18 @@
+func findKthPositive(arr []int, k int) int {
+    left := 0
+    right := len(arr)-1
+    for left <= right {
+        mid := left + (right-left)/2
+        correctIdx := arr[mid]-1
+        countMissingOnLeft := correctIdx-mid
+        if countMissingOnLeft < k {
+            left = mid+1
+        } else {
+            right = mid-1
+        }
+    }
+    return left + k
+}
 /*
     approach: linear scan / two ptrs
     - maintain a ptr to keep track of "potential" missing number
@@ -14,26 +29,26 @@
     time = o(n)
     space = o(1)
 */
-func findKthPositive(arr []int, k int) int {
-    mc := 0
-    ptr := 1
-    i := 0
-    for i < len(arr) {
-        if ptr != arr[i] {
-            mc++
-            if mc == k {
-                // dry run this on board to understand better
-                // make k outside of arr, while arr is missing some numbers
-                return ptr+(k-mc)
-            }
-            ptr++
-        } else {
-            ptr++
-            i++
-        }
-    }
-    // when nothing was missing in arr, our ptr value went ahead by 1, when we were at the last
-    // therefore the -1 at the end
-    // dry run on board to see better
-    return ptr+(k-mc)-1
-}
+// func findKthPositive(arr []int, k int) int {
+//     mc := 0
+//     ptr := 1
+//     i := 0
+//     for i < len(arr) {
+//         if ptr != arr[i] {
+//             mc++
+//             if mc == k {
+//                 // dry run this on board to understand better
+//                 // make k outside of arr, while arr is missing some numbers
+//                 return ptr+(k-mc)
+//             }
+//             ptr++
+//         } else {
+//             ptr++
+//             i++
+//         }
+//     }
+//     // when nothing was missing in arr, our ptr value went ahead by 1, when we were at the last
+//     // therefore the -1 at the end
+//     // dry run on board to see better
+//     return ptr+(k-mc)-1
+// }
