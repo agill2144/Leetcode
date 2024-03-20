@@ -25,3 +25,28 @@ func maxLength(ribbons []int, k int) int {
     }
     return ans
 }
+
+// tle
+// func maxLength(ribbons []int, k int) int {
+//     start := 1
+//     end := math.MinInt64
+//     for i := 0; i < len(ribbons); i++ {
+//         end = max(end, ribbons[i])
+//     }
+
+//     for i := end; i >= start; i-- {
+//         size := i
+//         count := 0
+//         // fmt.Println("desired size: ", size)
+//         for j := 0; j < len(ribbons); j++ {
+//             // fmt.Println("we could collect ", ribbons[j]/size, " ribbons from ", ribbons[j])
+//             count += (ribbons[j]/size)
+//         }
+//         // when does size work
+//         // when we have collected k ribbons
+//         if count >= k {
+//             return size
+//         }
+//     }
+//     return 0
+// }
