@@ -1,9 +1,9 @@
 func maxLength(ribbons []int, k int) int {
-    sort.Ints(ribbons)
-    start := 1
-    end := ribbons[len(ribbons)-1]
-    left := start
-    right := end
+    left := 1
+    right := math.MaxInt64
+    for i := 0; i < len(ribbons); i++ {
+        right = max(right, ribbons[i])
+    }
     ans := 0
     for left <= right {
         mid := left + (right-left)/2
