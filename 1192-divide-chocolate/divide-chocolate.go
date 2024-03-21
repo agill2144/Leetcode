@@ -5,15 +5,15 @@
     - ranges are sorted
     - we can replace this linear range loop with binary search
 
-    time = o( log(sum-min+1) * n )
-    space = o(1)
-
-    Key take away
+    *Key take away*
     - always check wether our ans lies within a range or not
         - see if a simple range loop can give us a brute force solution
     - minimum total sweetness is maximized
     - min val is maximized ( binary search on answers ) 
     - max val is minimized ( binary search on answers )
+
+    time = o( log(sum-min+1) * n )
+    space = o(1)
 
 */
 func maximizeSweetness(sweetness []int, k int) int {
