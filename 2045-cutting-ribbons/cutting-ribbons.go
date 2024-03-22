@@ -1,3 +1,15 @@
+/*
+    approach: binary search on answers
+    does the answer lie within a known range?
+    - yes, from smallest size of 1 to biggest size ( max element ) 
+    - "Return the maximum possible positive integer"
+        - binary search hint, ( but does not fit max val is min || min val is max )
+        - therefore checking if linear range loop works
+        - and in this case, it does
+    - then we can replace the linear loop with a binary search loop
+    time = o( log(max) * n )
+    space = o(1)
+*/
 func maxLength(ribbons []int, k int) int {
     right := math.MinInt64
     left := 1
