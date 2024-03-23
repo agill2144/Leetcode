@@ -6,40 +6,38 @@
  * }
  */
 func reorderList(head *ListNode)  {
-    if head == nil {return}
+    if head == nil || head.Next == nil {return}
+    
+    // 1. split list in 2 halves
     slow := head
     fast := head
-    for fast != nil && fast.Next != nil && fast.Next.Next != nil {
+    for fast != nil && fast.Next != nil {
         slow = slow.Next
         fast = fast.Next.Next
     }
-    p1 := head
-    p2 := reverse(slow.Next)
+
+    // 2. reverse the 2nd half
+    head2 := slow.Next
     slow.Next = nil
-    
-    /*
-        p1
-        1 - 2 - 3
-        |
-        4 - 5 - 6
-        p2
-    */
-    for p1 != nil && p2 != nil {
-        p1Next := p1.Next
-        p2Next := p2.Next
-        p1.Next = p2
-        p2.Next = p1Next
-        p1 = p1Next
-        p2 = p2Next
+    head2 = reverse(head2)
+
+    // 3. using 2 ptrs, connect the 2 lists
+    c1 := head
+    c2 := head2
+    for c1 != nil && c2 != nil {
+        c1Next := c1.Next
+        c2Next := c2.Next
+        c1.Next = c2
+        c2.Next = c1Next
+        c1 = c1Next
+        c2 = c2Next
     }
-    
-    
 }
 
 func reverse(head *ListNode) *ListNode {
     if head == nil || head.Next == nil {return head}
-    var prev *ListNode
     curr := head
+    var prev *ListNode
     for curr != nil {
         next := curr.Next
         curr.Next = prev
