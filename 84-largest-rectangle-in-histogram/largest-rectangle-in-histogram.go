@@ -1,31 +1,34 @@
 func largestRectangleArea(heights []int) int {
+    type stackNode struct {
+        idx int
+        val int
+    }
     nsl := make([]int, len(heights))
     nsr := make([]int, len(heights))
-
-    st := []int{}
+    st := []stackNode{}
     for i := 0; i < len(heights); i++ {
         h := heights[i]
-        for len(st) != 0 && heights[st[len(st)-1]] >= h {
+        for len(st) != 0 && st[len(st)-1].val >= h {
             st = st[:len(st)-1]
         }
         if len(st) != 0 {
-            nsl[i] = st[len(st)-1]+1
+            nsl[i] = st[len(st)-1].idx+1
         }
-        st = append(st, i)
+        st = append(st, stackNode{i,h})
     }
 
-    st = []int{}
+    st = []stackNode{}
     for i := len(heights)-1; i >= 0; i-- {
         h := heights[i]
-        for len(st) != 0 && heights[st[len(st)-1]] >= h {
+        for len(st) != 0 && st[len(st)-1].val >= h {
             st = st[:len(st)-1]
         }
         if len(st) != 0 {
-            nsr[i] = st[len(st)-1]-1
+            nsr[i] = st[len(st)-1].idx-1
         } else {
             nsr[i] = len(heights)-1
         }
-        st = append(st, i)
+        st = append(st, stackNode{i, h})
     }
     ans := math.MinInt64
     for i := 0; i < len(heights); i++ {
