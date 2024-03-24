@@ -4,23 +4,37 @@ class Solution {
         //start word can not be end word
         if(beginWord == null || beginWord.length() == 0 || endWord == null || endWord.length() == 0) return 0;
 
+        wordList.add(beginWord);
+        HashMap<String, List<String>> adjList = new HashMap<>();
+        for (int i = 0; i < wordList.size(); i++) {
+            String parent = wordList.get(i);
+            for (int j = 0; j < wordList.size(); j++) {
+                if (i == j) {continue;}
+                String child = wordList.get(j);
+                boolean isValidChild = compareWord(parent, child);
+                if (isValidChild) {
+                    List<String> pList = adjList.getOrDefault(parent, new ArrayList<>());
+                    pList.add(child);
+                    adjList.put(parent, pList);
+                }
+            }
+        }
         Queue<String> q = new LinkedList<>();
         int size = 0;
         int tseq = 1;
         q.add(beginWord); 
         visited.add(beginWord);
+        
 
-        while(!q.isEmpty()){
+        while(!q.isEmpty()){ // n*n ; n+n
             size = q.size();
             while(size>0){
                 String parent = q.poll(); 
-                boolean exist = false;
-                for(int i=0; i<wordList.size(); i++){
-                    String child = wordList.get(i);
-                   
-                        
-                    if(!visited.contains(child) && compareWord(parent, child)){
-                        visited.add(child); //hot
+                List<String> childs = adjList.get(parent);
+                if (childs == null) {continue;}
+                for(String child: childs) {
+                    if(!visited.contains(child)){
+                        visited.add(child); 
                         q.add(child);
                         if(child.equals(endWord)){
                             return tseq+1;
