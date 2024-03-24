@@ -4,19 +4,21 @@
 func mincostTickets(days []int, costs []int) int {
     lastDay := days[len(days)-1]
     dp := make([]int, lastDay+1)
-    set := map[int]struct{}{}
-    for i := 0; i < len(days); i++ {set[days[i]] = struct{}{}}
-    dayOne := days[0]
-    dp[dayOne] = min(costs[0], min(costs[1], costs[2]))
-    for i := dayOne+1; i < len(dp); i++ {
-        if _, ok := set[i]; !ok {dp[i] = dp[i-1]; continue}
-        oneDayPassCost := costs[0] + dp[i-1]
-        sevenDayPassCost := costs[1]
-        if i-7 >= 0 {sevenDayPassCost += dp[i-7]}
-        thirtyDayPassCost := costs[2]
-        if i-30 >= 0 {thirtyDayPassCost += dp[i-30]}
 
-        dp[i] = min(oneDayPassCost, min(sevenDayPassCost, thirtyDayPassCost))
+    i := 0
+    for day := 1; day < len(dp); day++ {
+        if day < days[i] {
+            dp[day] = dp[day-1]
+        } else {
+            i++
+            one := costs[0]
+            if day - 1 >= 0 {one += dp[day-1]}
+            seven := costs[1]
+            if day - 7 >= 0 {seven += dp[day-7]}
+            thirty := costs[2]
+            if day - 30 >= 0 {thirty += dp[day-30]}
+            dp[day] = min(one, min(seven, thirty))
+        }
     }
     return dp[len(dp)-1]
 }
