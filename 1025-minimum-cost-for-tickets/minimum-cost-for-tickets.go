@@ -7,22 +7,20 @@ func mincostTickets(days []int, costs []int) int {
 
     daysIdx := 0
     for i := 1; i < len(dp); i++ {
-        day := i
         // not a day we are going out on
-        if day < days[daysIdx] {
-            dp[day] = dp[day-1]
+        if i < days[daysIdx] {
+            dp[i] = dp[i-1]
             continue
         }
         // is a day we are going out on
         one := costs[0]
         seven := costs[1]
         thirty := costs[2]
-        if day-1 >= 0 {one += dp[day-1]}
-        if day-7 >= 0 {seven += dp[day-7]}
-        if day-30 >= 0 {thirty += dp[day-30]}
-        dp[day] = min(one, min(seven, thirty))
+        if i-1 >= 0 {one += dp[i-1]}
+        if i-7 >= 0 {seven += dp[i-7]}
+        if i-30 >= 0 {thirty += dp[i-30]}
+        dp[i] = min(one, min(seven, thirty))
         daysIdx++
-
     }
 
     return dp[len(dp)-1]
