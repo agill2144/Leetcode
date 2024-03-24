@@ -8,6 +8,10 @@ func mostFrequentIDs(nums []int, freq []int) []int64 {
         freqMap[id] += f
         heap.Push(pq, []int{id, freqMap[id]})
         
+        // we only care about making sure top of the heap has
+        // updated freq val ( map is our src of truth )
+        // if top freq != freq in map, pop and push the correct node
+        // keep doing it until top freq matches whats in map
         for true {
             topId, topFreq := pq.items[0][0], pq.items[0][1]
             correctFreq := freqMap[topId]
