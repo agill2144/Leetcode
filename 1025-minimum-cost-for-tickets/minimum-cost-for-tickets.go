@@ -1,3 +1,6 @@
+// bottom up 1D dp
+// time = o(lastDay); we run a linear loop from dayOne to lastDay
+// space = o(lastDay); dp array
 func mincostTickets(days []int, costs []int) int {
     lastDay := days[len(days)-1]
     dp := make([]int, lastDay+1)
@@ -7,7 +10,6 @@ func mincostTickets(days []int, costs []int) int {
     dp[dayOne] = min(costs[0], min(costs[1], costs[2]))
     for i := dayOne+1; i < len(dp); i++ {
         if _, ok := set[i]; !ok {dp[i] = dp[i-1]; continue}
-
         oneDayPassCost := costs[0] + dp[i-1]
         sevenDayPassCost := costs[1]
         if i-7 >= 0 {sevenDayPassCost += dp[i-7]}
