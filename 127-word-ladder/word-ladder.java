@@ -13,13 +13,13 @@ class Solution {
         while(!q.isEmpty()){
             size = q.size();
             while(size>0){
-                String currWord = q.poll(); 
+                String parent = q.poll(); 
                 boolean exist = false;
                 for(int i=0; i<wordList.size(); i++){
                     String child = wordList.get(i);
-                    
+                   
                         
-                    if(!visited.contains(child) && compareWord(currWord, child)){
+                    if(!visited.contains(child) && compareWord(parent, child)){
                         visited.add(child); //hot
                         q.add(child);
                         if(child.equals(endWord)){
