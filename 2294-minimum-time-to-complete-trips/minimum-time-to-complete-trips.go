@@ -1,4 +1,5 @@
 func minimumTime(time []int, totalTrips int) int64 {
+    if totalTrips <= 0 {return 0}
     left := 1
     right := 0
     for i := 0; i < len(time); i++ {
