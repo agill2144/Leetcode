@@ -4,8 +4,8 @@ func matrixMedian(grid [][]int) int {
     total := m*n
     median := total/2
 
-    left := 0
-    right := 1000002
+    left := 1
+    right := 1000000
     for left <= right {
         mid := left + (right-left)/2
         count := countOnLeft(grid, mid)
