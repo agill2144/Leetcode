@@ -9,10 +9,10 @@ func matrixMedian(grid [][]int) int {
     for left <= right {
         mid := left + (right-left)/2
         count := countOnLeft(grid, mid)
-        if count <= median {
-            left = mid+1
-        } else {
+        if count > median {
             right = mid-1
+        } else {
+            left = mid+1
         }
     }
     return left
