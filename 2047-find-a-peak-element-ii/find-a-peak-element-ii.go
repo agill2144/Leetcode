@@ -7,29 +7,28 @@ func findPeakGrid(mat [][]int) []int {
     for left <= right {
         mid := left + (right-left)/2
 
-        // find max in this col
-        rowIdx := 0
-        for i := 1; i < m; i++ {
-            if mat[i][mid] > mat[rowIdx][mid] {
+        // find the max possible element in this col ( colIdx = mid )
+        rowIdx := -1
+        for i := 0; i < m; i++ {
+            if rowIdx == -1 || mat[i][mid] > mat[rowIdx][mid] {
                 rowIdx = i
-            } 
+            }
         }
 
-        // is this peak ? (rowIdx, colIdx = mid)
-        leftCell,rightCell := -1,-1
-        topCell, bottomCell := -1,-1
+        // now we have row and col(mid) idx, check if this cell is a peak
+        leftCell := -1
+        rightCell := -1
         if mid-1 >= 0 {leftCell = mat[rowIdx][mid-1]}
-        if mid+1 < n {rightCell = mat[rowIdx][mid+1]}
-        if rowIdx-1 >= 0 {topCell = mat[rowIdx-1][mid]}
-        if rowIdx+1 < m {bottomCell = mat[rowIdx+1][mid]}
+        if mid+1 < n  {rightCell = mat[rowIdx][mid+1]}
         val := mat[rowIdx][mid]
-        if val > leftCell && val > rightCell && val > topCell && val > bottomCell {
+        if val > leftCell && val > rightCell {
             return []int{rowIdx, mid}
         }
-        if leftCell > val {
-            right = mid-1
-        } else {
+
+        if rightCell > val {
             left = mid+1
+        } else {
+            right = mid-1
         }
     }
     return nil
