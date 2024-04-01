@@ -8,10 +8,7 @@ func matrixMedian(grid [][]int) int {
     right := 1000002
     for left <= right {
         mid := left + (right-left)/2
-        count := 0
-        for i := 0; i < m; i++ {
-            count += countOnLeft(grid[i], mid)
-        }
+        count := countOnLeft(grid, mid)
         if count > median {
             right = mid-1
         } else {
@@ -22,19 +19,25 @@ func matrixMedian(grid [][]int) int {
 }
 
 
-func countOnLeft(arr []int, target int) int {
-    left := 0
-    right := len(arr)-1
-    // find the right most position of target on left of target
-    idx := -1
-    for left <= right {
-        mid := left + (right-left)/2
-        if arr[mid] < target {
-            idx = mid
-            left = mid+1
-        } else {
-            right = mid-1
+func countOnLeft(grid [][]int, target int) int {
+    m := len(grid)
+    n := len(grid[0])
+    count := 0
+    for i := 0; i < m; i++ {
+        idx := -1
+        left := 0
+        right := n-1
+        for left <= right {
+            mid := left + (right-left)/2
+            midVal := grid[i][mid]
+            if midVal < target {
+                idx = mid
+                left = mid+1
+            } else {
+                right = mid-1
+            }
         }
+        count += (idx+1)
     }
-    return idx+1
+    return count
 }
