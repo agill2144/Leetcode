@@ -3,11 +3,10 @@ func kthSmallest(matrix [][]int, k int) int {
     n := len(matrix[0])
     left := matrix[0][0]
     right := matrix[m-1][n-1]
-    expectedOnLeft := k-1
     for left <= right {
         mid := left + (right-left)/2
         count := countOnLeft(matrix, mid)
-        if count > expectedOnLeft {
+        if count > k-1 {
             right = mid-1
         } else {
             left = mid+1
@@ -15,6 +14,7 @@ func kthSmallest(matrix [][]int, k int) int {
     }
     return right
 }
+
 
 // strictly less than target ( not <= target )
 func countOnLeft(matrix [][]int, target int ) int {
