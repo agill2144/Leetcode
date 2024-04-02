@@ -1,42 +1,35 @@
-/*
-    approach: binary search on answers
-    - we know the smallest element is at 0,0
-    - we know the largest element is at m-1,n-1
-    - and the numbers within the matrix are within this min,max range ( guranteed )
-    - so we have a range of numbers
-    - ranges are sorted, therefore we can use binary search
-    - how can mid be our answer?
-        - if there are >= k elements to the left of mid number
-        
-*/
 func kthSmallest(matrix [][]int, k int) int {
-    n := len(matrix)
+    m := len(matrix)
+    n := len(matrix[0])
     left := matrix[0][0]
-    right := matrix[n-1][n-1]
+    right := matrix[m-1][n-1]
+    expectedOnLeft := k-1
     for left <= right {
         mid := left + (right-left)/2
-        count := count(matrix, mid)
-        if count < k {
-            left = mid+1
-        } else {
+        count := countOnLeft(matrix, mid)
+        if count > expectedOnLeft {
             right = mid-1
+        } else {
+            left = mid+1
         }
     }
-    return left
+    return right
 }
 
-func count(matrix [][]int, target int) int {
-    n := len(matrix)
-    r := n-1
-    c := 0
-    total := 0
+// strictly less than target ( not <= target )
+func countOnLeft(matrix [][]int, target int ) int {
+    m := len(matrix)
+    n := len(matrix[0])
+    r, c := m-1, 0
+    count := 0
     for r >= 0 && c < n {
-        if matrix[r][c] <= target {
-            total += r+1
+        if matrix[r][c] < target {
+            count += (r+1)
             c++
         } else {
             r--
         }
     }
-    return total
+    // fmt.Println("target: ", target, "count: ", count)
+    return count
 }
