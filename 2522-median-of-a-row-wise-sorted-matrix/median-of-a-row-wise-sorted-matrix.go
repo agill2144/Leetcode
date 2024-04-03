@@ -1,4 +1,9 @@
 // time = o(log 10^9 ) * o(m log n)
+// median == middle element
+// half on left and half on right
+// there are dupes, include median in the countOnLeft
+// median must have countOnLeft > half 
+// countOnLeft counts number of elements <= median
 func matrixMedian(grid [][]int) int {
     m := len(grid)
     n := len(grid[0])
