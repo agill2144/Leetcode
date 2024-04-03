@@ -1,3 +1,4 @@
+// time = o(log 10^9 ) * o(m log n)
 func matrixMedian(grid [][]int) int {
     m := len(grid)
     n := len(grid[0])
