@@ -2,8 +2,12 @@
 func matrixMedian(grid [][]int) int {
     m := len(grid)
     n := len(grid[0])
-    left := 1 // given in constraint, the smallest possible cell value is 1
-    right := 1000000000 // and largest possible cell value is 10^9 
+    left := math.MaxInt64
+    right := math.MinInt64
+    for i := 0; i < m; i++ {
+        left = min(left, grid[i][0])
+        right = max(right, grid[i][n-1])
+    }
     total := m*n
     half := total/2
     ans := -1
