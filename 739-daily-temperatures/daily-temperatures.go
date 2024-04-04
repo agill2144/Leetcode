@@ -1,16 +1,18 @@
+// nge pattern ( next greater on right )
 func dailyTemperatures(temperatures []int) []int {
-    st := [][]int{} // [temp, idx]
+    st := []int{}
     n := len(temperatures)
     out := make([]int, n)
-    for i := 0; i < n; i++ {
+    for i := n-1; i >= 0; i-- {
         curr := temperatures[i]
-        for len(st) != 0 && curr > st[len(st)-1][0] {
-            top := st[len(st)-1]
+        for len(st) != 0 && curr >= temperatures[st[len(st)-1]] {
             st = st[:len(st)-1]
-            idx := top[1]
-            out[idx] = i-idx
         }
-        st = append(st, []int{curr, i})
+        if len(st) > 0 {
+            topIdx := st[len(st)-1]
+            out[i] = topIdx-i
+        }
+        st = append(st, i)
     }
     return out
 }
