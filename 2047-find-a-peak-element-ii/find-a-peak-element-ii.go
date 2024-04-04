@@ -6,7 +6,7 @@
     - we WILL keep the same intuition as finding peak in a 1D array
     - if mid element is not peak, take binary search towards the higher element
     
-    approach: binary search
+    approach: binary search on cols
     - binary search on cols, randomly
     - use binary search mid idx, to evaluate a col
     - we want peak element from this col, and for each cell
@@ -35,36 +35,30 @@
 func findPeakGrid(mat [][]int) []int {
     m := len(mat)
     n := len(mat[0])
-    
     left := 0
     right := n-1
     for left <= right {
         mid := left + (right-left)/2
-
-        // find the max possible element in this col ( colIdx = mid )
-        rowIdx := -1
-        for i := 0; i < m; i++ {
-            if rowIdx == -1 || mat[i][mid] > mat[rowIdx][mid] {
-                rowIdx = i
+        row := 0
+        for i := 1; i < m; i++ {
+            if mat[i][mid] > mat[row][mid] {
+                row = i
             }
         }
-
-        // now we have row and col(mid) idx, check if this cell is a peak
-        leftCell := -1
-        rightCell := -1
-        if mid-1 >= 0 {leftCell = mat[rowIdx][mid-1]}
-        if mid+1 < n  {rightCell = mat[rowIdx][mid+1]}
-        val := mat[rowIdx][mid]
-        if val > leftCell && val > rightCell {
-            return []int{rowIdx, mid}
+        // max element in mid col is at row,mid(col)
+        maxElement := mat[row][mid]
+        leftNei, rightNei := -1,-1
+        if mid-1 >= 0 {leftNei = mat[row][mid-1]}
+        if mid+1 < n {rightNei = mat[row][mid+1]}
+        if maxElement > leftNei && maxElement > rightNei {
+            return []int{row, mid}
         }
-
-        if rightCell > val {
-            left = mid+1
-        } else {
+        if leftNei > maxElement {
             right = mid-1
+        } else {
+            left = mid+1
         }
-    }
+    }    
     return nil
 }
 /*
