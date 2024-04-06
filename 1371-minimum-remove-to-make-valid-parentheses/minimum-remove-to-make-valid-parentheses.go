@@ -4,6 +4,7 @@ type stNode struct {
 }
 
 func minRemoveToMakeValid(s string) string {
+    // keep track of which indicies are invalid
     invalidIdxSet := map[int]struct{}{}
     st := []stNode{}
     validOpenings := map[byte]byte{
@@ -27,7 +28,7 @@ func minRemoveToMakeValid(s string) string {
                 continue
             }
 
-            // 2. last open paran is not the corresponding paran
+            // 2. last open paran is not the correct corresponding paran
             top := st[len(st)-1]
             lastOpen := top.val
             validOpen := validOpenings[char]
@@ -40,7 +41,7 @@ func minRemoveToMakeValid(s string) string {
         }
     }
 
-    // or 3. there are open parans in the st have not closed
+    // or 3. there are open parans in the st have never closed
     for len(st) != 0 {
         top := st[len(st)-1]
         st = st[:len(st)-1]
