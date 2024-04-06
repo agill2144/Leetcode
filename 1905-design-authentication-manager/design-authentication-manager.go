@@ -30,8 +30,8 @@ func (this *AuthenticationManager) Renew(tokenId string, currentTime int)  {
 
 func (this *AuthenticationManager) CountUnexpiredTokens(currentTime int) int {
     count := 0
-    for _, v := range this.leases {
-        if currentTime < v {count++}
+    for k, v := range this.leases {
+        if currentTime < v {count++} else {delete(this.leases, k)}
     }
     return count
 }
