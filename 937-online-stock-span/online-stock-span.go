@@ -21,10 +21,13 @@ func (this *StockSpanner) Next(price int) int {
     for len(this.st) != 0 && this.st[len(this.st)-1].val <= price {
         this.st = this.st[:len(this.st)-1]
     }
-    ans := this.idx+1
+    ans := 0
     if len(this.st) != 0 {
         ans = this.idx - this.st[len(this.st)-1].idx        
-    }
+    } else {
+        
+        ans = this.idx+1 
+    } 
     this.st = append(this.st, stackNode{this.idx,price})
     this.idx++
     return ans
