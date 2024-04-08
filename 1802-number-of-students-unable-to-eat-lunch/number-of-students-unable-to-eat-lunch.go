@@ -1,6 +1,6 @@
 func countStudents(students []int, sandwiches []int) int {
     st := []int{}
-    for i := 0; i < len(sandwiches); i++ {st = append(st, sandwiches[i])}
+    for i := len(sandwiches)-1; i >= 0; i-- {st = append(st, sandwiches[i])}
     // count to keep track of how many we could not feed
     count := 0
     // when count == len of sandwiches, it means all students went around the circle
@@ -14,8 +14,8 @@ func countStudents(students []int, sandwiches []int) int {
     for count != len(st) {
         pref := students[0]
         students = students[1:]
-        if pref == st[0] {
-            st = st[1:]
+        if pref == st[len(st)-1] {
+            st = st[:len(st)-1]
             count = 0
         } else {
             students = append(students, pref)
