@@ -1,3 +1,4 @@
+// next smaller on left (strictly smaller, not <= curr num, only < curr) 
 func removeKdigits(num string, k int) string {
     if k == len(num) {return "0"}
     st := []byte{}
