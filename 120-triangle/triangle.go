@@ -1,7 +1,6 @@
 func minimumTotal(triangle [][]int) int {
     dirs := [][]int{{-1,0},{-1,-1}}
     m := len(triangle)
-    if m == 1 {return triangle[0][0]}
     out := math.MaxInt64
     for i := 1; i < m; i++ {
         prevRowLen := len(triangle[i-1])
@@ -21,6 +20,12 @@ func minimumTotal(triangle [][]int) int {
                 out = min(out, triangle[i][j])
             }
         }
+    }
+    if out == math.MaxInt64 {
+        for j := 0; j < len(triangle[m-1]); j++  {
+            out = min(out, triangle[m-1][j])
+        }
+    return out        
     }
     return out
 }
