@@ -7,7 +7,7 @@
  * }
  */
 func diameterOfBinaryTree(root *TreeNode) int {
-    maxDia := 0
+    ans := 0
     var dfs func(r *TreeNode) int
     dfs = func(r *TreeNode) int {
         // base
@@ -16,9 +16,9 @@ func diameterOfBinaryTree(root *TreeNode) int {
         // logic
         left := dfs(r.Left)
         right := dfs(r.Right)
-        maxDia = max(maxDia, left+right)
-        return max(left,right)+1
+        ans = max(ans, left+right)
+        return max(left, right)+1
     }
     dfs(root)
-    return maxDia
+    return ans
 }
