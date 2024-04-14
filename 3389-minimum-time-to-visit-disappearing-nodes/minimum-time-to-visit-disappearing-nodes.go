@@ -15,7 +15,8 @@ func minimumTime(n int, edges [][]int, disappear []int) []int {
         dq := heap.Pop(pq).([]int)
         node := dq[0]
         time := dq[1]
-        if time >= disappear[node] {continue}
+        if time >= disappear[node] || time > dist[node] {continue}
+
         dist[node] = min(dist[node], time)
         for _, nei := range adjList[node] {
             neiNode := nei[0]
