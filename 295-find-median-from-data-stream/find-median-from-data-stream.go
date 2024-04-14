@@ -33,15 +33,12 @@ func (this *MedianFinder) AddNum(num int)  {
 
 
 func (this *MedianFinder) FindMedian() float64 {
-    if this.right.Len() == 0 {return float64(this.left.items[0])}
-    totalSize := this.left.Len() + this.right.Len()
-    leftTop := float64(this.left.items[0])
-    rightTop := float64(this.right.items[0])
-    if totalSize % 2 == 0 {
-        return (leftTop+rightTop)/2.0                
+    if this.left.Len() > this.right.Len() {
+        return float64(this.left.items[0])
+    } else if this.right.Len() > this.left.Len() {
+        return float64(this.right.items[0])
     }
-    if this.left.Len() > this.right.Len() {return leftTop}
-    return rightTop
+    return (float64(this.left.items[0]) + float64(this.right.items[0])) / 2.0
 }
 
 
