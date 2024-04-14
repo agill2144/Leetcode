@@ -1,4 +1,4 @@
-<h2><a href="https://leetcode.com/problems/walls-and-gates/">286. Walls and Gates</a></h2><h3>Medium</h3><hr><div><p>You are given an <code>m x n</code> grid <code>rooms</code>&nbsp;initialized with these three possible values.</p>
+<h2><a href="https://leetcode.com/problems/walls-and-gates">Walls and Gates</a></h2> <img src='https://img.shields.io/badge/Difficulty-Medium-orange' alt='Difficulty: Medium' /><hr><p>You are given an <code>m x n</code> grid <code>rooms</code>&nbsp;initialized with these three possible values.</p>
 
 <ul>
 	<li><code>-1</code>&nbsp;A wall or an obstacle.</li>
@@ -9,15 +9,17 @@
 <p>Fill each empty room with the distance to <em>its nearest gate</em>. If it is impossible to reach a gate, it should be filled with <code>INF</code>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
-<img alt="" src="https://assets.leetcode.com/uploads/2021/01/03/grid.jpg" style="width: 500px; height: 223px;">
-<pre><strong>Input:</strong> rooms = [[2147483647,-1,0,2147483647],[2147483647,2147483647,2147483647,-1],[2147483647,-1,2147483647,-1],[0,-1,2147483647,2147483647]]
+<p><strong class="example">Example 1:</strong></p>
+<img alt="" src="https://assets.leetcode.com/uploads/2021/01/03/grid.jpg" style="width: 500px; height: 223px;" />
+<pre>
+<strong>Input:</strong> rooms = [[2147483647,-1,0,2147483647],[2147483647,2147483647,2147483647,-1],[2147483647,-1,2147483647,-1],[0,-1,2147483647,2147483647]]
 <strong>Output:</strong> [[3,-1,0,1],[2,2,1,-1],[1,-1,2,-1],[0,-1,3,4]]
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
-<pre><strong>Input:</strong> rooms = [[-1]]
+<pre>
+<strong>Input:</strong> rooms = [[-1]]
 <strong>Output:</strong> [[-1]]
 </pre>
 
@@ -30,4 +32,3 @@
 	<li><code>1 &lt;= m, n &lt;= 250</code></li>
 	<li><code>rooms[i][j]</code> is <code>-1</code>, <code>0</code>, or <code>2<sup>31</sup> - 1</code>.</li>
 </ul>
-</div>
