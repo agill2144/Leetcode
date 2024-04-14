@@ -36,7 +36,7 @@ func countPrimes(n int) int {
     for i := 0; i < len(primes); i++ {primes[i] = true}
     primes[0] = false
     primes[1] = false
-    for i := 0; i < len(primes); i++ {
+    for i := 2; i*i < len(primes); i++ {
         if primes[i] {
             for j := i+i; j < len(primes); j+=i {
                 primes[j] = false
