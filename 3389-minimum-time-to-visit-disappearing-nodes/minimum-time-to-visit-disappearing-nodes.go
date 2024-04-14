@@ -1,90 +1,46 @@
-func filterEdges(edges [][]int) [][]int {
-    // Stores one mininum weight for all V
-    mapV := make(map[int]int)
-    for _, egde := range edges {
-        v, weight := egde[0], egde[1]
-        if _, ok := mapV[v]; !ok {
-            mapV[v] = weight
-        } else {
-            mapV[v] = min(mapV[v], weight)
-        }
-    }
-    
-    ans := [][]int{}
-    for v, weight := range mapV {
-        ans = append(ans, []int{v, weight})
-    }
-    // Sorting edges by his lenght
-    sort.Slice(ans, func(i, j int) bool {
-        return ans[i][1] < ans[j][1]
-    })
-    return ans
-}
-
-func filterGraph(g map[int][][]int) map[int][][]int {
-    ansG := make(map[int][][]int)
-    for v, edges := range g {
-        // For all key (v) in g (graph) get the processed, 
-        // correct edges
-        correctEdges := filterEdges(edges)
-        // and update it
-        ansG[v] = correctEdges
-    }
-    
-    return ansG
-}
-
-func updateAns(currV int, g *map[int][][]int, dis *[]int, ans *[]int) {
-    // For each edge
-    for _, edge := range (*g)[currV] {
-        nextV, weight := edge[0], edge[1]
-        nextWeight := (*ans)[currV] + weight
-        // Checking, is it correct to update ans and not updated before
-        if nextWeight < (*ans)[nextV] && nextWeight < (*dis)[nextV] {
-            // Is it, fill updated ans
-            (*ans)[nextV] = nextWeight
-            // And start next DFS func calling
-            updateAns(nextV, g, dis, ans)
-        }
-    }
-}
-
 func minimumTime(n int, edges [][]int, disappear []int) []int {
-    // Fill ans
-    ans := make([]int, n)
-    for i := 0; i <= n - 1; i++ {
-        ans[i] = math.MaxInt32
+    adjList := map[int][][]int{} // u: {v, w}
+    for i := 0; i < len(edges); i++ {
+        u,v,w := edges[i][0], edges[i][1], edges[i][2]
+        adjList[u] = append(adjList[u], []int{v,w})
+        adjList[v] = append(adjList[v], []int{u,w})
     }
-    ans[0] = 0
-    
-    // Create graph
-    graph := make(map[int][][]int)
-    for _, egde := range edges {
-        v, u := egde[0], egde[1]
-        weight := egde[2]
-        graph[v] = append(graph[v], []int{u, weight})
-        graph[u] = append(graph[u], []int{v, weight})
+    dist := make([]int, n)
+    for i := 0; i < n; i++ {
+        dist[i] = math.MaxInt64
     }
-    
-    graph = filterGraph(graph)
-    
-    // Start DFS
-    updateAns(0, &graph, &disappear, &ans)
-    
-    // If ans[i] has a MAX val, i has't update, then, -1
-    for i, val := range ans {
-        if val == math.MaxInt32 {
-            ans[i] = -1
+    dist[0] = 0
+    pq := &minHeap{items: [][]int{{0,0}}}
+    for pq.Len() != 0 {
+        dq := heap.Pop(pq).([]int)
+        node := dq[0]
+        time := dq[1]
+        if time >= disappear[node] {continue}
+        dist[node] = min(dist[node], time)
+        for _, nei := range adjList[node] {
+            neiNode := nei[0]
+            neiTime := nei[1] + time
+            if neiTime > dist[neiNode] {continue}
+            heap.Push(pq, []int{neiNode, neiTime})
         }
     }
-    
-    // return answer slice
-    return ans
+    for i := 0; i < n; i++ {if dist[i] == math.MaxInt64{dist[i]= -1}}
+    return dist
 }
 
-func min(a, b int) int {
-    if a < b {
-        return a
-    }
-    return b
+
+type minHeap struct {
+    items [][]int // [ [node, weight] ] 
+}
+
+func (m *minHeap) Len() int {return len(m.items)}
+func (m *minHeap) Swap(i, j int) {m.items[i], m.items[j] = m.items[j], m.items[i]}
+func (m *minHeap) Push(x interface{}) {m.items = append(m.items, x.([]int))}
+func (m *minHeap) Less(i, j int) bool {
+    return m.items[i][1] < m.items[j][1]
+}
+func (m *minHeap) Pop() interface{} {
+    out := m.items[len(m.items)-1]
+    m.items = m.items[:len(m.items)-1]
+    return out
 }
