@@ -1,3 +1,25 @@
+
+// we can also get NGR by traversing left->right
+// and asking if I ( curr element ) am YOUR ( top of st ) next-greater-right element ?
+// if yes, process the top; pop top, calc dist between i and popped idx, updating out arr
+// keep doing this as long as we have elements in the stack and I ( curr element ) is top's next-greater-right element 
+func dailyTemperatures(temperatures []int) []int {
+    n := len(temperatures)
+    st := []int{}
+    out := make([]int, n)
+    for i := 0; i < n; i++ {
+        curr := temperatures[i]
+        for len(st) != 0 && curr > temperatures[st[len(st)-1]] {
+            idx := st[len(st)-1]
+            st = st[:len(st)-1]
+            out[idx] = i-idx
+        }
+        st = append(st, i)
+    }
+    return out
+}
+
+
 /*
     approach: classic NGR
     - next greater element to right
@@ -14,19 +36,19 @@
     time = o(n)
     space = o(n) 
 */
-func dailyTemperatures(temperatures []int) []int {
-    n := len(temperatures)
-    st := []int{}
-    out := make([]int, n)
-    for i := n-1; i >= 0; i-- {
-        curr := temperatures[i]
-        for len(st) != 0 && temperatures[st[len(st)-1]] <= curr {
-            st = st[:len(st)-1]
-        }
-        if len(st) != 0 {
-            out[i] = st[len(st)-1]-i
-        }
-        st = append(st, i)
-    }
-    return out
-}
+// func dailyTemperatures(temperatures []int) []int {
+//     n := len(temperatures)
+//     st := []int{}
+//     out := make([]int, n)
+//     for i := n-1; i >= 0; i-- {
+//         curr := temperatures[i]
+//         for len(st) != 0 && temperatures[st[len(st)-1]] <= curr {
+//             st = st[:len(st)-1]
+//         }
+//         if len(st) != 0 {
+//             out[i] = st[len(st)-1]-i
+//         }
+//         st = append(st, i)
+//     }
+//     return out
+// }
