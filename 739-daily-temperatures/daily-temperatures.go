@@ -2,7 +2,10 @@
 // we can also get NGR by traversing left->right
 // and asking if I ( curr element ) am YOUR ( top of st ) next-greater-right element ?
 // if yes, process the top; pop top, calc dist between i and popped idx, updating out arr
-// keep doing this as long as we have elements in the stack and I ( curr element ) is top's next-greater-right element 
+// keep doing this as long as we have elements in the stack and I ( curr element ) is top's next-greater-right element
+// the processing is inverted; 
+// instead of processing for the curr element ( in classic NGR ),
+// we are processing for whats on top of the stack
 func dailyTemperatures(temperatures []int) []int {
     n := len(temperatures)
     st := []int{}
