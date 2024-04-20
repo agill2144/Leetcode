@@ -18,10 +18,13 @@ func minDominoRotations(tops []int, bottoms []int) int {
         }
         return min(tCount, bCount)
     }
+    // evaluate whether tops[0] is our ans
     t1Count := minRotations(tops[0])
     if t1Count == -1 {
+        // when tops[0] is not our answer, check with bottoms[0]
         return minRotations(bottoms[0])
     }
+    // when tops[0] is our answer
     return t1Count
 }
 
