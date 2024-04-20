@@ -1,3 +1,5 @@
+// time = 2 o(mn) ; o(mn)
+// space = o(1)
 func findFarmland(land [][]int) [][]int {
     m := len(land)
     n := len(land[0])
@@ -19,6 +21,8 @@ func findFarmland(land [][]int) [][]int {
                 for c1 < n && land[i][c1] == 1 { c1++ }
                 c1--
                 ec = c1
+                
+                // save the sr, sc, er, ec
                 out = append(out, []int{sr, sc, er, ec})
 
                 // mark the cells between sr, sc and er and ec visited
