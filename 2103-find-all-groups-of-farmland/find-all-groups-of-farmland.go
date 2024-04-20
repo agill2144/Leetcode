@@ -1,5 +1,6 @@
 // time = 2 o(mn) ; o(mn)
 // space = o(1)
+// brute force; greedy
 func findFarmland(land [][]int) [][]int {
     m := len(land)
     n := len(land[0])
