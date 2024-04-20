@@ -1,3 +1,5 @@
+// time = o(n) + o(n)
+// space = o(1)
 func minDominoRotations(tops []int, bottoms []int) int {
     if len(tops) != len(bottoms) {return -1}
 
@@ -28,6 +30,8 @@ func minDominoRotations(tops []int, bottoms []int) int {
     return t1Count
 }
 
+// time = o(n) + o(n)
+// space = o(n)
 // func minDominoRotations(tops []int, bottoms []int) int {
 //     n := len(tops)
 //     freq := map[int]int{}
