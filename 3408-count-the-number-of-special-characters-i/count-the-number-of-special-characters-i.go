@@ -1,4 +1,9 @@
+// time = o(w)
+// space = o(1)
 func numberOfSpecialChars(word string) int {
+    // instead of using a set to only store 
+    // uniq pairs
+    // we can mark each lower and upper case chars used 
     lowers := make([]bool, 26)
     uppers := make([]bool, 26)
     seen := map[byte]struct{}{}
