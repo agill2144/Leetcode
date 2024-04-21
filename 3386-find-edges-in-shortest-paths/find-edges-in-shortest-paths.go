@@ -29,16 +29,12 @@ func findAnswer(n int, edges [][]int) []bool {
                 out = make([]bool, len(edges))
                 splitPath := strings.Split(currPath, "-")
                 for i := 0; i < len(splitPath); i++ {
-                    // is this an edge in our input ?
                     if i+1 > len(splitPath)-1 {continue}
+                    // is this an edge in our input ?
                     pair := fmt.Sprintf("%v-%v", splitPath[i], splitPath[i+1])
-                    // pair2 := fmt.Sprintf("%v-%v", splitPath[i+1], splitPath[i])
                     if idx, ok := edgeIdx[pair]; ok {
                         out[idx] = true
                     }
-                    // if idx, ok := edgeIdx[pair2]; ok {
-                    //     out[idx] = true
-                    // }
                 }
             } else if currDist == shortestDistToDest {
                 splitPath := strings.Split(currPath, "-")
@@ -46,13 +42,10 @@ func findAnswer(n int, edges [][]int) []bool {
                     // is this an edge in our input ?
                     if i+1 == len(splitPath) {continue}
                     pair := fmt.Sprintf("%v-%v", splitPath[i], splitPath[i+1])
-                    pair2 := fmt.Sprintf("%v-%v", splitPath[i+1], splitPath[i])
                     if idx, ok := edgeIdx[pair]; ok {
                         out[idx] = true
                     }
-                    if idx, ok := edgeIdx[pair2]; ok {
-                        out[idx] = true
-                    }
+                    
                 }            }
         }
         
