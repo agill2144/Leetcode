@@ -1,3 +1,5 @@
+// time = o(2n)  = o(n)
+// space = o(n/2) for ansSet to de-dupe = o(n)
 func numberOfSpecialChars(word string) int {
     idxMap := map[byte][]int{}  // first and last idx of each char
     for i := 0; i < len(word); i++ {
@@ -8,7 +10,9 @@ func numberOfSpecialChars(word string) int {
             idxMap[word[i]][1] = i
         }
     }
-    ansSet := map[string]struct{}{}
+    count := 0
+    lowers := make([]bool, 26)
+    uppers := make([]bool, 26)
     for i := 0; i < len(word); i++ {
         char := word[i]
         if unicode.IsUpper(rune(char)) {continue}
@@ -29,8 +33,11 @@ func numberOfSpecialChars(word string) int {
         // every lowercase occurrence appears before the first uppercase occurrence
         if lastLowerIdx > firstUpperIdx {continue}
         // inorder to not count dupe
-        pair := fmt.Sprintf("%v-%v", lowerCase, upperCase)
-        ansSet[pair] = struct{}{}
+        if !lowers[int(lowerCase-'a')] && !uppers[int(upperCase-'A')] {
+            lowers[int(lowerCase-'a')] = true
+            uppers[int(upperCase-'A')] = true
+            count++
+        }
     }
-    return len(ansSet)
+    return count
 }
