@@ -15,7 +15,7 @@ func numberOfSpecialChars(word string) int {
     uppers := make([]bool, 26)
     for i := 0; i < len(word); i++ {
         char := word[i]
-        if unicode.IsUpper(rune(char)) {continue}
+        if char < 97 {continue}
         
         // char is lower, look for its upper pair
         lowerCase := char
