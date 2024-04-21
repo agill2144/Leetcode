@@ -1,7 +1,12 @@
 func numberOfSpecialChars(word string) int {
-    idxMap := map[byte][]int{}
+    idxMap := map[byte][]int{}  // first and last idx of each char
     for i := 0; i < len(word); i++ {
-        idxMap[word[i]] = append(idxMap[word[i]], i)
+        _, ok := idxMap[word[i]]
+        if !ok {
+            idxMap[word[i]] = []int{i,i}
+        } else {
+            idxMap[word[i]][1] = i
+        }
     }
     ansSet := map[string]struct{}{}
     for i := 0; i < len(word); i++ {
