@@ -15,6 +15,9 @@ func numberOfSpecialChars(word string) int {
     uppers := make([]bool, 26)
     for i := 0; i < len(word); i++ {
         char := word[i]
+        // lower case ascii values start from 97
+        // if this char's ascii value is < 97
+        // its def not a lower case char
         if char < 97 {continue}
         
         // char is lower, look for its upper pair
