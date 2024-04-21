@@ -24,9 +24,10 @@ func numberOfSpecialChars(word string) int {
         upperCase := lowerCase-32
         if len(idxMap[upperCase]) == 0 {continue}
         lastLowerIdx := idxMap[lowerCase][1]
+        firstUpperIdx := idxMap[upperCase][0]
         
         // every lowercase occurrence appears before the first uppercase occurrence
-        if lastLowerIdx > idxMap[upperCase][0] {continue}
+        if lastLowerIdx > firstUpperIdx {continue}
         pair := fmt.Sprintf("%v-%v", lowerCase, upperCase)
         ansSet[pair] = struct{}{}
     }
