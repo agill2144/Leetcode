@@ -23,30 +23,21 @@ func findAnswer(n int, edges [][]int) []bool {
         currNode := dq.val
         currDist := dq.dist
         currPath := dq.path
-        if currNode == dest {
+        if currNode == dest && currDist <= shortestDistToDest {
             if currDist < shortestDistToDest {
-                shortestDistToDest = currDist
+                // reset output array
                 out = make([]bool, len(edges))
-                splitPath := strings.Split(currPath, "-")
-                for i := 0; i < len(splitPath); i++ {
-                    if i+1 > len(splitPath)-1 {continue}
-                    // is this an edge in our input ?
-                    pair := fmt.Sprintf("%v-%v", splitPath[i], splitPath[i+1])
-                    if idx, ok := edgeIdx[pair]; ok {
-                        out[idx] = true
-                    }
+                shortestDistToDest = currDist
+            }
+            splitPath := strings.Split(currPath, "-")
+            for i := 0; i < len(splitPath); i++ {
+                // is this an edge in our input ?
+                if i+1 == len(splitPath) {continue}
+                pair := fmt.Sprintf("%v-%v", splitPath[i], splitPath[i+1])
+                if idx, ok := edgeIdx[pair]; ok {
+                    out[idx] = true
                 }
-            } else if currDist == shortestDistToDest {
-                splitPath := strings.Split(currPath, "-")
-                for i := 0; i < len(splitPath); i++ {
-                    // is this an edge in our input ?
-                    if i+1 == len(splitPath) {continue}
-                    pair := fmt.Sprintf("%v-%v", splitPath[i], splitPath[i+1])
-                    if idx, ok := edgeIdx[pair]; ok {
-                        out[idx] = true
-                    }
-                    
-                }            }
+            }
         }
         
         if currDist > dist[currNode].dist {continue}
