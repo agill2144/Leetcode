@@ -17,8 +17,8 @@ func numberOfSpecialChars(word string) int {
         // and we want its upper case ascii value
         // lowercaseAscII - 32
         upperCase := lowerCase-32
-        lastLowerIdx := len(idxMap[lowerCase])-1
         if len(idxMap[upperCase]) == 0 {continue}
+        lastLowerIdx := len(idxMap[lowerCase])-1
         
         // every lowercase occurrence appears before the first uppercase occurrence
         if idxMap[lowerCase][lastLowerIdx] > idxMap[upperCase][0] {continue}
