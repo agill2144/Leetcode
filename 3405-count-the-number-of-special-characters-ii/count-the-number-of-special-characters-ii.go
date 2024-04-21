@@ -28,6 +28,7 @@ func numberOfSpecialChars(word string) int {
         
         // every lowercase occurrence appears before the first uppercase occurrence
         if lastLowerIdx > firstUpperIdx {continue}
+        // inorder to not count dupe
         pair := fmt.Sprintf("%v-%v", lowerCase, upperCase)
         ansSet[pair] = struct{}{}
     }
