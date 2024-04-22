@@ -1,68 +1,55 @@
 func findAnswer(n int, edges [][]int) []bool {
-    edgeIdx := map[string]int{}
     adjList := map[int][][]int{}
     for i := 0; i < len(edges); i++ {
         u,v,w := edges[i][0], edges[i][1], edges[i][2]
         adjList[u] = append(adjList[u], []int{v,w})
         adjList[v] = append(adjList[v], []int{u,w})
-        edgeIdx[fmt.Sprintf("%v-%v",u,v)] = i
-        edgeIdx[fmt.Sprintf("%v-%v",v,u)] = i
     }
-    dist := make([]node, n)
-    dist[0] = node{0,0,"0"}
-    for i := 1; i < n; i++ {
-        dist[i] = node{i,math.MaxInt64, ""}
-    }
-    dest := n-1
-    shortestDistToDest := math.MaxInt64
+    fromSrc := dijkstra(0, n, adjList)
+    fromDest := dijkstra(n-1, n, adjList)
+    shortestDist := fromSrc[n-1]
     out := make([]bool, len(edges))
+    for i := 0; i < len(edges); i++ {
+        u,v,w := edges[i][0], edges[i][1], edges[i][2]
+        if fromSrc[u]+w+fromDest[v] == shortestDist || fromSrc[v]+w+fromDest[u] == shortestDist {
+            out[i] = true
+        }
+    }
+    return out
+}
 
-    pq := &minHeap{items: []node{dist[0]}}
+// shortest dist from start to all other nodes
+func dijkstra(start int, n int, adjList map[int][][]int) []int {
+    dist := make([]int, n)
+    for i := 0; i < n; i++ {
+        dist[i] = math.MaxInt64-100
+    }
+    dist[start] = 0
+    pq := &minHeap{items: []node{}}
+    heap.Push(pq, node{start, 0})
     for pq.Len() != 0 {
         dq := heap.Pop(pq).(node)
         currNode := dq.val
         currDist := dq.dist
-        currPath := dq.path
-        if currNode == dest && currDist <= shortestDistToDest {
-            if currDist < shortestDistToDest {
-                // reset output array
-                out = make([]bool, len(edges))
-                shortestDistToDest = currDist
-            }
-            splitPath := strings.Split(currPath, "-")
-            for i := 0; i < len(splitPath); i++ {
-                // is this an edge in our input ?
-                if i+1 == len(splitPath) {continue}
-                pair := fmt.Sprintf("%v-%v", splitPath[i], splitPath[i+1])
-                if idx, ok := edgeIdx[pair]; ok {
-                    out[idx] = true
-                }
-            }
+        if currDist > dist[currNode] {
+            continue
         }
-        
-        if currDist > dist[currNode].dist {continue}
         for _, nei := range adjList[currNode] {
             neiNode := nei[0]
-            neiDist := currDist + nei[1]
-            neiPath := currPath + "-" + fmt.Sprintf("%v", neiNode)
-            neiTypedNode := node{neiNode, neiDist, neiPath}
-            if neiDist < dist[neiNode].dist {
-                heap.Push(pq, neiTypedNode)
-                dist[neiNode] = neiTypedNode
-            } else if neiDist == dist[neiNode].dist && neiPath != dist[neiNode].path {
-                heap.Push(pq, neiTypedNode)
-                dist[neiNode] = neiTypedNode
+            neiDist := nei[1] + currDist
+            if neiDist < dist[neiNode] {
+                dist[neiNode] = neiDist
+                heap.Push(pq, node{val: neiNode, dist: neiDist})
             }
         }
     }
-    return out
+    return dist
 }
 
 
 type node struct {
     val int
     dist int
-    path string
 }
 type minHeap struct {
 	items []node
