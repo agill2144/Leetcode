@@ -19,18 +19,15 @@ func openLock(deadends []string, target string) int {
                return level
             }
 
-            // node = 4 char string
-            // each char is a wheel on the locker
-            // each wheel can be rotated once forward or backward
             for i := 0; i < len(node); i++ {
-                digit := int(node[i] - '0')
-                
-                // Generate the forward and backward combinations
-                for _, d := range []int{-1, 1} {
-                    nextDigit := (digit + d + 10) % 10
-                    child := node[:i] + strconv.Itoa(nextDigit) + node[i+1:]
-                    if _, ok := set[child]; ok { continue }
-                    if _, ok := visited[child]; ok { continue }
+                // for each wheel, we can do +1(forward) or -1(backward)
+                digit := int(node[i]-'0')
+                choices := []int{1,-1}
+                for _, ch := range choices {
+                    newDigit := (digit + ch + 10) % 10
+                    child := node[:i] + fmt.Sprintf("%v", newDigit) + node[i+1:]
+                    if _, ok := set[child]; ok {continue}
+                    if _, ok := visited[child]; ok {continue}
                     visited[child] = struct{}{}
                     q = append(q, child)
                 }
