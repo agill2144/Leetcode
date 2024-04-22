@@ -19,7 +19,7 @@ func openLock(deadends []string, target string) int {
                return level
             }
 
-            for i := 0; i < 4; i++ {
+            for i := 0; i < len(node); i++ {
                 char := int(node[i]-'0')
 
                 dec := char-1
