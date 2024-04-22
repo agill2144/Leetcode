@@ -19,18 +19,34 @@ func openLock(deadends []string, target string) int {
                return level
             }
 
-            for i := 0; i < len(node); i++ {
-                // for each wheel, we can do +1(forward) or -1(backward)
-                digit := int(node[i]-'0')
-                choices := []int{1,-1}
-                for _, ch := range choices {
-                    newDigit := (digit + ch + 10) % 10
-                    child := node[:i] + fmt.Sprintf("%v", newDigit) + node[i+1:]
-                    if _, ok := set[child]; ok {continue}
-                    if _, ok := visited[child]; ok {continue}
+            for i := 0; i < 4; i++ {
+                char := int(node[i]-'0')
+
+                dec := char-1
+                if char == 0 {dec = 9}
+
+                
+                child := node[:i] + fmt.Sprintf("%v",dec) + node[i+1:]
+                _, ok := set[child]
+                _, ok2 := visited[child]
+                if !ok && !ok2 {
+                    set[child] = struct{}{}
                     visited[child] = struct{}{}
                     q = append(q, child)
                 }
+
+                inc := char+1
+                if char == 9 {inc = 0}
+                child = node[:i] + fmt.Sprintf("%v",inc) + node[i+1:]
+                _, ok = set[child]
+                _, ok2 = visited[child]
+                if !ok && !ok2 {
+                    set[child] = struct{}{}
+                    visited[child] = struct{}{}
+                    q = append(q, child)
+                }
+
+
             }
             qSize--
         }
