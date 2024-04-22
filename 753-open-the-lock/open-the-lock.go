@@ -7,8 +7,8 @@ func openLock(deadends []string, target string) int {
     }
     q := []string{start}
     level := 0
-    visited := map[string]struct{}{}
-    visited[start] = struct{}{}
+    // use the searchable deadends set as a visited map
+    set[start] = struct{}{}
     for len(q) != 0 {
         qSize := len(q)
         for qSize != 0 {
@@ -19,34 +19,27 @@ func openLock(deadends []string, target string) int {
                return level
             }
 
+
+            // find adj childs
             for i := 0; i < len(node); i++ {
-                char := int(node[i]-'0')
+                digit := int(node[i]-'0')
+                turnLeft := digit-1
+                if digit == 0 {turnLeft = 9}
+                turnRight := digit+1
+                if digit == 9 {turnRight = 0}
 
-                dec := char-1
-                if char == 0 {dec = 9}
-
-                
-                child := node[:i] + fmt.Sprintf("%v",dec) + node[i+1:]
-                _, ok := set[child]
-                _, ok2 := visited[child]
-                if !ok && !ok2 {
-                    set[child] = struct{}{}
-                    visited[child] = struct{}{}
-                    q = append(q, child)
+                c1 := node[:i] + fmt.Sprintf("%v", turnLeft) + node[i+1:]
+                _, c1Visited := set[c1]
+                if !c1Visited {
+                    set[c1] = struct{}{}
+                    q = append(q, c1)
                 }
-
-                inc := char+1
-                if char == 9 {inc = 0}
-                child = node[:i] + fmt.Sprintf("%v",inc) + node[i+1:]
-                _, ok = set[child]
-                _, ok2 = visited[child]
-                if !ok && !ok2 {
-                    set[child] = struct{}{}
-                    visited[child] = struct{}{}
-                    q = append(q, child)
+                c2 := node[:i] + fmt.Sprintf("%v", turnRight) + node[i+1:]                
+                _, c2Visited := set[c2]
+                if !c2Visited {
+                    set[c2] = struct{}{}
+                    q = append(q, c2)
                 }
-
-
             }
             qSize--
         }
