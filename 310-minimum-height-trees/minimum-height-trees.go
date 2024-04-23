@@ -64,6 +64,8 @@ func findMinHeightTrees(n int, edges [][]int) []int {
 // brute force: make each node a root and check its max height
 // then find the min height
 // then find nodes with that height, those nodes are our answers
+// time ; o(n^2) ; for each node, we run a dfs that takes o(n) time; and there are n nodes
+// space = o(n) + o(n) + o(n) ; heights map, recursion , adjList
 // func findMinHeightTrees(n int, edges [][]int) []int {
 //     adjList := map[int][]int{}
 //     heights := map[int]int{}
