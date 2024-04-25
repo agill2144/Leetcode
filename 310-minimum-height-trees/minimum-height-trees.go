@@ -1,7 +1,12 @@
+// v = number of nodes ( 0 to n-1 )
+// e = total number of edges provided
+// time  = o(e) + o(v) + o(v+e)
+// space = o(v+e) ; adjList
 func findMinHeightTrees(n int, edges [][]int) []int {
     if n == 1 {return []int{n-1}}
     adjList := map[int][]int{}
     degrees := make([]int, n)
+    // time = o(e)
     for i := 0; i < len(edges); i++ {
         u,v := edges[i][0], edges[i][1]
         adjList[u] = append(adjList[u], v)
@@ -30,12 +35,14 @@ func findMinHeightTrees(n int, edges [][]int) []int {
     // if there are 3 nodes in the input, only 1 node's max depth will be the smallest, that node will be our answer
     // therefore its either 1 node or 2 nodes at max
     leaves := []int{}
+    // time = (v)
     for i := 0; i < len(degrees); i++ {
         if degrees[i] == 1 {
             leaves = append(leaves, i)
         }
     }
     remaining := n
+    // time = (v+e)
     for len(leaves) != 0 {
         qSize := len(leaves)
         // we need to check this before level processing and not after a level processing
