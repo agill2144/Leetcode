@@ -1,10 +1,5 @@
 func findMinHeightTrees(n int, edges [][]int) []int {
-    if n <= 2 {
-        out := []int{}
-        for i := 0; i < n; i++ {out = append(out, i)}
-        return out
-    }
-
+    if n == 1 {return []int{n-1}}
     adjList := map[int][]int{}
     degrees := make([]int, n)
     for i := 0; i < len(edges); i++ {
@@ -43,6 +38,15 @@ func findMinHeightTrees(n int, edges [][]int) []int {
     remaining := n
     for len(leaves) != 0 {
         qSize := len(leaves)
+        // we need to check this before level processing and not after a level processing
+        // there is a edge case; if n = 2;
+        // if we dont have this check before level processing,
+        // then bfs will run for that level and process both nodes
+        // then after that level, remaining will be 0 which is <= n(2)
+        // but we wont have the answer list, since we are using bfs queue as our answer list as well.
+        // therefore this check needs to happen before a level processing.
+        // alternatively, we could explicitly handle this check at the very top; if n < 2; return all the nodes
+        if remaining <= 2 {return leaves}
         for qSize != 0 {
             dq := leaves[0]
             leaves = leaves[1:]
@@ -55,7 +59,6 @@ func findMinHeightTrees(n int, edges [][]int) []int {
             }
             qSize--
         }
-        if remaining <= 2 {return leaves}
     }
     return nil
 }
