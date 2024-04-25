@@ -1,5 +1,5 @@
 func findMinHeightTrees(n int, edges [][]int) []int {
-    if n < 2 {
+    if n <= 2 {
         out := []int{}
         for i := 0; i < n; i++ {out = append(out, i)}
         return out
@@ -40,14 +40,13 @@ func findMinHeightTrees(n int, edges [][]int) []int {
             leaves = append(leaves, i)
         }
     }
-    toBeProcessed := n
+    remaining := n
     for len(leaves) != 0 {
         qSize := len(leaves)
-        if toBeProcessed <= 2 {return leaves}
         for qSize != 0 {
             dq := leaves[0]
             leaves = leaves[1:]
-            toBeProcessed--
+            remaining--
             for _, nei := range adjList[dq] {
                 degrees[nei]--
                 if degrees[nei] == 1 {
@@ -56,6 +55,7 @@ func findMinHeightTrees(n int, edges [][]int) []int {
             }
             qSize--
         }
+        if remaining <= 2 {return leaves}
     }
     return nil
 }
