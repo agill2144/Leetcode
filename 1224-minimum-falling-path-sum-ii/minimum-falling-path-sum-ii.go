@@ -1,3 +1,8 @@
+// like min path falling sum 1
+// but instead of only 2 choices per cell
+// we have n choices per cell
+// time: o(n^3)
+// space = o(1)
 func minFallingPathSum(grid [][]int) int {
     m := len(grid)
     n := len(grid[0])
@@ -17,9 +22,4 @@ func minFallingPathSum(grid [][]int) int {
         ans = min(ans, grid[m-1][j])
     }
     return ans
-}
-
-func min(x, y int) int {
-    if x < y {return x}
-    return y
 }
