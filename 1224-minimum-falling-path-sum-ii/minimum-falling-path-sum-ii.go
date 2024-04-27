@@ -1,3 +1,9 @@
+// for each row, we simply need 2 minimums
+// smallest and second smallest
+// for each jth cell, we can only use the prev row smallest if j != smallest jth idx
+// otherwise we have to use second smallest
+// time = o(n^2)
+// space = o(1)
 func minFallingPathSum(grid [][]int) int {
     smallest := math.MaxInt64
     smallestIdx := -1
