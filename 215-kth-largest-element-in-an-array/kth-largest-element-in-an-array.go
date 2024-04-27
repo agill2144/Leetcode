@@ -1,30 +1,28 @@
 func findKthLargest(nums []int, k int) int {
-    mn := &minHeap{items: []int{}}
-    for i := 0; i < len(nums); i++ {
-        heap.Push(mn, nums[i])
-        if mn.Len() > k {heap.Pop(mn)}
+    n := len(nums)
+    if k > n {return -1}
+
+    start := math.MaxInt64
+    end := math.MinInt64
+    for i := 0; i < n; i++ {
+        start = min(start, nums[i])
+        end = max(end, nums[i])
     }
-    return mn.items[0]
+
+    bucket := map[int]int{}
+    for i := 0; i < n; i++ {
+        bucket[nums[i]]++
+    }
+
+    idx := -1
+    targetIdx := n-k
+    for i := start; i <= end; i++ {
+        count, ok := bucket[i]
+        if !ok {continue}
+        idx += count
+        if idx >= targetIdx {return i}
+    }
+    return -1
+
 }
 
-type minHeap struct {
-	items []int
-}
-
-func (m *minHeap) Less(i, j int) bool {
-	return m.items[i] < m.items[j]
-}
-func (m *minHeap) Swap(i, j int) {
-	m.items[i], m.items[j] = m.items[j], m.items[i]
-}
-func (m *minHeap) Len() int {
-	return len(m.items)
-}
-func (m *minHeap) Push(x interface{}) {
-	m.items = append(m.items, x.(int))
-}
-func (m *minHeap) Pop() interface{} {
-	out := m.items[len(m.items)-1]
-	m.items = m.items[:len(m.items)-1]
-	return out
-}
