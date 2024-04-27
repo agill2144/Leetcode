@@ -1,4 +1,61 @@
 /*
+    approach: compute nsr, nsl while processing ith element
+    - instead of processing ith element for nsl and or nsr
+    - we will now process the top element
+        - am i(ith element) your(top) nsr ?
+        - yes, pop top and process top
+            - pop top
+            - popped elements nsl is now on the top of st
+            - compute the width
+            - compute the area
+            - repeat if ith element is also the nsr for new top
+        - push ith element to stack to be processed
+
+*/
+func largestRectangleArea(heights []int) int {
+    ans := math.MinInt64
+    n := len(heights)
+    st := []int{}
+    for i := 0; i < n; i++ {
+
+        // we are now only asking , am i(ith) your(top) nsr ? 
+        for len(st) != 0 && heights[i] < heights[st[len(st)-1]] {
+            height := heights[st[len(st)-1]]
+            st = st[:len(st)-1]
+            nsr := i // curr
+            nsl := -1
+            if len(st) != 0 {nsl = st[len(st)-1]}
+            width := nsr-nsl-1
+            area := height * width
+            ans = max(ans, area)
+        }
+        st = append(st, i)
+    }
+
+    // if we never got a nsr ( for example, elements were in increasing order )
+    // [1,2,3,4]
+    // then for each ith element, we never got a true, that yes, ith element is top's nsr
+    // therefore we will have all of these elments in our st
+    // This means, each st's element nsr is len of the full heights array
+    for len(st) != 0 {
+        // remeber; we are processing the top element!
+        top := st[len(st)-1]
+        st = st[:len(st)-1]
+        height := heights[top]
+        nsr := n
+        nsl := -1
+        if len(st) != 0 {
+            nsl = st[len(st)-1]
+        }
+        width := nsr-nsl-1
+        area := height*width
+        ans = max(ans, area)
+    } 
+    return ans
+}
+
+
+/*
     approach: precompute nsl and nsr
     - we have nested loops
     - and our nested loop start from i-1 and i+1
@@ -11,64 +68,64 @@
     time = o(n)
     space = o(n)
 */
-func largestRectangleArea(heights []int) int {
-    n := len(heights)
-    ans := math.MinInt64
-    nsr := nsr(heights)
-    nsl := nsl(heights)
+// func largestRectangleArea(heights []int) int {
+//     n := len(heights)
+//     ans := math.MinInt64
+//     nsr := nsr(heights)
+//     nsl := nsl(heights)
 
-    for i := 0; i < n; i++ {
-        height := heights[i]
-        width := nsr[i]-nsl[i]-1
-        area := height * width
-        ans = max(ans, area)
-    }
-    return ans
-}
+//     for i := 0; i < n; i++ {
+//         height := heights[i]
+//         width := nsr[i]-nsl[i]-1
+//         area := height * width
+//         ans = max(ans, area)
+//     }
+//     return ans
+// }
 
 // naive nsl implementation
 // process nsl for each ith element
-func nsl(nums []int) []int{
-    st := []int{}
-    n := len(nums)
-    out := make([]int, n)
-    for i := 0; i < len(nums); i++ {
-        out[i] = -1
-        // remove everyone that is >= to me (ith element); i is looking for its nsl in the stack
-        for len(st) != 0 && nums[st[len(st)-1]] >= nums[i] {
-            st = st[:len(st)-1]
-        }
-        if len(st) != 0 {
-            out[i] = st[len(st)-1]
-        }
-        st = append(st, i)
-    }
-    return out
-}
+// func nsl(nums []int) []int{
+//     st := []int{}
+//     n := len(nums)
+//     out := make([]int, n)
+//     for i := 0; i < len(nums); i++ {
+//         out[i] = -1
+//         // remove everyone that is >= to me (ith element); i is looking for its nsl in the stack
+//         for len(st) != 0 && nums[st[len(st)-1]] >= nums[i] {
+//             st = st[:len(st)-1]
+//         }
+//         if len(st) != 0 {
+//             out[i] = st[len(st)-1]
+//         }
+//         st = append(st, i)
+//     }
+//     return out
+// }
 
 // naive nsr implementation
 // process nsr for each ith element
-func nsr(nums []int) []int{
-    st := []int{}
-    n := len(nums)
-    out := make([]int, n)
-    for i := n-1; i >= 0; i-- {
-        // why not -1 here?
-        // because we are using the output values to compute width
-        // if there is not a next smaller on right, it means, 
-        // ith bar goes as far right as possible , till the end, hence n
-        out[i] = n
-        // remove everyone that is >= to me (ith element); i is looking for its nsr in the stack
-        for len(st) != 0 && nums[st[len(st)-1]] >= nums[i] {
-            st = st[:len(st)-1]
-        }
-        if len(st) != 0 {
-            out[i] = st[len(st)-1]
-        }
-        st = append(st, i)
-    }
-    return out
-}
+// func nsr(nums []int) []int{
+//     st := []int{}
+//     n := len(nums)
+//     out := make([]int, n)
+//     for i := n-1; i >= 0; i-- {
+//         // why not -1 here?
+//         // because we are using the output values to compute width
+//         // if there is not a next smaller on right, it means, 
+//         // ith bar goes as far right as possible , till the end, hence n
+//         out[i] = n
+//         // remove everyone that is >= to me (ith element); i is looking for its nsr in the stack
+//         for len(st) != 0 && nums[st[len(st)-1]] >= nums[i] {
+//             st = st[:len(st)-1]
+//         }
+//         if len(st) != 0 {
+//             out[i] = st[len(st)-1]
+//         }
+//         st = append(st, i)
+//     }
+//     return out
+// }
 
 /*
     approach: brute force
