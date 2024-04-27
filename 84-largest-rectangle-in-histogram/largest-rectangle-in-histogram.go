@@ -1,69 +1,123 @@
+/*
+    approach: precompute nsl and nsr
+    - we have nested loops
+    - and our nested loop start from i-1 and i+1
+    - that is, its position depends on where i is ( stack hint )
+    - also! our nested loops went until they reach a smaller height on left and right
+        - this is NSL and NSR
+        - if we pre-computed NSL and NSR, then the ith loop will become linear!
+    - nsl and nsr is done via stack
+    - but we want their idx positions ( so we can compute the widths ), not the nsr/nsl values
+    time = o(n)
+    space = o(n)
+*/
 func largestRectangleArea(heights []int) int {
     n := len(heights)
-    if n == 0 {return 0}
-    if n == 1 {return heights[0]}
+    ans := math.MinInt64
+    nsr := nsr(heights)
+    nsl := nsl(heights)
 
-    maxArea := math.MinInt64
-    st := []int{} // index
-    for i := 0; i <= n; i++ {
-        for len(st) != 0 && (i == n || heights[i] < heights[st[len(st)-1]]) {
-            // curr height is the nsr for the ele that is on top of stack
-            // what about nsl ? its at the bottom of top of st
-            height := heights[st[len(st)-1]]
+    for i := 0; i < n; i++ {
+        height := heights[i]
+        width := nsr[i]-nsl[i]-1
+        area := height * width
+        ans = max(ans, area)
+    }
+    return ans
+}
+
+// naive nsl implementation
+// process nsl for each ith element
+func nsl(nums []int) []int{
+    st := []int{}
+    n := len(nums)
+    out := make([]int, n)
+    for i := 0; i < len(nums); i++ {
+        out[i] = -1
+        // remove everyone that is >= to me (ith element); i is looking for its nsl in the stack
+        for len(st) != 0 && nums[st[len(st)-1]] >= nums[i] {
             st = st[:len(st)-1]
-            nsr := i
-            width := nsr
-            if len(st) != 0 {
-                width = nsr-st[len(st)-1]-1
-            }
-            maxArea = max(maxArea, height*width)
+        }
+        if len(st) != 0 {
+            out[i] = st[len(st)-1]
         }
         st = append(st, i)
     }
-    return maxArea
+    return out
 }
+
+// naive nsr implementation
+// process nsr for each ith element
+func nsr(nums []int) []int{
+    st := []int{}
+    n := len(nums)
+    out := make([]int, n)
+    for i := n-1; i >= 0; i-- {
+        // why not -1 here?
+        // because we are using the output values to compute width
+        // if there is not a next smaller on right, it means, 
+        // ith bar goes as far right as possible , till the end, hence n
+        out[i] = n
+        // remove everyone that is >= to me (ith element); i is looking for its nsr in the stack
+        for len(st) != 0 && nums[st[len(st)-1]] >= nums[i] {
+            st = st[:len(st)-1]
+        }
+        if len(st) != 0 {
+            out[i] = st[len(st)-1]
+        }
+        st = append(st, i)
+    }
+    return out
+}
+
+/*
+    approach: brute force
+    - calculate area for each ith bar
+    - find neighoring bars that can be part of this ith rectangle
+    - now, we cant skip a bar and go to next one
+        - therefore selected bars must be contagious
+    - how do we decide whether neighboring bar can be part of this ith rectangle
+    - if neighboring bar height < than ith bar, it cannot be selected
+    - neighboring bar height must be >= ith bar height.
+    - if we have N bars for an ith bar, which height do we use ?
+        - smallest amongst all
+        - smallest will be common amongst all
+        - that is, every Nth bar will be of atleast $smallest height
+        - so we know all N bars have the small height, therefore smallest among all
+    - what about width ?
+        - for each ith bar;
+        - we go as far left as possible from i-1 till 0 as long as its height >= ith height
+        - same for right side
+        - then once our loop stops , we have 2 ptrs, left and right
+        - to calculate width; right-left-1
+    - area = minHeight * width
+
+    time = o(n^2)
+    space = o(1)
+*/
 // func largestRectangleArea(heights []int) int {
-//     nsl := nsl(heights)
-//     nsr := nsr(heights)
 //     ans := math.MinInt64
-//     for i := 0; i < len(heights); i++ {
-//         winSize := nsr[i] - nsl[i] + 1
-//         area := heights[i] * winSize
-//         ans = max(area, ans)
+//     n := len(heights)
+//     for i := 0; i < n; i++ {
+//         curr := heights[i]
+//         minHeight := curr
+
+//         // go as far left as possible
+//         left := i-1
+//         for left >= 0 && heights[left] >= curr {
+//             minHeight = min(minHeight, heights[left])
+//             left--
+//         }
+//         // go as far right as possible
+//         right := i+1
+//         for right < n && heights[right] >= curr {
+//             minHeight = min(minHeight, heights[right])
+//             right++
+//         }
+
+//         width := right-left-1
+//         area := minHeight * width
+//         ans = max(ans, area)        
 //     }
 //     return ans
-// }
-
-// func nsr(arr []int) []int {
-//     out := make([]int, len(arr))
-//     st := []int{}
-//     for i := len(arr)-1; i >= 0; i-- {
-//         h := arr[i]
-//         for len(st) != 0 && arr[st[len(st)-1]] >= h {
-//             st = st[:len(st)-1]
-//         }
-//         if len(st) != 0 {
-//             out[i] = st[len(st)-1]-1
-//         } else {
-//             out[i] = len(arr)-1
-//         }
-//         st = append(st, i)
-//     }
-//     return out
-// }
-
-// func nsl(arr []int) []int {
-//     out := make([]int, len(arr))
-//     st := []int{}
-//     for i := 0; i < len(arr); i++ {
-//         h := arr[i]
-//         for len(st) != 0 && arr[st[len(st)-1]] >= h {
-//             st = st[:len(st)-1]
-//         }
-//         if len(st) != 0 {
-//             out[i] = st[len(st)-1]+1
-//         }
-//         st = append(st, i)
-//     }
-//     return out
 // }
