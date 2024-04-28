@@ -1,5 +1,6 @@
 /*
     approach: compute nsr, nsl while processing ith element
+    - the main idea is, we evaluate whether ith element is the NSR for top element in stack
     - instead of processing ith element for nsl and or nsr
     - we will now process the top element
         - am i(ith element) your(top) nsr ?
@@ -11,6 +12,29 @@
             - repeat if ith element is also the nsr for new top
         - push ith element to stack to be processed
 
+    - IMPORTANT EDGE CASE WHEN PROCESSING TOP ELEMENTS USING NSR/NSL
+    - what if ith element never becomes NSR for top element ?
+    - that is, heights are in increasing order; [1,2,3,4]
+    - then at each ith element, no one becomes the NSR of top
+        - st = [1]; i = 2 ; 2 is not NSR of top (1)
+        - st = [1,2]; i = 3; 3 is not NSR of top (2)
+        - st = [1,2,3]; i = 4; 4 is not NSR of top (3)
+        - st = [1,2,3,4]
+    - this means, each ith element definitely does not have a NSR
+    - therefore their right boundary is all the till the end
+        - meaning ALL bars on right can be used as part of area calc
+        - therefore their NSR is len(heights)
+    - so now we have the NSR , we can process the st, like we were processing initially
+    - pop the top, process it
+        - top is the height
+        - its nsr = n
+        - its nsl = -1 (if st is empty, otherwise nsl is new top of st)
+        - width = nsr-nsl-1
+        - area = height*width
+        - save the area if its bigger than what we have saved
+
+    time = o(n)
+    space = o(n)
 */
 func largestRectangleArea(heights []int) int {
     ans := math.MinInt64
