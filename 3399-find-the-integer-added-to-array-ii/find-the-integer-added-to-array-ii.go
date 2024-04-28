@@ -1,24 +1,40 @@
 func minimumAddedInteger(nums1 []int, nums2 []int) int {
-    slices.Sort(nums1)
-    slices.Sort(nums2)
+    n1 := len(nums1)
+    n2 := len(nums2)
+    if n2 > n1 {return math.MaxInt64}
     
-    ans := math.MaxInt
-    for i := 0; i <= 2; i++ {
-        interval := nums2[0] - nums1[i]
-        skiped := i
+    freq := map[int]int{}
+    for i := 0; i < len(nums2); i++ { freq[nums2[i]]++  }
         
-        for j := 0; j < len(nums2) && skiped <= 2; j++ {
-            n1 := nums2[j] - interval
-            
-            for skiped <= 2 && n1 != nums1[j + skiped] {
-                skiped++
+    f := len(freq)
+    for i := -1000; i <= 1000; i++ {
+        missing := 0
+        count := 0
+        local := map[int]int{}
+        for j := 0; j < n1; j++ {
+            val := nums1[j]+i
+            desiredCount, ok := freq[val]
+            currentCount := local[val]
+            if !ok || currentCount == desiredCount {
+                missing++
+                if missing > 2 {break}
+                continue
             }
-        }
-        
-        if skiped <= 2 {
-            ans = min(ans, interval)
+
+            local[val]++
+            if local[val] == desiredCount {
+                count++
+                if count == f {
+                    return i
+                }
+            }
+            
         }
     }
-    
-    return ans
+    return math.MaxInt64
+}
+
+
+func abs(x int) int {
+    return x
 }
