@@ -1,20 +1,20 @@
 func removeDuplicateLetters(s string) string {
     lastIdx := map[byte]int{}
-    for i := 0; i < len(s); i++ {lastIdx[s[i]] = i}
-    set := map[byte]struct{}{}
+    for i := 0; i < len(s); i++ {
+        lastIdx[s[i]] = i
+    }
+    inStack := map[byte]struct{}{}
     st := []byte{}
     for i := 0; i < len(s); i++ {
-        char := s[i]
-        _, ok := set[char]
+        curr := s[i]
+        _, ok := inStack[curr]
+        for len(st) != 0 && curr <= st[len(st)-1] && lastIdx[st[len(st)-1]] > i && !ok {
+            delete(inStack, st[len(st)-1])
+            st = st[:len(st)-1]
+        }
         if !ok {
-            // The result will be 0 if a == b, -1 if a < b, and +1 if a > b
-            for len(st) != 0 && (strings.Compare(string(char),string(st[len(st)-1])) == 0 || strings.Compare(string(char),string(st[len(st)-1])) == -1) && lastIdx[st[len(st)-1]] > i {
-                delete(set, st[len(st)-1])
-                st = st[:len(st)-1]
-            }
-
-            set[char] = struct{}{}
-            st = append(st, char)
+            st = append(st, curr)
+            inStack[curr] = struct{}{}
         }
     }
     out := new(strings.Builder)
