@@ -24,11 +24,14 @@ func (this *Codec) serialize(root *TreeNode) string {
         if r == nil {return}
 
         // logic
+        // why do we need a delimeter ?
+        // Thumb rule; if you are building some hash value or some string path
+        // just always add a delimeter
+        // in this case, we need delimeter to keep negative value 
+        // together when splitting a encoded string in deserialize
         sb.WriteString(fmt.Sprintf("%v,", r.Val))
-        if r.Left == nil {sb.WriteString("#,")}
-        dfs(r.Left)
-        if r.Right == nil {sb.WriteString("#,")}
-        dfs(r.Right)
+        if r.Left == nil {sb.WriteString("#,")} else {dfs(r.Left)}
+        if r.Right == nil {sb.WriteString("#,")} else {dfs(r.Right)}
     }
     dfs(root)
     return sb.String()
