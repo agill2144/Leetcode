@@ -1,50 +1,35 @@
 func sumSubarrayMins(arr []int) int {
-    nsr := nsr(arr)
-    nsl := nsl(arr)
+    // nsr and nsl ( processing top elements )
     mod := 1000000007
-    count := 0
-    for i := 0; i < len(arr); i++ {
-        rw := nsr[i]-i
-        lw := i-nsl[i]
-        count = (count + (arr[i]*(lw*rw))) % mod
-    }
-    return count
-}
-
-
-func nsr(nums []int) []int{
-    n := len(nums)
-    out := make([]int, n)
-    st := []int{}
-    for i := n-1; i >= 0; i-- {
-        out[i] = n
-        curr := nums[i]
-        for len(st) != 0 && nums[st[len(st)-1]] >= curr {
-            st = st[:len(st)-1]
-        }
-        if len(st) != 0 {
-            out[i] = st[len(st)-1]
-        }
-        st = append(st, i)
-    }
-    return out
-}
-
-
-func nsl(nums []int) []int{
-    n := len(nums)
-    out := make([]int, n)
-    st := []int{}
+    n := len(arr)
+    totalSum := 0
+    st := []int{} // will hold indicies
     for i := 0; i < n; i++ {
-        out[i] = -1
-        curr := nums[i]
-        for len(st) != 0 && nums[st[len(st)-1]] > curr {
+        for len(st) != 0 && arr[i] <= arr[st[len(st)-1]] {
+            idx := st[len(st)-1]
             st = st[:len(st)-1]
+            nsr := i
+            countOnRight := nsr-idx
+            nsl := -1
+            if len(st) != 0 {nsl = st[len(st)-1]}
+            countOnLeft := idx-nsl
+
+            totalSubArrs := countOnLeft * countOnRight
+            totalSum = (totalSum + (arr[idx] * totalSubArrs)) % mod
         }
-        if len(st) != 0 {
-            out[i] = st[len(st)-1]
-        }
-        st = append(st, i)
+        st = append(st,i)
     }
-    return out
+    for len(st) != 0 {
+        idx := st[len(st)-1]
+        st = st[:len(st)-1]
+        countOnRight := n-idx
+        nsl := -1
+        if len(st)!= 0 {
+            nsl = st[len(st)-1]
+        }
+        countOnLeft := idx-nsl
+        totalSubArrs := countOnLeft * countOnRight
+        totalSum = (totalSum+(arr[idx] * totalSubArrs)) % mod
+    }
+    return totalSum
 }
