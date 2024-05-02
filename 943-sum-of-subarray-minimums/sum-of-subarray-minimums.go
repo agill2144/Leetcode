@@ -13,7 +13,7 @@ func sumSubarrayMins(arr []int) int {
             if len(st) != 0 {nsl = st[len(st)-1]}
             countOnLeft := idx-nsl
             totalSubArrs := countOnLeft * countOnRight
-            totalSum += (arr[idx] * totalSubArrs) % mod
+            totalSum += ((arr[idx] * totalSubArrs) % mod)
         }
         st = append(st,i)
     }
