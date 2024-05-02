@@ -33,7 +33,6 @@ func (this *TimeMap) Get(key string, timestamp int) string {
     for left <= right {
         mid := left + (right-left)/2
         if nodes[mid].time <= timestamp {
-            // if nodes[mid].time == timestamp {return nodes[mid].val}
             ans = nodes[mid]
             left = mid+1
         } else {
