@@ -1,3 +1,9 @@
+// get chunks using 2 ptrs, instead of comparing each ptr val
+// once you have chunks, compare the chunks
+// return in which ever case we can get out, otherwise continue
+// the reason why we are able to get away with || operator in our while loop
+// is because "If a version number does not specify a revision at an index, then treat the revision as 0."
+// therefore if a revision does not exist, we can imply 0 for that revision and still compare and be a valid comparison
 func compareVersion(version1 string, version2 string) int {
     v1 := 0; v1Rev := 0
     v2 := 0; v2Rev := 0
