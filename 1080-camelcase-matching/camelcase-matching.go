@@ -16,6 +16,7 @@ func camelMatch(queries []string, pattern string) []bool {
                 p++
             }
         }
+        if p < len(pattern) { res = false }
         
         // if word be bigger than pattern and pattern matched everything this far
         // ensure word does not have upper cases
@@ -23,7 +24,6 @@ func camelMatch(queries []string, pattern string) []bool {
             if word[w] <= 'Z' { res = false }
             w++
         }
-        if p < len(pattern) { res = false }
         out[idx] = res
     }
     return out
