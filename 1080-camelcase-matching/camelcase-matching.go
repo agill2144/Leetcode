@@ -4,14 +4,12 @@ func camelMatch(queries []string, pattern string) []bool {
         w, p := 0,0
         // everything in pattern must match, we can only insert chars into pattern
         res := true
-        for p < len(pattern) && w < len(word) {
+        for p < len(pattern) && w < len(word) && res {
             if word[w] <= 'Z' && pattern[p] <= 'Z' {
-                if pattern[p] != word[w] {
-                    res = false
-                    break
-                }
-            }
-            if word[w] != pattern[p] {
+                if pattern[p] != word[w] {res = false; continue}
+                w++
+                p++
+            } else if word[w] != pattern[p] {
                 w++
             } else {
                 w++
