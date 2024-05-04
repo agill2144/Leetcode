@@ -6,7 +6,7 @@ func camelMatch(queries []string, pattern string) []bool {
         res := true
         for p < len(pattern) && w < len(word) && res {
             if word[w] <= 'Z' && pattern[p] <= 'Z' {
-                if pattern[p] != word[w] {res = false; continue}
+                if pattern[p] != word[w] {res = false}
                 w++
                 p++
             } else if word[w] != pattern[p] {
@@ -20,11 +20,8 @@ func camelMatch(queries []string, pattern string) []bool {
         
         // if word be bigger than pattern and pattern matched everything this far
         // ensure word does not have upper cases
-        for w < len(word) {
-            if word[w] >= 'A' && word[w] <= 'Z' {
-                res = false
-                break
-            }
+        for w < len(word) && res {
+            if word[w] <= 'Z' { res = false }
             w++
         }
         // found upper cases in above case
