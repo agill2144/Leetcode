@@ -4,9 +4,7 @@ func minimumOperationsToMakeKPeriodic(word string, k int) int {
     for i := 0; i+k <= len(word); i+=k {
         subStr := word[i:i+k]
         kSizeFreq[subStr]++
-        if val := kSizeFreq[subStr]; val > maxFreq {
-            maxFreq = val
-        }
+        maxFreq = max(maxFreq, kSizeFreq[subStr])
     }
     
     return len(word)/k - maxFreq
