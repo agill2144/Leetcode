@@ -6,7 +6,9 @@
  * }
  */
 
-// ngr, process top pattern
+// monostack ngr, process top pattern
+// time = o(n)
+// space = o(n)
 func removeNodes(head *ListNode) *ListNode {
     if head == nil || head.Next == nil {return head}
     st := []*ListNode{}
