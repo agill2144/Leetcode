@@ -11,7 +11,8 @@ func maximumHappinessSum(happiness []int, k int) int64 {
     for k > 0 && i >= 0 {
         val := happiness[i]
         val -= decreaseBy
-        if val < 0 {break}
+        fmt.Println(val, decreaseBy)
+        if val <= 0 {break}
         decreaseBy++
         total += int64(val)
         k--
