@@ -30,8 +30,9 @@ func nextGreaterElements(nums []int) []int {
             st = st[:len(st)-1]
             out[top] = curr
         }
-        if i >= n {continue}
-        st = append(st, i%n)
+        if i < n{
+            st = append(st, i)
+        }
     }
     return out
 }
