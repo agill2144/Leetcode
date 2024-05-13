@@ -26,9 +26,8 @@ func nextGreaterElements(nums []int) []int {
     out := make([]int, n)
     for i := 0; i < n; i++ {out[i] = -1}
     st := []int{}
-    flag := false
-    for i := 0; i < n; i++ {
-        curr := nums[i]
+    for i := 0; i < 2*n; i++ {
+        curr := nums[i%n]
         for len(st) != 0 && curr > nums[st[len(st)-1]] {
             top := st[len(st)-1]
             st = st[:len(st)-1]
@@ -36,11 +35,6 @@ func nextGreaterElements(nums []int) []int {
         }
         if i < n{
             st = append(st, i)
-        }
-        if i == n-1 {
-            if flag {break}
-            i = -1
-            flag = true
         }
     }
     return out
