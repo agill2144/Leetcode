@@ -16,6 +16,9 @@
         - however its not necessary because we have already processed the circular items
         - how do we detect whether this ith element is already processed or not ? whether to push into stack or not ?
         - if i > n, it means, that this ith element is from the circular array, we do not have to push it as its already processed
+
+    time = o(2n)
+    space = o(n)
 */
 
 func nextGreaterElements(nums []int) []int {
