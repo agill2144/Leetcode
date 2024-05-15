@@ -1,3 +1,9 @@
+// classic dijkstra
+// we have dimensions here when finding a path
+// when we have neighbors, be greedy and prioritize bigger val neighbors ( heap will prioritize this )
+// while going down the path from start to end, keep track of the smallest value seen so far
+// time = o(mn * log(mn) )
+// space = o(mn)
 func maximumMinimumPath(grid [][]int) int {
     minVal := math.MaxInt64
     m := len(grid)
