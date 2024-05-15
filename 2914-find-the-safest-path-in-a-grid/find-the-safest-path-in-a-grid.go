@@ -37,7 +37,6 @@ func maximumSafenessFactor(grid [][]int) int {
     visited := -2
     pq := &maxHeap{items: [][]int{ {0,0,grid[0][0]} }}
     minDist := grid[0][0]
-    fmt.Println(grid)
     grid[0][0] = visited
     for pq.Len() != 0 {
         dq := heap.Pop(pq).([]int)
