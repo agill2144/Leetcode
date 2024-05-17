@@ -6,6 +6,7 @@
  *     Right *TreeNode
  * }
  */
+ // bottom up
 func removeLeafNodes(root *TreeNode, target int) *TreeNode {
     var dfs func(r *TreeNode) 
     dfs = func(r *TreeNode) {
