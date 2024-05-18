@@ -7,6 +7,12 @@
  * }
  */
 func distributeCoins(root *TreeNode) int {
+    // 1 coin  == 1 move
+    // 2 coins == 2 moves
+    // calc extra coins after leaving a coin at current node
+    // thats the number of moves we need to make
+    // because we need to move $extra coins
+    // and $extra coins == $extra moves
     moves := 0
     var dfs func (r *TreeNode) int
     dfs = func(r *TreeNode) int {
@@ -16,9 +22,9 @@ func distributeCoins(root *TreeNode) int {
         // logic
         left := dfs(r.Left)
         right := dfs(r.Right)
-        extra := left+right+r.Val-1
-        moves += abs(left)+abs(right)+r.Val-1        
-        return extra
+        extras := left+right+r.Val-1
+        moves += abs(left)+abs(right)+r.Val-1
+        return extras
     }
     dfs(root)
     return moves
