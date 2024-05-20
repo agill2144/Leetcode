@@ -17,7 +17,7 @@ func increasingBST(root *TreeNode) *TreeNode {
         dfs(r.Left, r)
         if ans.Right == nil {ans.Right = r}
 
-        // non-leaf node
+        // process root
         if r.Left != nil  {
             if r.Left != nil {
                 // go to the tail end of this left child
