@@ -39,10 +39,8 @@
     - now when we building the final string; it will be; "01"
     - "01" is not a valid number
     - because of leading 0s
-    - 2 ways we can handle this
-    - if current number we are building from stack is 0 and we have nothing in our string; skip this digit
-    - or do not push to stack if digit is 0 and stack is empty
-
+    - best way to handle this is;
+    - do not push to stack if digit is 0 and stack is empty
 
     # egde case with monotonic stacks; try increasing and decreasing inputs
     num = 1234
