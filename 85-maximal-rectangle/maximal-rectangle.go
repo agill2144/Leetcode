@@ -5,52 +5,56 @@ func maximalRectangle(matrix [][]byte) int {
     maxArea := 0
     for i := 0; i < m; i++ {
         for j := 0; j < n; j++ {
-            if matrix[i][j] == '1' {
-                heights[j] += 1
-            } else {
+            if matrix[i][j] == '0' {
                 heights[j] = 0
-            }
+            } else {
+                heights[j] += 1
+            }            
         }
         maxArea = max(maxArea, largestRectangleArea(heights))
     }
     return maxArea
 }
 
+// copy of: https://leetcode.com/problems/largest-rectangle-in-histogram/
 func largestRectangleArea(heights []int) int {
-    st := []int{} // indices
-    maxArea := 0
-    for i := 0; i < len(heights); i++ {
-        curr := heights[i]
-        for len(st) != 0 && curr < heights[st[len(st)-1]] {
-            // process top
-            nsr := i
-            top := st[len(st)-1]
+    ans := math.MinInt64
+    n := len(heights)
+    st := []int{}
+    for i := 0; i < n; i++ {
+
+        // we are now only asking , am i(ith) your(top) nsr ? 
+        for len(st) != 0 && heights[i] < heights[st[len(st)-1]] {
+            height := heights[st[len(st)-1]]
             st = st[:len(st)-1]
-            // if there are no elements inside the stack, it means
-            // this bar can be expanded all the way to the left
-            // therefore setting initial nsl idx = -1
+            nsr := i // curr
             nsl := -1
-            if len(st) != 0 {
-                nsl = st[len(st)-1]
-            }
+            if len(st) != 0 {nsl = st[len(st)-1]}
             width := nsr-nsl-1
-            area := heights[top] * width
-            maxArea = max(area, maxArea)
+            area := height * width
+            ans = max(ans, area)
         }
         st = append(st, i)
     }
 
+    // if we never got a nsr ( for example, elements were in increasing order )
+    // [1,2,3,4]
+    // then for each ith element, we never got a true, that yes, ith element is top's nsr
+    // therefore we will have all of these elments in our st
+    // This means, each st's element nsr is len of the full heights array
     for len(st) != 0 {
-        nsr := len(heights)
+        // remeber; we are processing the top element!
         top := st[len(st)-1]
         st = st[:len(st)-1]
+        height := heights[top]
+        nsr := n
         nsl := -1
         if len(st) != 0 {
             nsl = st[len(st)-1]
         }
         width := nsr-nsl-1
-        area := heights[top] * width
-        maxArea = max(area, maxArea)        
-    }
-    return maxArea
+        area := height*width
+        ans = max(ans, area)
+    } 
+    return ans
 }
