@@ -20,7 +20,10 @@ func increasingBST(root *TreeNode) *TreeNode {
         // non-leaf node
         if r.Left != nil  {
             if r.Left != nil {
+                // go to the tail end of this left child
                 t := r.Left
+
+                // reconnect parent with head of t
                 if p != nil {
                     if p.Right == r {
                         p.Right = t
