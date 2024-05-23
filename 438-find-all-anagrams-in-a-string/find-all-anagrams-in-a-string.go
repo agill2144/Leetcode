@@ -1,29 +1,42 @@
 func findAnagrams(s string, p string) []int {
-    pMap := map[byte]int{}
-    for i := 0; i < len(p); i++ {
-        pMap[p[i]]++
-    }
+    if len(p) > len(s) {return nil}
+    pHash := hash(p)
+    win := make([]int, 26)
     left := 0
     out := []int{}
-    count := len(pMap)
-    for i := 0; i < len(s); i++{
-        char := s[i]
-        if _, ok := pMap[char]; ok {
-            pMap[char]--
-            if pMap[char] == 0 {count--}
-        }
-        
+    for i := 0; i < len(s); i++ {
+        idx := int(s[i]-'a')
+        win[idx]++
         if i-left+1 == len(p) {
-            if count == 0 {
+            // convert win to hash string
+            winSb := new(strings.Builder)
+            for i := 0; i < len(win); i++ {
+                winSb.WriteString(fmt.Sprintf("%v", win[i]))
+                if i != len(win)-1 {winSb.WriteString("-")}
+            }
+            if winSb.String() == pHash {
                 out = append(out, left)
             }
-            leftChar := s[left]
-            if _, ok := pMap[leftChar]; ok {
-                pMap[leftChar]++
-                if pMap[leftChar] == 1 {count++}
-            }
+            
+            // move left ptr out
+            leftCharIdx := int(s[left]-'a')
+            win[leftCharIdx]--
             left++
         }
     }
     return out
+}
+
+func hash(val string) string {
+    out := make([]int, 26)
+    for i := 0; i < len(val); i++ {
+        idx := int(val[i]-'a')
+        out[idx]++
+    }
+    outSb := new(strings.Builder)
+    for i := 0; i < len(out); i++ {
+        outSb.WriteString(fmt.Sprintf("%v", out[i]))
+        if i != len(out)-1 {outSb.WriteString("-")}
+    }
+    return outSb.String()
 }
