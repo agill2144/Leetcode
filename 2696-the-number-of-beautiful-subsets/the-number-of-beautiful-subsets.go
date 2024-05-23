@@ -1,3 +1,6 @@
+// use for loop based recursion to form each subset
+// use complement search to find out whether a incoming ith number
+// can be part of our path so far
 func beautifulSubsets(nums []int, k int) int {
     count := 0
     var dfs func(start int, path map[int]int)
@@ -25,9 +28,4 @@ func beautifulSubsets(nums []int, k int) int {
     }
     dfs(0, map[int]int{})
     return count
-}
-
-func abs(x int) int {
-    if x < 0 {return x *-1}
-    return x
 }
