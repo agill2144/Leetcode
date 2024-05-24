@@ -6,16 +6,20 @@ func maxScoreWords(words []string, letters []byte, score []int) int {
         lettersFreq[letters[i]]++
     }
 
-    var dfs func(start int, sum int, freq map[byte]int) 
-    dfs = func(start int, sum int, freq map[byte]int) {
+    var dfs func(start int, sum int) 
+    dfs = func(start int, sum int) {
         // base
         maxScore = max(maxScore, sum)
 
         // logic
+        // n words 
+        // o(n)
         for i := start; i < len(words); i++ {
             word := words[i]
             wordSum := 0
-            
+
+            // k avg size of each word
+            // o(k + 26+26)
             wordFreq := map[byte]int{}
             for j := 0;  j < len(word); j++ {
                 char := word[j]
@@ -24,8 +28,9 @@ func maxScoreWords(words []string, letters []byte, score []int) int {
             }
 
             isPossible := true
+            // o(26)
             for char,countNeeded := range wordFreq {
-                countAvail, charExists := freq[char]
+                countAvail, charExists := lettersFreq[char]
                 if !charExists || countAvail < countNeeded {
                     isPossible = false
                     break
@@ -33,18 +38,15 @@ func maxScoreWords(words []string, letters []byte, score []int) int {
             }
 
             if isPossible {
-                // fmt.Println(word,"------------------")
-                // fmt.Println(freq)
-                for char, val := range wordFreq {freq[char]-=val}
+                // o(26)
+                for char, val := range wordFreq {lettersFreq[char]-=val}
                 newSum := wordSum + sum
-                // fmt.Println(freq, newSum)
-                dfs(i+1, newSum, freq)
-                for char, val := range wordFreq {freq[char]+=val}
-                // fmt.Println(freq)
-                // fmt.Println("--#############################")
+                dfs(i+1, newSum)
+                // o(26)
+                for char, val := range wordFreq {lettersFreq[char]+=val}
             }
         }
     }
-    dfs(0,0, lettersFreq)
+    dfs(0,0)
     return maxScore
 }
