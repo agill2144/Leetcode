@@ -15,6 +15,7 @@ func smallestTrimmedNumbers(nums []string, queries [][]int) []int {
             // cant do this, apparently value goes out of bound 
             // panic: strconv.Atoi: parsing "9288488870527604910029": value out of range
             // subStrInt, _ := strconv.Atoi(subStr)
+            // strconv.ParseUint also does not work
             heap.Push(mx, &mxNode{val: subStr, idx: j})
             if mx.Len() > kth {
                 heap.Pop(mx)
