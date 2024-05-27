@@ -1,3 +1,5 @@
+// no sort, binary search on answers
+// time = o(n) + o(logMaxNum * n)
 func specialArray(nums []int) int {
     left := 1
     right := math.MinInt64
