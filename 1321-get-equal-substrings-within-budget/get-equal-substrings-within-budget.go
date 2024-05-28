@@ -1,3 +1,6 @@
+// n = len(s) or len(t); does not matter which one because they are both same size
+// time = o(n)
+// space = o(1)
 func equalSubstring(s string, t string, maxCost int) int {
     l1, l2 := 0, 0
     cost := 0
@@ -8,10 +11,10 @@ func equalSubstring(s string, t string, maxCost int) int {
         diff := abs(int(sChar-'a')-int(tChar-'a'))
         cost += diff
         for cost > maxCost {
-            sLeft := s[l1]
-            tLeft := t[l2]
-            leftDiff := abs(int(sLeft-'a')-int(tLeft-'a'))
-            cost -= leftDiff
+            sLeftChar := s[l1]
+            tLeftChar := t[l2]
+            leftCharDiff := abs(int(sLeftChar-'a')-int(tLeftChar-'a'))
+            cost -= leftCharDiff
             l1++
             l2++
         }
