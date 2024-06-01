@@ -1,15 +1,14 @@
 func scoreOfString(s string) int {
     total := 0
-    for i := 1; i < len(s); i++ {
+    for i := 0; i < len(s)-1; i++ {
         curr := int(s[i])
-        prev := int(s[i-1])
-        diff := abs(curr-prev)
-        total += diff
+        next := int(s[i+1])
+        total += abs(curr-next)
     }
     return total
 }
 
 func abs(x int) int {
-    if x < 0 {return x*-1}
+    if x < 0 {return x * -1}
     return x
 }
