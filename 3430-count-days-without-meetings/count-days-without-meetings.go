@@ -10,7 +10,7 @@ func countDays(days int, meetings [][]int) int {
             prevStart, prevEnd := prev[0],prev[1]
             if start <= prevEnd {
                 merged = merged[:len(merged)-1]
-                newStart := min(prevStart, start)
+                newStart := prevStart
                 newEnd := max(end, prevEnd)
                 merged = append(merged, []int{newStart, newEnd})
             } else {
