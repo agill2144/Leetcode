@@ -19,10 +19,7 @@ func appendCharacters(s string, t string) int {
             sPtr++
             tPtr++
         } else {
-            for sPtr < len(s) && s[sPtr] != t[tPtr] {
-                sPtr++
-            }
-            if sPtr == len(s) {break}
+            sPtr++
         }
     }
     if tPtr >= len(t) {return 0}
