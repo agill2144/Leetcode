@@ -16,7 +16,14 @@ func isNStraightHand(hand []int, groupSize int) bool {
     for ptr <= end {
         currNum := ptr
         count := freq[currNum]
-        if currGrpSize >= 1 && count == 0 {return false}
+        if count == 0 {
+            if currGrpSize > 0 {
+                return false
+            } else {
+                ptr++
+                continue
+            }
+        }
         if count >= 1 {
             if currGrpSize > 0 {
                 // we have a grp in-progress
