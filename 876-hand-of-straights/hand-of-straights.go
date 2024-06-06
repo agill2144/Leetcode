@@ -9,8 +9,8 @@ func isNStraightHand(hand []int, groupSize int) bool {
         start = min(start, hand[i])
         end = max(end, hand[i])
     }
-
-    ptr := start
+    rollingStartPtr := start
+    ptr := rollingStartPtr
     currGrpSize := 0
     lastGrpNum := math.MinInt64
     // grp := []int{}
@@ -23,14 +23,12 @@ func isNStraightHand(hand []int, groupSize int) bool {
                 if lastGrpNum+1 != currNum {return false}
                 lastGrpNum = currNum
                 currGrpSize++
-                // grp = append(grp, currNum)
                 
             } else {
                 // we do not have a grp in-progress
                 // i.e this is a new grp
                 lastGrpNum = currNum
                 currGrpSize = 1
-                // grp = append(grp, currNum)
             }
             freq[currNum]--
             if freq[currNum] == 0 {delete(freq, currNum)}
@@ -39,9 +37,7 @@ func isNStraightHand(hand []int, groupSize int) bool {
         }
         // we made a grp
         if currGrpSize == groupSize {
-            // fmt.Println(grp)
             ptr = start
-            // grp = []int{}
             currGrpSize = 0
             lastGrpNum = math.MinInt64
             continue
