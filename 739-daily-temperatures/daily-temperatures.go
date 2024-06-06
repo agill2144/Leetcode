@@ -1,8 +1,7 @@
 func dailyTemperatures(temperatures []int) []int {
+    st := []int{} // indices
     n := len(temperatures)
     out := make([]int, n)
-    st := []int{} // indicies
-    // ngr, process top
     for i := 0; i < n; i++ {
         curr := temperatures[i]
         for len(st) != 0 && curr > temperatures[st[len(st)-1]] {
