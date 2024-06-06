@@ -24,26 +24,22 @@ func isNStraightHand(hand []int, groupSize int) bool {
                 continue
             }
         }
-        if count >= 1 {
-            if currGrpSize > 0 {
-                // we have a grp in-progress
-                if lastGrpNum+1 != currNum {return false}
-                lastGrpNum = currNum
-                currGrpSize++
-                
-            } else {
-                // we do not have a grp in-progress
-                // i.e this is a new grp
-                lastGrpNum = currNum
-                currGrpSize = 1
-            }
-            freq[currNum]--
-            if freq[currNum] == 0 {delete(freq, currNum)}
-                if count == 1 {rollingStartPtr++}
-
+        if currGrpSize > 0 {
+            // we have a grp in-progress
+            if lastGrpNum+1 != currNum {return false}
+            lastGrpNum = currNum
+            currGrpSize++
+            
         } else {
-            if currGrpSize >= 1 {return false}
+            // we do not have a grp in-progress
+            // i.e this is a new grp
+            lastGrpNum = currNum
+            currGrpSize = 1
         }
+        freq[currNum]--
+        if freq[currNum] == 0 {delete(freq, currNum)}
+            if count == 1 {rollingStartPtr++}
+
         // we made a grp
         if currGrpSize == groupSize {
             ptr = rollingStartPtr
