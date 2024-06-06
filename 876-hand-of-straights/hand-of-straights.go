@@ -11,41 +11,42 @@ func isNStraightHand(hand []int, groupSize int) bool {
     }
 
     ptr := start
-    success := 0
     currGrpSize := 0
     lastGrpNum := math.MinInt64
-    grp := []int{}
+    // grp := []int{}
     for ptr <= end {
         currNum := ptr
         count := freq[currNum]
         if count >= 1 {
-            if currGrpSize == 0 {
+            if currGrpSize > 0 {
+                // we have a grp in-progress
+                if lastGrpNum+1 != currNum {return false}
                 lastGrpNum = currNum
                 currGrpSize++
-                grp = append(grp, currNum)
+                // grp = append(grp, currNum)
+                
             } else {
-                if lastGrpNum+1 == currNum {
-                    lastGrpNum = currNum
-                    currGrpSize++
-                    grp = append(grp, currNum)
-                } else {
-                    return false
-                }
+                // we do not have a grp in-progress
+                // i.e this is a new grp
+                lastGrpNum = currNum
+                currGrpSize = 1
+                // grp = append(grp, currNum)
             }
             freq[currNum]--
             if freq[currNum] == 0 {delete(freq, currNum)}
         } else {
             if currGrpSize >= 1 {return false}
         }
+        // we made a grp
         if currGrpSize == groupSize {
-            // fmt.Println("made grp: ", grp)
-            grp = []int{}
-            success++
+            // fmt.Println(grp)
             ptr = start
+            // grp = []int{}
             currGrpSize = 0
             lastGrpNum = math.MinInt64
             continue
         }
+
         ptr++
     }
     
