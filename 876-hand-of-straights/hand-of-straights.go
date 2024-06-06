@@ -10,15 +10,18 @@ func isNStraightHand(hand []int, groupSize int) bool {
         freq[hand[i]]++
     }
 
-    grp := []int{}
+    grpSize := 0 
+    lastGrpNum := -1
     pb := []int{} 
     for mh.Len() != 0 {
         popped := heap.Pop(mh).(int)
-        if len(grp) == 0 {
-            grp = append(grp, popped)
+        if grpSize == 0 {
+            lastGrpNum = popped
+            grpSize = 1
         } else {
-            if grp[len(grp)-1]+1 != popped {return false}
-            grp = append(grp, popped)
+            if lastGrpNum+1 != popped {return false}
+            lastGrpNum = popped
+            grpSize++
         }
 
         freq[popped]--
@@ -26,14 +29,14 @@ func isNStraightHand(hand []int, groupSize int) bool {
             pb = append(pb, popped)
         }
 
-        if len(grp) == groupSize {
-            grp = []int{}
+        if grpSize == groupSize {
+            grpSize = 0
             for k := 0; k < len(pb); k++ {heap.Push(mh, pb[k])}
             pb = []int{}
         }
     }
 
-    return len(grp) == 0 && mh.Len() == 0
+    return grpSize == 0 && mh.Len() == 0
 }
 
 type minHeap struct {
