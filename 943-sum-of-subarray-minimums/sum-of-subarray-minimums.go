@@ -42,46 +42,45 @@
     - total subarrays = 3*3 = 9
     
     - For NSR, NSL ; we can use our basic "process top NSR/NSL via stack" template
-
+    
+    time = o(n)
+    space = o(n)
 */
-func sumSubarrayMins(arr []int) int {
-    st := []int{} // indices
+func sumSubarrayMins(nums []int) int {
     mod := 1000000007
-    n := len(arr)
+    st := []int{}
     sum := 0
-    for i := 0; i < n; i++ {
-        curr := arr[i]
-        for len(st) != 0 && curr < arr[st[len(st)-1]] {
+    for i := 0; i < len(nums); i++ {
+        curr := nums[i]
+        for len(st) != 0 && curr < nums[st[len(st)-1]] {
             top := st[len(st)-1]
             st = st[:len(st)-1]
             nsr := i
             nsl := -1
-            if len(st) > 0 {nsl = st[len(st)-1]}
+            if len(st) != 0 {nsl = st[len(st)-1]}
             leftCount := top-nsl
             rightCount := nsr-top
-            totalSum := (leftCount*rightCount) * arr[top]
-            sum = (sum + totalSum) % mod
+            totalCount := leftCount*rightCount
+            currSum := nums[top] * totalCount
+            sum = (sum + currSum) % mod
         }
         st = append(st, i)
     }
-
-    // edge case for nsr processing top
-    // if no ith element was nsr of top
-    // this means, all elements were in increasing order
-    // this means, nsr is len(arr)
-    // process top with nsr set to len(arr) ; i.e n
     for len(st) != 0 {
         top := st[len(st)-1]
-        st = st[:len(st)-1]
-        nsr := n
+        st = st[:len(st)-1]        
+        nsr := len(nums)
         nsl := -1
-        if len(st) > 0 {nsl = st[len(st)-1]}
+        if len(st) != 0 {nsl = st[len(st)-1]}
         leftCount := top-nsl
         rightCount := nsr-top
-        totalSum := (leftCount*rightCount) * arr[top]
-        sum = (sum + totalSum) % mod
+        totalCount := leftCount*rightCount
+        currSum := nums[top] * totalCount
+        sum = (sum + currSum) % mod
+
     }
     return sum
+
 }
 
 /*
