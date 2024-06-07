@@ -1,3 +1,4 @@
+// similar to https://leetcode.com/problems/sum-of-subarray-minimums/description/
 func maximumScore(nums []int, k int) int {
     st := []int{}
     maxScore := 0
