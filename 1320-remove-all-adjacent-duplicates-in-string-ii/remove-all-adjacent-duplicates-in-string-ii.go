@@ -1,35 +1,27 @@
 func removeDuplicates(s string, k int) string {
-    st := []*node{}
+    type stNode struct {
+        char byte
+        freq int
+    }
+    st := []*stNode{}
     for i := 0; i < len(s); i++ {
-        char := s[i]
-        if len(st) != 0{
-            top := st[len(st)-1]
-            if char == top.val {
-                if top.count + 1 == k {
-                    st = st[:len(st)-1]
-                } else {
-                    st[len(st)-1].count++
-                }
-            } else {
-                st = append(st, &node{val: char, count:1})
+        curr := s[i]
+        if len(st) != 0 && curr == st[len(st)-1].char {
+            st[len(st)-1].freq++
+            if st[len(st)-1].freq == k {
+                st = st[:len(st)-1]
             }
-        } else {
-            st = append(st, &node{val: char, count:1})
+            continue
         }
+
+        st = append(st, &stNode{s[i], 1})
     }
     out := new(strings.Builder)
     for i := 0; i < len(st); i++ {
-        char := st[i].val
-        times := st[i].count
-        for times != 0 {
-            out.WriteByte(char)
-            times--
+        curr := st[i]
+        for t := 0; t < curr.freq; t++{
+            out.WriteByte(curr.char)
         }
     }
     return out.String()
-}
-
-type node struct {
-    val byte
-    count int
 }
