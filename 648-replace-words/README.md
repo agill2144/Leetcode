@@ -1,20 +1,22 @@
-<h2><a href="https://leetcode.com/problems/replace-words/">648. Replace Words</a></h2><h3>Medium</h3><hr><div><p>In English, we have a concept called <strong>root</strong>, which can be followed by some other word to form another longer word - let's call this word <strong>successor</strong>. For example, when the <strong>root</strong> <code>"an"</code> is followed by the <strong>successor</strong> word <code>"other"</code>, we can form a new word <code>"another"</code>.</p>
+<h2><a href="https://leetcode.com/problems/replace-words">Replace Words</a></h2> <img src='https://img.shields.io/badge/Difficulty-Medium-orange' alt='Difficulty: Medium' /><hr><p>In English, we have a concept called <strong>root</strong>, which can be followed by some other word to form another longer word - let&#39;s call this word <strong>successor</strong>. For example, when the <strong>root</strong> <code>&quot;help&quot;</code> is followed by the <strong>successor</strong> word <code>&quot;ful&quot;</code>, we can form a new word <code>&quot;helpful&quot;</code>.</p>
 
 <p>Given a <code>dictionary</code> consisting of many <strong>roots</strong> and a <code>sentence</code> consisting of words separated by spaces, replace all the <strong>successors</strong> in the sentence with the <strong>root</strong> forming it. If a <strong>successor</strong> can be replaced by more than one <strong>root</strong>, replace it with the <strong>root</strong> that has <strong>the shortest length</strong>.</p>
 
 <p>Return <em>the <code>sentence</code></em> after the replacement.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
-<pre><strong>Input:</strong> dictionary = ["cat","bat","rat"], sentence = "the cattle was rattled by the battery"
-<strong>Output:</strong> "the cat was rat by the bat"
+<pre>
+<strong>Input:</strong> dictionary = [&quot;cat&quot;,&quot;bat&quot;,&quot;rat&quot;], sentence = &quot;the cattle was rattled by the battery&quot;
+<strong>Output:</strong> &quot;the cat was rat by the bat&quot;
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
-<pre><strong>Input:</strong> dictionary = ["a","b","c"], sentence = "aadsfasf absbs bbab cadsfafs"
-<strong>Output:</strong> "a a b c"
+<pre>
+<strong>Input:</strong> dictionary = [&quot;a&quot;,&quot;b&quot;,&quot;c&quot;], sentence = &quot;aadsfasf absbs bbab cadsfafs&quot;
+<strong>Output:</strong> &quot;a a b c&quot;
 </pre>
 
 <p>&nbsp;</p>
@@ -31,4 +33,3 @@
 	<li>Every two consecutive words in <code>sentence</code> will be separated by exactly one space.</li>
 	<li><code>sentence</code> does not have leading or trailing spaces.</li>
 </ul>
-</div>
