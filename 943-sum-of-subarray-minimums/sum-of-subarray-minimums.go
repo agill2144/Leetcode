@@ -58,9 +58,12 @@ func sumSubarrayMins(nums []int) int {
             nsr := i
             nsl := -1
             if len(st) != 0 {nsl = st[len(st)-1]}
-            leftCount := top-nsl
-            rightCount := nsr-top
-            totalCount := leftCount*rightCount
+            leftCount := top-nsl // number of starting positions
+            rightCount := nsr-top // number of ending positions
+            totalCount := leftCount*rightCount // total number of subarrays
+            // if nums[top] = 2 ; and total subarrays are 12
+            // we want to find the sum of this value(2) in subarrays where this value(2) is min
+            // value is 2, it shows up in 12 subarrays, therefore its sum is 12*2 = 24
             currSum := nums[top] * totalCount
             sum = (sum + currSum) % mod
         }
@@ -72,9 +75,12 @@ func sumSubarrayMins(nums []int) int {
         nsr := len(nums)
         nsl := -1
         if len(st) != 0 {nsl = st[len(st)-1]}
-        leftCount := top-nsl
-        rightCount := nsr-top
-        totalCount := leftCount*rightCount
+        leftCount := top-nsl // number of starting positions
+        rightCount := nsr-top // number of ending positions
+        totalCount := leftCount*rightCount // total number of subarrays
+        // if nums[top] = 2 ; and total subarrays are 12
+        // we want to find the sum of this value(2) in subarrays where this value(2) is min
+        // value is 2, it shows up in 12 subarrays, therefore its sum is 12*2 = 24
         currSum := nums[top] * totalCount
         sum = (sum + currSum) % mod
 
