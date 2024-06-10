@@ -1,18 +1,14 @@
+// we are allowed to have atleast k zeros in our window
 func longestOnes(nums []int, k int) int {
-    zeroCount := 0
     maxSize := 0
-    left := 0
     n := len(nums)
+    left := 0
+    zeros := 0
     for i := 0; i < n; i++ {
-        if nums[i] == 0 {
-            zeroCount++
-        }
-        if zeroCount > k {
-            if nums[left] == 0 {
-                zeroCount--
-            }
+        if nums[i] == 0 {zeros++}
+        for zeros > k {
+            if nums[left] == 0 {zeros--}
             left++
-            continue
         }
         maxSize = max(maxSize, i-left+1)
     }
