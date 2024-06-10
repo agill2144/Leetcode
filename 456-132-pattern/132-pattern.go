@@ -35,11 +35,13 @@ func find132pattern(nums []int) bool {
         so it nums3 got set, it means we found a large enough value that popped elements from stack and setted the nums3 value
         so nums3 < nums2 is quietly satisfied 
     */
+    nums2 := math.MinInt64
     nums3 := math.MinInt64
     st := []int{}
     for i := n-1; i >= 0; i-- {
-        if nums[i] < nums3 {return true}
+        if nums[i] < nums3 && nums3 < nums2 {return true}
         for len(st) != 0 && nums[i] > st[len(st)-1] {
+            nums2 = nums[i]
             nums3 = st[len(st)-1]
             st = st[:len(st)-1]
         }
