@@ -1,3 +1,5 @@
+// ptrs on each end responsible for collecting their respective values 
+// single pass, o(n) time, o(1) space
 func sortColors(nums []int)  {
     n := len(nums)
     z, t, i := 0, n-1, 0
