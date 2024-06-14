@@ -8,12 +8,8 @@ func minIncrementForUnique(nums []int) int {
         if nums[i] <= newPrev {
             newCurr := newPrev+1
             diff := newCurr - nums[i]
-            if diff == 0 {
-                count++
-            } else {
-                count+=diff
-            }
             
+            count += max(diff, 1)
             newPrev = newCurr
         } else {
             newPrev = nums[i]
