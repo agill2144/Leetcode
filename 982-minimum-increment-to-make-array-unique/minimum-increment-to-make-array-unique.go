@@ -2,12 +2,10 @@ func minIncrementForUnique(nums []int) int {
     n := len(nums)
     if n <= 1 {return 0}
     sort.Ints(nums)
-    newNums := make([]int, n)
-    copy(newNums, nums)
+    newPrev := nums[0]
     count := 0
     for i := 1; i < n; i++ {
-        if nums[i] <= newNums[i-1] {
-            newPrev := newNums[i-1]
+        if nums[i] <= newPrev {
             newCurr := newPrev+1
             diff := newCurr - nums[i]
             if diff == 0 {
@@ -15,7 +13,10 @@ func minIncrementForUnique(nums []int) int {
             } else {
                 count+=diff
             }
-            newNums[i] = newCurr
+            
+            newPrev = newCurr
+        } else {
+            newPrev = nums[i]
         }
     }
     return count
