@@ -7,9 +7,7 @@ func minIncrementForUnique(nums []int) int {
     for i := 1; i < n; i++ {
         if nums[i] <= newPrev {
             newCurr := newPrev+1
-            diff := newCurr - nums[i]
-            
-            count += max(diff, 1)
+            count += max(1, newCurr - nums[i])
             newPrev = newCurr
         } else {
             newPrev = nums[i]
