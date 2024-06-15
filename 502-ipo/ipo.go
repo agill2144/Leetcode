@@ -10,11 +10,22 @@ func findMaximizedCapital(k int, w int, profits []int, capital []int) int {
     total := w
     mx := &maxHeap{items: []int{}}
     for k > 0 {
+
+        //1. find out which projects we can take 
+        // - projects that need <= our current capital; we can take it
+        // find all of them first
         for i < len(merged) && w >= merged[i][0] {
             heap.Push(mx, merged[i][1])
             i++
         }
         if mx.Len() == 0 {break}
+
+        //2. out of all of the ones we can take,
+        // we want to process the project that maximizes our profit
+        // therefore we need heap to keep track of max profit
+        // take the top, reduce k since we have taken a project now
+        // KEEP IN MIND, remaining projects that we did not pop, are still in heap
+        // they will be compared again until we have taken all k projects
         top := heap.Pop(mx).(int)
         w += top
         total += top
