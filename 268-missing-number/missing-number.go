@@ -1,37 +1,18 @@
 /*
-    approach: sum!
-    - take a curr sum of all nums
-    - take the expected sum from 1 to n
-        - n * (n+1)/2
-    - return the diff
+    if you know the numbers are from 0 to n
+    then we can calculate the sum of all numbers from 0 to n using a formula
+    - (n(n+1))/2
+    
+    the above gives total EXPECTED sum
+    now we can calc the acutal sum and return the diff
+    - the diff is the missing number
 */
 func missingNumber(nums []int) int {
-    actualSum := 0
     n := len(nums)
-    for i := 0; i < n; i++ {
-        actualSum += nums[i]
+    expected := (n * (n+1))/2
+    actual := 0
+    for i := 0; i < len(nums); i++ {
+        actual += nums[i]
     }
-    expectedSum := n*(n+1)/2
-    return expectedSum-actualSum
+    return expected-actual
 }
-
-
-/*
-    approach: set
-    - nums are supposed to be within 0 and n ( inclusive )
-    - toss nums in a set so we can easily check whether a ele exists
-    - then run a loop from 0 to n and return the first number we dont find in set
-    time: o(2n)
-    space = o(n)
-*/
-// func missingNumber(nums []int) int {
-//     set := map[int]struct{}{}
-//     n := len(nums)
-//     for i := 0; i < len(nums); i++ {
-//         set[nums[i]] = struct{}{}
-//     }
-//     for i := 0; i <= n; i++ {
-//         if _, ok := set[i]; !ok {return i}
-//     }
-//     return n
-// }
