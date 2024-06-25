@@ -1,3 +1,8 @@
+// keep track of tallest building from right side
+// a building on left side of tallest seen so far can see ocean if
+// its height > tallest seen so far
+// time = o(n)
+// space = o(1)
 func findBuildings(heights []int) []int {
     n := len(heights)
     tallestSoFar := heights[n-1]
