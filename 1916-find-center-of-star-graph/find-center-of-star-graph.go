@@ -1,3 +1,6 @@
+// i am an idiot
+// leaf nodes will have exactly 1 edge therefore they are not the center
+// center node is node that has exactly n-1 edges/degrees 
 func findCenter(edges [][]int) int {
     degrees := map[int]int{}
     for i := 0; i < len(edges); i++ {
@@ -13,7 +16,6 @@ func findCenter(edges [][]int) int {
 }
 // process from outside until we run until into the center
 // a node is center node if after a level processing, its the only node in the queue
-
 // func findCenter(edges [][]int) int {
 //     adjList := map[int][]int{}
 //     degrees := map[int]int{}
