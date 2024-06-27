@@ -13,9 +13,6 @@ func missingElement(nums []int, k int) int {
             left = mid+1
         }
     }
-    
-    rightVal := nums[right]
-    correctVal := right+offSet
-    missing := rightVal-correctVal
-    return (rightVal-missing) + k
+    missing := nums[right]-(right+offSet)
+    return nums[right] + (k-missing)
 }
