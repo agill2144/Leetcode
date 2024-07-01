@@ -1,5 +1,5 @@
 func isValid(s string) bool {
-    valid := map[byte]byte{
+    valids := map[byte]byte{
         '}':'{',']':'[',')':'(',
     }
     st := []byte{}
@@ -8,10 +8,11 @@ func isValid(s string) bool {
             st = append(st, s[i])
         } else {
             if len(st) == 0 {return false}
-            validOpen := valid[s[i]]
-            if st[len(st)-1] != validOpen {return false}
+            top := st[len(st)-1]
             st = st[:len(st)-1]
+            val := valids[s[i]]
+            if val != top {return false}
         }
     }
-    return len(st) == 0 
+    return len(st) == 0
 }
