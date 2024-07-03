@@ -1,3 +1,4 @@
+// brute force
 func firstMissingPositive(nums []int) int {
     n := len(nums)
     set := map[int]struct{}{}
