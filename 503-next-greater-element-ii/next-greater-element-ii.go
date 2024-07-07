@@ -11,7 +11,6 @@ func nextGreaterElements(nums []int) []int {
             st = st[:len(st)-1]
             out[top] = nums[sanitizedI]
         }
-        if i >= n {continue}
         st = append(st, sanitizedI)
     }
     return out
