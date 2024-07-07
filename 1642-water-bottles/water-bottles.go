@@ -7,9 +7,10 @@ func numWaterBottles(numBottles int, numExchange int) int {
     emptys := 0
 
     for fulls > 0 {
-        fulls--
-        emptys++
-        total++
+        aboutToDrink := min(numExchange, fulls)
+        fulls -= aboutToDrink
+        emptys += aboutToDrink
+        total += aboutToDrink
         if emptys == numExchange {
             fulls++
             emptys = 0
