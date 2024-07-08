@@ -1,3 +1,10 @@
+// we have to compute how much water can be trapped on top of each building
+// we need some sort of gurantee that there exists a maxLeft and maxRight without extra space
+// we can use 2 vars to keep track of maxLeft (leftWall) and maxRight (rightWall)
+// and use 2 ptrs (left and right) to process either left building or right building
+// if we have a leftWall <= rightWall; meaning rightWall is greater than or equal to leftWall
+// meaning we have a maxRight, then can probably process left building
+// because 1. we have a leftWall(maxLeft) and 2. rightWall(rightMax) and 3. we have left ptr( building to process)
 func trap(height []int) int {
     n := len(height)
     left := 0
@@ -6,6 +13,11 @@ func trap(height []int) int {
     rightWall := height[right]
     total := 0
     for left < right {
+        // if leftWall <= rightWall
+        // then we know for-sure that there is a rightWall >= leftWall
+        // this means, we can for sure figure out how much can be trapped on left building
+        // therefore process left building
+        // ( its like we have a maxLeft and a maxRight from non-optimal solution )
         if leftWall <= rightWall {
             // we can calcuate how much we can trap on top of left building
             // we can only trap water on left building IF left building's height < leftWall
@@ -13,11 +25,17 @@ func trap(height []int) int {
                 total += (leftWall-height[left])
                 // we have computed and saved how much we can trap on top of left building while keeping leftWall as-is
                 // therefore we can evaluate the next left building
+                // and therefore we can move away from left building
                 left++
             } else {
                 // we have a new leftWall since height[left] >= leftWall
                 leftWall = height[left]
             }
+
+        // otherwise leftWall > rightWall
+        // which means, we for-sure have a leftWall > rightWall
+        // which means, we can figure out how much water can be trapped on top of right building
+        // ( its like we have a maxLeft and a maxRight from non-optimal solution )
         } else {
             // we can calculate how much we can trap on top of right building
             // we can only trap water on right building if right building's height < rightWall
@@ -25,6 +43,7 @@ func trap(height []int) int {
                 total += (rightWall-height[right])
                 // we have computed and saved how much we can trap on top of right building while keeping rightWall as-is
                 // therefore we can evaluate the next right building
+                // and therefore we can move away from right building
                 right--
             } else {
                 // we have a new righWall since right building's height > rightWall
