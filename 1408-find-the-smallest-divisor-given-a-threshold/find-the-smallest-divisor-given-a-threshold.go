@@ -8,18 +8,18 @@ func smallestDivisor(nums []int, threshold int) int {
     right := end
     ans := -1
     for left <= right {
-        divisor := left + (right-left)/2
+        mid := left + (right-left)/2
         sum := 0
         for j := 0; j < len(nums); j++ {
-            q := int(math.Ceil(float64(nums[j]) / float64(divisor)))
+            q := int(math.Ceil(float64(nums[j]) / float64(mid)))
             sum += q
         }
 
         if sum > threshold {
-            left = divisor+1
+            left = mid+1
         } else {
-            ans = divisor
-            right = divisor-1
+            ans = mid
+            right = mid-1
         }
     }
     return ans
