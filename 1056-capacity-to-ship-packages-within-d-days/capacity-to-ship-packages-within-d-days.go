@@ -1,66 +1,65 @@
-// time = o(n) + o( log(totalSum - maxWeight + 1) * n)
 func shipWithinDays(weights []int, days int) int {
     left := math.MinInt64
     right := 0
     for i := 0; i < len(weights); i++ {
-        if weights[i] > left {left = weights[i]}
         right += weights[i]
+        left = max(left, weights[i])
     }
+
+    // binary search on answers ( weight is what we are looking for )
     ans := -1
     for left <= right {
-        mid := left + (right-left)/2
-        // if atMax, we can take $mid weight per day
-        // how many days would it take to take all packages
 
-        daysCount := 1
+        mid := left + (right-left)/2
         rSum := 0
-        for i := 0; i < len(weights); i++ {
-            rSum += weights[i]
+        numDays := 1
+        for j := 0; j < len(weights); j++ {
+            rSum += weights[j]
             if rSum > mid {
-                daysCount++
-                rSum = weights[i]
+                numDays++
+                rSum = weights[j]
             }
         }
 
-        // did mid work?
-        // mid works if it took less or equal to days allowed
-        // to ship all packages
-        if daysCount <= days {
+        // when does mid as capacity for the ship not work ?
+        // when it took more than $days to ship all packages
+        if numDays > days {
+            // increase the weight
+            left = mid+1
+        } else {
             // save this as potential ans
             ans = mid
-            // look left, since we are searching for smallest such ans
+            // keep searching left since we want smallest such ans
             right = mid-1
-        } else {
-            left = mid+1
         }
     }
     return ans
 }
 
+// time = o((sum-max+1) * n)
+// space = o(1)
 // func shipWithinDays(weights []int, days int) int {
 //     start := math.MinInt64
 //     end := 0
 //     for i := 0; i < len(weights); i++ {
-//         if weights[i] > start {start = weights[i]}
 //         end += weights[i]
+//         start = max(start, weights[i])
 //     }
 
-//     for i := start ; i <= end; i++ {
-//         capacity := i // atMax capacity, cannot exceed
+//     for i := start; i <= end; i++ {
 
-//         // how many days would it take if atMax our capacity is $capacity
-//         totalDays := 1
+//         cap := i
 //         rSum := 0
+//         numDays := 1
 //         for j := 0; j < len(weights); j++ {
 //             rSum += weights[j]
-//             if rSum > capacity {
-//                 totalDays++
+//             if rSum > cap {
+//                 numDays++
 //                 rSum = weights[j]
 //             }
 //         }
-//         if totalDays <= days {
-//             return capacity
-//         }
+
+//         if numDays <= days {return cap}
 //     }
 //     return -1
 // }
