@@ -15,18 +15,45 @@ func trap(height []int) int {
     rightWall := height[right]
     total := 0
     for left < right {
+        // if leftWall <= rightWall
+        // then we know for-sure that there is a rightWall >= leftWall
+        // this means, we can for sure figure out how much can be trapped on left building
+        // therefore process left building
+        // (this is like taking the leftMax from ```min(leftMax,rightMax)-building[i]``` )
         if leftWall <= rightWall {
+            // we can calcuate how much we can trap on top of left building
+            // we can only trap water on left building IF left leftWall's height >= left building
+            // even if leftWall == left building; we can process left building ; i.e we can trap 0 unit of water
             if leftWall >= height[left] {
                 total += (leftWall-height[left])
+                // we have computed and saved how much we can trap on top of left building while keeping leftWall as-is
+                // therefore we can evaluate the next left building
+                // and therefore we can move away from left building
                 left++
             } else {
+                // we have a new leftWall since height[left] > leftWall
                 leftWall = height[left]
             }
         } else {
+            // we can calcuate how much we can trap on top of right building
+            // we can only trap water on right building IF rightWall's height >= right building
+            // even if rightWall == right building; we can process right building ; i.e we can trap 0 unit of water
+            // another reason of why ==;
+            // if rightWall == height[right]; and we promote rightWall to be the value of right building
+            // then we never move away from right ptr;
+            // rightPtr will only ever move if we were able to trap some water and it can only trap some water if 
+            // height[right] > rigthWall
+            // BUT does it make sense to stay on right building if rightWall == rightBuilding; no
+            // it means, we cannot trap any water on top of right
+            // therefore using rightWall >= rightBuilding
             if rightWall >= height[right] {
+                // we have computed and saved how much we can trap on top of right building while keeping rightWall as-is
+                // therefore we can evaluate the next right building
+                // and therefore we can move away from right building
                 total += (rightWall-height[right])
                 right--
             }  else {
+                // we have a new leftWall since height[right] > rightWall
                 rightWall = height[right]
             }
         }
