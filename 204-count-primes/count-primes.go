@@ -13,7 +13,7 @@ func countPrimes(n int) int {
             count++
             // ith num is a prime number
             // therefore its multiples are not primes
-            for j := ithVal+ithVal; j < len(primes); j+=ithVal {
+            for j := ithVal*ithVal; j < len(primes); j+=ithVal {
                 primes[j] = false
             }
         }
