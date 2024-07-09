@@ -12,7 +12,7 @@ func findKthPositive(arr []int, k int) int {
             right = mid-1
         }
     }
-    return left+k
+    return left + k
 }
 // time = max(n,k)
 // space = o(1)
