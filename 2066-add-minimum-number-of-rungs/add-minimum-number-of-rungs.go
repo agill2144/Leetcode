@@ -1,15 +1,17 @@
 func addRungs(rungs []int, dist int) int {
     count := 0
-    idx := -1
+    curr := 0
     for i := 0; i < len(rungs); i++ {
-        rung := rungs[i]
-        pos := 0
-        if idx != -1 {pos = rungs[idx]}
-        if rung - pos > dist {
-            rungsNeeded := (rungs[i]-1-pos)/dist
-            count += rungsNeeded
+        if curr + dist < rungs[i] {
+            diff := rungs[i]-curr-1
+            count += int(math.Floor(float64(diff)/float64(dist)))
         }
-        idx = i
+        curr = rungs[i]
     }
     return count
 }
+
+// dist = 2
+// 25 100
+
+// 
