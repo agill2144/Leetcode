@@ -1,13 +1,9 @@
 func maximumGain(s string, x int, y int) int {
-    higher := "ab"
-    hPoints := x
-    lower := "ba"
-    lPoints := y
+    higher := "ab";hPoints := x
+    lower := "ba";lPoints := y
     if y > x {
-        higher = "ba"
-        hPoints = y
-        lower = "ab"
-        lPoints = x
+        higher = "ba";hPoints = y
+        lower = "ab";lPoints = x
     }
     // first pass only for higher score
     st := []byte{}
@@ -22,29 +18,26 @@ func maximumGain(s string, x int, y int) int {
             if str == higher {
                 st = st[:len(st)-2]
                 points += hPoints
-            } else {
-                break
+                continue
             }
+            break
         }
 
     }
-    tmp := new(strings.Builder)
-    for i := 0; i < len(st); i++ {tmp.WriteByte(st[i])}
-    ss := tmp.String()
-    st = []byte{}
-    for i := 0; i < len(ss); i++ {
-        curr := ss[i]
-        st = append(st, curr)
-        for len(st) >= 2 {
-            top := st[len(st)-1]
-            prev := st[len(st)-2]
+    st2 := []byte{}
+    for i := 0; i < len(st); i++ {
+        curr := st[i]
+        st2 = append(st2, curr)
+        for len(st2) >= 2 {
+            top := st2[len(st2)-1]
+            prev := st2[len(st2)-2]
             str := fmt.Sprintf("%v%v", string(prev), string(top))
             if str == lower {
                 points += lPoints
-                st = st[:len(st)-2]
-            } else {
-                break
+                st2 = st2[:len(st2)-2]
+                continue
             }
+            break
         }
     }
     return points
