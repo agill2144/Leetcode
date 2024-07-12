@@ -1,24 +1,27 @@
 func splitArray(nums []int, k int) int {
-    left := 0
-    right := 0
+    start := math.MinInt64
+    end := 0
     for i := 0; i < len(nums); i++ {
-        left = max(left, nums[i])
-        right += nums[i]
+        start = max(start, nums[i])
+        end += nums[i]
     }
     ans := 0
+    left := start
+    right := end
     for left <= right {
         mid := left + (right-left)/2
 
+        count := 1
         rSum := 0
-        cuts := 1
         for i := 0; i < len(nums); i++ {
             rSum += nums[i]
             if rSum > mid {
-                cuts++
                 rSum = nums[i]
+                count++
             }
         }
-        if cuts > k {
+
+        if count > k {
             left = mid+1
         } else {
             ans = mid
@@ -26,5 +29,4 @@ func splitArray(nums []int, k int) int {
         }
     }
     return ans
-
 }
