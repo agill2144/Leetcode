@@ -10,7 +10,15 @@ func trap(height []int) int {
             // therefore we can process the left building
             if leftWall >= height[left]{
                 // we can only process left build
-                // if leftWall height > left build
+                // if leftWall height >= left build
+                // why not just > , why >= ?
+                // well 1. we have picked a side to process becuase leftWall is smaller, 
+                // and rightWall provides us a guarantee that we can trap something on left, we have enough height on right to trap
+                // 2. if building height == leftWall, this building cannot trap any water, even tho we have something on right side bigger to hold
+                // from overflowing on right side
+                // but we have nothing on left side from overflowing
+                // therefore still process this left building even if height == leftWall
+                // therefore >= instead of just > 
                 trap := leftWall-height[left]
                 total += trap
                 left++
