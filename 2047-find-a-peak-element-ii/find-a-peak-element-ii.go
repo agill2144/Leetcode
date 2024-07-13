@@ -4,10 +4,16 @@ func findPeakGrid(matrix [][]int) []int {
 
     left := 0
     right := m-1
+
+    // we binary search on m rows
+    // time = o(logm)
     for left <= right {
         mid := left + (right-left)/2
         maxCol := math.MinInt64
         maxColIdx := -1
+
+        // for each row, we loop over n cols
+        // time = o(n)
         for j := 0; j < n; j++ {
             if matrix[mid][j] > maxCol {
                 maxCol = matrix[mid][j]
@@ -35,5 +41,7 @@ func findPeakGrid(matrix [][]int) []int {
             left = mid+1
         }
     }
+    // total time = o(logm * n)
+    // space = o(1)
     return nil
 }
