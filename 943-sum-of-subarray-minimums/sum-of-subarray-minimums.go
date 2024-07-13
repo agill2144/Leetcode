@@ -46,56 +46,111 @@
     time = o(n)
     space = o(n)
 */
-func sumSubarrayMins(nums []int) int {
+// func sumSubarrayMins(nums []int) int {
+//     mod := 1000000007
+//     st := []int{}
+//     sum := 0
+//     for i := 0; i < len(nums); i++ {
+//         curr := nums[i]
+//         for len(st) != 0 && curr < nums[st[len(st)-1]] {
+//             top := st[len(st)-1]
+//             st = st[:len(st)-1]
+//             nsr := i
+//             nsl := -1
+//             if len(st) != 0 {nsl = st[len(st)-1]}
+//             leftCount := top-nsl // number of starting positions
+//             rightCount := nsr-top // number of ending positions
+//             totalCount := leftCount*rightCount // total number of subarrays
+//             // if nums[top] = 2 ; and total subarrays are 12
+//             // we want to find the sum of this value(2) in subarrays where this value(2) is min
+//             // value is 2, it shows up in 12 subarrays, therefore its sum is 12*2 = 24
+//             currSum := nums[top] * totalCount
+//             sum = (sum + currSum) % mod
+//         }
+//         st = append(st, i)
+//     }
+//     // monotonic stack edge cases;
+//     // do we need to do something with elements that are still in stack?
+//     // yes, because we were processing nsr, and if there are elements in stack
+//     // for example; [1,2,3,4]
+//     // it means we did not find a ith element that was a nsr of a previous element
+//     // therefore these elements range/window can be the whole array
+//     // therefore nsr for each of the remaining element is n (size of array)
+
+//     for len(st) != 0 {
+//         top := st[len(st)-1]
+//         st = st[:len(st)-1]        
+//         nsr := len(nums)
+//         nsl := -1
+//         if len(st) != 0 {nsl = st[len(st)-1]}
+//         leftCount := top-nsl // number of starting positions
+//         rightCount := nsr-top // number of ending positions
+//         totalCount := leftCount*rightCount // total number of subarrays
+//         // if nums[top] = 2 ; and total subarrays are 12
+//         // we want to find the sum of this value(2) in subarrays where this value(2) is min
+//         // value is 2, it shows up in 12 subarrays, therefore its sum is 12*2 = 24
+//         currSum := nums[top] * totalCount
+//         sum = (sum + currSum) % mod
+
+//     }
+//     return sum
+
+// }
+
+
+func sumSubarrayMins(arr []int) int {
+    nsr := nsr(arr)
+    nsl := nsl(arr)
     mod := 1000000007
+    count := 0
+    for i := 0; i < len(arr); i++ {
+        rw := nsr[i]-i
+        lw := i-nsl[i]
+        count = (count + (arr[i]*(lw*rw))) % mod
+    }
+    return count
+}
+
+
+func nsr(nums []int) []int{
+    n := len(nums)
+    out := make([]int, n)
     st := []int{}
-    sum := 0
-    for i := 0; i < len(nums); i++ {
+    for i := n-1; i >= 0; i-- {
+        out[i] = n
         curr := nums[i]
-        for len(st) != 0 && curr < nums[st[len(st)-1]] {
-            top := st[len(st)-1]
+        for len(st) != 0 && nums[st[len(st)-1]] >= curr {
             st = st[:len(st)-1]
-            nsr := i
-            nsl := -1
-            if len(st) != 0 {nsl = st[len(st)-1]}
-            leftCount := top-nsl // number of starting positions
-            rightCount := nsr-top // number of ending positions
-            totalCount := leftCount*rightCount // total number of subarrays
-            // if nums[top] = 2 ; and total subarrays are 12
-            // we want to find the sum of this value(2) in subarrays where this value(2) is min
-            // value is 2, it shows up in 12 subarrays, therefore its sum is 12*2 = 24
-            currSum := nums[top] * totalCount
-            sum = (sum + currSum) % mod
+        }
+        if len(st) != 0 {
+            out[i] = st[len(st)-1]
         }
         st = append(st, i)
     }
-    // monotonic stack edge cases;
-    // do we need to do something with elements that are still in stack?
-    // yes, because we were processing nsr, and if there are elements in stack
-    // for example; [1,2,3,4]
-    // it means we did not find a ith element that was a nsr of a previous element
-    // therefore these elements range/window can be the whole array
-    // therefore nsr for each of the remaining element is n (size of array)
-
-    for len(st) != 0 {
-        top := st[len(st)-1]
-        st = st[:len(st)-1]        
-        nsr := len(nums)
-        nsl := -1
-        if len(st) != 0 {nsl = st[len(st)-1]}
-        leftCount := top-nsl // number of starting positions
-        rightCount := nsr-top // number of ending positions
-        totalCount := leftCount*rightCount // total number of subarrays
-        // if nums[top] = 2 ; and total subarrays are 12
-        // we want to find the sum of this value(2) in subarrays where this value(2) is min
-        // value is 2, it shows up in 12 subarrays, therefore its sum is 12*2 = 24
-        currSum := nums[top] * totalCount
-        sum = (sum + currSum) % mod
-
-    }
-    return sum
-
+    return out
 }
+
+
+func nsl(nums []int) []int{
+    n := len(nums)
+    out := make([]int, n)
+    st := []int{}
+    for i := 0; i < n; i++ {
+        out[i] = -1
+        curr := nums[i]
+        for len(st) != 0 && nums[st[len(st)-1]] > curr {
+            st = st[:len(st)-1]
+        }
+        if len(st) != 0 {
+            out[i] = st[len(st)-1]
+        }
+        st = append(st, i)
+    }
+    return out
+}
+
+
+
 
 /*
     brute force
