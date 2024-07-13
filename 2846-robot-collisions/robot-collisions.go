@@ -1,3 +1,4 @@
+// identical to asteroid collisions
 func survivedRobotsHealths(positions []int, healths []int, directions string) []int {
     type robot struct {
         pos int
