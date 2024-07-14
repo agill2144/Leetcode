@@ -1,3 +1,22 @@
+func findClosestElements(arr []int, k int, x int) []int {
+    n := len(arr)
+    left := 0
+    right := n-k
+    for left <= right {
+        mid := left + (right-left)/2
+        if mid+k >= len(arr) {break}
+        leftDist := x-arr[mid]
+        rightDist := arr[mid+k]-x
+        if leftDist > rightDist {
+            left = mid+1
+        } else {
+            right = mid-1
+        }
+    }
+    return arr[left:left+k]
+}
+
+
 /*
     approach: naive binary search
     - find left most idx on right side of x
@@ -21,59 +40,59 @@
     space = o(1) unless the underlying sorting algo takes o(n) space (merge sort or heap sort for example)
         
 */
-func findClosestElements(arr []int, k int, x int) []int {
-    n := len(arr)
-    if x < arr[0] {
-        return arr[:k]
-    } else if x > arr[len(arr)-1] {
-        return arr[n-k:n]
-    }
+// func findClosestElements(arr []int, k int, x int) []int {
+//     n := len(arr)
+//     if x < arr[0] {
+//         return arr[:k]
+//     } else if x > arr[len(arr)-1] {
+//         return arr[n-k:n]
+//     }
 
-    // time = o(logn)
-    // find the left most on right side of x
-    left := 0
-    right := n-1
-    idx := -1
-    for left <= right {
-        mid := left + (right-left)/2
-        if arr[mid] >= x {
-            idx = mid
-            right = mid-1
-            if arr[mid] == x {break}
-        } else {
-            left = mid+1
-        }
-    }
+//     // time = o(logn)
+//     // find the left most on right side of x
+//     left := 0
+//     right := n-1
+//     idx := -1
+//     for left <= right {
+//         mid := left + (right-left)/2
+//         if arr[mid] >= x {
+//             idx = mid
+//             right = mid-1
+//             if arr[mid] == x {break}
+//         } else {
+//             left = mid+1
+//         }
+//     }
 
-    p1 := idx // go right
-    p2 := idx-1 // go left
-    out := []int{}
-    // if k is same size as n ( worst case )
-    // we moved out ptrs to far ends ( 0 and n-1 )
-    // therefore time = o(k) ; or ; o(n) worst case
-    for len(out) != k && p1 < n && p2 >= 0 {
-        p1Dist := abs(arr[p1]-x)
-        p2Dist := abs(arr[p2]-x)
-        if p1Dist < p2Dist {
-            out = append(out, arr[p1])
-            p1++
-        } else {
-            out = append(out, arr[p2])
-            p2--
-        }
-    }
-    for len(out) != k && p1 < n{out = append(out, arr[p1]); p1++}
-    for len(out) != k && p2 >= 0 {out = append(out, arr[p2]); p2--}
+//     p1 := idx // go right
+//     p2 := idx-1 // go left
+//     out := []int{}
+//     // if k is same size as n ( worst case )
+//     // we moved out ptrs to far ends ( 0 and n-1 )
+//     // therefore time = o(k) ; or ; o(n) worst case
+//     for len(out) != k && p1 < n && p2 >= 0 {
+//         p1Dist := abs(arr[p1]-x)
+//         p2Dist := abs(arr[p2]-x)
+//         if p1Dist < p2Dist {
+//             out = append(out, arr[p1])
+//             p1++
+//         } else {
+//             out = append(out, arr[p2])
+//             p2--
+//         }
+//     }
+//     for len(out) != k && p1 < n{out = append(out, arr[p1]); p1++}
+//     for len(out) != k && p2 >= 0 {out = append(out, arr[p2]); p2--}
 
-    // time = o(klogk)
-    sort.Ints(out)
-    return out
-}
+//     // time = o(klogk)
+//     sort.Ints(out)
+//     return out
+// }
 
-func abs(x int) int {
-    if x < 0 {return x * -1}
-    return x
-}
+// func abs(x int) int {
+//     if x < 0 {return x * -1}
+//     return x
+// }
 
 /*
     approach: heap
