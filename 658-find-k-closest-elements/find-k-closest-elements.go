@@ -6,9 +6,15 @@
         - we will keep only k elements
         - sort by dist
         - if two distances are same, sort by value
+
+    time = o(nlogk) + o(k) + o(klogk)
+    space = o(k)
+
+
 */
 func findClosestElements(arr []int, k int, x int) []int {
     mx := &maxHeap{items: []*heapNode{}}
+    // o(n * logk)
     for i := 0; i < len(arr); i++ {
         val := arr[i]
         dist := abs(val-x)
@@ -18,9 +24,11 @@ func findClosestElements(arr []int, k int, x int) []int {
         }
     }
     out := []int{}
+    // o(k)
     for mx.Len() != 0 {
         out = append(out, heap.Pop(mx).(*heapNode).val)
     }
+    // o(klogk)
     sort.Ints(out)
     return out
 }
