@@ -1,29 +1,34 @@
 func decodeString(s string) string {
-    strSt := []string{}
+    strSt := []*strings.Builder{}
     numSt := []int{}
-    currNum := 0
-    currStr := ""
+    str := new(strings.Builder)
+    num := 0
     for i := 0; i < len(s); i++ {
-        if s[i] == '[' {
-            numSt = append(numSt, currNum)
-            strSt = append(strSt, currStr)
-            currNum = 0
-            currStr = ""
-        } else if s[i] == ']' {
-            topNum := numSt[len(numSt)-1]
+        curr := s[i]
+        if curr >= 'a' && curr <= 'z' {
+            str.WriteByte(curr)
+        } else if curr >= '0' && curr <= '9' {
+            num = num * 10 + int(curr-'0')
+        } else if curr == '[' {
+            strSt = append(strSt, str)
+            numSt = append(numSt, num)
+            str = new(strings.Builder)
+            num = 0
+        } else if curr == ']' {
+            // repeat curr string topNum of times
+            topN := numSt[len(numSt)-1]
             numSt = numSt[:len(numSt)-1]
             tmp := new(strings.Builder)
-            for k := 0; k < topNum; k++ {
-                tmp.WriteString(currStr)
+            for i := 0; i < topN; i++ {
+                tmp.WriteString(str.String())
             }
-            parentStr := strSt[len(strSt)-1]
+            // combine with parent
+            parent := strSt[len(strSt)-1]
             strSt = strSt[:len(strSt)-1]
-            currStr = parentStr + tmp.String()
-        } else if s[i] >= '0' && s[i] <= '9' {
-            currNum = currNum * 10 + int(s[i]-'0')
-        } else {
-            currStr += string(s[i])
+            parent.WriteString(tmp.String())
+            // make curr str as parent 
+            str = parent
         }
     }
-    return currStr
+    return str.String()
 }
