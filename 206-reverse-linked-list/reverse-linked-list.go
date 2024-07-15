@@ -7,20 +7,41 @@
  */
 
 
-// recursive
+// recursive : without passing prev node as arg
 func reverseList(head *ListNode) *ListNode {
-    if head == nil || head.Next == nil {return head}
-    var dfs func(curr *ListNode, prev *ListNode) *ListNode
-    dfs = func(curr *ListNode, prev *ListNode) *ListNode {
+    var dfs func(curr *ListNode) *ListNode
+    dfs = func(curr *ListNode) *ListNode {
         // base
-        if curr == nil {return prev}
+        if curr == nil {return nil}
         // logic
-        next := curr.Next
-        curr.Next = prev
-        return dfs(next, curr)
+        // 1<-2<-3<-4
+        //          c
+        h := dfs(curr.Next)
+        if h == nil {h = curr}
+        if curr.Next != nil {
+            curr.Next.Next = curr
+            curr.Next = nil
+        }
+        return h
     }
-    return dfs(head, nil)
+    return dfs(head)
 }
+
+
+// recursive ( cheating; while passing prev node as a arg to dfs )
+// func reverseList(head *ListNode) *ListNode {
+//     if head == nil || head.Next == nil {return head}
+//     var dfs func(curr *ListNode, prev *ListNode) *ListNode
+//     dfs = func(curr *ListNode, prev *ListNode) *ListNode {
+//         // base
+//         if curr == nil {return prev}
+//         // logic
+//         next := curr.Next
+//         curr.Next = prev
+//         return dfs(next, curr)
+//     }
+//     return dfs(head, nil)
+// }
 
 /*
     approach: classic
