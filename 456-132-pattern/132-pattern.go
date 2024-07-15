@@ -4,6 +4,12 @@ func find132pattern(nums []int) bool {
     numsJ := math.MinInt64
     st := []int{} // idx
     for i := n-1; i >= 0; i-- {
+
+
+        // once we have numsK, numsJ becomes irrelevant
+        // because numsJ was the largest value once discovered; initialized/defined numsK val
+        // therefore numsK < numsJ is already satisfied when numsK gets set
+        // if this number is < numsK, it means we have found nums[i] < nums[k]
         if numsK != math.MinInt64 && nums[i] < numsK && numsK < numsJ {return true}
 
         // we have a ele thats > than immediate neighbors
