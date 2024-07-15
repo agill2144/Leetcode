@@ -19,7 +19,7 @@ func createBinaryTree(descriptions [][]int) *TreeNode {
             parentNode = &TreeNode{Val: parent}
             valToNode[parent] = parentNode
         }
-        // at this point parent exists in valToNode        
+        // at this point parent exists in valToNode
         childNode, childExists := valToNode[child]
         if !childExists {
             childNode = &TreeNode{Val: child}
@@ -33,11 +33,9 @@ func createBinaryTree(descriptions [][]int) *TreeNode {
         }
     }
     for i := 0; i < len(descriptions); i++ {
-        a, b := descriptions[i][0], descriptions[i][1]
+        a := descriptions[i][0]
         _, aIsChild := childs[a]
         if !aIsChild {return valToNode[a]}
-        _, bIsChild := childs[b]
-        if !bIsChild {return valToNode[b]}
     }
     return nil
 }
