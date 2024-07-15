@@ -1,21 +1,25 @@
 func find132pattern(nums []int) bool {
     n := len(nums)
-    st := []int{} // idx
-    numsJ := math.MinInt64
     numsK := math.MinInt64
+    numsJ := math.MinInt64
+    st := []int{} // idx
     for i := n-1; i >= 0; i-- {
-        if numsK != math.MinInt64 && nums[i] < numsK && numsK < numsJ {
-            return true
-        }
-        // we have ran into a number thats larger that last seen
-        // therefore we imply that this ( nums[i] ) is numsJ val and we are looking for numsK in st ( largest value )
+        if numsK != math.MinInt64 && nums[i] < numsK && numsK < numsJ {return true}
+
+        // we have a ele thats > than immediate neighbors
+        // meaning we have the peak element of 132 pattern
+        // i.e numsJ value is num[i]
+        // and numsK value should be just smaller on right side of numsJ
+        // i.e looking back, last-in values in stack
         for len(st) != 0 && nums[i] > nums[st[len(st)-1]] {
-            numsJ = nums[i]
-            top := st[len(st)-1] // new 2nd largest; new kth val
+            top := st[len(st)-1]
             st = st[:len(st)-1]
             numsK = nums[top]
+            numsJ = nums[i]
         }
-        st = append(st, i) // potential k value
+        
+        // push this value into st, as it could become a numsK value when we run into a new peak element
+        st = append(st, i)
     }
     return false
 }
