@@ -1,22 +1,20 @@
 func find132pattern(nums []int) bool {
     n := len(nums)
     st := []int{} // idx
-    kthVal := math.MinInt64
+    numsJ := math.MinInt64
+    numsK := math.MinInt64
     for i := n-1; i >= 0; i-- {
-        if kthVal != math.MinInt64 && nums[i] < kthVal {return true}
-
+        if numsK != math.MinInt64 && nums[i] < numsK && numsK < numsJ {
+            return true
+        }
         // we have ran into a number thats larger that last seen
-        // therefore we imply that this is numsJ ( largest value )
+        // therefore we imply that this ( nums[i] ) is numsJ val and we are looking for numsK in st ( largest value )
         for len(st) != 0 && nums[i] > nums[st[len(st)-1]] {
-            // now we want the best kth value
-            // that is just smaller than jth value
-            // this value will be at the bottom of the stack
-            // therefore keep popping
+            numsJ = nums[i]
             top := st[len(st)-1] // new 2nd largest; new kth val
             st = st[:len(st)-1]
-            kthVal = nums[top]
+            numsK = nums[top]
         }
-
         st = append(st, i) // potential k value
     }
     return false
