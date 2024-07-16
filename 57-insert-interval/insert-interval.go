@@ -2,14 +2,14 @@ func insert(intervals [][]int, newInterval []int) [][]int {
     n := len(intervals)
     if n == 0 {return [][]int{newInterval}}
     out := [][]int{}
+    out = append(out, intervals[0])
+    i := 1
     used := false
-    i := 0
-    if intervals[0][0] < newInterval[0] {
-        out = append(out, intervals[0])
-        i=1
-    } else {
-        out = append(out, newInterval)
+
+    if newInterval[0] < intervals[0][0] {
+        out[len(out)-1] = newInterval
         used = true
+        i = 0
     }
     for i < n || !used {
         start := math.MaxInt64
