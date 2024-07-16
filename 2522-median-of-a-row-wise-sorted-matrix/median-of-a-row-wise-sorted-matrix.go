@@ -47,6 +47,8 @@
         - save this potential ans and continue searching left
         - essentially we are looking for the very first answer/midValue where num of elements <= answer/midValue is > half
 
+    - this intuition can be changed for finding kth smallest
+    - if we are evaluation a answer val, number of elements <= answer should always be > k elements
 */
 func matrixMedian(grid [][]int) int {
     m := len(grid)
