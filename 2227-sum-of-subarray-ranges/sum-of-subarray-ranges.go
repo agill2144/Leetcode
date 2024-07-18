@@ -1,4 +1,6 @@
 func subArrayRanges(nums []int) int64 {
+
+    // sum of subarry minimums
     var minTotalSum int64
     st := []int{} // idx
     // nsr
@@ -34,6 +36,7 @@ func subArrayRanges(nums []int) int64 {
     }
 
 
+    // sum of subarry maximums
     var maxTotalSum int64
     st = []int{}
     // ngr
@@ -66,6 +69,9 @@ func subArrayRanges(nums []int) int64 {
         rightCount := ngr-top
         totalCount := leftCount*rightCount
         maxTotalSum += (int64(totalCount) * int64(topVal))
-    }    
+    }
+
+    // once we have total max and min sums, the total range sum would be
+    // max - min sum 
     return maxTotalSum - minTotalSum
 }
