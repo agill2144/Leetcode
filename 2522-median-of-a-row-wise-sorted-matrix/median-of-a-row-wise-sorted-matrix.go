@@ -56,13 +56,13 @@ func matrixMedian(grid [][]int) int {
     ans := -1
     left := 1
     right := 1000000000
-    k := (m*n)/2
+    k := ((m*n)/2)+1
     for left <= right {
         mid := left + (right-left)/2
         count := countLessThanOrEqualTo(grid,mid)
         // for mid to be median
         // count num of elements <= mid(including mid) should always be > half
-        if count >= k+1 {
+        if count >= k {
             ans = mid
             right = mid-1
         } else {
