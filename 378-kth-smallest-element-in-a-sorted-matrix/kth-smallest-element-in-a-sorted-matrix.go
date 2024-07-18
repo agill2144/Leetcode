@@ -1,21 +1,12 @@
 func kthSmallest(matrix [][]int, k int) int {
     m := len(matrix)
     n := len(matrix[0])
-    ans := -1
     left := matrix[0][0]
     right := matrix[m-1][n-1]
+    ans := -1
     for left <= right {
-
         mid := left + (right-left)/2
         count := countLessThanOrEqualTo(matrix, mid)
-        // same intuition as: https://leetcode.com/problems/median-of-a-row-wise-sorted-matrix/
-        // is mid our kth smallest ?
-        // only if count on left of mid >= k elements
-        // why > ?
-        // because if mid is our kth smallest
-        // then we have included this kth element in our counting (because count uses <= operator )
-        // therefore if mid is our kth element, its count will ALWAYS be >= k elements on left
-        // therefore save this potential answer and continue searching on left
         if count >= k {
             ans = mid
             right = mid-1
