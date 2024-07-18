@@ -7,7 +7,18 @@
  * }
  */
 // shortest path without custom weights = vanilla bfs should work
-
+// binary tree is a undirected graph; NEVER FORGET!
+// convert tree to a undirected grahp and create a adjList 
+// while building the adjList, note down the leaf nodes
+// then from each leaf node, use bfs to find the shortest path to other leaf nodes
+// time = o(n) ; to create adjList
+// time to find shortest dist
+// we loop over each leaf and 
+//  there are n/2 leaves; 
+// o(n/2) * o(n)
+// n/2 is constant; therefore o(n)*o(n) = o(n^2)
+// total time = o(n) + o(n^2) = o(n^2)
+// 
 func countPairs(root *TreeNode, distance int) int {
     adjList := map[*TreeNode]map[*TreeNode]struct{}{}
     leafs := map[*TreeNode]struct{}{}
@@ -28,7 +39,7 @@ func countPairs(root *TreeNode, distance int) int {
         if r.Right != nil {
             if adjList[r.Right] == nil {adjList[r.Right] = map[*TreeNode]struct{}{}}
             adjList[r][r.Right] = struct{}{}
-            adjList[r.Right][r] = struct{}{}        
+            adjList[r.Right][r] = struct{}{}
             dfs(r.Right)
 
         }
