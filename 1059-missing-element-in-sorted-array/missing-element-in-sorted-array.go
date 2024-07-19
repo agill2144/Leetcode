@@ -7,10 +7,10 @@ func missingElement(nums []int, k int) int {
         mid := left + (right-left)/2
         correctVal := mid+offSet
         missing := nums[mid]-correctVal
-        if missing >= k {
-            right = mid-1
-        } else {
+        if missing < k {
             left = mid+1
+        } else {
+            right = mid-1
         }
     }
     missing := nums[right]-(right+offSet)
