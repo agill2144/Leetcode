@@ -1,10 +1,19 @@
 func solution(knows func(a int, b int) bool) func(n int) int {
     return func(n int) int {
+        // 1. eliminate people that cannot be celeb
+
+        // assume starting celeb is person 0
         celeb := 0
         for i := 0; i < n; i++ {
             if i == celeb {continue}
+            // if celeb knows someone else
+            // celeb is not a valid celeb
+            // but since this invalid celeb knows i
+            // i could be a potential celeb
+            // therefore we eliminate celeb and update it with someone else instead
             if knows(celeb, i) {celeb = i}
         }
+
         // 2. confirm our candidate
         // everyone should know celeb
         // and celeb should not know anyone
