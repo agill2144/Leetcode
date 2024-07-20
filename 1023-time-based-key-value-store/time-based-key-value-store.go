@@ -1,46 +1,45 @@
-type dataNode struct {
-    val string
+type valNode struct {
     time int
+    val string
 }
 
 type TimeMap struct {
-    data map[string][]*dataNode
+    data map[string][]*valNode
 }
 
 
 func Constructor() TimeMap {
-    return TimeMap{
-        data: map[string][]*dataNode{},
-    }
+    return TimeMap{data:map[string][]*valNode{}}    
 }
 
 
 func (this *TimeMap) Set(key string, value string, timestamp int)  {
-    node := &dataNode{val: value, time: timestamp}
-    this.data[key] = append(this.data[key], node)
+    this.data[key] = append(this.data[key], &valNode{timestamp, value})    
+
 }
 
 
 func (this *TimeMap) Get(key string, timestamp int) string {
-    // we want the greatest time from left side of passed-in time
-    // --------------.---.--.---t----.----
-    nodes, ok := this.data[key]
-    if !ok {return ""}
-    
+    // we want the rightmost on left side of timestamp
+    ans := ""
+    vals := this.data[key]
+    if len(vals) == 0 {
+        return ans
+    }
+
     left := 0
-    right := len(nodes)-1
-    var ans *dataNode
+    right := len(this.data[key])-1
     for left <= right {
         mid := left + (right-left)/2
-        if nodes[mid].time <= timestamp {
-            ans = nodes[mid]
+        if vals[mid].time <= timestamp {
+            ans = vals[mid].val
+            if vals[mid].time == timestamp {break}
             left = mid+1
         } else {
             right = mid-1
         }
     }
-    if ans == nil {return ""}
-    return ans.val
+    return ans
 }
 
 
