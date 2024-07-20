@@ -22,7 +22,11 @@
         - if parent gets a node only from left side, left is lca
         - if parent gets a node only from right side, right is lca
     - essentially we can find lca of all nodes that are located at a particular level/depth!    
+
+    lca pattern; lca of node p and q
+    extend lca to now cover: lca of all nodes at a level/depth
 */
+
 func lcaDeepestLeaves(root *TreeNode) *TreeNode {
     maxDepth := 0
 
