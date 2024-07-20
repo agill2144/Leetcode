@@ -11,7 +11,7 @@ func maxSlidingWindow(nums []int, k int) []int {
         if i-left+1 == k {
             out = append(out, nums[dq[0]])
             left++
-            for len(dq) != 0 && dq[0] < left {
+            if len(dq) != 0 && dq[0] < left {
                 dq = dq[1:]
             }
         }
