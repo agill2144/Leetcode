@@ -4,17 +4,33 @@
  */
 func solution(knows func(a int, b int) bool) func(n int) int {
     return func(n int) int {
-        candidate := 0
+        indegrees := make([]int, n)
+        outdegrees := make([]int, n)
         for i := 0; i < n; i++ {
-            if knows(candidate, i) {
-                candidate = i
+            // if a knows b; this is a->b ( a outdegrees++ ; b indegress++ )
+            for j := i; j < n; j++ {
+                if i == j {continue}
+                a := i
+                b := j
+                if knows(a,b) {
+                    indegrees[b]++
+                    outdegrees[a]++
+                }
+                if knows(b, a) {
+                    indegrees[a]++
+                    outdegrees[b]++
+                }
             }
         }
+        // definition of a celebrity is that 
+        // all the other n - 1 people know the celebrity
+        // but the celebrity does not know any of them.
+        // if indegrees[x] == n-1 && outdegrees[x] == 0 {this is celebrity}
+        // fmt.Println(indegrees)
+        // fmt.Println(outdegrees)
         for i := 0; i < n; i++ {
-            if i == candidate {continue}
-            if knows(candidate, i) {return -1}
-            if !knows(i, candidate) {return -1}
+            if indegrees[i] == n-1 && outdegrees[i] == 0 {return i}
         }
-        return candidate
+        return -1
     }
 }
