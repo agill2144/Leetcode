@@ -11,7 +11,7 @@
 func arrangeCoins(n int) int {
     if n <= 0 {return 0}
     left := 0
-    right := n
+    right := (n/2)+1
     ans := 0
     for left <= right {
         mid := left + (right-left)/2
