@@ -6,6 +6,8 @@
  *     Right *TreeNode
  * }
  */
+ // same as: https://leetcode.com/problems/lowest-common-ancestor-of-deepest-leaves/description/
+ // lca of ALL nodes at a particular level/depth
 func subtreeWithAllDeepest(root *TreeNode) *TreeNode {
     maxDepth := math.MinInt64     
     var dfs func(r *TreeNode, depth int)
