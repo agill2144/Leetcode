@@ -7,13 +7,14 @@
 
 class Solution:
     def lowestCommonAncestor(self, root: 'TreeNode', nodes: 'List[TreeNode]') -> 'TreeNode':
+        nodeSet = set(nodes)
         def dfs(r: TreeNode) -> TreeNode:
             # base
             if r == None:
                 return None
 
             # logic
-            if r in nodes:
+            if r in nodeSet:
                 return r
             left = dfs(r.left)
             right = dfs(r.right)
