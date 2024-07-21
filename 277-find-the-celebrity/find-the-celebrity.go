@@ -23,6 +23,8 @@ func solution(knows func(a int, b int) bool) func(n int) int {
             // but since this invalid celeb knows i
             // i could be a potential celeb
             // therefore we eliminate celeb and update it with someone else instead
+            // celeb -> i is true
+            // celeb is not a true celebrity; but i might be
             if knows(celeb, i) {celeb = i}
         }
 
