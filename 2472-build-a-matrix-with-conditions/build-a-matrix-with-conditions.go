@@ -1,32 +1,23 @@
 func buildMatrix(k int, rowConditions [][]int, colConditions [][]int) [][]int {
     rowOrder := topSort(rowConditions, k)
-    valToRowIdx := map[int]int{}
     colOrder := topSort(colConditions, k)
     if len(rowOrder) == 0 || len(colOrder) == 0 {return nil}
-    for i := 0; i < len(rowOrder); i++ {
-        valToRowIdx[rowOrder[i]] = i
-    }
+
+    valToRowIdx := map[int]int{}
+    valToColIdx := map[int]int{}
+    for i := 0; i < len(rowOrder); i++ {valToRowIdx[rowOrder[i]] = i}
+    for i := 0; i < len(colOrder); i++ {valToColIdx[colOrder[i]] = i}
+    fmt.Println(rowOrder, colOrder)
 
     matrix := make([][]int, k)
-    // put val on each row first (col 0)
-    rPtr := 0
-    for i := 0; i < len(matrix); i++ {
-        matrix[i] = make([]int,k)
-        matrix[i][0] = rowOrder[rPtr]
-        rPtr++
-    }
+    for i := 0; i < len(matrix); i++ {matrix[i] = make([]int,k)}
 
-    // now put vals for cols from the back
-    cPtr := len(colOrder)-1
-    for j := len(matrix[0])-1; j >= 0; j-- {
-        val := colOrder[cPtr]
-        rowIdx := valToRowIdx[val]
-        colIdx := j
-        matrix[rowIdx][0], matrix[rowIdx][colIdx] = matrix[rowIdx][colIdx], matrix[rowIdx][0]
-        cPtr--
+    for i := 1; i <= k; i++ {
+        r := valToRowIdx[i]
+        c := valToColIdx[i]
+        matrix[r][c] = i
     }
     return matrix
-
 }
 
 
