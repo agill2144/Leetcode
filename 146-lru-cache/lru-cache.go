@@ -1,15 +1,15 @@
 type LRUCache struct {
-    capacity int
     dll *dll
     data map[int]*listNode
+    cap int
 }
 
 
 func Constructor(capacity int) LRUCache {
     return LRUCache{
-        capacity: capacity,
-        data: map[int]*listNode{},
         dll: &dll{},
+        data: map[int]*listNode{},
+        cap: capacity,
     }
 }
 
@@ -17,26 +17,31 @@ func Constructor(capacity int) LRUCache {
 func (this *LRUCache) Get(key int) int {
     node, ok := this.data[key]
     if !ok {return -1}
-    this.dll.moveNodeToHead(node)
+    this.dll.moveNodeToEnd(node)
     return node.val
 }
 
 
 func (this *LRUCache) Put(key int, value int)  {
-    
     node, ok := this.data[key]
     if ok {
         node.val = value
-        this.dll.moveNodeToHead(node)
+        this.dll.moveNodeToEnd(node)
         return
     }
-    if len(this.data) == this.capacity {
-        lruNode := this.dll.deleteFromTail()
-        delete(this.data, lruNode.key)
+    if len(this.data) == this.cap {
+        deletedNode := this.dll.removeHead()
+        delete(this.data, deletedNode.key)
     }
-    this.data[key] = this.dll.addToHead(key, value)
+    newNode := this.dll.appendToEnd(key, value)
+    this.data[key] = newNode
 }
 
+
+type dll struct {
+    head *listNode
+    tail *listNode
+}
 
 type listNode struct {
     key int
@@ -45,58 +50,52 @@ type listNode struct {
     next *listNode
 }
 
-type dll struct {
-    head *listNode // newely added or recently updated
-    tail *listNode // least recently used
-}
-
-func (d *dll) addToHead(key, val int) *listNode {
-    newNode := &listNode{val: val, key: key}
+func (d *dll) appendToEnd(key, val int) *listNode {
+    newNode := &listNode{key: key, val: val}
     if d.head == nil {
         d.head = newNode
         d.tail = newNode
         return newNode
     }
-    currHead := d.head
-    currHead.prev = newNode
-    newNode.next = currHead
-    d.head = newNode
+    d.tail.next = newNode
+    newNode.prev = d.tail
+    d.tail = newNode
     return newNode
 }
 
-func (d *dll) deleteFromTail() *listNode {
-    currTail := d.tail
+func (d *dll) removeHead() *listNode {
+    if d.head == nil {return nil}
+    out := d.head
     if d.head == d.tail {
         d.head = nil
         d.tail = nil
-        return currTail
+        return out
     }
-
-    newTail := currTail.prev
-    newTail.next = nil
-    currTail.prev = nil
-    d.tail = newTail
-    return currTail
+    newHead := d.head.next
+    newHead.prev = nil
+    d.head.next = nil 
+    d.head = newHead
+    return out
 }
 
-func (d *dll) moveNodeToHead(node *listNode) {
-    if node == d.head {return}
-    prev := node.prev
-    next := node.next
-        node.prev = nil
+func (d *dll) moveNodeToEnd(node *listNode) {
+    if node == d.tail {return}    
+    if node == d.head {
+        newHead := d.head.next
+        newHead.prev = nil
         node.next = nil
-
-    if node == d.tail {
-        prev.next = nil
-        d.tail = prev    
+        d.head = newHead
     } else {
+        prev := node.prev
+        next := node.next
         prev.next = next
         next.prev = prev
+        node.next = nil
+        node.prev = nil
     }
-
-    node.next = d.head
-    d.head.prev = node
-    d.head = node
+    node.prev = d.tail
+    d.tail.next = node
+    d.tail = node
 }
 
 /**
