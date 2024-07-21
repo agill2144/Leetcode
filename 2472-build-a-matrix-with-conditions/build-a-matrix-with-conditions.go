@@ -7,7 +7,6 @@ func buildMatrix(k int, rowConditions [][]int, colConditions [][]int) [][]int {
     valToColIdx := map[int]int{}
     for i := 0; i < len(rowOrder); i++ {valToRowIdx[rowOrder[i]] = i}
     for i := 0; i < len(colOrder); i++ {valToColIdx[colOrder[i]] = i}
-    fmt.Println(rowOrder, colOrder)
 
     matrix := make([][]int, k)
     for i := 0; i < len(matrix); i++ {matrix[i] = make([]int,k)}
