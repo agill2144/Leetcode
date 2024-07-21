@@ -1,3 +1,15 @@
+// assume a celebrity at first; $x
+// now check if knows(x, y)
+// if x knows y ; x -> y
+// this means x is not a good candidate for sure,
+// because for x to be celebrity it must have 0 outgoing edges
+// in other words; x should not have known y if x was a true celeb
+// but y can be, therefore now update our potential canditate to y
+// and continue our evaluation
+// then take another pass to confirm that our $potentialCandidate is truly a celeb
+// meaning $potentialCandidate should not know ith person and this ith person must know $potentialCandidate
+// if the above is not true, return -1
+// if we did not return -1, we have confirmed that $potentialCandidate is our celebrity
 func solution(knows func(a int, b int) bool) func(n int) int {
     return func(n int) int {
         // 1. eliminate people that cannot be celeb
