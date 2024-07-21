@@ -6,12 +6,12 @@
  * }
  */
 func hasCycle(head *ListNode) bool {
-    seen := map[*ListNode]struct{}{}
-    curr := head
-    for curr != nil {
-        if _, ok := seen[curr]; ok {return true}
-        seen[curr] = struct{}{}
-        curr = curr.Next
+    slow := head
+    fast := head
+    for fast != nil && fast.Next != nil {
+        slow = slow.Next
+        fast = fast.Next.Next
+        if slow == fast {return true}
     }
     return false
 }
