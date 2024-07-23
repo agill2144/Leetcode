@@ -8,12 +8,11 @@
 func sortList(head *ListNode) *ListNode {    
     if head == nil || head.Next == nil {return head}
 
-    
     // split
     mid := mid(head)
+    list1 := head
     list2 := mid.Next
     mid.Next = nil
-    list1 := head
 
     // recurse & sort
     list1 = sortList(list1)
