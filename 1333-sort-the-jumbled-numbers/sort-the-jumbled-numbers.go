@@ -1,4 +1,5 @@
 func sortJumbled(mapping []int, nums []int) []int {
+    // map each num in nums to a new mapped val
     mappedNums := map[int]int{}
     for i := 0; i < len(nums); i++ {
         nStr := fmt.Sprintf("%v",nums[i])
@@ -10,6 +11,9 @@ func sortJumbled(mapping []int, nums []int) []int {
         }
         mappedNums[nums[i]] = newMappedVal
     }
+    // sort original nums based on its mapped value
+    // if 2 mapped values are same, keep the original order
+    // hence using "sort.SliceStable" over "sort.Slice"
     sort.SliceStable(nums, func(i, j int)bool{
         iVal := nums[i]
         iMappedVal := mappedNums[iVal]
