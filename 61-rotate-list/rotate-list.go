@@ -8,7 +8,6 @@
 
 func rotateRight(head *ListNode, k int) *ListNode {
     if head == nil || head.Next == nil || k == 0 {return head}
-    // ogHead := head
     size := 1
     curr := head
     for curr != nil && curr.Next != nil {
@@ -18,16 +17,15 @@ func rotateRight(head *ListNode, k int) *ListNode {
     k %= size
     if k == size || k == 0 {return head}
     curr.Next = head
-    var prev *ListNode
-    count := 0
+    count := 1
     curr = head
     for count != size-k {
-        prev = curr
         curr = curr.Next
         count++
     }
-    prev.Next = nil
-    return curr
+    head = curr.Next
+    curr.Next = nil
+    return head
 
 }
 
