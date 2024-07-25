@@ -25,7 +25,7 @@ func lengthOfLongestSubstringTwoDistinct(s string) int {
             maxWin = max(maxWin, i-left+1)
         } else {
             leftChar := s[left]
-            if idx[leftChar] <= left {
+            if idx[leftChar] == left {
                 delete(idx, leftChar)
             }
             left++
