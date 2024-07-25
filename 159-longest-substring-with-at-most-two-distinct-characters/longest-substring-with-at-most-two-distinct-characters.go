@@ -1,4 +1,20 @@
+/*
+    sliding window nested iteration optimizations;
+    - dont shrink the window , only increase it
+    - maintain a idx map
+    - add each ith char in our idx map
+    - if we have a valid window; len(idx) <= 2 
+        - take win size and save its better than last
+    - if we have a invalid window; len(idx) > 2
+        - then shrink window while keeping the same size
+        - if the left char idx in our idx-map is same as left ptr
+            - this char is being removed from our window
+            - therefore can we removed 
 
+    time = o(n)
+    space = o(1)
+
+*/
 func lengthOfLongestSubstringTwoDistinct(s string) int {
     maxWin := 0
     left := 0
@@ -9,7 +25,7 @@ func lengthOfLongestSubstringTwoDistinct(s string) int {
             maxWin = max(maxWin, i-left+1)
         } else {
             leftChar := s[left]
-            if idx[leftChar] == left {
+            if idx[leftChar] <= left {
                 delete(idx, leftChar)
             }
             left++
