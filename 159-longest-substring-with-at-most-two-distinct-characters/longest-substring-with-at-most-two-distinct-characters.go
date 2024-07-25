@@ -1,3 +1,22 @@
+
+func lengthOfLongestSubstringTwoDistinct(s string) int {
+    maxWin := 0
+    left := 0
+    idx := map[byte]int{}
+    for i := 0; i < len(s); i++ {
+        idx[s[i]] = i
+        if len(idx) <= 2 {
+            maxWin = max(maxWin, i-left+1)
+        } else {
+            leftChar := s[left]
+            if idx[leftChar] == left {
+                delete(idx, leftChar)
+            }
+            left++
+        }
+    }
+    return maxWin
+}
 /*
     sliding window nested iteration optimizations;
     - can we take a big jump at once?
@@ -11,33 +30,36 @@
     - now insert the new char in idx map
     - now we have a valid window
 
+    time = o(n)
+    space = o(1)
+
 */
-func lengthOfLongestSubstringTwoDistinct(s string) int {
-    idx := map[byte]int{}
-    maxWin := 0
-    left := 0
-    for i := 0; i < len(s); i++ {
-        _, ok := idx[s[i]]
-        if !ok && len(idx) == 2 { // we are adding a 3rd char now
-            // we need to escape the earliest possible idx
-            minIdx := len(s)+1
-            var minIdxChar byte
-            for k, v := range idx {
-                if v < minIdx {
-                    minIdx = v
-                    minIdxChar = k
-                }
-            }
-            if left <= minIdx {
-                left = minIdx+1
-                delete(idx, minIdxChar)
-            }
-        }
-        idx[s[i]] = i
-        maxWin = max(maxWin, i-left+1)
-    }
-    return maxWin
-}
+// func lengthOfLongestSubstringTwoDistinct(s string) int {
+//     idx := map[byte]int{}
+//     maxWin := 0
+//     left := 0
+//     for i := 0; i < len(s); i++ {
+//         _, ok := idx[s[i]]
+//         if !ok && len(idx) == 2 { // we are adding a 3rd char now
+//             // we need to escape the earliest possible idx
+//             minIdx := len(s)+1
+//             var minIdxChar byte
+//             for k, v := range idx {
+//                 if v < minIdx {
+//                     minIdx = v
+//                     minIdxChar = k
+//                 }
+//             }
+//             if left <= minIdx {
+//                 left = minIdx+1
+//                 delete(idx, minIdxChar)
+//             }
+//         }
+//         idx[s[i]] = i
+//         maxWin = max(maxWin, i-left+1)
+//     }
+//     return maxWin
+// }
 
 /*
     naive slinding window
