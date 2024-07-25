@@ -1,3 +1,22 @@
+/*
+    brute force:
+    - form all possible subarrays
+    - while allowing at most k zeros
+    - nested iterations
+    time = o(n^2)
+    space = o(1)
+
+    sliding window:
+    - subarrays / consecutive == sliding window
+    - maintain a counter for zeros
+    - if our window is invalid (zeros > allowed zeros )
+        - keep shrinking our window 1 by 1 from left
+        - if left int is a 0, decrement zeros counter
+    - once we have a valid window, take its size, save it as needed
+
+    time = o(2n) = o(n)
+    space = o(1)
+*/
 func longestOnes(nums []int, k int) int {
     n := len(nums)
     maxWindow := 0
