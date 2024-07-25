@@ -7,10 +7,10 @@
         - take win size and save its better than last
     - if we have a invalid window; len(idx) > 2
         - then shrink window while keeping the same size
-        - if the left char idx in our idx-map is same as left ptr
+        - if the left char idx in our idx-map comes before or at the position as left ptr
             - this char is being removed from our window
-            - therefore can we removed 
-
+            - therefore we can remove its idx from our idx-map
+            - because the position we are tracking is leaving our window
     time = o(n)
     space = o(1)
 
