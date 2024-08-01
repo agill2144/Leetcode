@@ -1,16 +1,16 @@
 func longestOnes(nums []int, k int) int {
-    zeros := 0
+    zerosDq := []int{}
     maxWin := 0
     left := 0
     for i := 0; i < len(nums); i++ {
         if nums[i] == 0 {
-            zeros++
+            zerosDq = append(zerosDq, i)
         }
-        for zeros > k {
-            if nums[left] == 0 {
-                zeros--
+        if len(zerosDq) > k {
+            if left <= zerosDq[0] {
+                left = zerosDq[0] + 1
+                zerosDq = zerosDq[1:]
             }
-            left++
         }
         maxWin = max(maxWin, i-left+1)
     }
