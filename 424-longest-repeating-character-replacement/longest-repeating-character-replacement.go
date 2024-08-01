@@ -7,14 +7,12 @@ func characterReplacement(s string, k int) int {
         freq[s[i]]++
         maxRepeating = max(maxRepeating, freq[s[i]])
         nonRepeating := (i-left+1)-maxRepeating
-        for nonRepeating > k {
+        if nonRepeating > k {
             freq[s[left]]--
             left++
-            maxRepeating := 0
-            for _, v := range freq {maxRepeating = max(maxRepeating, v)}
-            nonRepeating = (i-left+1)-maxRepeating
+        } else {
+            maxWin = max(maxWin, i-left+1)
         }
-        maxWin = max(maxWin, i-left+1)
     }
     return maxWin
 }
