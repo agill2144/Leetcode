@@ -16,7 +16,7 @@ func totalFruit(fruits []int) int {
                 }
             }
             // make sure left ptr has escaped the minIdx to make window valid
-            if left <= minIdx {left = minIdx+1}
+            left = minIdx+1
             // this fruit has left our window state
             // therefore can be removed
             delete(idx, minIdxFruit)
