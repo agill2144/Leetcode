@@ -1,3 +1,10 @@
+// pattern: let sliding window wrap around
+// dont use the right(i) ptr to stop the loop
+// if right(i) ptr reaches the end, wrap it around ( reset back to 0 )
+// use the left ptr to stop the loop
+// once left ptr reaches the end idx, it means we have used endIdx + [0:i] 
+// i.e we have used to wrap our window back to the front
+
 func minSwaps(nums []int) int {
     k := 0
     for i := 0; i < len(nums); i++ {
