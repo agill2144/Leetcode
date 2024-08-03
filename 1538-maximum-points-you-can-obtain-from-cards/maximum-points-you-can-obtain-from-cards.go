@@ -1,20 +1,41 @@
+// wrapping / circular winow : flowing from end and wrapping around from start
 func maxScore(cardPoints []int, k int) int {
-    total := 0
     n := len(cardPoints)
-    for i := 0; i < n; i++ {total += cardPoints[i]}
-    if k >= n {return total }
-    
-    invertedWindowSize := n-k
-    rSum := 0
-    left := 0
+    i := n-k
+    left := n-k
     maxPoints := 0
-    for i := 0; i < n; i++ {
-        rSum += cardPoints[i]
-        if i-left+1 == invertedWindowSize {
-            maxPoints = max(maxPoints, total - rSum)
-            rSum -= cardPoints[left]
+    sum := 0
+    for left <= n {
+        sum += cardPoints[i % n]
+        if i-left+1 == k {
+            maxPoints = max(maxPoints, sum)
+            if left == n {break}
+            sum -= cardPoints[left]
             left++
         }
+        i++        
     }
     return maxPoints
 }
+
+// inverted window
+// func maxScore(cardPoints []int, k int) int {
+//     total := 0
+//     n := len(cardPoints)
+//     for i := 0; i < n; i++ {total += cardPoints[i]}
+//     if k >= n {return total }
+
+//     invertedWindowSize := n-k
+//     rSum := 0
+//     left := 0
+//     maxPoints := 0
+//     for i := 0; i < n; i++ {
+//         rSum += cardPoints[i]
+//         if i-left+1 == invertedWindowSize {
+//             maxPoints = max(maxPoints, total - rSum)
+//             rSum -= cardPoints[left]
+//             left++
+//         }
+//     }
+//     return maxPoints
+// }
