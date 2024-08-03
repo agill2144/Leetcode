@@ -1,17 +1,12 @@
 func minMeetingRooms(intervals [][]int) int {
-    mn := &minHeap{items: []int{}}
-    sort.Slice(intervals, func(i,j int)bool{
+    sort.Slice(intervals, func(i, j int)bool{
         return intervals[i][0] < intervals[j][0]
     })
-
+    mn := &minHeap{items: []int{}}
     for i := 0; i < len(intervals); i++ {
-        start, end := intervals[i][0], intervals[i][1]
-        if len(mn.items) == 0 {
-            heap.Push(mn, end)
-            continue
-        }
-        earliestEndTime := mn.items[0]
-        if start >= earliestEndTime {
+        start := intervals[i][0]
+        end := intervals[i][1]
+        if mn.Len() != 0 && mn.items[0] <= start {
             heap.Pop(mn)
             heap.Push(mn, end)
         } else {
@@ -21,34 +16,26 @@ func minMeetingRooms(intervals [][]int) int {
     return len(mn.items)
 }
 
-/*
-    type Interface interface {
-        sort.Interface
-        Pop() int
-        Push(x int)
-    }
-*/  
+
 
 type minHeap struct {
-    items []int
-}
-func (m *minHeap) Len() int {
-    return len(m.items)
+	items []int
 }
 
 func (m *minHeap) Less(i, j int) bool {
-    return m.items[i] < m.items[j]
+	return m.items[i] < m.items[j]
 }
-
 func (m *minHeap) Swap(i, j int) {
-    m.items[i],m.items[j] = m.items[j], m.items[i]
+	m.items[i], m.items[j] = m.items[j], m.items[i]
 }
-
+func (m *minHeap) Len() int {
+	return len(m.items)
+}
 func (m *minHeap) Push(x interface{}) {
-    m.items = append(m.items, x.(int))
+	m.items = append(m.items, x.(int))
 }
 func (m *minHeap) Pop() interface{} {
-    out := m.items[len(m.items)-1]
-    m.items = m.items[:len(m.items)-1]
-    return out
+	out := m.items[len(m.items)-1]
+	m.items = m.items[:len(m.items)-1]
+	return out
 }
