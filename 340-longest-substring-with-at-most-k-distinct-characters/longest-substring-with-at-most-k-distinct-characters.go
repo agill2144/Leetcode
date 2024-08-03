@@ -1,18 +1,16 @@
 func lengthOfLongestSubstringKDistinct(s string, k int) int {
-    maxSize := 0
-    left := 0
+    // we are allowed at have <= k uniq chars in a window
     freq := map[byte]int{}
+    left := 0
+    maxWin := 0
     for i := 0; i < len(s); i++ {
         freq[s[i]]++
         for len(freq) > k {
-            leftChar := s[left]
-            freq[leftChar]--
-            if val := freq[leftChar]; val == 0 {
-                delete(freq, leftChar)
-            }
+            freq[s[left]]--
+            if freq[s[left]] == 0 {delete(freq, s[left])}
             left++
         }
-        maxSize = max(maxSize, i-left+1)
+        maxWin = max(maxWin, i-left+1)
     }
-    return maxSize
+    return maxWin
 }
