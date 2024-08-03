@@ -6,12 +6,14 @@ func maxScore(cardPoints []int, k int) int {
     maxPoints := 0
     sum := 0
     // <= n because we could not pick any cards from the back, and pick all from the front
-    // when when left == n; handle idx out of bound cases
+    // when when left == n; handle idx out of bound
+    // hence the if check in the middle
     for left <= n {
         sum += cardPoints[i % n]
         if i-left+1 == k {
             maxPoints = max(maxPoints, sum)
-            sum -= cardPoints[left%n]
+            if left == n {break}
+            sum -= cardPoints[left]
             left++
         }
         i++        
