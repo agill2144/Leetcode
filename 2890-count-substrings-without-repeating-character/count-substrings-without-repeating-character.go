@@ -1,3 +1,5 @@
+// time = o(n)
+// space = o(26) = o(1)
 func numberOfSpecialSubstrings(s string) int {
     idx := map[byte]int{}
     count := 0
