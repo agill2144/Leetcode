@@ -1,21 +1,18 @@
 func numberOfSpecialSubstrings(s string) int {
+    freq := map[byte]int{}
     count := 0
-    win := map[byte]int{}
     left := 0
     for i := 0; i < len(s); i++ {
-        char := s[i]
-        _, ok := win[char]
+        _, ok := freq[s[i]]
         for ok {
             leftChar := s[left]
-            win[leftChar]--
-            if win[leftChar] == 0 {
-                delete(win, leftChar)
-            }
+            freq[leftChar]--
+            if freq[leftChar] == 0 {delete(freq, leftChar)}
             left++
-            _, ok = win[char]
+            _, ok = freq[s[i]]
         }
-        win[char]++
-        count += i-left+1
+        freq[s[i]]++
+        count += (i-left+1)
     }
     return count
 }
