@@ -10,7 +10,8 @@ func maxFreq(s string, maxLetters int, minSize int, maxSize int) int {
             charFreq[leftChar]--
             if charFreq[leftChar] == 0 {delete(charFreq, leftChar)}
             left++
-        } else {        
+        } else {
+        
             for i-left+1 >= minSize && i-left+1 <= maxSize {
                 subStr := s[left:i+1]
                 subStrFreq[subStr]++
@@ -20,6 +21,7 @@ func maxFreq(s string, maxLetters int, minSize int, maxSize int) int {
                 if charFreq[leftChar] == 0 {delete(charFreq, leftChar)}
                 left++
             }
+
         }
     }
     return maxSubStrFreq
