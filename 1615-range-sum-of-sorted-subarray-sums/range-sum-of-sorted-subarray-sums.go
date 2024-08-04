@@ -1,3 +1,4 @@
+// the brute force works....
 func rangeSum(nums []int, n int, left int, right int) int {
     sums := []int{}
     for i := 0; i < n; i++ {
