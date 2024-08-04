@@ -1,3 +1,34 @@
+/*
+    have heap create all subarrays sum
+    - heap contains [sum, idx]
+        - where sum is the sum of subarray ending at idx
+        - does not matter where it started from
+    - push 1 size subarray into a minHeap first
+        - their sum will always be their own value
+        - [1,2,3,4] -> [1], [2], [3], [4] are the 1 size subarrays
+        - into heap -> [1,0], [2,1], [3,2], [4,3]
+        - [sum, idx]
+    - This is minHeap, meaning the smallest sum is at the top
+    - therefore pop and process the top element
+    - and increase the popped subarray size
+        - popped = [1,0] ; [$sum, $idx]
+        - expand this subarray by including the value of next idx 
+        - new subarray sum = [3, 1] ; 
+            - prevSum = 1; prevIdx = 0
+            - nextIdx value = 2, nextIdx = 1
+            - new pair = [$prevSum+$nextVal , $prevIdx+1]
+            - therefore push this pair [3,1] back into the minHeap
+    - we keep processing until we have popped and seen $right count of items
+    - we can do the above ^ by maintaining a counter starting at 0
+    - so keep processing heap while count < right
+    - while processing heap, we can either push sums into a new tmp array
+    - or check whether this item is in the range of left and right idx
+        - count >= left and count <= right
+        - if yes, add to our ans sum, do the mod    
+    - the latter is better
+    - time = o(n^2 logn)
+    - space = o(n)
+*/
 func rangeSum(nums []int, n int, left int, right int) int {
     count := 0
     mn := &minHeap{items: [][]int{}}
