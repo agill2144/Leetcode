@@ -5,6 +5,8 @@ func rangeSum(nums []int, n int, left int, right int) int {
         item := []int{nums[i], i}
         heap.Push(mn, item)
     }
+    ans := 0
+    mod := 1000000007
     tmp := []int{}
     for count < right {
         item := heap.Pop(mn).([]int) // [sum, idx]
@@ -15,11 +17,9 @@ func rangeSum(nums []int, n int, left int, right int) int {
         if idx + 1 < len(nums) {
             heap.Push(mn, []int{sum+nums[idx+1], idx+1})
         }
+        if count >= left && count <= right {ans = (ans+sum)% mod }
     }
-    sum := 0
-    mod := 1000000007
-    for i := left-1; i < right; i++ {sum = (sum + tmp[i]) % mod }
-    return sum
+    return ans
 
 }
 
