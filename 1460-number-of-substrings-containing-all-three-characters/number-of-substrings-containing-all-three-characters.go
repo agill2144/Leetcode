@@ -8,11 +8,12 @@ func countLessThanOrEqualTo(s string, k int) int {
     freq := map[byte]int{}
     for i := 0; i < len(s); i++ {
         freq[s[i]]++
-        for len(freq) > k {
+        if k != 3 {for len(freq) > k {
             leftChar := s[left]
             freq[leftChar]--
             if freq[leftChar] == 0 {delete(freq, leftChar)}
             left++
+        }
         }
         count += (i-left+1)
     }
