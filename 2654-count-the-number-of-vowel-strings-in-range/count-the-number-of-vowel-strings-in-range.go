@@ -3,14 +3,13 @@ func vowelStrings(words []string, left int, right int) int {
     for i := left; i <= right; i++ {
         if isVowelWord(words[i]) {count++}
     }
+    // time = o(right-left+1)
     return count
 }
 
 func isVowelWord(word string) bool {
-    vowels := map[byte]struct{}{
-        'a': {}, 'e': {}, 'i':{}, 'o':{}, 'u':{},
+    vowels := map[byte]bool{
+        'a': true, 'e': true, 'i':true, 'o':true, 'u':true,
     }
-    _, ok := vowels[word[0]]
-    _, ok2 := vowels[word[len(word)-1]]
-    return ok && ok2
+    return vowels[word[0]] && vowels[word[len(word)-1]]
 }
