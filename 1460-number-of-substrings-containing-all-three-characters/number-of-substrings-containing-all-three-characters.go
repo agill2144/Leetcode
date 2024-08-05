@@ -9,7 +9,7 @@ func numberOfSubstrings(s string) int {
         if s[i] == 'a' {a++}
         if s[i] == 'b' {b++}
         if s[i] == 'c' {c++}
-        for a >= 1 && b >= 1 && c >= 1 {
+        for a > 0 && b > 0 && c > 0 {
             count += (n-1-i+1)
             if s[left] == 'a' {a--}
             if s[left] == 'b' {b--}
