@@ -1,5 +1,8 @@
 func numberOfSubstrings(s string) int {
-    return countLessThanOrEqualTo(s, 3) - countLessThanOrEqualTo(s, 2)
+    k := 3
+    n := len(s)
+    total := n*(n+1)/2
+    return total - countLessThanOrEqualTo(s, k-1)
 }
 
 func countLessThanOrEqualTo(s string, k int) int {
