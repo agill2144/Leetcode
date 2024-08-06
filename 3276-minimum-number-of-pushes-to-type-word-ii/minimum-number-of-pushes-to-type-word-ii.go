@@ -14,12 +14,10 @@ func minimumPushes(word string) int {
     
     keyPad := map[int][]byte{}
     digit := 2
-    charToDigit := map[byte][]int{} // {$char: [$digit, $idxInDigitArr]}
     total := 0
     for i := 0; i < len(freqArr); i++ {
         if digit > 9 {digit = 2}
         keyPad[digit] = append(keyPad[digit], freqArr[i].char)
-        charToDigit[freqArr[i].char] = []int{digit, len(keyPad[digit])-1}
         times := len(keyPad[digit])
         total += (freqArr[i].freq * times)
         digit++
