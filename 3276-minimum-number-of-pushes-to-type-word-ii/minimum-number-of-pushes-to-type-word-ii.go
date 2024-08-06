@@ -12,13 +12,13 @@ func minimumPushes(word string) int {
         return freqArr[i].freq > freqArr[j].freq
     })
     
-    keyPad := map[int][]byte{}
+    keyPad := map[int]int{} 
     digit := 2
     total := 0
     for i := 0; i < len(freqArr); i++ {
         if digit > 9 {digit = 2}
-        keyPad[digit] = append(keyPad[digit], freqArr[i].char)
-        times := len(keyPad[digit])
+        keyPad[digit]++
+        times := keyPad[digit]
         total += (freqArr[i].freq * times)
         digit++
     }
