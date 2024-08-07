@@ -22,7 +22,6 @@ func maxCount(banned []int, n int, maxSum int64) int {
             if b <= mid {
                 totalSum -= int64(b)
                 count--
-                if count == 0 {break}
             }
         }
         
