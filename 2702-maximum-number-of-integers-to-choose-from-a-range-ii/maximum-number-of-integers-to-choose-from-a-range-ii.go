@@ -1,4 +1,7 @@
 func maxCount(banned []int, n int, maxSum int64) int {    
+    // we have to moved banned to a set
+    // because there could be duplicate numbers
+    // and a banned number that appears twice; should only be used once!
     set := map[int]struct{}{}
     for _, e := range banned {set[e] = struct{}{}}
 
@@ -23,9 +26,8 @@ func maxCount(banned []int, n int, maxSum int64) int {
             }
         }
         
-        // If the adjusted sum is within the maxSum, update maxCount and move right
         // because mid defines we picked $mid numbers
-        // and if this sum worked, we can increase the number of numbers to pick
+        // and if this sum worked ( sum <= maxSum ), we can increase the number of numbers to pick
         // therefore increase mid ;left = mid+1
         if totalSum <= maxSum {
             maxCount = count
