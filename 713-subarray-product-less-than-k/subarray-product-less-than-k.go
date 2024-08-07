@@ -1,4 +1,5 @@
 func numSubarrayProductLessThanK(nums []int, k int) int {
+    if k == 0 {return 0}
     count := 0
     left := 0
     prod := 1
