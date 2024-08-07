@@ -1,3 +1,13 @@
+// time = o(b) + o(logn)
+// space = o(b)
+// binary search on answers; we have to pick x numbers from range 1 to n
+// we can pick 1, 2 ,3,4 or 5 numbers 
+// this range is known and is a sorted range
+// therefore mid = number of elemets we picked 
+// how do we know if mid is valid?
+// if the sum of all numbers from 1 to mid <= maxSum ( after remove banned numbers )
+// if mid is valid, it means we can pick more numbers; therefore left = mid+1
+// otherwise search left; right = mid-1
 func maxCount(banned []int, n int, maxSum int64) int {    
     // we have to moved banned to a set
     // because there could be duplicate numbers
