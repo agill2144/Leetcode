@@ -1,25 +1,31 @@
+// two pointers
 func maxCount(banned []int, n int, maxSum int64) int {
+    // sort the banned array
     sort.Ints(banned)
-    
+
+    // we want to to maximize the number of integers we picked
+    // therefore start from 1 and go to n
+    // starting with smaller number increases the amount of integers we choose
+    // therefore.
+    // we are allowed to pick numbers from 1 to n ( inclusive )
+    // now using 2 ptrs, we can check if ith num == banned[ptr]
+    // if yes, we can skip it
+    bPtr := 0
+    var rSum int64 = 0
     count := 0
-    currentSum := int64(0)
-    bannedIndex := 0
-    
     for i := 1; i <= n; i++ {
-        // Skip if i is in the banned list
-        if bannedIndex < len(banned) && banned[bannedIndex] == i {
-            bannedIndex++
+        if bPtr < len(banned) && i == banned[bPtr] {
+            // cannot use this number
+            bPtr++
             continue
         }
-        
-        // Check if adding i would exceed maxSum
-        if currentSum+int64(i) > maxSum {
-            break
-        }
-        
-        currentSum += int64(i)
+
+        // if after adding we exceed the maxSum, break and dont choose this number
+        if int64(i) + rSum > maxSum {break}
+
+        // can use this number
+        rSum += int64(i)
         count++
     }
-    
     return count
 }
