@@ -5,7 +5,7 @@ func equalSubstring(s string, t string, maxCost int) int {
     for i := 0; i < len(s); i++ {
         diff := abs(int(s[i]-'a') - int(t[i]-'a'))
         rCost += diff
-        for rCost > maxCost {
+        for rCost > maxCost && left <= i {
             leftCost := abs(int(s[left]-'a') - int(t[left]-'a'))
             rCost -= leftCost
             left++
