@@ -1,27 +1,18 @@
 func maxSatisfied(customers []int, grumpy []int, minutes int) int {
     satisfied := 0
-    for i := 0; i < len(customers); i++ {
-        if grumpy[i] == 0 {satisfied += customers[i]}
-    }
-    left := 0 
-    c := 0
-    maxC := 0
-    for i := 0; i < len(customers); i++ {
-        if grumpy[i] == 1 {c += customers[i] }
+    n := len(customers)
+    for i := 0; i < n; i++ {if grumpy[i] == 0 {satisfied += customers[i]}}    
+
+    left := 0
+    maxCustomers := 0
+    count := 0 // count number of customers in $minutes window when the store owner is grumpy
+    for i := 0; i < n; i++ {
+        if grumpy[i] == 1 {count += customers[i]}
         if i-left+1 == minutes {
-            maxC = max(maxC, c)
-            if grumpy[left] == 1 {c -= customers[left]}
+            maxCustomers = max(maxCustomers, count)
+            if grumpy[left] == 1 {count -= customers[left]}
             left++
         }
     }
-
-    return satisfied + maxC
+    return satisfied + maxCustomers
 }
-
-/*
-1,0,1,2,1,1,7,5
-0,1,0,1,0,1,0,1
-
-7,1,1,1 = 10
-
-*/
