@@ -21,9 +21,9 @@ func isValid(r, c int, grid [][]int) bool {
     rowSum := -1 // not yet identified
     colSum := -1 // not yet identified
     set := map[int]struct{}{}
-    for i := r; i <= r+2; i++ {
+    for i := r; i <= r+2; i++ { // o(3)
         rSum := 0
-        for j := c; j <= c+2; j++ {
+        for j := c; j <= c+2; j++ { // o(3)
             if _, ok := set[grid[i][j]]; ok {return false}
             if grid[i][j] < 1 || grid[i][j] > 9 {return false}
             rSum += grid[i][j]
@@ -33,9 +33,9 @@ func isValid(r, c int, grid [][]int) bool {
         if rSum != rowSum {return false}
     }
 
-    for j := c; j <= c+2; j++ {
+    for j := c; j <= c+2; j++ { // o(3)
         cSum := 0
-        for i := r; i <= r+2; i++ {
+        for i := r; i <= r+2; i++ { // o(3)
             cSum += grid[i][j]
         }      
         if colSum == -1 {colSum = cSum}
@@ -45,7 +45,7 @@ func isValid(r, c int, grid [][]int) bool {
 
     lrSum := 0
     lrr := r; lrc := c
-    for lrr <= r+2 && lrc <= c+2 {
+    for lrr <= r+2 && lrc <= c+2 { // o(3)
         lrSum += grid[lrr][lrc]
         lrr++
         lrc++
@@ -53,11 +53,10 @@ func isValid(r, c int, grid [][]int) bool {
 
     rlSum := 0
     rlr := r; rlc := c+2
-    for rlr <= r+2 && rlc <= c+2 {
+    for rlr <= r+2 && rlc <= c+2 { // o(3)
         rlSum += grid[rlr][rlc]
         rlr++
         rlc--
     }
-    fmt.Println(r, c, lrSum, rlSum, colSum, rowSum)
-    return lrSum == rlSum && rlSum == rowSum && rowSum == colSum
+    return lrSum == rlSum && rlSum == rowSum 
 }
