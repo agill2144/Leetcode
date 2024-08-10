@@ -16,7 +16,6 @@ func longestPalindrome(s string) string {
 
         if s[i] == s[j] && dfs(i+1, j-1) {
             memo[i][j] = true
-            return true
         } else {
             memo[i][j] = false
         }
