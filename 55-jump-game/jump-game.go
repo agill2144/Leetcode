@@ -1,10 +1,9 @@
 func canJump(nums []int) bool {
-    n := len(nums)
-    jumpToIdx := n-1
-    for i := n-2; i >= 0; i-- {
-        if i + (nums[i]) >= jumpToIdx {
-            jumpToIdx = i
-        }
+    maxIdx := 0
+    i := 0
+    for i <= maxIdx && i < len(nums) {
+        maxIdx = max(maxIdx, i+nums[i])
+        i++
     }
-    return jumpToIdx == 0
+    return maxIdx >= len(nums)-1
 }
