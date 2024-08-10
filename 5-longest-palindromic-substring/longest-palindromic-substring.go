@@ -4,7 +4,6 @@ func longestPalindrome(s string) string {
     for i := range memo {
         memo[i] = make([]bool, n)
     }
-
     var dfs func(i, j int) bool
     dfs = func(i, j int) bool {
         if i >= j {
@@ -18,9 +17,11 @@ func longestPalindrome(s string) string {
         if s[i] == s[j] && dfs(i+1, j-1) {
             memo[i][j] = true
             return true
+        } else {
+            memo[i][j] = false
         }
 
-        return false
+        return memo[i][j]
     }
 
     maxSize := 0
