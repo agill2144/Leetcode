@@ -1,26 +1,29 @@
 func longestPalindrome(s string) string {
     n := len(s)
-    memo := make([][]bool, n)
+    memo := make([][]*bool, n)
     for i := range memo {
-        memo[i] = make([]bool, n)
+        memo[i] = make([]*bool, n)
     }
+
     var dfs func(i, j int) bool
     dfs = func(i, j int) bool {
         if i >= j {
             return true
         }
 
-        if memo[i][j] {
-            return true
+        if memo[i][j] != nil {
+            return *memo[i][j]
         }
 
         if s[i] == s[j] && dfs(i+1, j-1) {
-            memo[i][j] = true
+            result := true
+            memo[i][j] = &result
         } else {
-            memo[i][j] = false
+            result := false
+            memo[i][j] = &result
         }
 
-        return memo[i][j]
+        return *memo[i][j]
     }
 
     maxSize := 0
