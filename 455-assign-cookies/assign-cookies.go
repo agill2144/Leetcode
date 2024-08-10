@@ -1,17 +1,19 @@
-func findContentChildren(g []int, s []int) int {
-    sort.Ints(g)
-    sort.Ints(s)
-    cPtr := 0
-    i := 0
-    count := 0
-    for i < len(g) && cPtr < len(s){
-        if s[cPtr] >= g[i] {
-            count++
-            cPtr++
-            i++
+func findContentChildren(greed []int, size []int) int {
+    sort.Ints(greed)
+    sort.Ints(size)
+
+    g := 0
+    s := 0
+    for s < len(size) && g < len(greed) {
+        cookieSize := size[s]
+        greedFactor := greed[g]
+        if greedFactor <= cookieSize {
+            g++
+            s++
         } else {
-            cPtr++
+            s++
         }
     }
-    return count
+    return g
+
 }
