@@ -1,12 +1,12 @@
 func subarraysWithKDistinct(nums []int, k int) int {
     if k == 0 {return 0}
-    return countLessThanOrEqualTo(nums, k) - countLessThanOrEqualTo(nums, k-1)
+    return atMostK(nums, k) - atMostK(nums, k-1)    
 }
 
-func countLessThanOrEqualTo(nums []int, k int) int {
-    freq := map[int]int{}
-    left := 0
+func atMostK(nums []int, k int) int {
     count := 0
+    left := 0
+    freq := map[int]int{}
     for i := 0; i < len(nums); i++ {
         freq[nums[i]]++
         for len(freq) > k {
