@@ -1,33 +1,27 @@
 func longestOnes(nums []int, k int) int {
-    ones := 0
-    maxWin := 0
+    zeros := 0
     left := 0
+    maxWin := 0
     for i := 0; i < len(nums); i++ {
-        if nums[i] == 1 {ones++}
-        size := i-left+1
-        zeros := size-ones
+        if nums[i] == 0 {zeros++}
         if zeros <= k {
             maxWin = max(maxWin, i-left+1)
         } else {
-            if nums[left] == 1 {ones--}
+            if nums[left] == 0 {zeros--}
             left++
         }
     }
     return maxWin
 }
 // func longestOnes(nums []int, k int) int {
-//     ones := 0
-//     maxWin := 0
+//     zeros := 0
 //     left := 0
+//     maxWin := 0
 //     for i := 0; i < len(nums); i++ {
-//         if nums[i] == 1 {ones++}
-//         size := i-left+1
-//         zeros := size-ones
+//         if nums[i] == 0 {zeros++}
 //         for zeros > k {
-//             if nums[left] == 1 {ones--}
+//             if nums[left] == 0 {zeros--}
 //             left++
-//             size = i-left+1
-//             zeros = size-ones
 //         }
 //         maxWin = max(maxWin, i-left+1)
 //     }
