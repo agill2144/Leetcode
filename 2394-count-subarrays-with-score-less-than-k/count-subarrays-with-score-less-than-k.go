@@ -1,17 +1,17 @@
 func countSubarrays(nums []int, k int64) int64 {
-    // score = sum of all elements in window * len of window
-    var count int64
+    count := 0
     left := 0
-    sum := 0
+    rSum := 0 
     for i := 0; i < len(nums); i++ {
-        sum += nums[i]
-        score := int64(sum) * int64(i-left+1)
-        for score >= k {
-            sum -= nums[left]
+        rSum += nums[i]
+        score := rSum * (i-left+1)
+        for int64(score) >= k {
+            rSum -= nums[left]
             left++
-            score = int64(sum) * int64(i-left+1)
+            score = rSum * (i-left+1)            
         }
-        count += int64(i-left+1)
+        count += (i-left+1)
     }
-    return count
+    return int64(count)
 }
+
