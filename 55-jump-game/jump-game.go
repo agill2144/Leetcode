@@ -7,7 +7,9 @@ func canJump(nums []int) bool {
         if start >= len(nums)-1 {return true}
 
         // logic
-        // if memo[start] != nil {return *memo[start]}
+
+        // when we are at node with value 0
+        // its impossible to reach end from here
         if nums[start] == 0 { return false }
 
         for k := nums[start]; k >= 1 ; k-- {
