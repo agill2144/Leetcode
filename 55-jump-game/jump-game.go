@@ -1,3 +1,4 @@
+// top down memo
 func canJump(nums []int) bool {
     var dfs func(start int) bool
     memo := map[int]*bool{}
@@ -6,8 +7,7 @@ func canJump(nums []int) bool {
         if start >= len(nums)-1 {return true}
 
         // logic
-        val2, ok2 := memo[start]
-        if ok2 {return *val2}
+        if memo[start] != nil {return *memo[start]}
         if nums[start] == 0 { return false }
 
         for k := nums[start]; k >= 1 ; k-- {
