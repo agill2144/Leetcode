@@ -7,16 +7,20 @@ func canJump(nums []int) bool {
         if start >= len(nums)-1 {return true}
 
         // logic
-        if memo[start] != nil {return *memo[start]}
+        // if memo[start] != nil {return *memo[start]}
         if nums[start] == 0 { return false }
 
         for k := nums[start]; k >= 1 ; k-- {
-            val, ok := memo[start+k]
-            if !ok {
+            if memo[start+k] == nil {
+                // we dont have an answer for start+k
+                // compute it and save it
                 memo[start+k] = toPtrBool(dfs(start+k))
-                if *memo[start+k] {return true} 
+                // exit early if we were able to reach
+                if *memo[start+k] {return true}
             } else {
-                return *val
+                // if we do have an answer saved for start+k
+                // return whatever that saved ans is
+                return *memo[start+k]
             }
         }
         return false
