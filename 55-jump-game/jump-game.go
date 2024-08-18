@@ -1,9 +1,10 @@
 func canJump(nums []int) bool {
-    maxIdx := 0
+    farthestIdx := 0
     i := 0
-    for i <= maxIdx && i < len(nums) {
-        maxIdx = max(maxIdx, i+nums[i])
+    n := len(nums)
+    for i < n && i <= farthestIdx {
+        farthestIdx = max(farthestIdx, i+nums[i])
         i++
     }
-    return maxIdx >= len(nums)-1
+    return farthestIdx >= n-1
 }
