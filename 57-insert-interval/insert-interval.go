@@ -2,12 +2,10 @@ func insert(intervals [][]int, newInterval []int) [][]int {
     n := len(intervals)
     if n == 0 {return [][]int{newInterval}}
     idx := binarySearch(intervals, newInterval[0])
-    
     tmp := [][]int{}
-    i := 0
-    for i < idx {tmp = append(tmp, intervals[i]);i++}
+    tmp = append(tmp, intervals[:idx]...)
     tmp = append(tmp, newInterval)
-    for i < len(intervals) {tmp = append(tmp, intervals[i]); i++}
+    tmp = append(tmp, intervals[idx:]...)
     
     out := [][]int{}
     for i := 0; i < len(tmp); i++ {
