@@ -1,47 +1,40 @@
 func insert(intervals [][]int, newInterval []int) [][]int {
-    n := len(intervals)
-    if n == 0 {return [][]int{newInterval}}
     idx := binarySearch(intervals, newInterval[0])
     tmp := [][]int{}
     tmp = append(tmp, intervals[:idx]...)
     tmp = append(tmp, newInterval)
     tmp = append(tmp, intervals[idx:]...)
-    
-    out := [][]int{}
-    for i := 0; i < len(tmp); i++ {
-        if len(out) != 0 && tmp[i][0] <= out[len(out)-1][1] {
-            out[len(out)-1][0] = min(tmp[i][0], out[len(out)-1][0])
-            out[len(out)-1][1] = max(tmp[i][1], out[len(out)-1][1])
+    merged := [][]int{tmp[0]}
+    for i := 1; i < len(tmp); i++ {
+        start, end := tmp[i][0], tmp[i][1]
+        prevStart, prevEnd := merged[len(merged)-1][0], merged[len(merged)-1][1]
+        if start <= prevEnd {
+            merged[len(merged)-1][0] = min(start, prevStart)
+            merged[len(merged)-1][1] = max(end, prevEnd)
         } else {
-            out = append(out, tmp[i])
+            merged = append(merged, tmp[i])
         }
     }
-    return out
+    return merged
 }
 
 func binarySearch(intervals [][]int, target int) int {
-    // 1,3,6,9,10 ; target 2 -> return idx 1 ( rightmost number on left side of target )
-    // 6,7,8,9; target 2 -> return idx 0
-    // 1,2,3; target 5 -> return 2
-
+    n := len(intervals)
+    if n == 0 || target < intervals[0][0] {
+        return 0
+    }
     left := 0
-    right := len(intervals)-1
-    ans := -1
+    right := n-1
+    idx := -1
     for left <= right {
         mid := left + (right-left)/2
-        start := intervals[mid][0]
-        if start <= target {
-            ans = mid
-            // keep searching right because we want the rightmost value on the left side of target
+        val := intervals[mid][0]
+        if val < target {
+            idx = mid
             left = mid+1
-        }  else {
+        } else {
             right = mid-1
         }
     }
-
-    // why +1 ?
-    // because with above binary search, we found the rightmost idx on left side target
-    // but we need to insert the new interval just after this idx position
-    // therefore +1 ; to indicate that this is the idx position to insert at
-    return ans+1
-}  
+    return idx+1
+}
