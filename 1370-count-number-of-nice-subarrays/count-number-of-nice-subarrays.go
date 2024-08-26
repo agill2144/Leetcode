@@ -1,14 +1,18 @@
 func numberOfSubarrays(nums []int, k int) int {
-    oddCounts := map[int]int{0:1}
+    return atMostK(nums, k) - atMostK(nums, k-1)    
+}
+
+func atMostK(nums []int, k int) int {
+    count := 0
     rCount := 0
-    total := 0
+    left := 0
     for i := 0; i < len(nums); i++ {
-        if nums[i] % 2 != 0 {
-            rCount++
+        if nums[i] % 2 != 0 {rCount++}
+        for rCount > k {
+            if nums[left] % 2 != 0 {rCount--}
+            left++
         }
-        diff := rCount - k
-        total += oddCounts[diff]
-        oddCounts[rCount]++
+        count += (i-left+1)
     }
-    return total
+    return count
 }
