@@ -7,17 +7,13 @@ func characterReplacement(s string, k int) int {
         freq[s[i]]++
         majority = max(majority, freq[s[i]])
         size := i-left+1
-        for size-majority > k {
+        if size-majority <= k {
+            ans = max(ans, size)
+        } else {
             leftChar := s[left]
             freq[leftChar]--
-            if freq[leftChar] == 0 {delete(freq, leftChar)}
             left++
-            size = i-left+1
-            majority = -1
-            for _, v := range freq {majority = max(majority, v)}
         }
-
-        ans = max(ans, size)
     }
     return ans
 }
