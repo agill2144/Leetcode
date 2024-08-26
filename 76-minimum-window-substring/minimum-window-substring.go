@@ -6,9 +6,7 @@ func minWindow(s string, t string) string {
     minWin := len(s)+1
     minStr := ""
     left := 0
-    freq := map[byte]int{}
     for i := 0; i < len(s); i++ {
-        freq[s[i]]++
         _, ok := tMap[s[i]]
         if ok {
             tMap[s[i]]--
@@ -21,7 +19,6 @@ func minWindow(s string, t string) string {
             }
             minWin = min(minWin, i-left+1)
             leftChar := s[left]
-            freq[leftChar]++
             if _, ok := tMap[leftChar]; ok {
                 tMap[leftChar]++
                 if tMap[leftChar] == 1 {fm--}
