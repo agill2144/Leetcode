@@ -1,3 +1,11 @@
+// we want to know whether islands in grid2 are also islands in grid1
+// use dfs to find connected lands in grid2
+// and keep making sure that grid1 at specific r,c is also a land
+// if a pariticular land does not exist in grid1, then turn some flag that indicates
+// this specific connected-land does not exist in grid1, therefore not a subisland
+// therefore only count when that state/flag says so
+// time = o(mn)
+// space = o(1)
 func countSubIslands(grid1 [][]int, grid2 [][]int) int {
     m := len(grid1)
     n := len(grid1[0])    
