@@ -6,21 +6,25 @@ func maxProbability(n int, edges [][]int, succProb []float64, start_node int, en
         adjList[v] = append(adjList[v], []float64{u,w})
     }
     probs := make([]float64, n)
-    pq := &maxHeap{items: [][]float64{{float64(start_node), 1.0}}}
-    probs[start_node] = 1.0
+    pq := &maxHeap{items: [][]float64{}}
+    heap.Push(pq, []float64{float64(start_node),1.0})
+    destNode := float64(end_node)
     for pq.Len() != 0 {
-        dq := heap.Pop(pq).([]float64)
-        currNode := dq[0]
-        currProb := dq[1]
-        if currNode == float64(end_node) {return currProb}
+        top := heap.Pop(pq).([]float64)
+        currNode := top[0]
+        currW := top[1]
+        if currNode == destNode {return currW}
         for _, nei := range adjList[currNode] {
-            if currProb*nei[1] > probs[int(nei[0])] {
-                probs[int(nei[0])] = currProb*nei[1]
-                heap.Push(pq, []float64{nei[0], currProb*nei[1]})
+            neiNode := nei[0]
+            neiWeight := currW * nei[1]
+            if neiWeight > probs[int(neiNode)] {
+                probs[int(neiNode)] = neiWeight
+                heap.Push(pq, []float64{neiNode,neiWeight})
             }
-        }
+        } 
     }
     return 0.0
+
 }
 
 
@@ -39,3 +43,4 @@ func (m *maxHeap) Pop() interface{} {
     m.items = m.items[:len(m.items)-1]
     return out
 }
+
