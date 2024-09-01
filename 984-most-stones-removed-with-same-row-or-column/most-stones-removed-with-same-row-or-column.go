@@ -1,16 +1,20 @@
+// stoneX is part of stoneY (in a connected component context)
+// if stoneX share the same row or col with stoneY
+// therefore the adjList: {stoneXIdx: stoneYIdx} 
 func removeStones(stones [][]int) int {
     adjList := map[int][]int{}
     for i := 0; i < len(stones); i++ {
-        parentR, parentC := stones[i][0], stones[i][1]
+        pRow, pCol := stones[i][0], stones[i][1]
         for j := 0; j < len(stones); j++ {
             if i == j {continue}
-            childR, childC := stones[j][0], stones[j][1]
-            if childR == parentR  || childC == parentC {
+            currRow, currCol := stones[j][0], stones[j][1]
+            if currRow == pRow || currCol == pCol {
                 adjList[i] = append(adjList[i], j)
                 adjList[j] = append(adjList[j], i)
             }
         }
     }
+
     visited := map[int]bool{}
     var dfs func(node int)
     dfs = func(node int) {
@@ -21,13 +25,14 @@ func removeStones(stones [][]int) int {
         for _, nei := range adjList[node] {
             dfs(nei)
         }
-    }
-    count := 0
+    }    
+    
+    connectedCompCount := 0
     for i := 0; i < len(stones); i++ {
         if !visited[i] {
             dfs(i)
-            count++
+            connectedCompCount++
         }
     }
-    return len(stones)-count
+    return len(stones) - connectedCompCount
 }
