@@ -5,7 +5,6 @@ func insert(intervals [][]int, newInterval []int) [][]int {
     tmp = append(tmp, intervals[:insertIdx]...)
     tmp = append(tmp, newInterval)
     tmp = append(tmp, intervals[insertIdx:]...)
-    fmt.Println(tmp)
     out := [][]int{tmp[0]}
     for i := 1; i < len(tmp); i++ {
         start, end := tmp[i][0], tmp[i][1]
