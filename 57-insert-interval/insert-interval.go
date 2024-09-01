@@ -1,40 +1,40 @@
 func insert(intervals [][]int, newInterval []int) [][]int {
-    idx := binarySearch(intervals, newInterval[0])
+    if len(intervals) == 0 {return [][]int{newInterval}}
+    insertIdx := binarySearch(intervals, newInterval[0])
     tmp := [][]int{}
-    tmp = append(tmp, intervals[:idx]...)
+    tmp = append(tmp, intervals[:insertIdx]...)
     tmp = append(tmp, newInterval)
-    tmp = append(tmp, intervals[idx:]...)
-    merged := [][]int{tmp[0]}
+    tmp = append(tmp, intervals[insertIdx:]...)
+    fmt.Println(tmp)
+    out := [][]int{tmp[0]}
     for i := 1; i < len(tmp); i++ {
         start, end := tmp[i][0], tmp[i][1]
-        prevStart, prevEnd := merged[len(merged)-1][0], merged[len(merged)-1][1]
+        prevEnd := out[len(out)-1][1]
         if start <= prevEnd {
-            merged[len(merged)-1][0] = min(start, prevStart)
-            merged[len(merged)-1][1] = max(end, prevEnd)
+            out[len(out)-1][1] = max(prevEnd, end)
         } else {
-            merged = append(merged, tmp[i])
+            out = append(out, tmp[i])
         }
     }
-    return merged
+    return out
 }
 
 func binarySearch(intervals [][]int, target int) int {
-    n := len(intervals)
-    if n == 0 || target < intervals[0][0] {
-        return 0
-    }
+    if target < intervals[0][0] {return 0}
+    if target > intervals[len(intervals)-1][0] {return len(intervals)}
+    // right most value on left side of target
     left := 0
-    right := n-1
-    idx := -1
+    right := len(intervals)-1
+    ans := 0
     for left <= right {
         mid := left + (right-left)/2
         val := intervals[mid][0]
-        if val < target {
-            idx = mid
-            left = mid+1
-        } else {
+        if val > target {
             right = mid-1
+        } else {
+            ans = mid
+            left = mid+1
         }
     }
-    return idx+1
+    return ans+1
 }
