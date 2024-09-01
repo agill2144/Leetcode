@@ -1,29 +1,29 @@
 func vowelStrings(words []string, queries [][]int) []int {
-    prefixCounts := make([]int, len(words))
+    n := len(words)
+    prefixCounts := make([]int, n)
     for i := 0; i < len(words); i++ {
+        count := 0
+        if i-1 >= 0 {count = prefixCounts[i-1]}
         if isVowel(words[i]) {
-            count := 1
-            if i-1 >= 0 {count += prefixCounts[i-1]}
-            prefixCounts[i] = count
-        } else {
-            if i-1 >= 0 {prefixCounts[i] = prefixCounts[i-1]}            
+            count++
         }
+        prefixCounts[i] = count
     }
-    out := make([]int, len(queries))
+    out := []int{}
     for i := 0; i < len(queries); i++ {
-        start := queries[i][0]
-        end := queries[i][1]
-        x := prefixCounts[end]
-        y := 0
-        if start - 1 >= 0 { y = prefixCounts[start-1] }
-        out[i] = x-y
-    }
+        left := queries[i][0]
+        right := queries[i][1]
+        fullCount := prefixCounts[right]
+        leftCount := 0
+        if left-1 >= 0 {leftCount = prefixCounts[left-1]}
+        out = append(out, fullCount-leftCount)
+    }        
     return out
 }
 
 func isVowel(word string) bool {
-    char1 := word[0]
-    char2 := word[len(word)-1]
-    vowels := map[byte]bool{'a':true,'e':true,'i':true,'o':true,'u':true}
-    return vowels[char1] && vowels[char2]
+    vMap := map[byte]bool{
+        'a':true,'e':true,'i':true,'o':true,'u':true,
+    }
+    return vMap[word[0]] && vMap[word[len(word)-1]]
 }
