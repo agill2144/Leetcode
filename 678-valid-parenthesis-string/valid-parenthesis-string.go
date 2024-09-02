@@ -1,21 +1,24 @@
 func checkValidString(s string) bool {
-    openParanSt := []int{} // idx of open parans
-    asterikSt := []int{} // idx of asteriks
+    open := []int{} // idx of open parans
+    asterik := []int{} // idx of asteriks
     for i := 0; i < len(s); i++ {
         char := s[i]
         if char == '(' {
-            openParanSt = append(openParanSt, i)
+            open = append(open, i)
         } else if char == '*' {
-            asterikSt = append(asterikSt, i)
+            asterik = append(asterik, i)
         } else if char == ')' {
-            if len(openParanSt) > 0 {
-                openParanSt = openParanSt[:len(openParanSt)-1]
-            } else if len(asterikSt) > 0 {
+            if len(open) > 0 {
+                open = open[:len(open)-1]
+            } else if len(asterik) > 0 {
                 // use last-seen / prev asterik to create a open paran for 
                 // this closing paran
                 // essentially, replace last seen asterik as a open-paran
-                asterikSt = asterikSt[:len(asterikSt)-1]
+                asterik = asterik[:len(asterik)-1]
             } else {
+                // too many closing parans without an asterik or a open paran
+                // therefore never possible to make this closing paran balanced
+                // therefore return false
                 return false
             }
         }
@@ -25,13 +28,13 @@ func checkValidString(s string) bool {
     // process those as much as possible
     // in this case, we are trying to close open parans
     // meaning, asteriks idx MUST be after open paran idx
-    for len(openParanSt) > 0 && len(asterikSt) > 0 {
-        if asterikSt[len(asterikSt)-1] > openParanSt[len(openParanSt)-1] {
-            asterikSt = asterikSt[:len(asterikSt)-1]
-            openParanSt = openParanSt[:len(openParanSt)-1]
+    for len(open) > 0 && len(asterik) > 0 {
+        if asterik[len(asterik)-1] > open[len(open)-1] {
+            asterik = asterik[:len(asterik)-1]
+            open = open[:len(open)-1]
             continue
         }
         return false
     }
-    return len(openParanSt) == 0
+    return len(open) == 0
 }
