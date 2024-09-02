@@ -1,6 +1,6 @@
 func chalkReplacer(chalk []int, k int) int {
     total := 0
-    for i := 0; i < len(chalk); i++ {total += chalk[i]; if total > k {break}}
+    for i := 0; i < len(chalk); i++ {total += chalk[i]}
     // we could simulate taking a round trip in a for loop
     // or, we can do it using mod operator
     // if k = 22 and total = 11;
@@ -12,7 +12,9 @@ func chalkReplacer(chalk []int, k int) int {
     // then k % total ; 24 % 11; leaves a remainder of 2 
     // with this mod operator; we have essentially ran the trip from idx 0 to n-1 2 times ( becuase quotient will also be 2 )
     // leaving us with remaining k value ( i.e the remainder ) = 2
-    // now we can use a idx ptr to simulate 
+    // now we can use a idx ptr to simulate
+    // time = o(2n)
+    // space = o(1)
     k %= total
     n := len(chalk)
     for i := 0; i < n; i++ {
