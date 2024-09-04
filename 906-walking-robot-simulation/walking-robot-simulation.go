@@ -4,7 +4,7 @@ func robotSim(commands []int, obstacles [][]int) int {
         r,c := obstacles[i][0], obstacles[i][1]
         obSet[[2]int{r,c}] = true
     }
-    // clockwise starting from east
+    // clockwise starting from east ( circular dir )
     dirs := [][]int{{0,1},{1,0},{0,-1},{-1,0}} // east -> south -> west -> north
     ptr := 0 // facing east
     maxDist := 0
