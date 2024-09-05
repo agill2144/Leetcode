@@ -20,7 +20,7 @@ func restoreMatrix(rowSum []int, colSum []int) [][]int {
         nextColSum := abs(currColSum-colSum[c])
 
         // go thru the current col, and start moving vals to the right
-        for r < m && toRemove > 0 {
+        for r < m {
             if matrix[r][c] <= toRemove {
                 // we can remove all
                 toRemove -= matrix[r][c]
