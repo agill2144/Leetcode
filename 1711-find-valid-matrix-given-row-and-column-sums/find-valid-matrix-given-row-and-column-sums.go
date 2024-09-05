@@ -10,12 +10,17 @@ func restoreMatrix(rowSum []int, colSum []int) [][]int {
     }
     r := 0
     c := 0
-    j := 0
-    for j < n-1 {
-        toRemove := abs(currColSum-colSum[j])
-        nextColSum := abs(currColSum-colSum[j])
+    for c < n-1 {
+        desiredColSum := colSum[c]
+        // if this is what we are removing from curr col
+        // and moving these value to next col ( next col is all 0 )
+        // this also means, that the next col sum will be what we will remove from this col        
+        toRemove := abs(currColSum-desiredColSum)
+        // therefore nextCol sum == the sum we will remove from current col
+        nextColSum := abs(currColSum-colSum[c])
+
         // go thru the current col, and start moving vals to the right
-        for r < m {
+        for r < m && toRemove > 0 {
             if matrix[r][c] <= toRemove {
                 // we can remove all
                 toRemove -= matrix[r][c]
@@ -27,15 +32,10 @@ func restoreMatrix(rowSum []int, colSum []int) [][]int {
                 matrix[r][c] -= toRemove
                 matrix[r][c+1] = toRemove
                 toRemove = 0
-                break
             }
             r++
         }
-        // fmt.Println("after col: ", j)
-        // fmt.Println(matrix)
-        // fmt.Println("-----------------")
         c++
-        j++
         r = 0
         currColSum = nextColSum
     }
