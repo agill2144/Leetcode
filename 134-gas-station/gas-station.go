@@ -17,9 +17,8 @@ func canCompleteCircuit(gas []int, cost []int) int {
     count := 0
     start := 0
     for i := 0; i < 2*n; i++ {
-        
+
         // fill up
-        if curr == 0 && count == 0{start = i%n}
         curr += gas[i%n]
         // travel to next
         curr -= cost[i%n]
@@ -31,6 +30,7 @@ func canCompleteCircuit(gas []int, cost []int) int {
         if curr < 0 {
             curr = 0
             count = 0
+            start = (i+1)%n
         } else {
             count++
             // if we were able to reach all n stations, then we can call it success!
