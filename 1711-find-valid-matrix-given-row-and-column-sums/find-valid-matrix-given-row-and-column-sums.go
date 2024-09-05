@@ -26,7 +26,7 @@ func restoreMatrix(rowSum []int, colSum []int) [][]int {
                 toRemove -= matrix[r][c]
                 matrix[r][c+1] = matrix[r][c]
                 matrix[r][c] = 0
-            } else if toRemove > 0 {
+            } else {
                 // we dont need all
                 // eg: matrix val = 15, to remove = 2
                 matrix[r][c] -= toRemove
