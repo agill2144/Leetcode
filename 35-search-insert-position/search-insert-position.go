@@ -16,5 +16,8 @@ func searchInsert(nums []int, target int) int {
             right = mid-1
         }
     }
+    // because we looked up the right most val on left side of target
+    // then target's insert position is that idx+1
+    // therefore the +1 here
     return ans+1
 }
