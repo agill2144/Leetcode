@@ -13,6 +13,7 @@
  *     Right *TreeNode
  * }
  */
+ // run dfs from each root node of the tree
 func isSubPath(head *ListNode, root *TreeNode) bool {
     if head == nil && root == nil {return true}
     if head == nil || root == nil {return false}
