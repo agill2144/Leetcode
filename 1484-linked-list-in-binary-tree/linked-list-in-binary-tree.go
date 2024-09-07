@@ -29,5 +29,10 @@ func isSubPath(head *ListNode, root *TreeNode) bool {
         }
         return false
     }
+    // start at root of tree or at child1 or at child2 or at child3 ... or at childN
+    // so if the match is sitting somewhere closer to the bottom of the tree
+    // lets say, 10 level deep, then we ran dfs on each of those childs ( 1-9 )
+    // then at the 10th child dfs returned true
+    // so we ran dfs on *each* child in worst case :) uff
     return dfs(head, root) || isSubPath(head, root.Left) || isSubPath(head, root.Right)
 }
