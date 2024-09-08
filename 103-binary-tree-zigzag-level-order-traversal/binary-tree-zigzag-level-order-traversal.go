@@ -10,7 +10,7 @@
     approach:
     - level order using dfs or bfs
     - then reverse each odd level at the end
-    time = o(n) + o(n/2 * maxWidth)
+    time = o(n) * o(n/2 * n) - because prepending happens at every odd level and prepending in golang takes o(n) time 
     space = o(h) or o(n) for recursive stack incase of a skewed tree
 */
 func zigzagLevelOrder(root *TreeNode) [][]int {
