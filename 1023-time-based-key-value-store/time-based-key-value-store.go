@@ -14,7 +14,7 @@ func Constructor() TimeMap {
 
 
 func (this *TimeMap) Set(key string, value string, timestamp int)  {
-    this.data[key] = append(this.data[key], &valNode{timestamp, value})    
+    this.data[key] = append(this.data[key], &valNode{timestamp, value})
 
 }
 
