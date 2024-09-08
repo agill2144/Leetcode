@@ -15,6 +15,9 @@ func splitListToParts(head *ListNode, k int) []*ListNode {
         n++
         curr = curr.Next
     }
+    // If there are N nodes in the list, and k parts, 
+    // then every part has N/k elements, 
+    // except the first N%k parts have an extra one.
     sizeOfEach := n/k
     curr = head
     out := []*ListNode{}
@@ -34,6 +37,8 @@ func splitListToParts(head *ListNode, k int) []*ListNode {
         curr = next
         size = 0
     }
+    // its possible k > n
+    // then we need to fill output array to match k size with nil LL heads
     for len(out) != k {
         out = append(out, nil)
     }
