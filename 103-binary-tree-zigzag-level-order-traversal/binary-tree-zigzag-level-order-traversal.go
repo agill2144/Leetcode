@@ -6,6 +6,51 @@
  *     Right *TreeNode
  * }
  */
+
+/*
+    given level starts from 1 ( instead of 0 )
+    even level needs to have their nodes inserted from right -> left
+    using bfs, before processing the queue
+    we can check what level we are in and add the current level nodes in the correct order
+    then do a traditional bfs processing
+
+*/
+func zigzagLevelOrder(root *TreeNode) [][]int {
+    if root == nil {
+        return nil
+    }
+    out := [][]int{}
+    level := 1
+    q := []*TreeNode{root}
+    for len(q) != 0 {
+
+        // pre-processing of a level 
+        // add nodes first!
+        qSize := len(q)
+        ptr := 0
+        addDir := 1
+        if level % 2 == 0 {ptr = qSize-1; addDir = -1}
+        levelNodes := []int{}
+        for qSize != 0 {
+            levelNodes = append(levelNodes, q[ptr].Val)
+            ptr += addDir
+            qSize--
+        }
+        out = append(out, levelNodes)
+
+        // now classic bfs processing
+        qSize = len(q)
+        for qSize != 0 {
+            dq := q[0]
+            q = q[1:]
+            if dq.Left != nil {q = append(q, dq.Left)}
+            if dq.Right != nil {q = append(q, dq.Right)}
+            qSize--
+        }
+        level++
+    }
+    return out
+}
 /*
     approach:
     - level order using dfs or bfs
@@ -13,34 +58,34 @@
     time = o(n) * o(n/2 * n) - because prepending happens at every odd level and prepending in golang takes o(n) time 
     space = o(h) or o(n) for recursive stack incase of a skewed tree
 */
-func zigzagLevelOrder(root *TreeNode) [][]int {
-    out := [][]int{}
-    var dfs func(r *TreeNode, level int)
-    dfs = func(r *TreeNode, level int) {
-        // base
-        if r == nil {return}
+// func zigzagLevelOrder(root *TreeNode) [][]int {
+//     out := [][]int{}
+//     var dfs func(r *TreeNode, level int)
+//     dfs = func(r *TreeNode, level int) {
+//         // base
+//         if r == nil {return}
 
-        // logic
-        // using level as a idx
-        // if len(out) == level(idx)
-        // it means idx/level does not exist
-        // therefore add a new empty list 
-        // so that idx exists 
-        if len(out) == level {
-            out = append(out, []int{})
-        }
-        if level % 2 != 0 {
-            // odd level = prepend
-            out[level] = append([]int{r.Val}, out[level]...)
-        } else {
-            out[level] = append(out[level], r.Val) 
-        }
-        dfs(r.Left, level+1)
-        dfs(r.Right,level+1)
-    }
-    dfs(root, 0)
-    return out
-}
+//         // logic
+//         // using level as a idx
+//         // if len(out) == level(idx)
+//         // it means idx/level does not exist
+//         // therefore add a new empty list 
+//         // so that idx exists 
+//         if len(out) == level {
+//             out = append(out, []int{})
+//         }
+//         if level % 2 != 0 {
+//             // odd level = prepend
+//             out[level] = append([]int{r.Val}, out[level]...)
+//         } else {
+//             out[level] = append(out[level], r.Val) 
+//         }
+//         dfs(r.Left, level+1)
+//         dfs(r.Right,level+1)
+//     }
+//     dfs(root, 0)
+//     return out
+// }
 
  /*
     2 stack approach
