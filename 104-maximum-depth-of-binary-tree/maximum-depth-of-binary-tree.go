@@ -6,17 +6,27 @@
  *     Right *TreeNode
  * }
  */
+/*
+    top-down recursion
+    - we can keep track of number of nodes in recursion at each node
+    - always save the number of nodes when number of nodes in recursion > max seen so far
+    time = o(n)
+    space = o(n) - skewed tree
+*/
 func maxDepth(root *TreeNode) int {
-    var dfs func(r *TreeNode) int
-    dfs = func(r *TreeNode) int {
+    if root == nil {return 0}
+    maxN := 0    
+    var dfs func(r *TreeNode, count int) 
+    dfs = func(r *TreeNode, count int) {
         // base
-        if r == nil {return 0}
-
+        if r == nil {
+            return 
+        }
         // logic
-        left := dfs(r.Left)
-        right := dfs(r.Right)
-
-        return max(left, right)+1
+        maxN = max(maxN, count)
+        dfs(r.Left, count+1)
+        dfs(r.Right, count+1)
     }
-    return dfs(root)
+    dfs(root, 1)
+    return maxN
 }
