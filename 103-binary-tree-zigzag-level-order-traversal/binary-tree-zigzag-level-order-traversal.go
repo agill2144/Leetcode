@@ -21,7 +21,9 @@ func zigzagLevelOrder(root *TreeNode) [][]int {
             if top.Left != nil {even = append(even, top.Left)}
             if top.Right != nil {even = append(even, top.Right)}
         }
-        out = append(out, level)
+        if len(level) > 0 {
+            out = append(out, level)
+        }
         level = []int{}
         for len(even) != 0 {
             top := even[len(even)-1]
