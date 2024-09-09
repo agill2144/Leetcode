@@ -7,38 +7,33 @@
  * }
  */
 
-/*
-    given level starts from 1 ( instead of 0 )
-    even level needs to have their nodes inserted from right -> left
-    using bfs, before processing the queue
-    we can check what level we are in and add the current level nodes in the correct order
-    then do a traditional bfs processing
-
-*/
+// level order using bfs with pre-processing of a level
+// time = o(2n) = o(n)
+// space = o(2n) (queue & levelNodes ) = o(n) 
 func zigzagLevelOrder(root *TreeNode) [][]int {
-    if root == nil {
-        return nil
-    }
+    if root == nil {return nil}
     out := [][]int{}
-    level := 1
     q := []*TreeNode{root}
+    level := 1
     for len(q) != 0 {
-
-        // pre-processing of a level 
-        // add nodes first!
+        // pre-process and get the nodes in the order we care about
+        // based on the current level
+        // if level is odd; we want left -> right
+        // if level is even; we want right -> left
         qSize := len(q)
+        dir := 1
         ptr := 0
-        addDir := 1
-        if level % 2 == 0 {ptr = qSize-1; addDir = -1}
+        if level % 2 == 0 {
+            dir = -1
+            ptr = qSize-1
+        }
         levelNodes := []int{}
         for qSize != 0 {
             levelNodes = append(levelNodes, q[ptr].Val)
-            ptr += addDir
+            ptr += dir
             qSize--
         }
         out = append(out, levelNodes)
-
-        // now classic bfs processing
         qSize = len(q)
         for qSize != 0 {
             dq := q[0]
