@@ -19,7 +19,7 @@ func verticalTraversal(root *TreeNode) [][]int {
     maxW := math.MinInt64
     for len(q) != 0 {
         qSize := len(q)
-        levelItems := map[int][]int{}
+        levelItems := map[int][]int{} // {nodeWidth: [sortedInts...]}
         for qSize != 0 {
             dq := q[0]
             q = q[1:]
@@ -39,7 +39,7 @@ func verticalTraversal(root *TreeNode) [][]int {
         }
         for w, items := range levelItems{
             if tmp[w] == nil {tmp[w] = []int{}}
-            sort.Ints(items)
+            if len(items) > 1 {sort.Ints(items)}
             tmp[w] = append(tmp[w], items...)
         }
         level++
