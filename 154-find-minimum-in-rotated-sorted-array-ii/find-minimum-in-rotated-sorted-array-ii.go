@@ -8,11 +8,12 @@ func findMin(nums []int) int {
             ans = min(nums[mid], ans)
             left++
             right--
-        } else if nums[mid] <= nums[right] {
-            ans = min(nums[mid], ans)
-            right = mid-1
-        } else  {
+        } else if nums[left] <= nums[mid] {
+            ans = min(ans, nums[left])
             left = mid+1
+        } else  {
+            ans = min(ans, nums[mid])
+            right = mid-1
         }
     }
     return ans
