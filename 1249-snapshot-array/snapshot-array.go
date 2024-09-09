@@ -24,6 +24,7 @@ func (this *SnapshotArray) Set(idx int, val int)  {
 
 func (this *SnapshotArray) Snap() int {
     this.snapID++
+    
     return this.snapID-1    
 }
 
