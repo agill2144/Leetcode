@@ -1,21 +1,29 @@
-// like kadanes max subarray sum algorithm
-// "start a chain / subarray "
-// "if a chain / subarray goes negative, start a fresh one"
-// similarly, evaluate starting at EACH gas station
-// starting from 0th
-// fuel up, travel and remove travel dist (cost[i])
-// if we run out of gas ( current gas goes negative )
-// it means that the idx we started from is not good
-// therefore start a new evaluation from current idx
-// what happens if the ans is one of the gas station we went over when our current gas had not went negative yet
-// this is why we will run a 2*n loop, because there is gauranteed to be 1 answer or no answer
-// time = o(2n)
-// space = o(1)
+/*
+    the goal is to take a full trip without running out of gas
+    that is, we must visit all gas stations without running out of gas
+    and we need to find which such idx position helps us achieve, such that
+    if we start from this idx, we are able to take a full circular trip and end 
+    up at this idx without running of gas
 
+    - so lets evaluate each idx position
+    - start with idx 0, fill in gas[0], burn cost[0]
+        - if tank goes negative, this is not a good starting position
+        - therefore start from next idx!
+        - and so on...
+    
+    approach: 
+*/
 func canCompleteCircuit(gas []int, cost []int) int {
+    n := len(gas)
+    totalGas := 0
+    totalCost := 0
+    for i := 0; i < n; i++ {
+        totalGas += gas[i]
+        totalCost += cost[i]
+    }
+    if totalGas < totalCost {return -1}
     idx := 0
     tank := 0
-    n := len(gas)
     count := 0
     for i := 0; i < 2*n; i++ {
         // fill up
