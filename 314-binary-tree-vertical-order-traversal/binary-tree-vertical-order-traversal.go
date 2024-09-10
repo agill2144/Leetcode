@@ -18,33 +18,35 @@
      
  */
 func verticalOrder(root *TreeNode) [][]int {
-    if root == nil {return nil}
-    widthToNode := map[int][]int{}
-    type qNode struct {
-        node *TreeNode
-        width int
-    }
-    startWidth := math.MaxInt64
-    endWidth := math.MinInt64
-    q := []*qNode{&qNode{root,0}}
-    for len(q) != 0 {
-        dq := q[0]
-        q = q[1:]
-        currNode := dq.node
-        currWidth := dq.width
-        startWidth = min(startWidth, currWidth)
-        endWidth = max(endWidth, currWidth)
-        widthToNode[currWidth] = append(widthToNode[currWidth], currNode.Val)
-        if currNode.Left != nil {
-            q = append(q, &qNode{currNode.Left,currWidth-1})
-        }
-        if currNode.Right != nil {
-            q = append(q, &qNode{currNode.Right,currWidth+1})
-        }
-    }
-    out := [][]int{}
-    for i := startWidth; i <= endWidth; i++ {
-        out = append(out, widthToNode[i])
-    }
-    return out
+	if root == nil {
+		return nil
+	}
+	type qNode struct {
+		node  *TreeNode
+		width int
+	}
+	q := []*qNode{{root, 0}}
+	minW := math.MaxInt64
+	maxW := math.MinInt64
+	widthToNodes := map[int][]int{}
+	for len(q) != 0 {
+		dq := q[0]
+		q = q[1:]
+		cn := dq.node
+		cw := dq.width
+		widthToNodes[cw] = append(widthToNodes[cw], cn.Val)
+		minW = min(minW, cw)
+		maxW = max(maxW, cw)
+		if cn.Left != nil {
+			q = append(q, &qNode{cn.Left, cw - 1})
+		}
+		if cn.Right != nil {
+			q = append(q, &qNode{cn.Right, cw + 1})
+		}
+	}
+	out := [][]int{}
+	for i := minW; i <= maxW; i++ {
+		out = append(out, widthToNodes[i])
+	}
+	return out
 }
