@@ -15,25 +15,22 @@
 */
 func canCompleteCircuit(gas []int, cost []int) int {
     n := len(gas)
-    goalIdx := 0
-    tank := 0
-    i := 0
-    for i < 2*n {
-        // fill up
-        tank += gas[i%n]
-        // reduce the travel cost
-        tank -= cost[i%n]
-        // can we proceed ?
-        if tank >= 0 {
-            i++
-            if i%n == goalIdx {return goalIdx}
-        } else {
-            // no we cannot, stop, drop everything
-            // and start new eval from next gas station
-            i++
-            tank = 0
-            goalIdx = i%n
+    totalGas := 0
+    totalCost := 0
+    for i := 0; i < n; i++ {
+        totalGas += gas[i]
+        totalCost += cost[i]
+    }
+    if totalGas < totalCost {return -1}
+
+    total := 0
+    result := 0
+    for i := 0; i < n; i++ {
+        total += (gas[i]-cost[i])
+        if total < 0 {
+            total = 0
+            result = i+1
         }
     }
-    return -1
+    return result
 }
