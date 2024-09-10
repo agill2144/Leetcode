@@ -3,10 +3,9 @@ func candy(ratings []int) int {
     candies := make([]int,n)
     candies[0] = 1
     for i := 1; i < n; i++ {
+        candies[i] = 1
         if ratings[i] > ratings[i-1] {
             candies[i] = candies[i-1]+1
-        } else {
-            candies[i] = 1
         }
     }
     total := candies[n-1]
