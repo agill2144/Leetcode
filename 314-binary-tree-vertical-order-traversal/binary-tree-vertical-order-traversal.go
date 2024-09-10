@@ -11,6 +11,9 @@
     - draw it out with 4 levels of tree and see the problem
     - the order matters, top nodes in a col should be placed first
     - with pre-order dfs, top nodes will not always be placed first
+        - because pre-order dfs will go depth first in a path
+        - reaching the bottom node of a width
+        - thereby placing a leaf node first 
     - therefore inorder to respect top nodes to be placed first, and then bottom nodes
     - this is why we need bfs
     - level order, top nodes are processed first and then bottom nodes
