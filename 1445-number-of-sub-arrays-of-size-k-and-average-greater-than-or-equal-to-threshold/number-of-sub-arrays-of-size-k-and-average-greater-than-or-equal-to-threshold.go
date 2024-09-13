@@ -1,15 +1,14 @@
-func numOfSubarrays(nums []int, k int, threshold int) int {
-    left := 0
-    rSum := 0
+func numOfSubarrays(arr []int, k int, threshold int) int {
     count := 0
-    for i := 0; i < len(nums); i++ {
-        rSum += nums[i]
+    rSum := 0
+    left := 0
+    for i := 0; i < len(arr); i++ {
+        rSum += arr[i]
         if i-left+1 == k {
-            yes := (rSum/k) >= threshold
-            if yes {
+            if rSum/k >= threshold {
                 count++
             }
-            rSum -= nums[left]
+            rSum -= arr[left]
             left++
         }
     }
