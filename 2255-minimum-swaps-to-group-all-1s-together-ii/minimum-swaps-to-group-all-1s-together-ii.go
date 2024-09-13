@@ -6,10 +6,9 @@ func minSwaps(nums []int) int {
     if totalOnes <= 1 {return 0}
     minSwaps := len(nums)+1
     left := 0
-    i := 0
     count := 0
     n := len(nums)
-    for left < n {
+    for i := 0; i < 2*n && left < n; i++ {
         if nums[i%n] == 1 {
             count++
         }
@@ -20,7 +19,6 @@ func minSwaps(nums []int) int {
             }
             left++
         }
-        i++
     }
     return minSwaps
 }
