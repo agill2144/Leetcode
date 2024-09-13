@@ -1,3 +1,7 @@
+/*
+substring == sliding window
+instead of sliding the window 1-by-1 from left, make the left ptr take 1 big jump
+*/
 func lengthOfLongestSubstring(s string) int {
     idx := map[byte]int{}
     maxWin := 0
