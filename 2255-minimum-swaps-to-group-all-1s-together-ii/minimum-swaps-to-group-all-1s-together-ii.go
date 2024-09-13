@@ -8,13 +8,13 @@ func minSwaps(nums []int) int {
     left := 0
     count := 0
     n := len(nums)
-    for i := 0; i < 2*n; i++ {
+    for i := 0; i < 2*n && left < n; i++ {
         if nums[i%n] == 1 {
             count++
         }
         if i-left+1 == totalOnes {
             minSwaps = min(minSwaps, totalOnes-count)
-            if nums[left%n] == 1 {
+            if nums[left] == 1 {
                 count--
             }
             left++
