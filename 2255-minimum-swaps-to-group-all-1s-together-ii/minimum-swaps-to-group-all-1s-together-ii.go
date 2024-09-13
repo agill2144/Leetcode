@@ -1,21 +1,26 @@
 func minSwaps(nums []int) int {
-    n := len(nums)
-    ones := 0
-    for i := 0; i < n; i++ {if nums[i] == 1 {ones++}}
-    if ones == 0 {return 0}
+    totalOnes := 0
+    for i := 0; i < len(nums); i++ {
+        if nums[i] == 1 {totalOnes++}
+    }
+    if totalOnes <= 1 {return 0}
+    minSwaps := len(nums)+1
     left := 0
-    zeros := 0
-    swaps := n+1
     i := 0
+    count := 0
+    n := len(nums)
     for left < n {
-        if nums[i%n] == 0 {zeros++}
-        size := i-left+1
-        if size == ones {
-            swaps = min(swaps, zeros)
-            if nums[left] == 0 {zeros--}
+        if nums[i%n] == 1 {
+            count++
+        }
+        if i-left+1 == totalOnes {
+            minSwaps = min(minSwaps, totalOnes-count)
+            if nums[left] == 1 {
+                count--
+            }
             left++
         }
         i++
     }
-    return swaps
+    return minSwaps
 }
