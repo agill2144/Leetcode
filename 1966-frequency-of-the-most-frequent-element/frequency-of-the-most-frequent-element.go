@@ -1,19 +1,22 @@
 func maxFrequency(nums []int, k int) int {
     sort.Ints(nums)
-    maxWin := 1
-    right := len(nums)-1
-    rSum := nums[right]
-    for i := len(nums)-2; i >= 0; i-- {
-        rSum += nums[i]
+    n := len(nums)
+    right := n-1
+    sum := nums[right]
+    maxFreq := 1
+    for i := n-2; i >= 0; i-- {
+        rightVal := nums[right]
+        currVal := nums[i]
+        sum += currVal
         winSize := right-i+1
-        desiredSum := winSize * nums[right]
-        diff := desiredSum - rSum
+        desired := rightVal * winSize
+        diff := desired-sum
         if diff <= k {
-            maxWin = max(maxWin, winSize)
+            maxFreq = max(maxFreq, winSize)
         } else {
-            rSum -= nums[right]
+            sum -= nums[right]
             right--
         }
     }
-    return maxWin
+    return maxFreq
 }
