@@ -8,45 +8,43 @@
  */
 func verticalTraversal(root *TreeNode) [][]int {
     if root == nil {return nil}
+    widthToNodes := map[int][]int{}
     type qNode struct {
         node *TreeNode
         width int
     }
-    tmp := map[int][]int{}
+    minWidth := math.MaxInt64
+    maxWidth := math.MinInt64
     level := 0
     q := []*qNode{&qNode{root,0}}
-    minW := math.MaxInt64
-    maxW := math.MinInt64
     for len(q) != 0 {
         qSize := len(q)
-        levelItems := map[int][]int{} // {nodeWidth: [sortedInts...]}
+        tmp := map[int][]int{} // width to nodes in this $level
         for qSize != 0 {
             dq := q[0]
             q = q[1:]
             cn := dq.node
             cw := dq.width
-            minW = min(minW, cw)
-            maxW = max(maxW, cw)
-            if tmp[cw] == nil {tmp[cw] = []int{}}
-            levelItems[cw] = append(levelItems[cw], cn.Val)
+            tmp[cw] = append(tmp[cw], cn.Val)
             if cn.Left != nil {
                 q = append(q, &qNode{cn.Left, cw-1})
             }
             if cn.Right != nil {
                 q = append(q, &qNode{cn.Right, cw+1})
             }
+            minWidth = min(minWidth, cw)
+            maxWidth = max(maxWidth, cw)
             qSize--
         }
-        for w, items := range levelItems{
-            if tmp[w] == nil {tmp[w] = []int{}}
-            if len(items) > 1 {sort.Ints(items)}
-            tmp[w] = append(tmp[w], items...)
+        for w, items := range tmp {
+            sort.Ints(items)
+            widthToNodes[w] = append(widthToNodes[w], items...)
         }
         level++
     }
     out := [][]int{}
-    for i := minW; i <= maxW; i++ {
-        out = append(out, tmp[i])
+    for i := minWidth; i <= maxWidth; i++ {
+        out = append(out, widthToNodes[i])
     }
     return out
 }
