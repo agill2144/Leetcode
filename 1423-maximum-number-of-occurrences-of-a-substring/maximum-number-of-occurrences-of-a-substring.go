@@ -1,63 +1,27 @@
 func maxFreq(s string, maxLetters int, minSize int, maxSize int) int {
+    freq := map[byte]int{}
     left := 0
-    maxSubStrFreq := 0
-    subStrFreq := map[string]int{}
-    charFreq := map[byte]int{}
+    wordsFreq := map[string]int{}
+    maxWordsFreq := 0
     for i := 0; i < len(s); i++ {
-        charFreq[s[i]]++
-        if len(charFreq) > maxLetters {
-            leftChar := s[left]
-            charFreq[leftChar]--
-            if charFreq[leftChar] == 0 {delete(charFreq, leftChar)}
+        freq[s[i]]++
+        for len(freq) > maxLetters {
+            freq[s[left]]--
+            if freq[s[left]] == 0 {delete(freq, s[left])}
             left++
-        } else {
-            for i-left+1 >= minSize && i-left+1 <= maxSize {
-                subStr := s[left:i+1]
-                subStrFreq[subStr]++
-                maxSubStrFreq = max(maxSubStrFreq, subStrFreq[subStr])
-                leftChar := s[left]
-                charFreq[leftChar]--
-                if charFreq[leftChar] == 0 {delete(charFreq, leftChar)}
-                left++
+        }
+        size := i-left+1
+        for size >= minSize && size <= maxSize {
+            subStr := s[left:i+1]
+            wordsFreq[subStr]++
+            if wordsFreq[subStr] > maxWordsFreq {
+                maxWordsFreq = wordsFreq[subStr]
             }
+            freq[s[left]]--
+            if freq[s[left]] == 0 {delete(freq, s[left])}
+            left++
+            size = i-left+1
         }
     }
-    return maxSubStrFreq
+    return maxWordsFreq
 }
-
-/*
-    classic sliding window
-    - make sure the window is valid first!
-    - then form all substrings within the valid window
-        - take the first string of the window
-        - now shrink the window from left side
-        - again check if its valid ( winSize >= minSize and winSize <= maxSize )
-        - form the next string in the window
-        - then repeat..
-*/
-// func maxFreq(s string, maxLetters int, minSize int, maxSize int) int {
-//     left := 0
-//     maxSubStrFreq := 0
-//     subStrFreq := map[string]int{}
-//     charFreq := map[byte]int{}
-//     for i := 0; i < len(s); i++ {
-//         charFreq[s[i]]++
-//         for len(charFreq) > maxLetters {
-//             leftChar := s[left]
-//             charFreq[leftChar]--
-//             if charFreq[leftChar] == 0 {delete(charFreq, leftChar)}
-//             left++
-//         }
-        
-//         for i-left+1 >= minSize && i-left+1 <= maxSize {
-//             subStr := s[left:i+1]
-//             subStrFreq[subStr]++
-//             maxSubStrFreq = max(maxSubStrFreq, subStrFreq[subStr])
-//             leftChar := s[left]
-//             charFreq[leftChar]--
-//             if charFreq[leftChar] == 0 {delete(charFreq, leftChar)}
-//             left++
-//         }
-//     }
-//     return maxSubStrFreq
-// }
