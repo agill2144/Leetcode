@@ -36,8 +36,15 @@ func verticalTraversal(root *TreeNode) [][]int {
             maxWidth = max(maxWidth, cw)
             qSize--
         }
+        // nodes on a specific level at the same width, need to be sorted by their values
+        // we have level specific nodes in the tmp map
+        // we need to sort if nodes are on the same width
+        // nodes in tmp map are stored by each node's width
+        // therefore we can loop over the tmp map ( which is level specific withToNodes map )
+        // and sort the list of nodes
         for w, items := range tmp {
             sort.Ints(items)
+            // then we can push the sorted width of nodes from this level to global widthToNodes map
             widthToNodes[w] = append(widthToNodes[w], items...)
         }
         level++
