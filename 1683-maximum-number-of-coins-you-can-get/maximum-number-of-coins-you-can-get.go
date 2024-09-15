@@ -1,16 +1,19 @@
 func maxCoins(piles []int) int {
     sort.Ints(piles)
+    n := len(piles)
+    alice := n-1
+    i := n-2
     bob := 0
-    alice := 0
-    myCoins := 0
-    b, i := 0, len(piles)-1
-    for b < i {
-        alice += piles[i]
-        i--
-        myCoins += piles[i]
-        i--
-        bob += piles[b]
-        b++
+    iTotal := 0
+    for i > bob{
+        iTotal += piles[i]
+        alice-=2
+        i-=2
+        bob++
     }
-    return myCoins
+    return iTotal
 }
+/*
+    [1,2,2,4,7,8]
+     b a i  
+*/
