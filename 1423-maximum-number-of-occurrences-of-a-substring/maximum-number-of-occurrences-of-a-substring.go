@@ -11,7 +11,7 @@ func maxFreq(s string, maxLetters int, minSize int, maxSize int) int {
             left++
         }
         size := i-left+1
-        for size >= minSize && size <= maxSize {
+        for size >= minSize {
             subStr := s[left:i+1]
             wordsFreq[subStr]++
             if wordsFreq[subStr] > maxWordsFreq {
