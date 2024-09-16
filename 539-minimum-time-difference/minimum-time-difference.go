@@ -15,8 +15,10 @@ func findMinDifference(timePoints []string) int {
         minutes = append(minutes, tInMins)
     }
     sort.Ints(minutes)
+    fmt.Println(minutes)
     // smallest diff ( adj numbers or 0 and n-1 element)
-    diff := (minutes[0]+(24*60))- minutes[len(minutes)-1]
+
+    diff := (minutes[0]+ (24*60)) - minutes[len(minutes)-1]
     for i := 1; i < len(minutes); i++ {
         diff = min(diff, minutes[i]-minutes[i-1])
     }
