@@ -1,10 +1,12 @@
+// convert to minutes
+// sort
+// find smallest minutes differnce
 func findMinDifference(timePoints []string) int {
     minutes := []int{}
     for i := 0; i < len(timePoints); i++ {
         t := strings.Split(timePoints[i], ":")
         hh, _ := strconv.Atoi(t[0])
         mm, _ := strconv.Atoi(t[1])
-
         // hour to mins 
         // 60 mins in 1 hour
         // 120 mins in 2 hour ( 2 * 60 )
