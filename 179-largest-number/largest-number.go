@@ -8,6 +8,8 @@ func largestNumber(nums []int) string {
         jVal := numStr[j]
         ij := iVal + jVal
         ji := jVal + iVal
+        // sort based on string ith element + jth element concatnation
+        // pick a combination which results into a bigger digit
         if strings.Compare(ij, ji) == 1 {
             return true
         } else {
