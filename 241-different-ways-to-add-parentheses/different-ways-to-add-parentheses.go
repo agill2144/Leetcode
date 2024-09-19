@@ -2,7 +2,12 @@ func diffWaysToCompute(expression string) []int {
     var dfs func(expr string) []int
     dfs = func(expr string) []int {
         // base
-        if len(expr) == 0 {return []int{}}
+        if len(expr) <= 2 {
+            if expr[0] >= '0' && expr[0] <= '9' {
+                exprInt,  _ := strconv.Atoi(expr)
+                return []int{exprInt}
+            }
+        }
 
         // logic
         res := []int{}
@@ -25,10 +30,6 @@ func diffWaysToCompute(expression string) []int {
             }
         }
 
-        if len(res) == 0 {
-            exprInt, _ := strconv.Atoi(expr)
-            return []int{exprInt}
-        }
         return res
     }
     return dfs(expression)
