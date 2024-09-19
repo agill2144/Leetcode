@@ -1,7 +1,9 @@
 // convert to minutes
 // sort
 // find smallest minutes differnce
-
+// n = len(timePoints)
+// time = o(n) + o(nlogn) + o(n)
+// space = o(n) + o(n)
 func findMinDifference(timePoints []string) int {
     mins := []int{}
     for i := 0; i < len(timePoints); i++ {
