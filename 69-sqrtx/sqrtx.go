@@ -1,15 +1,13 @@
 func mySqrt(x int) int {
-    if x <= 1 {return x}
+    // right most on left side of x
+    // x = 8; right most is 2 because 3*3 is 9 and thats > x
     left := 1
-    right := x/2
+    right := x
     ans := 0
     for left <= right {
         mid := left + (right-left)/2
-        sq := mid*mid
-        if sq <= x {
-            if sq == x {
-                return mid
-            }
+        midVal := mid*mid
+        if midVal <= x {
             ans = mid
             left = mid+1
         } else {
