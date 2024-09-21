@@ -6,75 +6,46 @@
  *     Right *TreeNode
  * }
  */
-
-/*
-    approach: brute force
-    - collect left view ( without leaves )
-    - collect ONLY leaves
-    - collect right view ( without leaves )
-        - but then reverse the right view
-        - therefore collect right view in a stack
-        - and process stack from top ( i.e reverse order of right view ; from bottom to top )
-    
-    time = o(n)
-    space = o(n)
-*/
 func boundaryOfBinaryTree(root *TreeNode) []int {
-    out := []int{}
-    if !isLeaf(root) {
-        out = append(out, root.Val)
+    if root == nil {return nil}
+    out := []int{root.Val}
+    curr := root.Left
+    for curr != nil {
+        if curr.Left == nil && curr.Right == nil {break}
+        out = append(out,curr.Val)
+        if curr.Left != nil {
+            curr = curr.Left
+        } else {
+            curr = curr.Right
+        }
     }
 
-    // collect left view
-    l := root.Left
-    for l != nil {
-        if !isLeaf(l) {
-            out = append(out, l.Val)
-        }
-        if l.Left != nil {
-            l = l.Left
-        } else {
-            l = l.Right
-        }
-    }
-    // collect leaves
+    // collect leaves from left to right
     var leaves func(r *TreeNode)
     leaves = func(r *TreeNode) {
         // base
         if r == nil {return}
-
         // logic
-        if isLeaf(r) {
-            out = append(out, r.Val)
-        }        
+        if r.Left == nil && r.Right == nil && r != root {out = append(out, r.Val); return}
         leaves(r.Left)
         leaves(r.Right)
-
     }
     leaves(root)
 
-    rightSt := []int{}
-    // collect right view
-    r := root.Right
-    for r != nil {
-        if !isLeaf(r) {
-            rightSt = append(rightSt, r.Val)
-        }
-        if r.Right != nil {
-            r = r.Right
-        } else {
-            r = r.Left
-        }
+    // collect right side
+    rightStartPtr := len(out)
+    curr = root.Right
+    for curr != nil {
+        // we have reached the leaf node
+        if curr.Left == nil && curr.Right == nil {break}
+        out = append(out,curr.Val)
+        if curr.Right != nil {curr = curr.Right} else {curr = curr.Left}
     }
-    for len(rightSt) != 0 {
-        out = append(out, rightSt[len(rightSt)-1])
-        rightSt = rightSt[:len(rightSt)-1]
+    end := len(out)-1
+    for rightStartPtr < end {
+        out[rightStartPtr], out[end] =  out[end],out[rightStartPtr]
+        rightStartPtr++
+        end--
     }
-    
     return out
-    
-}
-
-func isLeaf(r *TreeNode) bool {
-    return r.Left == nil && r.Right == nil
 }
