@@ -22,26 +22,22 @@ func countNodes(root *TreeNode) int {
         }
         return lh, rh
     }
-    count := 0
-    var dfs func(r *TreeNode)
-    dfs = func(r *TreeNode) {
+    var dfs func(r *TreeNode) int
+    dfs = func(r *TreeNode) int {
         // base
         if r == nil {
-            return
+            return 0
         }
 
         // logic
         lh, rh := getH(r)
         if lh == rh {
-            count += ( int(math.Pow(2.0, float64(lh))) - 1)
+            return int(math.Pow(2.0, float64(lh))) - 1
         } else {
-            count++
-            dfs(r.Left)
-            dfs(r.Right)
+            return 1 + dfs(r.Left) + dfs(r.Right)
         }
     }
-    dfs(root)
-    return count
+    return dfs(root)
 }
 // brute force
 // func countNodes(root *TreeNode) int {
