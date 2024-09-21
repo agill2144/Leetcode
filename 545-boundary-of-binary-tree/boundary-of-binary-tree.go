@@ -32,7 +32,8 @@ func boundaryOfBinaryTree(root *TreeNode) []int {
     }
     leaves(root)
 
-    // collect right side
+    // collect right side ( make note of ptrs )
+    // because we have to reverse the right side
     rightStartPtr := len(out)
     curr = root.Right
     for curr != nil {
