@@ -1,3 +1,8 @@
+/*
+    - find the first position where h <= citations[i]
+    - and h = n-idx
+    - so really its, find the first position where; n-idx <= citations[idx]
+*/
 func hIndex(citations []int) int {
     n := len(citations)
     left := 0
