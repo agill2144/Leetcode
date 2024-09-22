@@ -44,7 +44,6 @@ func countNodes(root *TreeNode) int {
         }
         return leftH, rightH
     }
-    count := 0
     var dfs func(r *TreeNode) int
     dfs = func(r *TreeNode) int {
         // base
@@ -53,12 +52,12 @@ func countNodes(root *TreeNode) int {
         // logic
         lh, rh := getH(r)
         if lh == rh {
-            count += int(math.Pow(2.0, float64(lh)))-1
+            return int(math.Pow(2.0, float64(lh)))-1
         } else {
-            count += 1 + dfs(r.Left) + dfs(r.Right)
+            return 1 + dfs(r.Left) + dfs(r.Right)
         }
         return 0
     }
-    dfs(root)
-    return count
+    
+    return dfs(root)
 }
