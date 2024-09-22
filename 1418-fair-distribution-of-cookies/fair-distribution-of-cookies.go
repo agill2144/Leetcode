@@ -12,7 +12,9 @@ func distributeCookies(cookies []int, k int) int {
         for i := start; i < len(childs); i++ {
             childs[i] += cookies[cookieIdx]
             newM := max(maxi, childs[i])
-            dfs(start, childs, cookieIdx+1, newM)
+            if newM < ans {
+                dfs(start, childs, cookieIdx+1, newM)
+            }
             childs[i] -= cookies[cookieIdx]
         }
     }
