@@ -1,6 +1,6 @@
 func findMinArrowShots(points [][]int) int {
     sort.Slice(points, func(i, j int)bool{
-        return points[i][0] < points[j][0]
+        return points[i][1] < points[j][1]
     })
     count := 1
     lastEnd := points[0][1]
@@ -8,9 +8,11 @@ func findMinArrowShots(points [][]int) int {
         start, end := points[i][0], points[i][1]
         // is it overlapping?
         if start <= lastEnd {
-            lastEnd = min(lastEnd, end)
+            // if yes, the last arrow we shot most likely destroyed this ballon
+            // since this ballon overlapped in x-axis with the last
+            // continue with same arrow
+            continue
         } else {
-            // no overlap, 
             // need a new arrow
             count++
             lastEnd = end
