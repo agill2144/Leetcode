@@ -20,12 +20,11 @@ func widthOfBinaryTree(root *TreeNode) int {
         for qSize != 0 {
             dq := q[0]
             q = q[1:]
-            cn := dq.node
-            if cn.Left != nil {
-                q = append(q, &qNode{cn.Left, 2*dq.idx})
+            if dq.node.Left != nil {
+                q = append(q, &qNode{dq.node.Left, 2*dq.idx})
             }
-            if cn.Right != nil {
-                q = append(q, &qNode{cn.Right, 2*dq.idx+1})
+            if dq.node.Right != nil {
+                q = append(q, &qNode{dq.node.Right, 2*dq.idx+1})
             }
             qSize--
         }
