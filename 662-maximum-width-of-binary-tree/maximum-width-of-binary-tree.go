@@ -7,39 +7,42 @@
  * }
  */
 /*
-    - node in a binary tree is supposed to have 2 nodes
-    - total number of nodes in a full complete tree is; (2^h)-1
-        - h = height of tree
-    - we have to evaluate max width per level
-    - therefore perform level order traversal using bfs
-    - say we have current level and this level has the left most node and right most node
-    - rest of the nodes in between them are missing
-    - how do we find the width and count the missing number of nodes?
-    - we need to mark each node with a number such that missing nodes in between would not matter
+    TLDR;
+    - Mapping tree nodes into a heap / array like data structure
+    - put root at idx 1
+    - left child of a parent in heap is; 2*parentIdx = 2*1
+    - right child of a parent in heap is 2*parentIdx = 2*1+1
+    - now apply the same for each node
+    - we map each node to heap / array idx and process them in a bfs manner
+    - This works because we always use 2*something
+    - 2 childs are always assumed, whether the child exists or not
 
-            x
-           / \
-          x   x
-         /     \
-        x       x
-       /         \
-      x           x
-    - for example, the last level
-    - if we could mark the left most and right most correctly with something that counts the missing node in between
-    - then the width calc becomes simple
-    - this is where we will use an idx to mark each node
-    - idx is just a number that associated with each node
-    - start idx with 1 for root node
-    - left child idx will be 2*currNodeIdx
-    - right child idx will eb 2*currNodeIdx+1
-    - now the left most on last level will have an idx of 8
-    - and the right most on last level will have an idx of 15
-    - This accounts for missing nodes in between them
-    - Now width calc is as simple as window size ; lastIdx-startIdx+1
-    - we can use bfs q which store a pair ( node, currNodeIdx )
-    - then when processing a dq'd node, we can enque left and right child with their corresponding idx
-    time = o(n)
-    space = o(n)
+
+    - Binary Tree Structure: 
+        - Each node in a binary tree can have up to 2 children (left and right).
+    - Complete Binary Tree Property: 
+        - In a full, complete binary tree, the total number of nodes is (2^h) - 1, where h is the height of the tree.
+    - Width Calculation: 
+        - To compute the maximum width
+        - perform a level-order traversal (BFS), focusing on the leftmost and rightmost nodes at each level.
+    - Handling Missing Nodes: 
+        - Even if some nodes are missing at a given level, 
+        - we can account for them using a numbering/indexing system for nodes.
+    Indexing System:
+        - Assign an index (idx) to each node during traversal.
+        - Root node starts at index 1.
+        - Left child of a node at index i is at 2*i.
+        - Right child of a node at index i is at 2*i + 1.
+        - This ensures that missing nodes between leftmost and rightmost nodes are considered when calculating width.
+    
+    - Width = lastIdx - firstIdx + 1
+        - where firstIdx and lastIdx represent the indices of the leftmost and rightmost nodes at that level
+    
+    - This indexing scheme leverages the mathematical properties of a complete binary tree, which can be represented like an array or heap.
+    - Each node has predictable child positions relative to its index:
+    - If a node is at index i, its left child is at 2*i (double the parent's index, as the binary tree "splits" into two).
+    - The right child is at 2*i + 1, accounting for the sibling of the left child.
+    - This allows for a consistent way to track node positions, even when nodes are missing, making it easier to calculate width and handle gaps efficiently.
 */
 func widthOfBinaryTree(root *TreeNode) int {
     type qNode struct {
