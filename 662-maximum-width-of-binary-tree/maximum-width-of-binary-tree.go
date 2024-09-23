@@ -8,14 +8,15 @@
  */
 /*
     TLDR;
-    - Mapping tree nodes into a heap / array like data structure
-    - put root at idx 1
-    - left child of a parent in heap is; 2*parentIdx = 2*1
-    - right child of a parent in heap is 2*parentIdx = 2*1+1
-    - now apply the same for each node
-    - we map each node to heap / array idx and process them in a bfs manner
-    - This works because we always use 2*something
-    - 2 childs are always assumed, whether the child exists or not
+    - Map binary tree nodes into a heap/array-like structure.
+    - Start by placing the root node at index 1.
+    - For any parent node at index `i`:
+        - The left child is located at `2*i`.
+        - The right child is located at `2*i + 1`.
+    - Apply this rule recursively for each node in the tree.
+    - Process nodes in a BFS manner, assigning indices as you go.
+    - This works because the structure always assumes 2 children (left and right) for each node.
+    - Even if a child is missing, the indexing still accounts for the position, allowing us to track width accurately.
 
 
     - Binary Tree Structure: 
@@ -69,3 +70,6 @@ func widthOfBinaryTree(root *TreeNode) int {
     }
     return maxW
 }
+
+
+
