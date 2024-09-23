@@ -1,101 +1,19 @@
-/*
-    approach: greedy; peek/valley approach
-    - distributing candies based on identified peeks and valleys
-    - when going up the peek; each child gets 1 more candy than prev child
-        - ie: as peek goes up, peek increases, number of candies increases
-        - if the 0th child has x candies, and next 4 child ratings are only increasing
-        - then each next child gets; x+1, x+2, x+3, x+4 more candies respectively
-    - what about when ratings start dropping down into a valley?
-        - *same thing in theory*
-        - start from the bottom of the valley and walk up the peek 
-        - which again means, if the bottom of the valley had x candies
-        - then walking up this valley going up to the peek means x+n candies
-        - say there are 3 childs from valley to peek
-        - then candies would be x, x+1, x+2
-    - we can start with an initial count of n candies
-        - why?
-        - because each child gets 1 candy regardless of their rating
-    - then in 1 iteration; process next peek ( if one is there )
-        - processing a peek means keep track of peek int value as it goes up the mountain
-        - after each rating, peek++ and we add peek to our final total
-    - once we reach the top of the peek, start processing the dip
-        - instead of starting from the bottom of the valley and walking up to the peek
-        - we can start from the peek and walk down and keep incrementing our dip
-        - after each dip rating is processing, dip++ and add dip to total var
-    - now we have we added peek and dip ( at the peek of the mountain ) twice
-    - which one should we have taken
-        - which ever one satifies left and right child
-        - meaning, which ever one is larger, we keep
-        - whichever one is smaller, we can remove from our running total
-        - i.e total -= min(peek, dip)
-    
-*/
 func candy(ratings []int) int {
-    n := len(ratings)
-    total := n
-    i := 1
-    for i < n {
-        for i < n && ratings[i] == ratings[i-1] {i++; continue}
-
-        peek := 0
-        for i < n && ratings[i] > ratings[i-1] {
-            peek++
-            total += peek
-            i++
+    candies := make([]int, len(ratings))
+    for i := 0; i < len(ratings); i++ {
+        candies[i] = 1
+        if i > 0 && ratings[i] > ratings[i-1] {
+            candies[i] = candies[i-1]+1
         }
-        dip := 0
-        for i < n && ratings[i] < ratings[i-1] {
-            dip++
-            total += dip
-            i++
-        }
-        total -= min(peek, dip)
     }
+    total := candies[len(candies)-1]
+    for i := len(ratings)-2; i >= 0; i-- {
+        if ratings[i] > ratings[i+1] && candies[i] <= candies[i+1] {
+            candies[i] = candies[i+1]+1
+        }
+        total += candies[i]
+    }
+
+
     return total
 }
-
-/*
-    approach: greedy
-    - First of all every child gets 1 candy ( regardless of their ratings compared with their neighboring childs )
-    - Then for each ith child we will check whether it has more ratings than its neighboring child ; i-1 and i+1
-        - HOWEVER, we have not calculated the final candies for the right child if we are looping from left to right
-        - THEREFORE we cannot compare an ith child with its left child
-    - So we will do this in 2 passes;
-        - Left to right loop, compare ith rating with i-1th rating ( left rating )
-            - if the i-1th rating is more, we KNOW FOR SURE, THAT THIS iTH CHILD GETS MORE THAN PREVIOUS CHILD
-            - THEREFORE CANDIES[i] = previous child candies + 1
-        - Now we can do the 2nd pass, in which we will compare ith child ratings with its right neighbor
-            - if ratings[i] is higher than the right neighbor, 
-            - than this ith child SHOULD GET MORE CANDIES COMPARED TO ITS RIGHT NEIGHBOR
-            - However if candies[i] is already more than its right neighbor, than we are fine, no need to give more
-            - otherwise, candies[i] = candies[i+1]+1 ( 1 more than its right neihbor )
-
-    - 1st pass satisfies left neighbor
-    - 2nd pass satisfies right neighbor
-        - this pass will never break left neighbor check because we are always increasing it
-        - the initial candies[i] was the final value ( i.e greater than left neighbor )
-        - and if ith child rating was more than right child, then we would have only increased ith candies more, not decreased it
-    time : o(2n)
-    space: o(n)
-
-*/
-// func candy(ratings []int) int {
-//     n := len(ratings)
-//     candies := make([]int,n)
-//     candies[0] = 1
-//     for i := 1; i < n; i++ {
-//         candies[i] = 1
-//         if ratings[i] > ratings[i-1] {
-//             candies[i] = candies[i-1]+1
-//         }
-//     }
-//     total := candies[n-1]
-//     for i := n-2; i >= 0; i-- {
-//         if ratings[i] > ratings[i+1] && candies[i] <= candies[i+1]{
-//             candies[i] = candies[i+1]+1
-//         }
-//         total += candies[i]
-//     }
-//     return total
-// }
-
