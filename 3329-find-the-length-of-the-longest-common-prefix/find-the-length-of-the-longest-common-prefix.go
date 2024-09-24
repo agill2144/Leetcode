@@ -10,7 +10,7 @@ func longestCommonPrefix(arr1 []int, arr2 []int) int {
     }
 
     largest := 0
-    // o(a1 * k1^2)
+    // o(a1 * k1)
     for i := 0; i < len(arr1); i++ {
         arr1Str := fmt.Sprintf("%v", arr1[i])
         val := root.longestPossiblePrefix(arr1Str)
