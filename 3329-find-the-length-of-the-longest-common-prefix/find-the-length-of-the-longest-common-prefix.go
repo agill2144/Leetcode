@@ -13,6 +13,8 @@ func longestCommonPrefix(arr1 []int, arr2 []int) int {
     // o(a1 * k1)
     for i := 0; i < len(arr1); i++ {
         arr1Str := fmt.Sprintf("%v", arr1[i])
+        if len(arr1Str) < largest {continue}
+        // use trie to find the longest prefix possible for this num
         val := root.longestPossiblePrefix(arr1Str)
         largest = max(largest, val)
     }
