@@ -1,25 +1,20 @@
 func longestCommonPrefix(arr1 []int, arr2 []int) int {
     if len(arr1) == 0 || len(arr2) == 0 {return 0}
     root := newTrie()
+    // a1 = len(arr1); k1 = avg num of digits in arr1
+    // a2 = len(arr2); k2 = avg num of digits in arr2
+
+    // o(a2 *  k2)
     for i := 0; i < len(arr2); i++ {
         root.insert(arr2[i])
     }
 
-    // start with the longest one first!
-    // sort.Ints(arr1)
     largest := 0
+    // o(a1 * k1^2)
     for i := 0; i < len(arr1); i++ {
         arr1Str := fmt.Sprintf("%v", arr1[i])
-        // start with larger prefix first ( since we want longest )
-        for j := len(arr1Str)-1; j >= 0; j-- {
-            prefix := arr1Str[:j+1]
-            if len(prefix) < largest {break}
-            ok := root.prefixExists(prefix)
-            if ok {
-                largest = max(largest, len(prefix))
-            }
-        }
-        
+        val := root.longestPossiblePrefix(arr1Str)
+        largest = max(largest, val)
     }
     return largest
 }
@@ -47,12 +42,14 @@ func (r *trieNode) insert(n int) {
     curr.isEnd = true
 }
 
-func (r *trieNode) prefixExists (word string) bool {
+func (r *trieNode) longestPossiblePrefix(word string) int {
     curr := r
+    size := 0
     for i := 0; i < len(word); i++ {
-        charIdx := int(word[i]-'0')
-        if curr.childs[charIdx] == nil {return false}
-        curr = curr.childs[charIdx]
+        childIdx := int(word[i]-'0')
+        if curr.childs[childIdx] == nil {break}
+        curr = curr.childs[childIdx]
+        size++
     }
-    return true
+    return size
 }
