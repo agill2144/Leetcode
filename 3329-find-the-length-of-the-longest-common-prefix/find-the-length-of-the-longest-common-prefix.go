@@ -1,7 +1,7 @@
 func longestCommonPrefix(arr1 []int, arr2 []int) int {
     if len(arr1) == 0 || len(arr2) == 0 {return 0}
     root := newTrie()
-    // a1 = len(arr1); k1 = avg num of digits in arr1
+    // a3 = len(arr1); k1 = avg num of digits in arr1
     // a2 = len(arr2); k2 = avg num of digits in arr2
 
     // o(a2 *  k2)
