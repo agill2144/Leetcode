@@ -6,16 +6,16 @@ func longestCommonPrefix(arr1 []int, arr2 []int) int {
     }
 
     // start with the longest one first!
-    sort.Ints(arr1)
+    // sort.Ints(arr1)
     largest := 0
-    for i := len(arr1)-1; i >= 0; i-- {
+    for i := 0; i < len(arr1); i++ {
         arr1Str := fmt.Sprintf("%v", arr1[i])
-        if len(arr1Str) == largest {break}
         for j := len(arr1Str)-1; j >= 0; j-- {
-            subStr := arr1Str[:j+1]
-            if len(subStr) < largest {break}
-            if root.prefixExists(subStr) {
-                largest = max(largest, len(subStr))
+            prefix := arr1Str[:j+1]
+            if len(prefix) < largest {break}
+            ok := root.prefixExists(prefix)
+            if ok {
+                largest = max(largest, len(prefix))
             }
         }
         
