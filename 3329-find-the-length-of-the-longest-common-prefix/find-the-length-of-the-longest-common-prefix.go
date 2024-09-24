@@ -10,6 +10,7 @@ func longestCommonPrefix(arr1 []int, arr2 []int) int {
     largest := 0
     for i := 0; i < len(arr1); i++ {
         arr1Str := fmt.Sprintf("%v", arr1[i])
+        // start with larger prefix first ( since we want longest )
         for j := len(arr1Str)-1; j >= 0; j-- {
             prefix := arr1Str[:j+1]
             if len(prefix) < largest {break}
