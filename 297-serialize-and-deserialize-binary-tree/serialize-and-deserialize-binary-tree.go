@@ -17,47 +17,58 @@ func Constructor() Codec {
 
 // Serializes a tree to a single string.
 func (this *Codec) serialize(root *TreeNode) string {
-    sb := new(strings.Builder)
-    var dfs func(r *TreeNode)
-    dfs = func(r *TreeNode) {
-        // base
-        if r == nil {return}
-
-        // logic
-        // why do we need a delimeter ?
-        // Thumb rule; if you are building some hash value or some string path
-        // just always add a delimeter
-        // in this case, we need delimeter to keep negative value 
-        // together when splitting a encoded string in deserialize
-        sb.WriteString(fmt.Sprintf("%v,", r.Val))
-        if r.Left == nil {sb.WriteString("#,")} else {dfs(r.Left)}
-        if r.Right == nil {sb.WriteString("#,")} else {dfs(r.Right)}
+    if root == nil {return ""}
+    out := new(strings.Builder)
+    q := []*TreeNode{root}
+    for len(q) != 0 {
+        dq := q[0]
+        q = q[1:]
+        if dq != nil {
+            out.WriteString(fmt.Sprintf("%v",dq.Val))
+            q = append(q, dq.Left)
+            q = append(q, dq.Right)
+        } else {
+            out.WriteString("#")
+        }
+        out.WriteString(",")
     }
-    dfs(root)
-    return sb.String()
+    return out.String()
 }
 
 // Deserializes your encoded data to tree.
-func (this *Codec) deserialize(data string) *TreeNode {
+func (this *Codec) deserialize(data string) *TreeNode {    
     if len(data) == 0 {return nil}
-    split := strings.Split(data, ",")  
-    split = split[:len(split)-1]
-    ptr := 0
-    var dfs func() *TreeNode
-    dfs = func () *TreeNode {
-        // base
-        if ptr == len(split) {return nil}
-
-        // logic
-        if split[ptr] == "#" {ptr++; return nil}
-        intVal, _ := strconv.Atoi(split[ptr])
-        root := &TreeNode{Val: intVal}
+    dataList := strings.Split(data, ",")
+    ptr := 1
+    rootVal, _ := strconv.Atoi(dataList[0])
+    root := &TreeNode{Val: rootVal}
+    q := []*TreeNode{root}
+    for len(q) != 0 && ptr < len(dataList)  {
+        dq := q[0]
+        q = q[1:]
+        leftChildVal := dataList[ptr]
         ptr++
-        root.Left = dfs()
-        root.Right = dfs()
-        return root
+        if leftChildVal == "#" {
+            dq.Left = nil
+        } else if leftChildVal != "#" {
+            intVal, _ := strconv.Atoi(leftChildVal)
+            dq.Left = &TreeNode{Val: intVal}
+            q = append(q, dq.Left)
+        }
+        if ptr < len(dataList) {
+            rightChildVal := dataList[ptr]
+            ptr++
+            if rightChildVal == "#" {
+                dq.Right = nil
+            } else if rightChildVal != "#" {
+                intVal, _ := strconv.Atoi(rightChildVal)
+                dq.Right = &TreeNode{Val: intVal}
+                q = append(q, dq.Right)
+            }
+        }
     }
-    return dfs()
+    return root
+
 }
 
 
@@ -67,4 +78,8 @@ func (this *Codec) deserialize(data string) *TreeNode {
  * deser := Constructor();
  * data := ser.serialize(root);
  * ans := deser.deserialize(data);
+
+
+ 4-7-3##-9-39-7-4#6#-6-6##065#9##-1-4###-2#######
+
  */
