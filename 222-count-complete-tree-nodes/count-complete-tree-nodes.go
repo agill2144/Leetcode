@@ -29,27 +29,20 @@ func countNodes(root *TreeNode) int {
         }
         return lh, rh
     }
-    count := 0
-    var dfs func(r *TreeNode)
-    dfs = func(r *TreeNode) {
+    var dfs func(r *TreeNode) int
+    dfs = func(r *TreeNode) int{
         // base
-        if r == nil {return}
+        if r == nil {return 0}
 
         // logic
         lh, rh := getH(r)
         if lh == rh {
-            count += (int(math.Pow(2.0, float64(lh))) - 1)
+            return int(math.Pow(2.0, float64(lh))) - 1
         } else {
-            // count current node
-            count++
-            // + count nodes of left subtree
-            dfs(r.Left)
-            // + count nodes of right subtree
-            dfs(r.Right)
+            return 1 + dfs(r.Left) + dfs(r.Right)
         }
     }
-    dfs(root)
-    return count
+    return dfs(root)
 }
 
 // brute force, count using any traversal
