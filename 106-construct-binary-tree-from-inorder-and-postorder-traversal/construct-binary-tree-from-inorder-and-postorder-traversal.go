@@ -6,42 +6,29 @@
  *     Right *TreeNode
  * }
  */
-/*
-    Same as https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/
-    - but start from the back of postorder instead
-    - postorder = left-right-root
-    - anytime we build trees, we start from root
-    - root is the last element in postorder
-    - and walk back , use inorder to find its right and left subtree
-
-    - why are we building right subtree first instead of left subtree?
-    - becuase of the order we are given in
-    - we are given postorder, and postorder flows in; left,right,root
-    - and if we are start from the back of postorder, we are starting from root
-    - and walking back from root, it will be right, therefore we will be seeing right subtree elements first
-    - in pre-order, we built left first and then right because preorder list is generated using preorder flow ; root,left,right
-        - i.e root first, and then left, therefore we have left subtree elements first, therefore build left first
-        - postorder is opposite of this
-*/
 func buildTree(inorder []int, postorder []int) *TreeNode {
-    idxMap := map[int]int{}
-    for i := 0; i < len(inorder); i++ {
-        idxMap[inorder[i]] = i
-    }
+    if len(postorder) == 0 || len(inorder) == 0 {return nil}
     post := len(postorder)-1
+    inorderIdx := map[int]int{}
+    for i := 0; i < len(inorder); i++ {inorderIdx[inorder[i]] = i}
     var dfs func(left, right int) *TreeNode
-    dfs = func(left, right int) *TreeNode {
+    dfs = func(left, right int) *TreeNode{
         // base
         if left > right {return nil}
 
         // logic
-        rootVal := postorder[post]
+        // post = left -> right -> root
+
+        // first we have the root node
+        root := &TreeNode{Val: postorder[post]}
         post--
-        root := &TreeNode{Val: rootVal}
-        rootIdx := idxMap[rootVal]
-        root.Right = dfs(rootIdx+1, right)
-        root.Left = dfs(left, rootIdx-1)
+        idx := inorderIdx[root.Val]
+        // after root, its right child ( look at post order seq )
+        root.Right = dfs(idx+1, right)
+        // after right, its left child ( look at post order seq )
+        root.Left = dfs(left, idx-1)
         return root
     }
     return dfs(0, len(inorder)-1)
+
 }
