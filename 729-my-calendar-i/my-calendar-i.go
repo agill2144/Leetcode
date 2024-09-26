@@ -20,6 +20,9 @@ func (this *MyCalendar) Book(start int, end int) bool {
         if start < e && s < end {return false}
     }
     this.times = append(this.times, []int{start, end})
+    sort.Slice(this.times, func(i, j int)bool{
+        return this.times[i][0] < this.times[j][1]
+    })
     return true
 }
 
