@@ -28,6 +28,8 @@ func (this *MyCalendar) Book(start int, end int) bool {
                     |__________________|
                     start              end
         */
+        // all overlapping starts are before e
+        // and all ends are after s
         if start < e && end > s {return false}
     }
     this.times = append(this.times, []int{start, end})
