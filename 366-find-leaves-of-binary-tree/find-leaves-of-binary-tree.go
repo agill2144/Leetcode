@@ -7,22 +7,22 @@
  * }
  */
 func findLeaves(root *TreeNode) [][]int {
+    // bottom up dfs; use height as idx
+    // height of node from bottom of tree will be same from all leaves
+    // and consecutively next set of leaves will also have the same height 
     out := [][]int{}
     var dfs func(r *TreeNode) int
     dfs = func(r *TreeNode) int {
         // base
         if r == nil {return 0}
-
         // logic
         left := dfs(r.Left)
         right := dfs(r.Right)
         maxH := max(left, right)
-        if len(out) == maxH {
-            out = append(out, []int{})
-        }
+        if len(out) == maxH {out = append(out, []int{})}
         out[maxH] = append(out[maxH], r.Val)
-        return max(left, right)+1
+        return maxH + 1
     }
     dfs(root)
     return out
-} 
+}
