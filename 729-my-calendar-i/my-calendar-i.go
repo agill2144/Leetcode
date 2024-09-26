@@ -15,14 +15,22 @@ func (this *MyCalendar) Book(start int, end int) bool {
     }
     for i := 0; i < len(this.times); i++ {
         s, e := this.times[i][0], this.times[i][1]
-        // start = 33
-        // s = 49
-        if start < e && s < end {return false}
+        /*
+             s                    e
+        -----|--------------------|-----------------
+
+        |_______________________|
+        start                  end
+
+            |__________________|
+            start              end
+
+                    |__________________|
+                    start              end
+        */
+        if start < e && end > s {return false}
     }
     this.times = append(this.times, []int{start, end})
-    sort.Slice(this.times, func(i, j int)bool{
-        return this.times[i][0] < this.times[j][1]
-    })
     return true
 }
 
