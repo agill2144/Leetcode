@@ -10,33 +10,31 @@ func inorderTraversal(root *TreeNode) []int {
     if root == nil {return nil}
     out := []int{}
     curr := root
-    // left -> root -> right
     for curr != nil {
         if curr.Left == nil {
-            // when there is no left child
-            // this is root node in inorder, process it
-            // then go right
+            // left is nil
+            // process root ( left(nil) -> root(we are here) -> right(next step) )
             out = append(out, curr.Val)
             curr = curr.Right
         } else {
-            // create a thread from last right child back to curr
             tmp := curr.Left
             for tmp.Right != nil && tmp.Right != curr {
                 tmp = tmp.Right
             }
             if tmp.Right == nil {
-                // create the thread from right most to curr
+                // create the thread to curr
                 tmp.Right = curr
-                // we have created a thread to come back to root
-                // now go left
+                // go left
                 curr = curr.Left
             } else {
-                // left subtree is done
-                // disconnect the thread
+                // tmp Right is curr, i.e this is a thread we created
+                // i.e from left, we came back to parent / root ( left(done) -> root(we are here) -> right(next step) )
+                
+                // disconnect tmp -> curr
                 tmp.Right = nil
-                // this is root node in "inorder" , process it
+                // process curr ( i.e root )
                 out = append(out, curr.Val)
-                // root is done, now go right
+                // go right
                 curr = curr.Right
             }
         }
