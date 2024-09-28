@@ -1,4 +1,5 @@
 // use binary search to find the start of k size window
+// time = o(logk) + o(k)
 func findClosestElements(arr []int, k int, x int) []int {
     n := len(arr)
     if n == 1 {return arr}
