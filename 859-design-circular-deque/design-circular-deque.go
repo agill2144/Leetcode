@@ -30,7 +30,7 @@ func (this *MyCircularDeque) InsertFront(value int) bool {
 
 func (this *MyCircularDeque) InsertLast(value int) bool {
     if this.IsFull() {return false}
-    this.rear = (this.rear + 1) % this.k
+    this.rear = (this.rear+1) % this.k
     this.dq[this.rear] = value
     this.size++
     return true
