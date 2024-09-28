@@ -8,39 +8,27 @@
  * }
  */
 
-// p = number of nodes from root to p
-// q = number of nodes from root to q
-// time = o(p) + o(q)
-// space = o(p)
-func lowestCommonAncestor(p *Node, q *Node) *Node {
-    
+// no space solu
+func lowestCommonAncestor(p *Node, q *Node) *Node {    
     root := p
     for root.Parent != nil {root = root.Parent}
-
-    var getH func(r, target *Node, h int) int
-    getH = func(r, target *Node, h int) int {
+    pH := -1
+    qH := -1
+    var getH func(r *Node, h int)
+    getH = func(r *Node, h int) {
         // base
-        if r == nil {return -1}
+        if r == nil {return}
+        if pH != -1 && qH != -1 {return }
 
         // logic
-        if r == target {return h}
-        left := getH(r.Left, target, h+1)
-        if left != -1 {return left}
-        return getH(r.Right, target, h+1)
+        if r == p {pH = h}
+        if r == q {qH = h}
+        getH(r.Left, h+1)
+        getH(r.Right, h+1)
     }
-    pH := getH(root, p,0)
-    qH := getH(root, q,0)
-    for pH > qH && p != nil {
-        p = p.Parent
-        pH--
-    }
-    for qH > pH && q != nil {
-        q = q.Parent
-        qH--
-    }
-    for p != q {
-        p = p.Parent
-        q = q.Parent
-    }
+    getH(root, 0)
+    for pH > qH && p != nil {p = p.Parent; pH--}
+    for qH > pH && q != nil {q = q.Parent; qH--}
+    for p != q { p = p.Parent; q = q.Parent }
     return p
 }
