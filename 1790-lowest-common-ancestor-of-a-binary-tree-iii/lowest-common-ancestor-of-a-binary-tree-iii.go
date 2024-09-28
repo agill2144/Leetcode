@@ -13,14 +13,34 @@
 // time = o(p) + o(q)
 // space = o(p)
 func lowestCommonAncestor(p *Node, q *Node) *Node {
-    pPathNodes := map[*Node]bool{}
-    for p != nil {
-        pPathNodes[p] = true
-        p = p.Parent
+    
+    root := p
+    for root.Parent != nil {root = root.Parent}
+
+    var getH func(r, target *Node, h int) int
+    getH = func(r, target *Node, h int) int {
+        // base
+        if r == nil {return -1}
+
+        // logic
+        if r == target {return h}
+        left := getH(r.Left, target, h+1)
+        if left != -1 {return left}
+        return getH(r.Right, target, h+1)
     }
-    for q != nil {
-        if pPathNodes[q] {return q}
+    pH := getH(root, p,0)
+    qH := getH(root, q,0)
+    for pH > qH && p != nil {
+        p = p.Parent
+        pH--
+    }
+    for qH > pH && q != nil {
+        q = q.Parent
+        qH--
+    }
+    for p != q {
+        p = p.Parent
         q = q.Parent
     }
-    return nil
+    return p
 }
