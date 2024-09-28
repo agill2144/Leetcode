@@ -1,9 +1,9 @@
 type MyCircularDeque struct {
     dq []int
     k int
+    f int
+    r int
     size int
-    rear int
-    front int
 }
 
 
@@ -11,18 +11,17 @@ func Constructor(k int) MyCircularDeque {
     return MyCircularDeque{
         dq: make([]int, k),
         k: k,
-        front: 0,
-        rear: k-1,
+        f: 0,
+        r: k-1,
+        size: 0,
     }
 }
 
 
 func (this *MyCircularDeque) InsertFront(value int) bool {
-    if this.IsFull() {
-        return false
-    }
-    this.front = (this.front - 1 + this.k) % this.k
-    this.dq[this.front] = value
+    if this.IsFull() {return false}
+    this.f = (this.f-1 + this.k) % this.k
+    this.dq[this.f] = value
     this.size++
     return true
 }
@@ -30,8 +29,8 @@ func (this *MyCircularDeque) InsertFront(value int) bool {
 
 func (this *MyCircularDeque) InsertLast(value int) bool {
     if this.IsFull() {return false}
-    this.rear = (this.rear+1) % this.k
-    this.dq[this.rear] = value
+    this.r = (this.r+1) % this.k
+    this.dq[this.r] = value
     this.size++
     return true
 }
@@ -39,29 +38,29 @@ func (this *MyCircularDeque) InsertLast(value int) bool {
 
 func (this *MyCircularDeque) DeleteFront() bool {
     if this.IsEmpty() {return false}
-    this.front = (this.front+1) % this.k
+    this.f = (this.f+1) % this.k
     this.size--
-    return true    
+    return true
 }
 
 
 func (this *MyCircularDeque) DeleteLast() bool {
     if this.IsEmpty() {return false}
-    this.rear = (this.rear-1+this.k) % this.k
+    this.r = (this.r-1+this.k) % this.k
     this.size--
     return true
 }
 
 
 func (this *MyCircularDeque) GetFront() int {
-    if this.IsEmpty() {return -1}
-    return this.dq[this.front]
+    if this.IsEmpty() {return -1}    
+    return this.dq[this.f]
 }
 
 
 func (this *MyCircularDeque) GetRear() int {
     if this.IsEmpty() {return -1}    
-    return this.dq[this.rear]
+    return this.dq[this.r]    
 }
 
 
@@ -70,8 +69,8 @@ func (this *MyCircularDeque) IsEmpty() bool {
 }
 
 
-func (this *MyCircularDeque) IsFull() bool {    
-    return this.size == this.k
+func (this *MyCircularDeque) IsFull() bool {
+    return this.size == this.k    
 }
 
 
