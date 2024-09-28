@@ -10,9 +10,9 @@ func findWinners(matches [][]int) [][]int {
     }
     out := make([][]int, 2)
     for player, counts := range scores {
-        _, losses := counts[0], counts[1]
+        losses := counts[1]
+        if losses == 0 {out[0] = append(out[0], player)}
         if losses == 1 {out[1] = append(out[1], player)}
-        if losses == 0  {out[0] = append(out[0], player)}
     }
     for _, l := range out {sort.Ints(l)}
     return out
