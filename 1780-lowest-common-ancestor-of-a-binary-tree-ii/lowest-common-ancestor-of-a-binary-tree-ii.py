@@ -6,6 +6,7 @@
 #         self.right = None
 
 class Solution:
+    # path to p and q, and then return the last common node
     def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
         p_path = []
         q_path = []
@@ -45,6 +46,7 @@ class Solution:
             break
         return out
 
+    # create ptrs to parent using hashmap
     # def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
     #     # 1. create child to parent map ( all node values are uniq )
     #     node_to_parent = {root:root}
