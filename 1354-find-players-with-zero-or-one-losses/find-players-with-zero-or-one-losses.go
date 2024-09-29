@@ -1,9 +1,12 @@
+// total time = o(n)
+// space = o(10^5) or o(1) - its a constant number!
 func findWinners(matches [][]int) [][]int {
     // no-sorting , map each player to an idx
     // each idx == playerID
     // therefore allocate a big enough array such that 
     // all possible playerID's can be mapped to an idx
     scores := make([][]int, 100001)
+    // time = o(n)
     for i := 0; i < len(matches); i++ {
         wPlayer := matches[i][0]
         lPlayer := matches[i][1]
@@ -13,6 +16,7 @@ func findWinners(matches [][]int) [][]int {
         scores[lPlayer][1]++
     }
     out := make([][]int, 2)
+    // time = o(10^5) or o(1)
     for i := 0; i < len(scores); i++ {
         if scores[i] != nil {
             losses := scores[i][1]
