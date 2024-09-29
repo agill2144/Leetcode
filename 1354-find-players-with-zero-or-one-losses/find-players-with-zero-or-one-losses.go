@@ -1,5 +1,8 @@
 func findWinners(matches [][]int) [][]int {
+    // no-sorting , map each player to an idx
     // each idx == playerID
+    // therefore allocate a big enough array such that 
+    // all possible playerID's can be mapped to an idx
     scores := make([][]int, 100001)
     for i := 0; i < len(matches); i++ {
         wPlayer := matches[i][0]
