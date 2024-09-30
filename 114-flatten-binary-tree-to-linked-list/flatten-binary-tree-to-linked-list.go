@@ -6,23 +6,6 @@
  *     Right *TreeNode
  * }
  */
-// func flatten(root *TreeNode)  {
-//     var prev *TreeNode
-//     var dfs func(r *TreeNode)
-//     dfs = func(r *TreeNode) {
-//         // base
-//         if r == nil {return}
-
-//         // logic
-//         dfs(r.Right)
-//         dfs(r.Left)
-//         r.Right = prev
-//         r.Left = nil
-//         prev = r
-//     }
-//     dfs(root)
-    
-// }
 func flatten(root *TreeNode)  {
     if root == nil {return}
     curr := root
@@ -38,5 +21,4 @@ func flatten(root *TreeNode)  {
             curr = curr.Right
         }
     }
-    
 }
