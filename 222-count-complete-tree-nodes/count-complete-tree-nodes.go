@@ -6,10 +6,7 @@
  *     Right *TreeNode
  * }
  */
- // number of nodes in a complete full binary tree = 2^h - 1
- // complete full = leftHeight == rightHeight
 func countNodes(root *TreeNode) int {
-    if root == nil {return 0}
     getH := func(r *TreeNode) (int, int) {
         lh := 0
         l := r
@@ -24,18 +21,22 @@ func countNodes(root *TreeNode) int {
         }
         return lh, rh
     }
-    var dfs func(r *TreeNode) int
-    dfs = func(r *TreeNode) int {
+    total := 0
+    var dfs func(r *TreeNode)
+    dfs = func(r *TreeNode) {
         // base
-        if r == nil {return 0}
+        if r == nil {return}
 
         // logic
-        lh, rh := getH(r)
+        lh, rh := getH(root)
         if lh == rh {
-            return int(math.Pow(2.0, float64(lh)))-1
+            total += int(math.Pow(2.0,float64(lh)))-1
         } else {
-            return 1 + dfs(r.Left) + dfs(r.Right)
+            total++
+            dfs(r.Left)
+            dfs(r.Right)
         }
     }
-    return dfs(root)
+    dfs(root)
+    return total
 }
