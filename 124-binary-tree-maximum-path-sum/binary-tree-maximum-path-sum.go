@@ -13,12 +13,15 @@ func maxPathSum(root *TreeNode) int {
         // base
         if r == nil {return 0}
 
+
         // logic
         left := dfs(r.Left)
         right := dfs(r.Right)
-        total := left + right + r.Val
-        maxSum = max(maxSum, max(r.Val+left, max(r.Val+right, max(r.Val, total))))
-        return max(r.Val, max(r.Val+left, r.Val+right))
+        total := r.Val + left + right
+        leftTotal := r.Val + left
+        rightTotal := r.Val + right
+        maxSum = max(leftTotal, max(rightTotal, max(total, max(r.Val, maxSum))))
+        return max(leftTotal, max(rightTotal, r.Val))
     }
     dfs(root)
     return maxSum
