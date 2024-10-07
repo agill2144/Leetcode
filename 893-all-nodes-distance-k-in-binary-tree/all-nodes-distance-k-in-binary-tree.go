@@ -11,18 +11,18 @@ func distanceK(root *TreeNode, target *TreeNode, k int) []int {
     var buildGraph func(r *TreeNode)
     buildGraph = func(r *TreeNode) {
         // base
-        if r == nil {return }
+        if r == nil {return}
 
         // logic
         if r.Left != nil {
             adjList[r] = append(adjList[r], r.Left)
             adjList[r.Left] = append(adjList[r.Left], r)
-            buildGraph(r.Left)
+            buildGraph(r.Left)            
         }
         if r.Right != nil {
             adjList[r] = append(adjList[r], r.Right)
             adjList[r.Right] = append(adjList[r.Right], r)
-            buildGraph(r.Right)
+            buildGraph(r.Right)            
         }
     }
     buildGraph(root)
