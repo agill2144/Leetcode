@@ -6,43 +6,22 @@
  *     Right *TreeNode
  * }
  */
-// time = o(n)
-// space = o(h)
-func rightSideView(root *TreeNode) []int{
+func rightSideView(root *TreeNode) []int {
+    // use level as idx
     out := []int{}
-    var dfs func(r *TreeNode, depth int)
-    dfs = func(r *TreeNode, depth int) {
+    var dfs func(r *TreeNode, level int)
+    dfs = func(r *TreeNode, level int) {
         // base
-        if r== nil {return}
+        if r == nil {return}
         // logic
-        if len(out) == depth {
+        if len(out) == level {
             out = append(out, r.Val)
+        } else {
+            out[level] = r.Val
         }
-        dfs(r.Right, depth+1)
-        dfs(r.Left, depth+1)
+        dfs(r.Left, level+1)
+        dfs(r.Right, level+1)
     }
     dfs(root, 0)
     return out
 }
-// time = o(n)
-// space = o(maxWidth)
-// func rightSideView(root *TreeNode) []int {
-//     if root == nil {return nil}
-//     out := []int{}
-//     q := []*TreeNode{root}
-//     for len(q) != 0 {
-//         qSize := len(q)
-//         for qSize != 0 {
-//             dq := q[0]
-//             q = q[1:]
-//             qSize--
-//             if qSize == 0 {
-//                 // this was the last element in the level
-//                 out = append(out, dq.Val)
-//             }
-//             if dq.Left != nil {q = append(q, dq.Left)}
-//             if dq.Right != nil {q = append(q, dq.Right)}
-//         }
-//     }
-//     return out
-// }
