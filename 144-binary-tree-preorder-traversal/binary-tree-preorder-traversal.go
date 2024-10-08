@@ -6,35 +6,37 @@
  *     Right *TreeNode
  * }
  */
-// iterative
 func preorderTraversal(root *TreeNode) []int {
-    st := []*TreeNode{}
+    if root == nil {return nil}
     out := []int{}
-    for root != nil || len(st) != 0 {
-        for root != nil {
-            out = append(out, root.Val)
-            st = append(st, root)
-            root = root.Left
+    curr := root
+    for curr != nil {
+        if curr.Left == nil {
+            // process root
+            out = append(out, curr.Val)
+            // go right
+            curr = curr.Right
+        } else {
+            // create thread from left to root
+            tmp := curr.Left
+            for tmp.Right != nil && tmp.Right != curr {
+                tmp = tmp.Right
+            }
+            if tmp.Right == nil {
+                // process root
+                out = append(out, curr.Val)
+                // create thread from left to root
+                tmp.Right = curr
+                // go left
+                curr = curr.Left
+            } else {
+                // left subtree of curr is done
+                // disconnect the thread
+                tmp.Right = nil
+                // go right
+                curr = curr.Right
+            }
         }
-        root = st[len(st)-1]
-        st = st[:len(st)-1]
-        root = root.Right
     }
     return out
 }
-
-// dfs
-// func preorderTraversal(root *TreeNode) []int {
-//     out := []int{}
-//     var dfs func(r *TreeNode)
-//     dfs = func(r *TreeNode) {
-//         // base
-//         if r == nil {return}
-//         // logic
-//         out = append(out, r.Val)
-//         dfs(r.Left)
-//         dfs(r.Right)
-//     }
-//     dfs(root)
-//     return out
-// }
