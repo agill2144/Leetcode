@@ -42,7 +42,6 @@ func (this *Codec) deserialize(data string) *TreeNode {
     dataSplit := strings.Split(data,",")
     dataSplit = dataSplit[:len(dataSplit)-1]
     if len(dataSplit) == 0 {return nil}
-    fmt.Println(dataSplit)
     rootVal, _ := strconv.Atoi(dataSplit[0])
     root := &TreeNode{Val: rootVal}
     ptr := 1
