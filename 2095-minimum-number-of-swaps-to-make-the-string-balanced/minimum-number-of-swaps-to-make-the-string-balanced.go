@@ -4,7 +4,8 @@ func minSwaps(s string) int {
         if s[i] == '[' {
             count++
         } else {
-            if count > 0 {count--}
+            count--
+            if count < 0 {count=0}
         }
     }
     return (count+1)/2
