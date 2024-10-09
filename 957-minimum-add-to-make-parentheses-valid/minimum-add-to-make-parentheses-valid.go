@@ -1,6 +1,6 @@
 func minAddToMakeValid(s string) int {
     count := 0 // open paran count ( like stack )
-    closeCount := 0
+    closeCount := 0 // close paran showed up when there were no open ones
     for i := 0 ; i < len(s); i++ {
         if s[i] == '(' {
             count++
@@ -9,9 +9,4 @@ func minAddToMakeValid(s string) int {
         }
     }
     return count + closeCount
-}
-
-func abs(x int) int {
-    if x < 0 {return x *-1}
-    return x
 }
