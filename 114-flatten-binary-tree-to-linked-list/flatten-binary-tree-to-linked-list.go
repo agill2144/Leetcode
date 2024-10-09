@@ -8,18 +8,22 @@
  */
 func flatten(root *TreeNode)  {
     if root == nil {return}
-    var prev *TreeNode
-    var dfs func(r *TreeNode)   
-    dfs = func(r *TreeNode) {
+    var dfs func(r *TreeNode) *TreeNode
+    dfs = func(r *TreeNode) *TreeNode {
         // base
-        if r == nil {return}
+        if r == nil {return nil}
 
         // logic
-        dfs(r.Right)
-        dfs(r.Left)
-        r.Right = prev
-        r.Left = nil
-        prev = r
+        left := dfs(r.Left)
+        right := dfs(r.Right)
+        if left != nil {
+            left.Right = r.Right
+            r.Right = r.Left
+            r.Left = nil
+        }
+        if right != nil {return right}
+        if left != nil {return left}
+        return r
     }
     dfs(root)
 }
