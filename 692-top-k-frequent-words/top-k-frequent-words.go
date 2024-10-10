@@ -10,13 +10,13 @@ func topKFrequent(words []string, k int) []string {
             heap.Pop(mn)
         }
     }
-    out := []string{}
+    out := make([]string, mn.Len())
+    ptr := len(out)-1
     for mn.Len() != 0 {
-        out = append(out, heap.Pop(mn).(*item).word)
+        out[ptr] = heap.Pop(mn).(*item).word
+        ptr--
     }
-    for i := 0; i < len(out)/2; i++ {
-        out[i], out[len(out)-1-i] = out[len(out)-1-i], out[i]
-    }
+    
     return out
 }
 
