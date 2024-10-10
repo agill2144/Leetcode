@@ -10,7 +10,7 @@ func jump(nums []int) int {
         left = right+1
         right = nextIdx
         count++
-        if right >= len(nums)-1 {return count}
+        if right >= len(nums)-1 {break}
     }
     return count
 }
