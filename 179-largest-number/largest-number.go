@@ -1,25 +1,19 @@
 func largestNumber(nums []int) string {
-    numStr := []string{}
-    for i := 0; i < len(nums); i++ {
-        numStr = append(numStr, fmt.Sprintf("%v",nums[i]))
-    }
-    sort.Slice(numStr, func(i, j int)bool{
-        iVal := numStr[i]
-        jVal := numStr[j]
-        ij := iVal + jVal
-        ji := jVal + iVal
-        // sort based on string ith element + jth element concatnation
-        // pick a combination which results into a bigger digit
-        if strings.Compare(ij, ji) == 1 {
-            return true
-        } else {
-            return false
-        }
+    sort.Slice(nums, func(i, j int) bool {
+        iNum := nums[i]
+        jNum := nums[j]
+        ij := fmt.Sprintf("%v%v",iNum, jNum)
+        ji := fmt.Sprintf("%v%v", jNum, iNum)
+        ijInt, _ := strconv.Atoi(ij)
+        jiInt, _ := strconv.Atoi(ji)
+        // ith num should be placed first
+        // if i+j > j+i
+        return ijInt > jiInt
     })
     out := new(strings.Builder)
-    for i := 0; i < len(numStr); i++ {
-        if len(out.String()) == 0 && numStr[i] == "0" {continue} 
-        out.WriteString(numStr[i])
+    for i := 0; i < len(nums); i++ {
+        if nums[i] == 0 && len(out.String()) == 0 {continue}
+        out.WriteString(fmt.Sprintf("%v", nums[i]))
     }
     if out.String() == "" {return "0"}
     return out.String()
