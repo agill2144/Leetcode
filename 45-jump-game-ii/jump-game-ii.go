@@ -1,17 +1,16 @@
 func jump(nums []int) int {
-    n := len(nums)
+    count := 0
     left := 0
     right := 0
-    jumps := 0
-    for right < n-1 {
-        farthestIdx := -1
+    for right < len(nums)-1 {
+        nextIdx := right
         for i := left; i <= right; i++ {
-            farthestIdx = max(farthestIdx, i+nums[i])
+            nextIdx = max(nextIdx, nums[i]+i)
         }
-        if farthestIdx <= right {panic("could not jump out of current range/block")}
         left = right+1
-        right = farthestIdx
-        jumps++
+        right = nextIdx
+        count++
+        if right >= len(nums)-1 {return count}
     }
-    return jumps
+    return count
 }
