@@ -3,17 +3,22 @@ func smallestChair(times [][]int, targetFriend int) int {
     sort.Slice(times, func(i, j int)bool {
         return times[i][0] < times[j][0]
     })
+    // create chairs
     chairs := &chairMinHeap{items: []int{}}
     for i := 0; i < len(times); i++ {heap.Push(chairs, i)}
     mn := &minHeap{items: [][]int{}}
     for i := 0; i < len(times); i++ {
         arrive, depart := times[i][0], times[i][1]
+        // free up used chairs
         for mn.Len() > 0 && arrive >= mn.items[0][1] {
             heap.Push(chairs, heap.Pop(mn).([]int)[0])
         }
+        // give chair to friend
         cid := heap.Pop(chairs).(int)
-        heap.Push(mn, []int{cid, depart})
         if arrive == targetFriendTime[0] {return cid}
+        heap.Push(mn, []int{cid, depart})
+        // if this friend is our target friend
+        // we have its chairIdx (cid), return it
     }
     return -1
 
