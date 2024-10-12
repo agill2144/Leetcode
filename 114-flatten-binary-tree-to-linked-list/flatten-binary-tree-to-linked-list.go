@@ -9,6 +9,7 @@
 func flatten(root *TreeNode)  {
     var dfs func(r *TreeNode) *TreeNode
     dfs = func(r *TreeNode) *TreeNode {
+        // base
         if r == nil {return nil}
 
         // logic
