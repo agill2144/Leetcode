@@ -5,9 +5,7 @@ func minGroups(intervals [][]int) int {
     mn := &minHeap{items: []int{}}
     for i := 0; i < len(intervals); i++ {
         start, end := intervals[i][0], intervals[i][1]
-        if mn.Len() == 0 {
-            heap.Push(mn, end)
-        } else if start > mn.items[0] {
+        if mn.Len() != 0 && start > mn.items[0] {
             // push to existing group
             heap.Pop(mn)
             heap.Push(mn, end)
