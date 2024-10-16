@@ -8,10 +8,11 @@
  */
 func findLeaves(root *TreeNode) [][]int {
     out := [][]int{}
-    var dfs func(r *TreeNode)int
+    var dfs func(r *TreeNode) int
     dfs = func(r *TreeNode) int {
         // base
         if r == nil {return 0}
+
         // logic
         left := dfs(r.Left)
         right := dfs(r.Right)
