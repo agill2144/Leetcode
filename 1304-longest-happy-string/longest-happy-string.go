@@ -16,7 +16,7 @@ func longestDiverseString(a int, b int, c int) string {
 
                 if mx.Len() == 0 {break}
                 t := top
-                top := heap.Pop(mx).(*item)
+                top = heap.Pop(mx).(*item)
                 heap.Push(mx, t)
                 char = top.val
                 freq = top.freq
