@@ -7,40 +7,44 @@
  * }
  */
 func boundaryOfBinaryTree(root *TreeNode) []int {
-    if root == nil {return nil}
-    isLeaf := func(r *TreeNode) bool {
-        return r.Left == nil && r.Right == nil
-    }
     out := []int{root.Val}
-    leftView := root.Left
-    for leftView != nil && !isLeaf(leftView) {
-        out = append(out, leftView.Val)
-        if leftView.Left != nil {leftView =leftView.Left} else {leftView = leftView.Right}
+    left := func(r *TreeNode) {
+        for r != nil {
+            if r.Left == nil && r.Right == nil {break}
+            out = append(out, r.Val)
+            if r.Left != nil {r = r.Left} else {r = r.Right} 
+        }
     }
-    // collect leaves
-    var leaves func(r *TreeNode)
+    left(root.Left)
+    // leaves
+    var leaves func(r *TreeNode) 
     leaves = func(r *TreeNode) {
         // base
         if r == nil {return}
-        
+
         // logic
-        if isLeaf(r) && r != root {
-            out = append(out, r.Val)
-        }
         leaves(r.Left)
         leaves(r.Right)
+        if r.Left == nil && r.Right == nil && r != root {
+            out = append(out, r.Val)
+        }
     }
     leaves(root)
 
-    // collect right
-    right := []int{}
-    rightView := root.Right
-    for rightView != nil && !isLeaf(rightView) {
-        right = append(right, rightView.Val)
-        if rightView.Right != nil {rightView = rightView.Right } else {rightView = rightView.Left}
+    // right
+    startIdx := len(out)
+    right := func(r *TreeNode) {
+        for r != nil {
+            if r.Left == nil && r.Right == nil {break}
+            out = append(out, r.Val)
+            if r.Right != nil {r = r.Right} else {r = r.Left}            
+        }
     }
-    for i := len(right)-1; i >= 0; i-- {
-        out = append(out, right[i])
+    right(root.Right)
+    l, r := startIdx, len(out)-1
+    for l < r {
+        out[l], out[r] = out[r], out[l]
+        l++; r--
     }
     return out
 }
