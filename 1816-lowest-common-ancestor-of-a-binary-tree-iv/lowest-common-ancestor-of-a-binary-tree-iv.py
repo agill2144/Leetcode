@@ -8,15 +8,12 @@
 class Solution:
     def lowestCommonAncestor(self, root: 'TreeNode', nodes: 'List[TreeNode]') -> 'TreeNode':
         nodeSet = set(nodes)
-        def dfs(r: 'TreeNode') -> 'TreeNode':
+        def dfs(r :'TreeNode'):
             # base
             if not r:
                 return None
 
-            # logic; top-down
-            # because all nodes are guaranteed to exists ( nodes from nodeSet )
-            # then we can do top down ( i.e as soon as we run into one of those nodes )
-            # return and start exiting
+            # logic
             if r in nodeSet:
                 return r
             left = dfs(r.left)
@@ -27,4 +24,3 @@ class Solution:
                 return left
             return right
         return dfs(root)
-                
