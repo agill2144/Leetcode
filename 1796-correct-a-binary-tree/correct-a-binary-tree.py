@@ -12,6 +12,7 @@ class Solution:
         q = [[root, root]] # <node, parent>
         while q:
             q_size = len(q)
+            ## contiains nodes visited from this level so far
             processed_level_nodes = set()
             for _ in range(q_size):
                 dq = q.pop(0)
@@ -23,7 +24,7 @@ class Solution:
                             parent.left = None
                         elif parent.right and parent.right == curr_node:
                             parent.right = None
-                        continue
+                        return root
                     q.append([curr_node.right, curr_node])
                 if curr_node.left:
                     q.append([curr_node.left, curr_node])
