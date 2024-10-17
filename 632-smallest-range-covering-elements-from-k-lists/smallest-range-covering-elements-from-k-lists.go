@@ -17,9 +17,9 @@ func smallestRange(nums [][]int) []int {
         }
         if innerIdx+1 == len(nums[listIdx]) {break}
         innerIdx++
-        newVal := nums[listIdx][innerIdx]
-        maxVal = max(maxVal, newVal)
-        heap.Push(mn, []int{listIdx, innerIdx, nums[listIdx][innerIdx]})
+        newItem := []int{listIdx, innerIdx, nums[listIdx][innerIdx]}
+        maxVal = max(maxVal, newItem[2])
+        heap.Push(mn, newItem)
     }
     return out
 }
