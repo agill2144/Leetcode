@@ -1,11 +1,16 @@
 func smallestRange(nums [][]int) []int {
     mn := &minHeap{items: [][]int{}}
     maxVal := math.MinInt64
+    // k = num of lists
+    // n = avg size of each list
+
+    // o(k)
     for i := 0; i < len(nums); i++ {
         heap.Push(mn, []int{i, 0, nums[i][0]})
         maxVal = max(maxVal, nums[i][0])
     }
     out := []int{0, math.MaxInt64}
+    // o(min(n) * logk)
     for true {
         minEle := heap.Pop(mn).([]int)
         listIdx, innerIdx, c := minEle[0], minEle[1], minEle[2]
