@@ -6,44 +6,44 @@
  *     Right *TreeNode
  * }
  */
-// nodes at the same level AND AT THE SAME COL/WIDTH need to be sorted
 func verticalTraversal(root *TreeNode) [][]int {
-    if root == nil {return nil}
-    colToNodes := map[int][]int{}
-    minCol := math.MaxInt64
-    maxCol := math.MinInt64
+    widthToNodes := map[int][]int{}
     type qNode struct {
         node *TreeNode
-        col int // width
+        row int
+        col int
     }
-    q := []*qNode{&qNode{root,0}}
+    minC := math.MaxInt64
+    maxC := math.MinInt64
+    q := []*qNode{&qNode{root,0,0}}
     for len(q) != 0 {
-        levelColToNodes := map[int][]int{}
         qSize := len(q)
+        levelWidthToNodes := map[int][]int{}
         for qSize != 0 {
             dq := q[0]
             q = q[1:]
-            cn := dq.node
-            cc := dq.col
-            levelColToNodes[cc] = append(levelColToNodes[cc], cn.Val)
-            if cn.Left != nil {
-                q = append(q, &qNode{cn.Left, cc-1})
+            node := dq.node
+            row := dq.row
+            col := dq.col
+            minC = min(minC, col)
+            maxC = max(maxC, col)
+            levelWidthToNodes[col] = append(levelWidthToNodes[col], node.Val)
+            if node.Left != nil {
+                q = append(q, &qNode{node.Left, row+1,col-1})
             }
-            if cn.Right != nil {
-                q = append(q, &qNode{cn.Right, cc+1})
+            if node.Right != nil {
+                q = append(q, &qNode{node.Right, row+1,col+1})
             }
-            minCol=min(minCol, cc)
-            maxCol=max(maxCol, cc)            
             qSize--
         }
-        for col, nodes := range levelColToNodes {
-            sort.Ints(nodes)
-            colToNodes[col] = append(colToNodes[col], nodes...)
+        for k, v := range levelWidthToNodes {
+            sort.Ints(v)
+            widthToNodes[k] = append(widthToNodes[k], v...)
         }
     }
     out := [][]int{}
-    for i := minCol; i <= maxCol; i++ {
-        out = append(out, colToNodes[i])
+    for i := minC; i <= maxC; i++ {
+        out = append(out, widthToNodes[i])
     }
     return out
 }
