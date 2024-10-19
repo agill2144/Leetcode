@@ -1,21 +1,19 @@
 func countGoodSubstrings(s string) int {
-    freq := map[byte]int{}
+    idx := map[byte]int{}
     count := 0
     left := 0
     for i := 0; i < len(s); i++ {
-        freq[s[i]]++
-        for freq[s[i]] > 1 {
-            if val, ok := freq[s[left]]; ok {
-                freq[s[left]]--
-                if val == 1 {delete(freq, s[left])}
-            }
-            left++
+        char := s[i]
+        val, ok := idx[char]
+        if ok && left <= val {
+            left = val+1
         }
+        idx[char] = i
         if i-left+1 == 3 {
             count++
-            if val, ok := freq[s[left]]; ok {
-                freq[s[left]]--
-                if val == 1 {delete(freq, s[left])}
+            leftChar := s[left]
+            if val, ok := idx[leftChar]; ok && val <= left {
+                delete(idx, leftChar)
             }
             left++
         }
