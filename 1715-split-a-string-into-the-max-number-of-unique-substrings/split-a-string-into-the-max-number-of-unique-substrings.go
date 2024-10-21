@@ -1,3 +1,11 @@
+// 1 <= s.length <= 16
+// i see small constraints, jump to the ultimate brute force; try and explore all paths
+// i.e dfs + backtracking
+// 2 choices at each char ; take it or not take it
+// n = len(s)
+// time = o(n * 2^n)
+// the extra n is when we create substr at each recursive node
+// space = o(n) = max depth of recursion tree
 func maxUniqueSplit(s string) int {
     n := len(s)
     set := map[string]bool{}
