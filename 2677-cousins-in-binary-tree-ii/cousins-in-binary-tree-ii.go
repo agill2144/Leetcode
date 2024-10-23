@@ -7,35 +7,45 @@
  * }
  */
 func replaceValueInTree(root *TreeNode) *TreeNode {
-    levelSum := map[int]int{}
-    var dfsLevelSum func(r *TreeNode, level int)
-    dfsLevelSum = func(r *TreeNode, level int) {
+    if root == nil {return nil}
+    levelSum := map[int]int{} // {level : $sum }
+    var levels func(r *TreeNode, level int)
+    levels = func(r *TreeNode, level int) {
         // base
         if r == nil {return}
         // logic
-        levelSum[level]+=r.Val
-        dfsLevelSum(r.Left, level+1)
-        dfsLevelSum(r.Right, level+1)
+        levelSum[level] += r.Val
+        levels(r.Left, level+1)
+        levels(r.Right, level+1)
     }
-    dfsLevelSum(root, 0)
+    levels(root, 0)
 
-    var dfs func(r *TreeNode,level int)
+    // stand at a parent
+    // get child sum ( i.e sibling sum )
+    // replace child val with = levelSum - childSum
+    var dfs func(r *TreeNode, level int)
     dfs = func(r *TreeNode, level int) {
         // base
         if r == nil {return}
 
         // logic
-        childSum := 0
-        if r.Left != nil {childSum += r.Left.Val}
-        if r.Right != nil {childSum += r.Right.Val}
-        nextLevelSum := levelSum[level+1]
-        if r.Left != nil {r.Left.Val = nextLevelSum - childSum}
-        if r.Right != nil {r.Right.Val = nextLevelSum - childSum}
-
-        dfs(r.Left, level+1)
-        dfs(r.Right, level+1)
+        nextLevelSum, ok := levelSum[level+1]
+        if !ok {return}
+        siblingSum := 0
+        if r.Left != nil {siblingSum += r.Left.Val}
+        if r.Right != nil {siblingSum += r.Right.Val}
+        newChildVal := nextLevelSum-siblingSum
+        if r.Left != nil {
+            r.Left.Val = newChildVal
+            dfs(r.Left, level+1)
+        }
+        if r.Right != nil {
+            r.Right.Val = newChildVal
+            dfs(r.Right, level+1)
+        }
     }
     dfs(root, 0)
     root.Val = 0
     return root
+
 }
