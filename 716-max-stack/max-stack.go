@@ -30,6 +30,7 @@ func (this *MaxStack) Pop() int {
     out := this.st[len(this.st)-1]
     this.st = this.st[:len(this.st)-1]
     this.removed[out] = true
+    if this.mx.Len() != 0 && this.mx.items[0] == out {heap.Pop(this.mx)}
     return out.val
 }
 
