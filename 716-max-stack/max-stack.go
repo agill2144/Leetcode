@@ -62,29 +62,12 @@ func (this *MaxStack) adjustSt() {
 }
 
 func (this *MaxStack) adjustHeap() {
-    removed := this.removed[this.mx.items[0]]
-    for removed && this.mx.Len() != 0 {
+    for this.mx.Len() != 0 && this.removed[this.mx.items[0]] {
         heap.Pop(this.mx)
-        removed = this.removed[this.mx.items[0]]
     }
 }
 
-
-
-/**
- * Your MaxStack object will be instantiated and called as such:
- * obj := Constructor();
- * obj.Push(x);
- * param_2 := obj.Pop();
- * param_3 := obj.Top();
- * param_4 := obj.PeekMax();
- * param_5 := obj.PopMax();
- */
-
-
-type maxHeap struct {
-	items []*stNode
-}
+type maxHeap struct {items []*stNode}
 
 func (m *maxHeap) Less(i, j int) bool {
 	return m.items[i].val >= m.items[j].val
