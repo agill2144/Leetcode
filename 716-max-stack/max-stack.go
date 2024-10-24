@@ -50,14 +50,15 @@ func (this *MaxStack) PopMax() int {
     this.adjustHeap()
     topMax := heap.Pop(this.mx).(*stNode)
     this.removed[topMax] = true
+    if len(this.st) != 0 && this.st[len(this.st)-1] == topMax {
+        this.st = this.st[:len(this.st)-1]
+    }
     return topMax.val
 }
 
 func (this *MaxStack) adjustSt() {
-    removed := this.removed[this.st[len(this.st)-1]]
-    for len(this.st) != 0 && removed {
+    for len(this.st) != 0 && this.removed[this.st[len(this.st)-1]] {
         this.st = this.st[:len(this.st)-1]
-        removed = this.removed[this.st[len(this.st)-1]]
     }
 }
 
@@ -68,19 +69,10 @@ func (this *MaxStack) adjustHeap() {
 }
 
 type maxHeap struct {items []*stNode}
-
-func (m *maxHeap) Less(i, j int) bool {
-	return m.items[i].val >= m.items[j].val
-}
-func (m *maxHeap) Swap(i, j int) {
-	m.items[i], m.items[j] = m.items[j], m.items[i]
-}
-func (m *maxHeap) Len() int {
-	return len(m.items)
-}
-func (m *maxHeap) Push(x interface{}) {
-	m.items = append(m.items, x.(*stNode))
-}
+func (m *maxHeap) Less(i, j int) bool {return m.items[i].val >= m.items[j].val}
+func (m *maxHeap) Swap(i, j int) {m.items[i], m.items[j] = m.items[j], m.items[i]}
+func (m *maxHeap) Len() int {return len(m.items)}
+func (m *maxHeap) Push(x interface{}) {m.items = append(m.items, x.(*stNode))}
 func (m *maxHeap) Pop() interface{} {
 	out := m.items[len(m.items)-1]
 	m.items = m.items[:len(m.items)-1]
