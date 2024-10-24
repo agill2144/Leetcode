@@ -7,31 +7,28 @@
  * }
  */
 func delNodes(root *TreeNode, to_delete []int) []*TreeNode {
-    set := map[int]struct{}{}
-    for _, ele := range to_delete {set[ele] = struct{}{}}
-
-    out := []*TreeNode{}
-    var dfs func(r *TreeNode, parent *TreeNode)
-    dfs = func(r *TreeNode, parent *TreeNode) {
+    if root == nil {return nil}
+    toDelete := map[int]bool{}
+    for i := 0; i < len(to_delete); i++ {toDelete[to_delete[i]] = true}
+    roots := []*TreeNode{}
+    var dfs func(r, p *TreeNode)
+    dfs = func(r, p *TreeNode) {
         // base
         if r == nil {return}
 
         // logic
         dfs(r.Left, r)
         dfs(r.Right, r)
-    
-        if _, ok := set[r.Val]; ok {
-            if r.Left != nil {out = append(out, r.Left)}
-            if r.Right != nil {out = append(out, r.Right)}
-            if parent != nil {
-                if parent.Left == r {parent.Left = nil}
-                if parent.Right == r {parent.Right = nil}
-            }
+        if toDelete[r.Val] {
+            if r.Left != nil {roots = append(roots, r.Left)}
+            if r.Right != nil {roots = append(roots, r.Right)}
+            if p != nil && p.Left == r {p.Left = nil}
+            if p != nil && p.Right == r {p.Right = nil} 
         }
     }
-
     dfs(root, nil)
-    if _, ok := set[root.Val]; !ok {out = append(out, root)}
-    return out
-
+    if !toDelete[root.Val] {
+        roots = append(roots, root)
+    }
+    return roots
 }
