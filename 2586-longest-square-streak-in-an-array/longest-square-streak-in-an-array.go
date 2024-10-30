@@ -11,7 +11,7 @@ func longestSquareStreak(nums []int) int {
     for i := 0; i < len(nums); i++ {
         curr := nums[i]
         count := 0
-        for set[curr] {
+        for set[curr] && curr < int(math.Pow(10.0, 5)) {
             curr = curr * curr
             count++
         }
