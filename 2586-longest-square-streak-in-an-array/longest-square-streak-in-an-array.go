@@ -1,10 +1,12 @@
 func longestSquareStreak(nums []int) int {
     sort.Ints(nums)
     maxStreak := 0
+    dirty := map[int]bool{}
     for i := 0; i < len(nums); i++ {
         curr := nums[i]*nums[i]
         count := 1
-        for search(nums, i, curr) {
+        for search(nums, i, curr)  && !dirty[curr] {
+            dirty[curr] = true
             count++
             curr *= curr
         }
