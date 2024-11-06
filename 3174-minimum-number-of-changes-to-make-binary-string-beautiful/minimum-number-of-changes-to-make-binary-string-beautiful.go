@@ -1,16 +1,13 @@
 func minChanges(s string) int {
     n := len(s)
-    ones := 0
-    zeros := 0
     total := 0
     left := 0
     for i := 0; i < n; i++ {
-        if s[i] == '0' {zeros++}
-        if s[i] == '1' {ones++}
+        // create a partition of size 2 
+        // and if zeros != ones, we need to make a change
+        // therefore increment our total counter
         if i-left+1 == 2 {
-            total += min(ones, zeros)
-            ones = 0
-            zeros = 0
+            if s[i] != s[i-1] {total++}
             left = i+1
         }
     }
