@@ -7,14 +7,12 @@ func productExceptSelf(nums []int) []int {
         prev := nums[i-1]
         left[i] = prev * leftRp
     }
-    out := make([]int, n)
     rrp := 1
-    out[n-1] = left[n-1]
     for i := n-2; i >= 0; i-- {
         prev := nums[i+1]
         rrp *= prev
-        out[i] = rrp*left[i]
+        left[i] *= rrp
     }
     
-    return out
+    return left
 }
