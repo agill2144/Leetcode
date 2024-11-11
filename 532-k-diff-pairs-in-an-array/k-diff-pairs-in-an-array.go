@@ -3,7 +3,7 @@ func findPairs(nums []int, k int) int {
     count := 0
     slow := 0
     fast := 1
-    for slow < len(nums) && fast < len(nums) {
+    for fast < len(nums) {
         if slow == fast {fast++; continue}
         diff := nums[fast] - nums[slow]
         if diff == k {
