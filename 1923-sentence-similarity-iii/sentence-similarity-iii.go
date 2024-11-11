@@ -1,28 +1,13 @@
 func areSentencesSimilar(sentence1 string, sentence2 string) bool {
-    sent1 := strings.Split(sentence1, " ")
-    sent2 := strings.Split(sentence2, " ")
-    s1, s2 := 0,0
-    for s1 < len(sent1) && s2 < len(sent2) {
-        s1Word := sent1[s1]
-        s2Word := sent2[s2]
-        if s1Word == s2Word {
-            s1++
-            s2++
-            continue
-        }
-        break
+    words1 := strings.Split(sentence1, " ")
+    words2 := strings.Split(sentence2, " ")
+    w1L, w2L := 0,0
+    for w1L < len(words1) && w2L < len(words2) && words1[w1L] == words2[w2L] {
+        w1L++; w2L++
     }
-    e1, e2 := len(sent1)-1, len(sent2)-1
-    for e1 >= 0 && e2 >= 0 {
-        s1Word := sent1[e1]
-        s2Word := sent2[e2]
-        if s1Word == s2Word {
-            e1--
-            e2--
-            continue
-        }
-        break
-
+    w1R, w2R := len(words1)-1,len(words2)-1
+    for w1R >= 0 && w2R >= 0 && words1[w1R] == words2[w2R] {
+        w1R--; w2R--
     }
-    return e1 < s2 || e2 < s1
+    return w1L > w1R || w2L > w2R
 }
