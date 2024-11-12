@@ -1,27 +1,14 @@
 func maxProfit(prices []int) int {
     n := len(prices)
-    buy := prices[0]
-    maxProfit := 0
-    for i := 1; i < n; i++ {
-        sell := prices[i]
-        maxProfit = max(maxProfit, sell-buy)
-        buy = min(buy, sell)        
+    greatestSellPrices := make([]int, n)
+    for i := n-2; i >= 0; i-- {
+        nextSellPrice := prices[i+1]
+        greatestSoFar := greatestSellPrices[i+1]
+        greatestSellPrices[i] = max(nextSellPrice, greatestSoFar)
     }
-    return maxProfit
+    maxEarn := 0
+    for i := 0; i < n; i++ {
+        maxEarn = max(maxEarn, greatestSellPrices[i]-prices[i])
+    }
+    return maxEarn
 }
-// func maxProfit(prices []int) int {
-//     n := len(prices)
-//     suffix := make([]int, n)
-//     for i := n-2; i >= 0; i-- {
-//         next := prices[i+1]
-//         maxSoFar := suffix[i+1]
-//         suffix[i] = max(maxSoFar, next)        
-//     }
-//     maxProfit := 0
-//     for i := 0; i < len(prices); i++ {
-//         buy := prices[i]
-//         sell := suffix[i]
-//         maxProfit = max(maxProfit, sell-buy)
-//     }
-//     return maxProfit
-// }
