@@ -1,4 +1,4 @@
-<h2><a href="https://leetcode.com/problems/shortest-word-distance-ii/">244. Shortest Word Distance II</a></h2><h3>Medium</h3><hr><div><p>Design a data structure that will be initialized with a string array, and then it should answer queries of the shortest distance between two different strings from the array.</p>
+<h2><a href="https://leetcode.com/problems/shortest-word-distance-ii">Shortest Word Distance II</a></h2> <img src='https://img.shields.io/badge/Difficulty-Medium-orange' alt='Difficulty: Medium' /><hr><p>Design a data structure that will be initialized with a string array, and then it should answer queries of the shortest distance between two different strings from the array.</p>
 
 <p>Implement the <code>WordDistance</code> class:</p>
 
@@ -8,18 +8,19 @@
 </ul>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
-<pre><strong>Input</strong>
-["WordDistance", "shortest", "shortest"]
-[[["practice", "makes", "perfect", "coding", "makes"]], ["coding", "practice"], ["makes", "coding"]]
+<pre>
+<strong>Input</strong>
+[&quot;WordDistance&quot;, &quot;shortest&quot;, &quot;shortest&quot;]
+[[[&quot;practice&quot;, &quot;makes&quot;, &quot;perfect&quot;, &quot;coding&quot;, &quot;makes&quot;]], [&quot;coding&quot;, &quot;practice&quot;], [&quot;makes&quot;, &quot;coding&quot;]]
 <strong>Output</strong>
 [null, 3, 1]
 
 <strong>Explanation</strong>
-WordDistance wordDistance = new WordDistance(["practice", "makes", "perfect", "coding", "makes"]);
-wordDistance.shortest("coding", "practice"); // return 3
-wordDistance.shortest("makes", "coding");    // return 1
+WordDistance wordDistance = new WordDistance([&quot;practice&quot;, &quot;makes&quot;, &quot;perfect&quot;, &quot;coding&quot;, &quot;makes&quot;]);
+wordDistance.shortest(&quot;coding&quot;, &quot;practice&quot;); // return 3
+wordDistance.shortest(&quot;makes&quot;, &quot;coding&quot;);    // return 1
 </pre>
 
 <p>&nbsp;</p>
@@ -33,4 +34,3 @@ wordDistance.shortest("makes", "coding");    // return 1
 	<li><code>word1 != word2</code></li>
 	<li>At most <code>5000</code> calls will be made to <code>shortest</code>.</li>
 </ul>
-</div>
