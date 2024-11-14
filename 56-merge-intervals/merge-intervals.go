@@ -4,13 +4,12 @@ func merge(intervals [][]int) [][]int {
     })
     out := [][]int{intervals[0]}
     for i := 1; i < len(intervals); i++ {
-        curr := intervals[i]
-        prev := out[len(out)-1]
-        if curr[0] <= prev[1] {
-            out[len(out)-1][0] = min(curr[0], prev[0])
-            out[len(out)-1][1] = max(curr[1], prev[1])
+        start, end := intervals[i][0], intervals[i][1]
+        prevEnd := out[len(out)-1][1]
+        if start <= prevEnd {
+            out[len(out)-1][1] = max(prevEnd, end)
         } else {
-            out = append(out, curr)
+            out = append(out, intervals[i])
         }
     }
     return out
