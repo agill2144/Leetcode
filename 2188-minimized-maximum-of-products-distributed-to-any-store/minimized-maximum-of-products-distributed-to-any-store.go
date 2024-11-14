@@ -3,8 +3,17 @@ func minimizedMaximum(n int, quantities []int) int {
     right := -1
     for i := 0; i < len(quantities); i++ {right = max(right, quantities[i])}
     ans := -1
+    // minimize the maximum number ( binary search on answers hint )
+    // max = mid
+    // find the smallest such max
+    // mid works when stores needed <= n
+    // if mid works, we want smallest such mid value
+    // therefore take the search on left side
+    // otherwise, we needed more store for our current mid (atMax)
+    // which means, our atMax (or mid) was too small that more stores were needed to distribute all products
+    // therefore search right
     for left <= right {
-        mid := left + (right-left)/2
+        mid := left + (right-left)/2       
         atMax := mid
         count := 0
         for i := 0; i < len(quantities); i++ {
