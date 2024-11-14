@@ -12,6 +12,10 @@ func minimizedMaximum(n int, quantities []int) int {
     // otherwise, we needed more store for our current mid (atMax)
     // which means, our atMax (or mid) was too small that more stores were needed to distribute all products
     // therefore search right
+    // n = len(quantities)
+    // q = max(quantities)
+    // time = o(n) + o(log q * n)
+    // space = o(1)
     for left <= right {
         mid := left + (right-left)/2       
         atMax := mid
