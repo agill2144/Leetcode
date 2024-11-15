@@ -7,8 +7,9 @@ func check(nums []int) bool {
     if idx == -1 {return true}
     n := len(nums)
     start := idx+1
-    for start % n != idx {
+    end := idx
+    for start % n != end {
         if nums[(start-1)%n] <= nums[start%n] {start++} else {break}
     }
-    return (start%n) == idx
+    return (start%n) == end
 }
