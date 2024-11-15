@@ -1,22 +1,14 @@
 func check(nums []int) bool {
+    idx := -1
+    for i := 0; i < len(nums); i++ {
+        if i == 0 {continue}
+        if nums[i] < nums[i-1] {idx = i; break}
+    }
+    if idx == -1 {return true}
     n := len(nums)
-    idxs := map[int][]int{}
-    minNum := 101
-    for i := 0; i < n; i++ {
-        idxs[nums[i]] = append(idxs[nums[i]], i)
-        minNum = min(minNum, nums[i])
+    start := idx+1
+    for start % n != idx {
+        if nums[(start-1)%n] <= nums[start%n] {start++} else {break}
     }
-
-    for _, idx := range idxs[minNum] {
-        ptr := idx+1
-        for ptr % n != idx {
-            if nums[ptr%n] >= nums[(ptr-1)%n] {
-                ptr++
-            } else {
-                break
-            }
-        }
-        if ptr % n == idx {return true}
-    }
-    return false
+    return (start%n) == idx
 }
