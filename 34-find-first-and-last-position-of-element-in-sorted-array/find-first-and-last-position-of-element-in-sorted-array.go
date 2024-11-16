@@ -5,19 +5,19 @@ func searchRange(nums []int, target int) []int {
     leftIdx := -1
     for left <= right {
         mid := left + (right-left)/2
-        if nums[mid] >= target {
-            if nums[mid] == target {
-                leftIdx = mid
-            }
+        if nums[mid] == target {
+            leftIdx = mid
             right = mid-1
-        } else {
+        } else if target > nums[mid] {
             left = mid+1
+        } else {
+            right = mid-1
         }
     }
     if leftIdx == -1 {return []int{-1,-1}}
+    rightIdx := -1
     left = leftIdx
     right = n-1
-    rightIdx := -1
     for left <= right {
         mid := left + (right-left)/2
         if nums[mid] == target {
