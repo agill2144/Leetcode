@@ -20,7 +20,7 @@
     - therefore reset dq with just current element
 
     time = o(n)
-    space = o(n)
+    space = o(k)
 */
 func resultsArray(nums []int, k int) []int {
     dq := []int{0} // idx
@@ -42,7 +42,7 @@ func resultsArray(nums []int, k int) []int {
             } else {
                 out = append(out, -1)
             }
-            for len(dq) > 0 && dq[0] <= left {dq = dq[1:]}
+            if len(dq) > 0 && dq[0] <= left {dq = dq[1:]}
             left++
         }
     }
