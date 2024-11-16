@@ -10,15 +10,14 @@ func maxConsecutiveAnswers(answerKey string, k int) int {
         maxCount = max(maxCount, max(ts, fs))
         size := i-left+1
         smallerCount := size-maxCount
-        for smallerCount > k {
+        if smallerCount <= k {
+            maxSize = max(maxSize, i-left+1)
+        } else {
             if answerKey[left] == 'T' {ts--}
             if answerKey[left] == 'F' {fs--}
             maxCount = max(maxCount, max(ts, fs))
             left++
-            size = i-left+1
-            smallerCount = size-maxCount                                
         }
-        maxSize = max(maxSize, i-left+1)
     }
     return maxSize
 }
