@@ -1,4 +1,5 @@
 func findKthPositive(arr []int, k int) int {
+    if k < arr[0] {return k}
     left := 0
     right := len(arr)-1
     for left <= right {
