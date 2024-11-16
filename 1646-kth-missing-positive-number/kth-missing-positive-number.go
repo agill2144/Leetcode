@@ -12,7 +12,9 @@ func findKthPositive(arr []int, k int) int {
             left = mid+1
         }
     }
-    if right < 0 {return k}
+    // we have already handled if missing number is to the left of the array
+    // k < arr[0]
+    // now this means, the missing number is either in the middle or to the right side of array
     missing := (arr[right]-1)-right
     rem := k-missing
     return arr[right]+rem
