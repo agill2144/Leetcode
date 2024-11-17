@@ -8,13 +8,14 @@ func lengthOfLongestSubstringTwoDistinct(s string) int {
     for i := 0; i < n; i++ {
         char := s[i]
         freq[char]++
-        for len(freq) > 2 {
-            leftChar := s[left]
-            freq[leftChar]--
-            if freq[leftChar] == 0 {delete(freq, leftChar)}
+        if len(freq) <= 2 {
+            maxSize = max(maxSize, i-left+1)
+        } else {
+            freq[s[left]]--
+            if freq[s[left]] == 0 {delete(freq, s[left])}
             left++
         }
-        maxSize = max(maxSize, i-left+1)
+        
     }
     return maxSize
 }
