@@ -1,23 +1,30 @@
 func validWordAbbreviation(word string, abbr string) bool {
-    w := 0; a := 0
-    num := 0
-    for a < len(abbr) && w < len(word) {
+    w, a := 0, 0
+    n := 0
+    for w < len(word) && a < len(abbr) {
         if abbr[a] >= '0' && abbr[a] <= '9' {
-            if num == 0 && abbr[a] == '0' {return false}
-            num = num * 10 + int(abbr[a]-'0')
+            if n == 0 && abbr[a] == '0' {return false}
+            n = n * 10 + int(abbr[a]-'0')
             a++
             continue
         }
-        for num > 0 {
+        for n > 0 {
             w++
-            num--
+            n--
         }
-        if w == len(word){ break }
-        
-        if abbr[a] != word[w] { return false }
-        a++
+        if w == len(word) {break}
+
+        if abbr[a] != word[w] {return false}
+        a++; w++
+    }
+    for n > 0 && w < len(word) {
+        n--
         w++
     }
-    for num > 0 && w < len(word) {num--; w++}
-    return a == len(abbr) && w == len(word) && num == 0
+    return n == 0 && w == len(word) && a == len(abbr)
 }
+
+// i12izatio1
+//.         a
+// internationalization
+//                    w
