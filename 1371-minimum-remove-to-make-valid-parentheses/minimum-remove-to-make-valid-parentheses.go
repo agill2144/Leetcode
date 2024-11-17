@@ -1,58 +1,39 @@
-type stNode struct {
-    val byte
-    idx int
-}
-
 func minRemoveToMakeValid(s string) string {
-    // keep track of which indicies are invalid
-    invalidIdxSet := map[int]struct{}{}
-    st := []stNode{}
-    validOpenings := map[byte]byte{
-        ')' : '(',
-        '}' : '{',
-        ']' : '[',
-    }
-
-    for i := 0; i < len(s); i++ {
+    n := len(s)
+    var open byte = '('
+    var close byte = ')'
+    count := 0
+    tmp := new(strings.Builder)
+    for i := 0; i < n; i++ {
         char := s[i]
-        if char == '[' || char == '(' || char == '{' {
-            st = append(st, stNode{char,i})
-        } else if char == ']' || char == ')' || char == '}' {
-            
-            // when is a closing paran invalid? 
-
-            // 1. when there is no corresponding open paran
-            if len(st) == 0 {
-                // invalid closing paran
-                invalidIdxSet[i] = struct{}{}
-                continue
-            }
-
-            // 2. last open paran is not the correct corresponding paran
-            top := st[len(st)-1]
-            lastOpen := top.val
-            validOpen := validOpenings[char]
-            if lastOpen != validOpen {
-                invalidIdxSet[i] = struct{}{}
-                continue
-            }
-
-            st = st[:len(st)-1]
+        if char == open {
+            count++
+            tmp.WriteByte(char)
+        } else if char == close {
+            if count > 0 {count--; tmp.WriteByte(char)}
+        } else {
+            tmp.WriteByte(char)
         }
     }
-
-    // or 3. there are open parans in the st have never closed
-    for len(st) != 0 {
-        top := st[len(st)-1]
-        st = st[:len(st)-1]
-        invalidIdxSet[top.idx] = struct{}{}
+    tmpStr := tmp.String()
+    open, close = close, open
+    count = 0
+    tmp.Reset()
+    for i := len(tmpStr)-1; i >= 0; i-- {
+        char := tmpStr[i]
+        if char == open {
+            count++
+            tmp.WriteByte(char)
+        } else if char == close {
+            if count > 0 {count--; tmp.WriteByte(char)}
+        } else {
+            tmp.WriteByte(char)
+        }
     }
-
-    out := new(strings.Builder)
-    for i := 0; i < len(s); i++ {
-        _, ok := invalidIdxSet[i]
-        if ok {continue}
-        out.WriteByte(s[i])
+    tmpStr = tmp.String()
+    tmp.Reset()
+    for i := len(tmpStr)-1; i >= 0; i-- {
+        tmp.WriteByte(tmpStr[i])
     }
-    return out.String()
+    return tmp.String()
 }
