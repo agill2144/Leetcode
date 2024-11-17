@@ -2,26 +2,28 @@ func findPeakGrid(mat [][]int) []int {
     m := len(mat)
     n := len(mat[0])
     left := 0
-    right := n-1
+    right := m-1
     for left <= right {
-        mid := left + (right-left)/2
-
-
-        maxRowIdx := -1
-        maxInThisCol := math.MinInt64
-        for i := 0; i < m; i++ {
-            if mat[i][mid] > maxInThisCol{
-                maxInThisCol = mat[i][mid]
-                maxRowIdx = i
+        mid := left + (right - left)/2
+        
+        maxColIdx := -1
+        for j := 0; j < n; j++ {
+            if maxColIdx == -1 || mat[mid][j] > mat[mid][maxColIdx] {
+                maxColIdx = j
             }
         }
 
-        if (mid == 0 || mat[maxRowIdx][mid] > mat[maxRowIdx][mid-1]) && (mid == n-1 || mat[maxRowIdx][mid] > mat[maxRowIdx][mid+1]) {
-            return []int{maxRowIdx, mid}
-        } else if (mid == n-1 || mat[maxRowIdx][mid+1] > mat[maxRowIdx][mid]) {
-            left = mid+1
-        } else {
+        topVal := math.MinInt64
+        if mid-1 >= 0 {topVal = mat[mid-1][maxColIdx]}
+        bottomVal := math.MinInt64
+        if mid+1 < m {bottomVal = mat[mid+1][maxColIdx]}
+        if mat[mid][maxColIdx] > topVal && mat[mid][maxColIdx] > bottomVal {
+            return []int{mid, maxColIdx}
+        }
+        if topVal > bottomVal {
             right = mid-1
+        } else {
+            left = mid+1
         }
     }
     return nil
