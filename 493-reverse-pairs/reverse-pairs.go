@@ -6,40 +6,34 @@ func reversePairs(nums []int) int {
         if left >= right {return}
 
         // logic
-        mid := left+(right-left)/2
+        mid := left + (right-left)/2
         dfs(left, mid)
         dfs(mid+1, right)
-        i, j := left, mid+1
+        i := left; j := mid+1
         for i <= mid && j <= right {
-            if nums[i] > nums[j]*2 {
+            if nums[i] > 2*nums[j] {
                 count += (mid-i+1)
                 j++
             } else {
                 i++
             }
         }
-        l := left
-        r := mid+1
-        aux := []int{}
-        for l <= mid && r <= right {
-            if nums[l] < nums[r] {
-                aux = append(aux, nums[l])
-                l++
+        merged := []int{}
+        i = left; j = mid+1
+        for i <= mid && j <= right {
+            if nums[i] < nums[j] {
+                merged = append(merged, nums[i])
+                i++
             } else {
-                aux = append(aux, nums[r])
-                r++
+                merged = append(merged, nums[j])
+                j++
             }
         }
+        for i <= mid {merged = append(merged, nums[i]); i++}
+        for j <= right {merged = append(merged, nums[j]); j++}
+        ptr := 0
+        for i := left; i <= right; i++ {nums[i] = merged[ptr]; ptr++}
         
-        for l <= mid {aux = append(aux, nums[l]);l++}
-        for r <= right {aux = append(aux, nums[r]);r++}
-        
-        
-        auxPtr := 0
-        for i := left; i <= right; i++ {
-            nums[i] = aux[auxPtr]
-            auxPtr++
-        }
     }
     dfs(0, len(nums)-1)
     return count
