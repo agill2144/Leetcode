@@ -1,55 +1,26 @@
 func minRemoveToMakeValid(s string) string {
-    // a left ( paran is balanced with a right )
-    // so if there is a extra right ) when there was no open left (
-    // this means, this extra ) is invalid, and can be removed
-
-    // 1. 1st pass to remove all invalid closing parans
-    open := 0
-    tmp := new(strings.Builder)
+    st := []int{} // idx of open parans
+    invalid := map[int]bool{} // idxs of all invalid chars that should not be part of final string
     for i := 0; i < len(s); i++ {
         if s[i] == '(' {
-            open++
-            tmp.WriteByte(s[i])
+            st = append(st, i)
         } else if s[i] == ')' {
-            // is this an invalid closing?
-            // it would be if we dont have any openings
-            // but if we had openings, this is a valid char
-            if open > 0 {
-                open--
-                tmp.WriteByte(s[i])
+            if len(st) == 0 {
+                invalid[i] = true
+            } else {
+                st = st[:len(st)-1]
             }
-        }  else {
-            // regular char from a to z
-            tmp.WriteByte(s[i])
         }
     }
-
-    // a right closing paran is balanced by its left opening
-    // so if there was a extra ( open paran, when there was nothing closing on right
-    // that means this extra ( open paran is invalid and can be removed
-    // we need to traverse from right to left because now we are trying to balance from the closing to opening
-    // and closing paran would show up after opening if traversing from left to right
-    // therefore traversing from right to left
-    tmpStr := tmp.String()
-    tmp.Reset()
-    close := 0
-    for i := len(tmpStr)-1; i >= 0; i-- {
-        if tmpStr[i] == ')' {
-            close++
-            tmp.WriteByte(tmpStr[i])
-        } else if tmpStr[i] == '(' {
-            if close > 0 {
-                close--
-                tmp.WriteByte(tmpStr[i])
-            }
-        } else {
-            tmp.WriteByte(tmpStr[i])
-        }
+    for len(st) != 0 {
+        top := st[len(st)-1]
+        st = st[:len(st)-1]
+        invalid[top] = true
     }
-    tmpStr = tmp.String()
-    tmp.Reset()
-    for i := len(tmpStr)-1; i >= 0; i-- {
-        tmp.WriteByte(tmpStr[i])
+    res := new(strings.Builder)
+    for i := 0; i < len(s); i++ {
+        if invalid[i] {continue}
+        res.WriteByte(s[i])
     }
-    return tmp.String()
+    return res.String()
 }
