@@ -1,30 +1,30 @@
 func calculate(s string) int {
-    st := []int{}
-    var op byte = '+'
+    total := 0
     curr := 0
-    for i := 0; i < len(s); i++ {
-        char := s[i]
-        if char >= '0' && char <= '9' {
-            curr = curr * 10 + int(char-'0')
+    n := len(s)
+    lastContr := 0
+    var op byte = '+'
+    for i := 0; i < n; i++ {
+        if s[i] >= '0' && s[i] <= '9' {
+            curr = curr * 10 + int(s[i]-'0')
         }
-        if i == len(s)-1 || char == '+' || char == '-' || char == '*' || char == '/' {
-            if op == '*' {
-                st[len(st)-1] *= curr
-            } else if op == '/' {
-                st[len(st)-1] /= curr
+        if s[i] == '+' || s[i] == '-' || s[i] == '*' || s[i] == '/' || i == n-1 {
+            if op == '+' {
+                total += curr
+                lastContr = curr
             } else if op == '-' {
-                st = append(st, -curr)
-            } else {
-                st = append(st, curr)
+                total -= curr
+                lastContr = -curr
+            } else if op == '*'{
+                total = total - lastContr + (lastContr * curr)
+                lastContr = lastContr * curr
+            } else if op == '/' {
+                total = total - lastContr + (lastContr/curr)
+                lastContr = lastContr / curr
             }
             curr = 0
-            op = char
+            op = s[i]
         }
-    }
-    total := 0
-    for len(st) != 0 {
-        top := st[len(st)-1]; st = st[:len(st)-1]
-        total += top
     }
     return total
 }
