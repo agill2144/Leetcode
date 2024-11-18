@@ -1,27 +1,19 @@
-/*
-    approach: brute force
-    - try all possible pais
-    time = o(n^2)
-    space = o(1)
-*/
 func countFairPairs(nums []int, lower int, upper int) int64 {
     sort.Ints(nums)
-    var count int64
+    var count int64 = 0
     for i := 0; i < len(nums); i++ {
-        // identify the range
-        leftIdx := leftSearch(nums, i+1, lower-nums[i])
-        rightIdx := rightSearch(nums, i+1, upper-nums[i])
-        if rightIdx != -1 && leftIdx != -1 {
-            count += (int64(rightIdx) - int64(leftIdx)+1)
+        idx1 := closestOnRight(nums,i+1,lower-nums[i])
+        idx2 := closestOnLeft(nums, i+1,upper-nums[i])
+        if idx1 != -1 && idx2 != -1 {
+            count += int64(idx2-idx1+1)
         }
-
     }
     return count
 }
 
-func leftSearch(nums []int, left, target int) int {
-    ans := -1
+func closestOnRight(nums []int, left int, target int) int{
     right := len(nums)-1
+    ans := -1
     for left <= right {
         mid := left + (right-left)/2
         if nums[mid] >= target {
@@ -34,10 +26,9 @@ func leftSearch(nums []int, left, target int) int {
     return ans
 }
 
-
-func rightSearch(nums []int, left, target int) int {
-    ans := -1
+func closestOnLeft(nums []int, left int, target int) int{
     right := len(nums)-1
+    ans := -1
     for left <= right {
         mid := left + (right-left)/2
         if nums[mid] <= target {
