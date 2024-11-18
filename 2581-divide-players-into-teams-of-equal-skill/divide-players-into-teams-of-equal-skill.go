@@ -21,5 +21,6 @@ func dividePlayers(skill []int) int64 {
     // skill = 6
     // and we have a pair 2+4, then 4+2 will come up too
     // therefore dupes, therefore each compliment is added twice, therefore removing by dividing the total by 2
+    // Return half of total chemistry (as each pair is counted twice)
     return total/2
 }
