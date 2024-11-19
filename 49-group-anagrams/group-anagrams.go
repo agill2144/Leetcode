@@ -1,6 +1,6 @@
 
 func groupAnagrams(strs []string) [][]string {
-    grps := map[string][]string{}
+    grps := map[[26]int][]string{}
     for i := 0; i < len(strs); i++ {
         key := naiveHash(strs[i])
         grps[key] = append(grps[key], strs[i])
@@ -10,18 +10,13 @@ func groupAnagrams(strs []string) [][]string {
     return out
 }
 
-func naiveHash(key string) string {
-    freq := make([]int, 26)
+func naiveHash(key string) [26]int {
+    freq := [26]int{}
     for i := 0; i < len(key); i++ {
         idx := int(key[i]-'a')
         freq[idx]++
     }
-    res := new(strings.Builder)
-    for i := 0; i < len(freq); i++ {
-        res.WriteString(fmt.Sprintf("%v",freq[i]))
-        if i != len(freq)-1 {res.WriteByte('-')}
-    }
-    return res.String()
+    return freq
 }
 
 var primes []float64 = []float64{2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97,101,103,107}
