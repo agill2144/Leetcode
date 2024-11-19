@@ -9,16 +9,12 @@ func maximumSubarraySum(nums []int, k int) int64 {
         if i-left+1 == k {
             if len(freq) == k {
                 maxSum = max(maxSum, sum)
-                sum -= int64(nums[left])
-                freq[nums[left]]--
-                if freq[nums[left]] == 0 {delete(freq, nums[left])}
-                left++
-            } else {
-                sum -= int64(nums[left])
-                freq[nums[left]]--
-                if freq[nums[left]] == 0 {delete(freq, nums[left])}
-                left++
-            }   
+            }
+            sum -= int64(nums[left])
+            freq[nums[left]]--
+            if freq[nums[left]] == 0 {delete(freq, nums[left])}
+            left++
+
         }
         
     }
