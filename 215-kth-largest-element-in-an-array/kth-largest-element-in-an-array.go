@@ -1,3 +1,11 @@
+/*
+approach: bucket sort / counting sort
+- use map as a bucket instead of an array
+- why ? we have negative values, and we cannot easily plot/map a negative value to a idx in an array
+- therefore using map
+- time = o(n) + o(max-min+1) 
+- space = o(n)
+*/
 func findKthLargest(nums []int, k int) int {
     n := len(nums)
     targetIdx := n-k
