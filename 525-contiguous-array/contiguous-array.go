@@ -1,14 +1,14 @@
 func findMaxLength(nums []int) int {
-    idx := map[int]int{0:-1}
     count := 0
     maxLen := 0
+    idxs := map[int]int{0:-1}
     for i := 0; i < len(nums); i++ {
-        if nums[i] == 0 {count--} else {count++}
-        left, ok := idx[count]
+        if nums[i] == 0 {count++} else {count--}
+        lastIdx, ok := idxs[count]
         if ok {
-            maxLen = max(maxLen, i-left)
+            maxLen = max(maxLen, i-lastIdx)
         } else {
-            idx[count] = i
+            idxs[count] = i
         }
     }
     return maxLen
