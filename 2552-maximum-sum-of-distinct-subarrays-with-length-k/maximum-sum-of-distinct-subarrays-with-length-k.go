@@ -14,9 +14,7 @@ func maximumSubarraySum(nums []int, k int) int64 {
             freq[nums[left]]--
             if freq[nums[left]] == 0 {delete(freq, nums[left])}
             left++
-
         }
-        
     }
     return maxSum
 }
