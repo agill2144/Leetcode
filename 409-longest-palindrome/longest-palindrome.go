@@ -1,14 +1,14 @@
 func longestPalindrome(s string) int {
     set := map[byte]bool{}
-    size := 0
+    count := 0
     for i := 0; i < len(s); i++ {
         if set[s[i]] {
+            count += 2
             delete(set, s[i])
-            size += 2
         } else {
             set[s[i]] = true
         }
     }
-    if len(set) != 0 {size++}
-    return size
+    if len(set) != 0 {count++}
+    return count
 }
