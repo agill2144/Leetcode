@@ -1,14 +1,38 @@
+
 func groupAnagrams(strs []string) [][]string {
-    groups := map[string][]string{}
+    grps := map[float64][]string{}
     for i := 0; i < len(strs); i++ {
-        word := strings.Split(strs[i], "")
-        sort.Strings(word)
-        sortStr := strings.Join(word,"")
-        groups[sortStr] = append(groups[sortStr], strs[i])
+        key := hash(strs[i])
+        grps[key] = append(grps[key], strs[i])
     }
     out := [][]string{}
-    for _, v := range groups {
-        out = append(out, v)
-    }
+    for _, v := range grps {out = append(out, v)}
     return out
 }
+
+var primes []float64 = []float64{2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97,101,103,107}
+func hash(key string) float64 {
+    prod := 1.0
+    for i := 0; i < len(key); i++ {
+        prod *= (primes[int(key[i]-'a')])
+    }
+    return prod
+}
+// func groupAnagrams(strs []string) [][]string {
+//     groups := map[string][]string{}
+//     // n = len strs
+//     // k = avg len of each word
+//     // (n * klogk) + n
+//     // space = o(k + n)
+//     for i := 0; i < len(strs); i++ {
+//         word := strings.Split(strs[i], "")
+//         sort.Strings(word)
+//         sortStr := strings.Join(word,"")
+//         groups[sortStr] = append(groups[sortStr], strs[i])
+//     }
+//     out := [][]string{}
+//     for _, v := range groups {
+//         out = append(out, v)
+//     }
+//     return out
+// }
