@@ -1,21 +1,20 @@
 func wordPattern(pattern string, s string) bool {
-    ps := map[string]string{}
-    sp := map[string]string{}
     sList := strings.Split(s, " ")
     if len(sList) != len(pattern) {return false}
-    for i := 0; i < len(pattern); i++ {
-        p := string(pattern[i])
-        sWord := sList[i]
-        
-        psVal, ok := ps[p]
-        if !ok {
-            ps[p] = sWord
-        } else if psVal != sWord {return false}
+    pToS := map[byte]string{}
+    sToP := map[string]byte{}
+    pPtr := 0; sPtr := 0
+    for pPtr < len(pattern) && sPtr < len(s) {
+        pchar := pattern[pPtr]
+        sWord := sList[sPtr]
+        val, ok := pToS[pchar]
+        if ok && val != sWord {return false}
+        pToS[pchar] = sWord
 
-        spVal, ok2 := sp[sWord]
-        if !ok2 {
-            sp[sWord] = p
-        } else if spVal != p {return false}
+        val2, ok2 := sToP[sWord]
+        if ok2 && val2 != pchar {return false}
+        sToP[sWord]=pchar
+        sPtr++; pPtr++
     }
     return true
 }
