@@ -14,7 +14,6 @@ func isValidBST(root *TreeNode) bool {
         if r == nil {return true}
 
         // logic
-        // fmt.Println(r.Val)
         if r.Val <= minVal || r.Val >= maxVal {return false}
         if !dfs(r.Left, minVal, r.Val) {return false}
         if !dfs(r.Right, r.Val, maxVal) {return false}
