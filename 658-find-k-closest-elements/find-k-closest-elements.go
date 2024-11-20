@@ -4,7 +4,6 @@ func findClosestElements(arr []int, k int, x int) []int {
     right := n-k-1
     for left <= right {
         mid := left + (right-left)/2
-        // if mid+k >= len(arr){break}
         startDist := x-arr[mid]
         endDist := arr[mid+k]-x
         if endDist >= startDist {
