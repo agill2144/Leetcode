@@ -15,8 +15,8 @@ func rangeSumBST(root *TreeNode, low int, high int) int {
 
         // logic
         if r.Val >= low && r.Val <= high {total += r.Val}
-        if r.Val >= low {dfs(r.Left)}
-        if r.Val <= high {dfs(r.Right)}
+        if r.Val > low {dfs(r.Left)}
+        if r.Val < high {dfs(r.Right)}
     }
     dfs(root)
     return total
