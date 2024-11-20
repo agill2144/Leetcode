@@ -1,11 +1,10 @@
 func maximumSwap(num int) int {
     if num <= 9 {return num}
-    nums := strings.Split(fmt.Sprintf("%v", num), "")
+    nums := []int{}
+    numStr := fmt.Sprintf("%v", num)
+    for i := 0; i < len(numStr); i++ {nums = append(nums, int(numStr[i]-'0'))}
     n := len(nums)
-    suffix := make([]int, len(nums)) // idxs
-    // 2736
-    // ["2", "7", "3", "6"]
-    // [ 1    3    3    3]
+    suffix := make([]int, len(nums)) 
     suffix[n-1] = n-1
     for i := n-2; i >= 0; i-- {
         maxIdx := suffix[i+1]
@@ -27,8 +26,7 @@ func maximumSwap(num int) int {
     }
     res := 0
     for i := 0; i < len(nums); i++ {
-        nu, _ := strconv.Atoi(nums[i])
-        res = (res * 10) + nu
+        res = (res * 10) + nums[i]
     }
     return res
 }
