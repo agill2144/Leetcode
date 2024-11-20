@@ -1,36 +1,46 @@
 func findKthLargest(nums []int, k int) int {
-    mn := &minHeap{items: []int{}}
+    freq := map[int]int{}
+    minVal := math.MaxInt64
+    maxVal := math.MinInt64
     for i := 0; i < len(nums); i++ {
-        heap.Push(mn, nums[i])
-        if mn.Len() > k {
-            heap.Pop(mn)
-        }
+        freq[nums[i]]++
+        minVal = min(minVal, nums[i])
+        maxVal = max(maxVal, nums[i])
     }
-    return mn.Peek().(int)
+    idx := -1
+    for i := minVal; i <= maxVal; i++ {
+        idx += freq[i]
+        if idx >= len(nums)-k {return i}
+    }
+    return -1
 }
 
-type minHeap struct {
-	items []int
-}
-
-func (m *minHeap) Peek() interface{} {
-    return m.items[0]
-}
-
-func (m *minHeap) Less(i, j int) bool {
-	return m.items[i] < m.items[j]
-}
-func (m *minHeap) Swap(i, j int) {
-	m.items[i], m.items[j] = m.items[j], m.items[i]
-}
-func (m *minHeap) Len() int {
-	return len(m.items)
-}
-func (m *minHeap) Push(x interface{}) {
-	m.items = append(m.items, x.(int))
-}
-func (m *minHeap) Pop() interface{} {
-	out := m.items[len(m.items)-1]
-	m.items = m.items[:len(m.items)-1]
-	return out
-}
+// quick select ( sort the half we care about )
+// avg time = o(n)
+// space = o(1)
+// func findKthLargest(nums []int, k int) int {
+//     n := len(nums)
+//     targetIdx := n-k
+//     left := 0
+//     right := n-1
+//     for left <= right {
+//         pivot := right
+//         ns := left
+//         for i := left; i < pivot; i++ {
+//             if nums[i] <= nums[pivot] {
+//                 nums[i], nums[ns] = nums[ns], nums[i]
+//                 ns++
+//             }
+//         }
+//         nums[ns], nums[pivot] = nums[pivot], nums[ns]
+//         if ns == targetIdx {
+//             return nums[ns]
+//         }
+//         if targetIdx > ns {
+//             left = ns+1
+//         } else {
+//             right = ns-1
+//         }
+//     }
+//     return -1
+// }
