@@ -13,11 +13,13 @@ func combinationSum(candidates []int, target int) [][]int {
             return
         }
         for i := start; i < len(candidates); i++ {
-            sum += candidates[i]
-            path = append(path, candidates[i])
-            dfs(i, sum, path)
-            path = path[:len(path)-1]
-            sum -= candidates[i]
+            if sum + candidates[i] <= target {
+                sum += candidates[i]
+                path = append(path, candidates[i])
+                dfs(i, sum, path)
+                path = path[:len(path)-1]
+                sum -= candidates[i]
+            }
         }
     }
     dfs(0, 0, nil)
