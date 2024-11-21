@@ -3,6 +3,7 @@ func combinationSum(candidates []int, target int) [][]int {
     var dfs func(start int, sum int, path []int)
     dfs = func(start, sum int, path []int) {
         // base
+        if sum > target {return}
 
         // logic
         if sum == target {
