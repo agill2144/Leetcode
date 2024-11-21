@@ -8,28 +8,33 @@ func combinationSum2(candidates []int, target int) [][]int {
         deduped = append(deduped, []int{k,v})
     }
     out := [][]int{}
-    var dfs func(start int, t int, path []int)
-    dfs = func(start int, t int, path []int) {
+    var dfs func(start int, sum int, path []int)
+    dfs = func(start int, sum int, path []int) {
         // base
-        if t <= 0 {
-            if t == 0 {
-                newL := make([]int, len(path))
-                copy(newL, path)
-                out = append(out, newL)
-            }
-            return
-        }
+        if sum > target {return}
 
         // logic
-        for i := start; i < len(deduped); i++ {
-            if deduped[i][1] == 0 {continue}
-            path = append(path, deduped[i][0])
-            deduped[i][1]--
-            dfs(i, t-deduped[i][0], path)
-            deduped[i][1]++
-            path = path[:len(path)-1]
+        if sum == target {
+            newL := make([]int, len(path))
+            copy(newL, path)
+            out = append(out, newL)
+            return
+        }
+        for i := start ; i < len(deduped); i++ {
+            if deduped[i][1] > 0 {
+                // action
+                path = append(path, deduped[i][0])
+                sum += deduped[i][0]
+                deduped[i][1]--
+                // recurse
+                dfs(i, sum, path)
+                // backtrack
+                deduped[i][1]++
+                sum -= deduped[i][0]
+                path = path[:len(path)-1]
+            }
         }
     }
-    dfs(0, target, nil)
+    dfs(0,0, nil)
     return out
 }
