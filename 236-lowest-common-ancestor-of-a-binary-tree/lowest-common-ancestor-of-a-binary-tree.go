@@ -7,6 +7,7 @@
  * }
  */
 func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
+    if p == nil || q == nil || root == nil {return nil}
     var dfs func(r *TreeNode) *TreeNode
     dfs = func(r *TreeNode) *TreeNode {
         // base
