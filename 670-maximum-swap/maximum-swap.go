@@ -1,3 +1,12 @@
+/*
+    bring the largest value in smallest unit to the largest unit
+    example
+    2139
+    9 is at the smallest unit (tens)
+    and now we need a largest unit whose value is smaller than largest value (from left -> right)
+    2 is smaller than 9 and is also in the largest unit ( thousands unit )
+    therefore swap 2 and 9 = 9132
+*/
 func maximumSwap(num int) int {
     if num <= 9 {return num}
     nums := []int{}
