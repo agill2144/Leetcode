@@ -6,17 +6,11 @@ func countUnguarded(m int, n int, guards [][]int, walls [][]int) int {
     matrix := make([][]int, m)
     total := m*n
     for i := 0; i < m; i++ {matrix[i] = make([]int, n)}
-    for i := 0; i < len(walls); i++ {
-        r, c := walls[i][0], walls[i][1]
-        matrix[r][c] = wall
-        total--
-    }
+    for i := 0; i < len(walls); i++ { matrix[walls[i][0]][walls[i][1]] = wall; total--}
     q := [][]int{}
     for i := 0; i < len(guards); i++ {
-        r, c := guards[i][0], guards[i][1]
-        matrix[r][c] = guard
-        q = append(q, guards[i])
-        total--
+        matrix[guards[i][0]][guards[i][1]] = guard
+        q = append(q, guards[i]); total--
     }
     dirs := [][]int{{1,0},{-1,0},{0,1},{0,-1}}
     for len(q) != 0 {
@@ -27,7 +21,8 @@ func countUnguarded(m int, n int, guards [][]int, walls [][]int) int {
         for _, dir := range dirs {
             nr := cr + dir[0]
             nc := cc + dir[1]
-            for nr >= 0 && nr < m && nc >= 0 && nc < n && (matrix[nr][nc] != guard && matrix[nr][nc] != wall) {
+            for nr >= 0 && nr < m && nc >= 0 && nc < n && 
+            (matrix[nr][nc] != guard && matrix[nr][nc] != wall) {
                 if matrix[nr][nc] != visited {total--}
                 matrix[nr][nc] = visited
                 nr += dir[0]
@@ -35,17 +30,5 @@ func countUnguarded(m int, n int, guards [][]int, walls [][]int) int {
             }       
         }
     }
-    
-    /*
-        wall := 1
-        guard := 2
-        visited := 3
-
-    
-        [2 1 0 0 0 0] 
-        [3 2 3 3 1 0] 
-        [3 3 1 2 3 3] 
-        [3 3 0 3 0 0]
-    */
     return total
 }
