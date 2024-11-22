@@ -15,18 +15,13 @@ func combinationSum2(candidates []int, target int) [][]int {
 
         // logic
         for i := start; i < len(candidates); i++ {
-            /*
-                why arent we comparing ith element with prev ?
-                if curr and prev are same, we can skip curr
-                - the reason is, prev element when recursion comes back
-                is removed/backtracked!
-                - the only element that does not get removed is the start element
-                at this recursion node
-                - therefore compare ith element with start element
-                what if start == i ? then they are def the same
-                - therefore add another check that i must be > start position
-                - only then compare ith element with start element
-            */
+            // skip if ith element == prev element ( to avoid duplicate combinations )
+            // at every single start idx, we are starting a new path
+            // when i == start, we want to use this numnber
+            // when i > start then we dont want to use the curr number
+            // if curr number is same as prev number
+            // because if prev == curr, then at the prev idx, we have already used prev number
+            // in the prev path, therefore dont use it again
             if i > start && candidates[i] == candidates[i-1] {continue}
             sum += candidates[i]
             path = append(path, candidates[i])
