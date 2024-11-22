@@ -15,13 +15,3 @@ func getHint(secret string, guess string) string {
     }
     return fmt.Sprintf("%vA%vB", bulls, cows)
 }
-
-/*
-usedIdxs = {1}
-
-{1:0, 2:1, 3:1}
-1123
-
-0111
-   i
-*/
