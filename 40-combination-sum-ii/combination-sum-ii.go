@@ -1,20 +1,32 @@
 func combinationSum2(candidates []int, target int) [][]int {
     sort.Ints(candidates)
     out := [][]int{}
-    var dfs func(start, sum int, path []int)
+
+    var dfs func(start int, sum int, path []int)
     dfs = func(start, sum int, path []int) {
         // base
         if sum > target {return}
-
         if sum == target {
             newL := make([]int, len(path))
             copy(newL, path)
             out = append(out, newL)
-            return 
+            return
         }
 
         // logic
         for i := start; i < len(candidates); i++ {
+            /*
+                why arent we comparing ith element with prev ?
+                if curr and prev are same, we can skip curr
+                - the reason is, prev element when recursion comes back
+                is removed/backtracked!
+                - the only element that does not get removed is the start element
+                at this recursion node
+                - therefore compare ith element with start element
+                what if start == i ? then they are def the same
+                - therefore add another check that i must be > start position
+                - only then compare ith element with start element
+            */
             if i > start && candidates[i] == candidates[i-1] {continue}
             sum += candidates[i]
             path = append(path, candidates[i])
@@ -26,43 +38,3 @@ func combinationSum2(candidates []int, target int) [][]int {
     dfs(0,0, nil)
     return out
 }
-// func combinationSum2(candidates []int, target int) [][]int {
-//     freq := map[int]int{}
-//     for i := 0; i < len(candidates); i++ {
-//         freq[candidates[i]]++
-//     }
-//     deduped := [][]int{}
-//     for k, v := range freq {
-//         deduped = append(deduped, []int{k,v})
-//     }
-//     out := [][]int{}
-//     var dfs func(start int, sum int, path []int)
-//     dfs = func(start int, sum int, path []int) {
-//         // base
-//         if sum > target {return}
-
-//         // logic
-//         if sum == target {
-//             newL := make([]int, len(path))
-//             copy(newL, path)
-//             out = append(out, newL)
-//             return
-//         }
-//         for i := start ; i < len(deduped); i++ {
-//             if deduped[i][1] > 0 {
-//                 // action
-//                 path = append(path, deduped[i][0])
-//                 sum += deduped[i][0]
-//                 deduped[i][1]--
-//                 // recurse
-//                 dfs(i, sum, path)
-//                 // backtrack
-//                 deduped[i][1]++
-//                 sum -= deduped[i][0]
-//                 path = path[:len(path)-1]
-//             }
-//         }
-//     }
-//     dfs(0,0, nil)
-//     return out
-// }
