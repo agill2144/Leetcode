@@ -1,45 +1,64 @@
+/*
+    len = 3
+                    0                               1                           2
+    [ [] , [[val, snapID], [val, snapID]], [[val, snapID], [val, snapID]]]
+*/
 type SnapshotArray struct {
-    // {idx : {snapID: val}}
-    items map[int]map[int]int
-    snapID int
+    history [][][]int    
+    id int
 }
 
 
 func Constructor(length int) SnapshotArray {
-    v := map[int]map[int]int{}    
-    for i := 0; i < length; i++ {
-        v[i] = map[int]int{} // idx: {snapID: val}
-    }
+    data := make([][][]int, length)
     return SnapshotArray{
-        items: v,
-        snapID: 0,
+        history: data,
+        id: 0,
     }
 }
 
 
-func (this *SnapshotArray) Set(idx int, val int)  {
-    this.items[idx][this.snapID] = val
+func (this *SnapshotArray) Set(index int, val int)  {
+    records := this.history[index]    
+    if records == nil {records = [][]int{}}
+    records = append(records, []int{val, this.id})
+    this.history[index] = records
+    // fmt.Println("setting idx: ", index, " to val: ", val, " curr snapID: ", this.id)
+    // fmt.Println(this.history)
+    // fmt.Println("********************")
 }
 
 
 func (this *SnapshotArray) Snap() int {
-    this.snapID++
-    
-    return this.snapID-1    
+    out := this.id
+    this.id++
+    return out    
 }
 
 
-func (this *SnapshotArray) Get(idx int, snap_id int) int {
-    if _, ok := this.items[idx][snap_id]; ok {return this.items[idx][snap_id]}
-    for snap_id > 0 {
-        snap_id--
-        _, ok := this.items[idx][snap_id]
-        if ok {break}
+func (this *SnapshotArray) Get(index int, snap_id int) int {
+    records := this.history[index]
+    left := 0
+    right := len(records)-1
+    ans := 0
+    for left <= right {
+        mid := left + (right-left)/2
+        if records[mid][1] <= snap_id {
+            ans = records[mid][0]
+            left = mid+1
+            // if records[mid][1] == snap_id{break}
+        } else if snap_id > records[mid][1] {
+            left = mid+1
+        } else {
+            right = mid-1
+        }
     }
-    if snap_id < 0 {return 0}
-    return this.items[idx][snap_id]
-}
+    // fmt.Println("get idx: ", index, " at snapID: ", snap_id, records)
+    // fmt.Println("ans: ", ans)
+    // fmt.Println("********************")
+    return ans
 
+}
 
 
 /**
