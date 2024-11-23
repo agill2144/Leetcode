@@ -1,16 +1,14 @@
 func pivotIndex(nums []int) int {
-    prefixSum := []int{}
+    total := 0
+    for i := 0; i < len(nums); i++ {
+        total += nums[i]
+    }
     rSum := 0
     for i := 0; i < len(nums); i++ {
+        leftSum := rSum
+        rightSum := total - leftSum - nums[i]
+        if leftSum == rightSum {return i}
         rSum += nums[i]
-        prefixSum = append(prefixSum, rSum)
-    }
-    for i := 0; i < len(nums); i++ {
-        total := prefixSum[len(prefixSum)-1]
-        left := 0
-        if i-1 >= 0 {left = prefixSum[i-1]}
-        right :=  total-prefixSum[i]
-        if left == right {return i}     
     }
     return -1
 }
