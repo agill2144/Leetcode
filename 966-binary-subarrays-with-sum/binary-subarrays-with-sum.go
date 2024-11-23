@@ -1,21 +1,11 @@
 func numSubarraysWithSum(nums []int, goal int) int {
-    if goal < 0 {return 0}
-    return atMostK(nums, goal) - atMostK(nums, goal-1)
-
-}
-
-func atMostK(nums []int, k int) int {
-    n := len(nums)
+    rSum := 0
+    freq := map[int]int{0:1}
     count := 0
-    left := 0
-    sum := 0
-    for i := 0; i < n; i++ {
-        sum += nums[i]
-        for sum > k && left <= i {
-            sum -= nums[left]
-            left++
-        }
-        count += (i-left+1)
+    for i := 0; i < len(nums); i++ {
+        rSum += nums[i]
+        count += freq[rSum-goal]
+        freq[rSum]++
     }
     return count
 }
