@@ -17,12 +17,12 @@ func (this *Solution) PickIndex() int {
     n := len(this.prefix)
     total := this.prefix[n-1]
     r := rand.Intn(total)
+    ans := 0
     left := 0
     right := n-1
-    ans := 0
     for left <= right {
         mid := left + (right-left)/2
-        if r < this.prefix[mid] {
+        if this.prefix[mid] > r {
             ans = mid
             right = mid-1
         } else {
