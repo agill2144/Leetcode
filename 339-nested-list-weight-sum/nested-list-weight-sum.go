@@ -23,22 +23,46 @@
  * // You can access NestedInteger's List element directly if you want to modify it
  * func (n NestedInteger) GetList() []*NestedInteger {}
  */
-func depthSum(nestedList []*NestedInteger) int {
-    var dfs func(depth int, nl []*NestedInteger) int
-    dfs = func(depth int,  nl []*NestedInteger) int{
-        // base
-        if nl == nil {return 0}
+// func depthSum(nestedList []*NestedInteger) int {
+//     var dfs func(depth int, nl []*NestedInteger) int
+//     dfs = func(depth int,  nl []*NestedInteger) int{
+//         // base
+//         if nl == nil {return 0}
 
-        // logic
-        total := 0
-        for i := 0; i < len(nl); i++{
+//         // logic
+//         total := 0
+//         for i := 0; i < len(nl); i++{
+//             if nl[i].IsInteger() {
+//                 total += (nl[i].GetInteger() * depth)
+//             } else {
+//                 total += dfs(depth+1,nl[i].GetList())
+//             }
+//         }
+//         return total
+//     }
+//     return dfs(1, nestedList)
+// }
+
+
+func depthSum(nestedList []*NestedInteger) int {
+    total := 0
+    type qNode struct {
+        nl []*NestedInteger
+        depth int
+    }
+    q := []*qNode{&qNode{nestedList, 1}}
+    for len(q) != 0 {
+        dq := q[0]
+        q = q[1:]
+        nl := dq.nl
+        depth := dq.depth
+        for i := 0; i < len(nl); i++ {
             if nl[i].IsInteger() {
-                total += (nl[i].GetInteger() * depth)
+                total += nl[i].GetInteger() * depth
             } else {
-                total += dfs(depth+1,nl[i].GetList())
+                q = append(q, &qNode{nl[i].GetList(), depth+1})
             }
         }
-        return total
     }
-    return dfs(1, nestedList)
+    return total
 }
