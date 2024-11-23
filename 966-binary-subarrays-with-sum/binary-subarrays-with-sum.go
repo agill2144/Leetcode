@@ -1,34 +1,21 @@
-// sliding window atMost k pattern
 func numSubarraysWithSum(nums []int, goal int) int {
     if goal < 0 {return 0}
-    return countAtMost(nums, goal) - countAtMost(nums, goal-1)
+    return atMostK(nums, goal) - atMostK(nums, goal-1)
+
 }
 
-func countAtMost(nums []int, k int)int {
+func atMostK(nums []int, k int) int {
+    n := len(nums)
     count := 0
     left := 0
-    rSum := 0
-    for i := 0; i < len(nums); i++ {
-        rSum += nums[i]
-        for rSum > k && left <= i {
-            rSum -= nums[left]
+    sum := 0
+    for i := 0; i < n; i++ {
+        sum += nums[i]
+        for sum > k && left <= i {
+            sum -= nums[left]
             left++
         }
         count += (i-left+1)
     }
     return count
 }
-
-// prefixSum / runningSum approach
-// func numSubarraysWithSum(nums []int, goal int) int {
-//     freq := map[int]int{0:1}
-//     rSum := 0
-//     count := 0
-//     for i := 0; i < len(nums); i++ {
-//         rSum += nums[i]
-//         toRemove := rSum - goal
-//         count += freq[toRemove]
-//         freq[rSum]++
-//     }
-//     return count
-// }
