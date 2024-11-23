@@ -7,7 +7,8 @@ func checkSubarraySum(nums []int, k int) bool {
         r := rSum % k
         left, ok := rem[r]
         if ok {
-            if i-(left+1)+1 >= 2 {return true}
+            // left++ // from left+1 idx, we have a sum who is divisible by k, therefore left++
+            if i-left >= 2 {return true}
         } else {
             rem[r] = i
         }
