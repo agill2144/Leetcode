@@ -1,6 +1,5 @@
 func minOperations(nums []int, x int) int {
     n := len(nums)
-    if x < nums[0] && x < nums[n-1] {return -1}
     sum := nums[n-1]
     i := n-1
     for i >= 0 && sum < x {
@@ -14,14 +13,12 @@ func minOperations(nums []int, x int) int {
     minWin := len(nums)+1
     for left <= n {
         sum += nums[i%n]
-        for sum > x &&  left <= n {
+        for sum > x && left <= n {
             sum -= nums[left%n]
             left++
         }
         if left > n {break}
-        if sum == x {
-            minWin = min(minWin, i-left+1)
-        }
+        if sum == x { minWin = min(minWin, i-left+1) }
         i++
     }
     if minWin == len(nums)+1 {return -1}
