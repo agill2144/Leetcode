@@ -22,7 +22,7 @@ func (this *Solution) PickIndex() int {
     ans := 0
     for left <= right {
         mid := left + (right-left)/2
-        if this.prefix[mid] > r {
+        if r < this.prefix[mid] {
             ans = mid
             right = mid-1
         } else {
