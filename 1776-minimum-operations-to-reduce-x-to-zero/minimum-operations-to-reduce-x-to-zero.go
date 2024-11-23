@@ -1,26 +1,28 @@
 func minOperations(nums []int, x int) int {
     n := len(nums)
-    winSum := nums[n-1]
-    i := n-1
-    for i >= 0 && winSum < x {
-        winSum += nums[i]
-        i--
+    left := n-1
+    sum := 0
+    for sum < x && left >= 0 {
+        sum += nums[left]
+        left--
     }
-    if i == -1 {i = 0}
-    if winSum < x {return -1}
-    winSum = 0
-    left := i
-    minWin := len(nums)+1
+    if sum < x {return -1}
+    if left < 0 {left++}
+    sum = 0
+    i := left
+    minWin := math.MaxInt64
     for left <= n {
-        winSum += nums[i%n]
-        for winSum > x && left <= n {
-            winSum -= nums[left%n]
+        sum += nums[i%n]
+        for sum > x && left <= n {
+            sum -= nums[left%n]
             left++
         }
         if left > n {break}
-        if winSum == x { minWin = min(minWin, i-left+1) }
+        if sum == x {
+            minWin = min(minWin, i-left+1)
+        }
         i++
     }
-    if minWin == len(nums)+1 {return -1}
+    if minWin == math.MaxInt64 {minWin = -1}
     return minWin
 }
