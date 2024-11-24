@@ -14,6 +14,9 @@ func myPow(x float64, n int) float64 {
             res *= x
             n--
         }
+        // when n reaches 0, no need to perfom rest of the squaring and halving
+        // even tho its result wont be added to our result
+        if n == 0 {break}
         x *= x
         n /= 2
     }
