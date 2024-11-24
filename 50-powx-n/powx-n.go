@@ -11,7 +11,8 @@ func myPow(x float64, n int) float64 {
             return 1.0
         }
         // logic
-        res := dfs(base*base, exp/2)
+        res := dfs(base, exp/2)
+        res *= res
         if exp % 2 != 0 {res *= base}
         return res
     }
