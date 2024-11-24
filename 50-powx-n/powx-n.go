@@ -10,6 +10,7 @@ func myPow(x float64, n int) float64 {
         res *= x
         n--
       }
+      if n == 1 {break}
       x = x*x
       n = n/2
     }
