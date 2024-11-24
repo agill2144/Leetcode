@@ -1,102 +1,95 @@
 type LRUCache struct {
-    dll *dll
-    data map[int]*listNode
-    cap int
+    capacity int
+    head *listNode
+    tail *listNode
+    m map[int]*listNode
 }
 
 
 func Constructor(capacity int) LRUCache {
     return LRUCache{
-        dll: &dll{},
-        data: map[int]*listNode{},
-        cap: capacity,
-    }
+        capacity: capacity,
+        m: map[int]*listNode{},
+    }    
 }
 
 
 func (this *LRUCache) Get(key int) int {
-    node, ok := this.data[key]
+    node, ok := this.m[key]
     if !ok {return -1}
-    this.dll.moveNodeToEnd(node)
-    return node.val
+    this.removeNode(node)
+    this.addToHead(node)
+    return node.value    
 }
 
 
 func (this *LRUCache) Put(key int, value int)  {
-    node, ok := this.data[key]
+    node, ok := this.m[key]
     if ok {
-        node.val = value
-        this.dll.moveNodeToEnd(node)
+        node.value = value
+        this.removeNode(node)
+        this.addToHead(node)
         return
     }
-    if len(this.data) == this.cap {
-        deletedNode := this.dll.removeHead()
-        delete(this.data, deletedNode.key)
+    if len(this.m) == this.capacity {
+        toBeDeleted := this.m[this.tail.key]
+        this.removeNode(toBeDeleted)
+        delete(this.m, toBeDeleted.key)
     }
-    newNode := this.dll.appendToEnd(key, value)
-    this.data[key] = newNode
+    newHead := &listNode{key:key,value:value}
+    this.addToHead(newHead)
+    this.m[key] = newHead
 }
 
-
-type dll struct {
-    head *listNode
-    tail *listNode
-}
-
-type listNode struct {
-    key int
-    val int
-    prev *listNode
-    next *listNode
-}
-
-func (d *dll) appendToEnd(key, val int) *listNode {
-    newNode := &listNode{key: key, val: val}
-    if d.head == nil {
-        d.head = newNode
-        d.tail = newNode
-        return newNode
+func (this *LRUCache) printLL() {
+    msg := "Head->"
+    curr := this.head
+    for curr != nil {
+        msg += fmt.Sprintf("%v", curr.value)
+        if curr.next != nil {msg += "-"}
+        curr = curr.next
     }
-    d.tail.next = newNode
-    newNode.prev = d.tail
-    d.tail = newNode
-    return newNode
+    msg += "<-Tail"
+    fmt.Println(msg)
 }
 
-func (d *dll) removeHead() *listNode {
-    if d.head == nil {return nil}
-    out := d.head
-    if d.head == d.tail {
-        d.head = nil
-        d.tail = nil
-        return out
+func (this *LRUCache) addToHead(node *listNode) {
+    if this.head == nil {
+        this.head = node
+        this.tail = node
+        return
     }
-    newHead := d.head.next
-    newHead.prev = nil
-    d.head.next = nil 
-    d.head = newHead
-    return out
+    node.next = this.head
+    this.head.prev = node
+    this.head = node
 }
 
-func (d *dll) moveNodeToEnd(node *listNode) {
-    if node == d.tail {return}    
-    if node == d.head {
-        newHead := d.head.next
-        newHead.prev = nil
-        node.next = nil
-        d.head = newHead
-    } else {
-        prev := node.prev
-        next := node.next
-        prev.next = next
-        next.prev = prev
-        node.next = nil
-        node.prev = nil
+func (this *LRUCache) removeNode(node *listNode) {
+    if node == nil {return}
+    prev := node.prev
+    next := node.next
+    node.prev = nil
+    node.next = nil
+
+    // when this is a head node
+    if this.head == node {
+        this.head = next
+        if next != nil {next.prev = nil}
+        return        
     }
-    node.prev = d.tail
-    d.tail.next = node
-    d.tail = node
+
+    // when this is a tail node
+    if node == this.tail {
+        prev.next = nil
+        this.tail = prev
+        return
+    }
+
+    // when this is a node in the middle
+    prev.next = next
+    next.prev = prev
 }
+
 
 /**
  * Your LRUCache object will be instantiated and called as such:
@@ -104,3 +97,10 @@ func (d *dll) moveNodeToEnd(node *listNode) {
  * param_1 := obj.Get(key);
  * obj.Put(key,value);
  */
+
+type listNode struct {
+    key int
+    value int
+    next *listNode
+    prev *listNode
+}
