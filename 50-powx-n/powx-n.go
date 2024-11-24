@@ -4,16 +4,16 @@ func myPow(x float64, n int) float64 {
         x = 1/x
     }
     var res float64 = 1.0
-    for n >= 1{
-        if n % 2 == 0 {
-            x *= x
-            n /= 2
-        } else {
+    for n != 0 {
+        if n % 2 != 0 {
             res *= x
             n--
+        } else {
+            x *= x
+            n /= 2
         }
     }
-    return res    
+    return res
 }
 // func myPow(x float64, n int) float64 {
 //     if n < 0 {
