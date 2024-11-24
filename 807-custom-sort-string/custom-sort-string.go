@@ -19,32 +19,47 @@
     time = o(s) + o(t) + o(s)
     space = o(s)
 */
+// func customSortString(order string, s string) string {
+    
+//     // make the chars of $s searchable 
+//     freqMap := map[byte]int{}
+//     for i := 0; i < len(s); i++ {
+//         freqMap[s[i]]++
+//     }
+    
+//     out := new(strings.Builder)
+//     // collect the chars from order that also exist in $s
+//     for i := 0; i < len(order); i++ {
+//         char := order[i]
+//         count := freqMap[char]
+//         for count > 0 {
+//             out.WriteByte(char)
+//             count--
+//         }
+//         delete(freqMap, char)
+//     }
+    
+//     // collect the remaining left over chars from $s that did not exist in $order
+//     for i := 0; i < len(s); i++ {
+//         count := freqMap[s[i]]
+//         if count > 0 {
+//             out.WriteByte(s[i])
+//         }
+//     }
+//     return out.String()
+// }
+
+
 func customSortString(order string, s string) string {
-    
-    // make the chars of $s searchable 
-    freqMap := map[byte]int{}
-    for i := 0; i < len(s); i++ {
-        freqMap[s[i]]++
-    }
-    
-    out := new(strings.Builder)
-    // collect the chars from order that also exist in $s
+    orderIdx := map[string]int{}
     for i := 0; i < len(order); i++ {
-        char := order[i]
-        count := freqMap[char]
-        for count > 0 {
-            out.WriteByte(char)
-            count--
-        }
-        delete(freqMap, char)
+        orderIdx[string(order[i])] = i
     }
-    
-    // collect the remaining left over chars from $s that did not exist in $order
-    for i := 0; i < len(s); i++ {
-        count := freqMap[s[i]]
-        if count > 0 {
-            out.WriteByte(s[i])
-        }
-    }
-    return out.String()
+    sList := strings.Split(s, "")
+    sort.Slice(sList, func(i, j int)bool{
+        iChar := sList[i]
+        jChar := sList[j]
+        return orderIdx[iChar] < orderIdx[jChar]
+    })
+    return strings.Join(sList,"")
 }
