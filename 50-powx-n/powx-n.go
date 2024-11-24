@@ -1,24 +1,24 @@
 func myPow(x float64, n int) float64 {
+    if n == 0 {return 1.0}
     if n < 0 {
         n *= -1
         x = 1/x
     }
-    if n == 0 {return 1.0}
-    var leftOverTerms float64 = 1.0
+    var leftOvers float64 = 1.0
     for n > 1 {
         if n % 2 != 0 {
-            // save base to res to multiply left over term later
+            // save base to res to multiply left over term later.
             // because PEMDAS - exponent first and then multiplcation
             // we may still have exponent left ( n could be 2 for instance )
-            // therefore save current base as is to result
-            leftOverTerms *= x
+            // therefore save current base as is into the result
+            leftOvers *= x
             n--
         } else {
             x *= x
             n /= 2
         }
     }
-    return leftOverTerms * x
+    return x * leftOvers
 }
 // func myPow(x float64, n int) float64 {
 //     if n < 0 {
