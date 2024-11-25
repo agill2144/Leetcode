@@ -13,23 +13,24 @@ func Constructor(w []int) Solution {
 }
 
 
+
 func (this *Solution) PickIndex() int {
     n := len(this.prefix)
-    total := this.prefix[n-1]
-    r := rand.Intn(total)
-    ans := 0
+    r := rand.Intn(this.prefix[n-1])
     left := 0
     right := n-1
+    ans := 0
     for left <= right {
         mid := left + (right-left)/2
-        if this.prefix[mid] > r {
+        if this.prefix[mid] <= r {
+            left = mid+1
+        } else {
             ans = mid
             right = mid-1
-        } else {
-            left = mid+1
         }
     }
     return ans
+
 }
 
 
