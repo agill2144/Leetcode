@@ -1,6 +1,8 @@
 /*
     x^n can be re-written in two ways
-    1. (x^n/2) * (x^n/2)
+    1. (x^n/2) * (x^n/2) 
+    - this is basically (x^2)^n/2
+    - like #2 ... 
     - where exponent computation is done FIRST
     - because PEMDAS
     - repeatedly squaring x and halving n
@@ -44,14 +46,14 @@
 */
 func myPow(x float64, n int) float64 {
     if n < 0 {
-        n *= -1
         x = 1/x
+        n *= -1
     }
     var res float64 = 1.0
     for n != 0 {
         if n % 2 != 0 {
-            res *= x
             n--
+            res *= x
         } else {
             x *= x
             n /= 2
