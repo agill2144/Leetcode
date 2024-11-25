@@ -1,23 +1,32 @@
 type SparseVector struct {
-    idxToVal map[int]int
+    // [ [idx, val], [idx, val] ] - only contains items with non-zero values
+    items [][]int 
 }
 
 func Constructor(nums []int) SparseVector {
-    m := map[int]int{}
+    items := [][]int{}
     for i := 0; i < len(nums); i++ {
         if nums[i] == 0 {continue}
-        m[i] = nums[i]
+        items = append(items, []int{i, nums[i]})
     }
-    return SparseVector{m}
+    return SparseVector{items}
 }
 
 // Return the dotProduct of two sparse vectors
 func (this *SparseVector) dotProduct(vec SparseVector) int {
+    p1 := 0
+    p2 := 0
     res := 0
-    for idx, val := range this.idxToVal {
-        vecVal, ok := vec.idxToVal[idx]
-        if ok {
-            res += (val*vecVal)
+    for p1 < len(this.items) && p2 < len(vec.items) {
+        idx1 := this.items[p1][0]
+        idx2 := vec.items[p2][0]
+        if idx1 == idx2 {
+            res += (this.items[p1][1] * vec.items[p2][1])
+            p1++; p2++
+        } else if idx1 < idx2 {
+            p1++
+        } else {
+            p2++
         }
     }
     return res
