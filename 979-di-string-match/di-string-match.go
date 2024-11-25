@@ -1,3 +1,4 @@
+// wtf is this question.... go learn some fucking english if you are parsing this line..
 func diStringMatch(s string) []int {
     n := len(s)
     d := n
