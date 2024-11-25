@@ -1,17 +1,22 @@
 func countFairPairs(nums []int, lower int, upper int) int64 {
     sort.Ints(nums)
     var count int64 = 0
+    /*
+        0,1,7,4,4,5
+        sum >= 3 and <= 6
+    */
     for i := 0; i < len(nums); i++ {
-        idx1 := closestOnRight(nums,i+1,lower-nums[i])
-        idx2 := closestOnLeft(nums, i+1,upper-nums[i])
-        if idx1 != -1 && idx2 != -1 {
-            count += int64(idx2-idx1+1)
+        left := leftMostOnRightSideOfTarget(nums, i+1, lower-nums[i])
+        right := rightMostOnLeftSideOfTarget(nums,i+1, upper-nums[i])
+        if left != -1 && right != -1 {
+            count += int64(right-left+1)
         }
     }
-    return count
+    return count    
 }
 
-func closestOnRight(nums []int, left int, target int) int{
+
+func leftMostOnRightSideOfTarget(nums []int, left int, target int) int {
     right := len(nums)-1
     ans := -1
     for left <= right {
@@ -26,7 +31,7 @@ func closestOnRight(nums []int, left int, target int) int{
     return ans
 }
 
-func closestOnLeft(nums []int, left int, target int) int{
+func rightMostOnLeftSideOfTarget(nums []int, left int, target int) int {
     right := len(nums)-1
     ans := -1
     for left <= right {
