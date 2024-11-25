@@ -4,12 +4,16 @@ func findKthLargest(nums []int, k int) int {
         heap.Push(mn, nums[i])
         if mn.Len() > k {heap.Pop(mn)}
     }
-    return mn.items[0]
+    return mn.Peek().(int)
 }
 
 
 type minHeap struct {
 	items []int
+}
+
+func (m *minHeap) Peek() interface{} {
+    return m.items[0]
 }
 
 func (m *minHeap) Less(i, j int) bool {
