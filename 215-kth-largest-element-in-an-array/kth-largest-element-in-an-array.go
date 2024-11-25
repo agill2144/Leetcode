@@ -1,35 +1,24 @@
 func findKthLargest(nums []int, k int) int {
-    mn := &minHeap{items: []int{}}
+    freq := map[int]int{}
+    start := math.MaxInt64
+    end := math.MinInt64
     for i := 0; i < len(nums); i++ {
-        heap.Push(mn, nums[i])
-        if mn.Len() > k {heap.Pop(mn)}
+        freq[nums[i]]++
+        start = min(start,nums[i])
+        end = max(end,nums[i])
     }
-    return mn.Peek().(int)
-}
+    /*
+        ti = 9-4 = 5
+        {3:2, 4:1, 5:2, 6:1 }
+        i = 3
+        idx = 5
 
-
-type minHeap struct {
-	items []int
-}
-
-func (m *minHeap) Peek() interface{} {
-    return m.items[0]
-}
-
-func (m *minHeap) Less(i, j int) bool {
-	return m.items[i] < m.items[j]
-}
-func (m *minHeap) Swap(i, j int) {
-	m.items[i], m.items[j] = m.items[j], m.items[i]
-}
-func (m *minHeap) Len() int {
-	return len(m.items)
-}
-func (m *minHeap) Push(x interface{}) {
-	m.items = append(m.items, x.(int))
-}
-func (m *minHeap) Pop() interface{} {
-	out := m.items[len(m.items)-1]
-	m.items = m.items[:len(m.items)-1]
-	return out
+    */
+    idx := 0
+    targetIdx := len(nums)-k
+    for i := start; i <= end; i++ {
+        idx += freq[i]
+        if idx > targetIdx {return i}
+    }    
+    return -1
 }
