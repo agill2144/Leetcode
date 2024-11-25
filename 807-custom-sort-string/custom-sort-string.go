@@ -1,65 +1,52 @@
-/*
-    we want to sort s based on a custom "order"
-    therefore we should collect all chars from order string that also exist in "s"
-    because order matters, chars in $order must be placed first
-    
-    appraoch: using a freq map
-    - store chars of s in a freq map
-    - loop thru the order string to collect chars that should be placed first
-    - if the order[i] does exist in s map, take it and add it to our output
-        - freq val times
-        - delete this key from s map
-    - then loop over s string one last time, to collect remaining chars that did not exist in $order
-    - there is a possibility that not all chars of $s exist in $order,
-    - therefore we must also preserve the order of chars in $s that do not exist in $order
-    
-    s = len(s)
-    t = len(order)
-    
-    time = o(s) + o(t) + o(s)
-    space = o(s)
-*/
+// custom sort func
+// we know the idx of each char ( idx map )
+// then split the s string into a list of strings
+// and apply sort.Slice ( where ith char is placed first if ith idx shows up before jth char idx )
+// then re-stich the string list 
+// time = o(m) + o(n) + o(nlogn) + o(n) = o(m) + o(nlogn) + o(n)
+// space = o(n)
 // func customSortString(order string, s string) string {
-    
-//     // make the chars of $s searchable 
-//     freqMap := map[byte]int{}
-//     for i := 0; i < len(s); i++ {
-//         freqMap[s[i]]++
-//     }
-    
-//     out := new(strings.Builder)
-//     // collect the chars from order that also exist in $s
+//     // space = o(1) because there are only 26 chars
+//     orderIdx := map[string]int{}
+//     // m = len(order)
+//     // n = len(s)
+
+//     // tc = o(m)
 //     for i := 0; i < len(order); i++ {
-//         char := order[i]
-//         count := freqMap[char]
-//         for count > 0 {
-//             out.WriteByte(char)
-//             count--
-//         }
-//         delete(freqMap, char)
+//         orderIdx[string(order[i])] = i
 //     }
-    
-//     // collect the remaining left over chars from $s that did not exist in $order
-//     for i := 0; i < len(s); i++ {
-//         count := freqMap[s[i]]
-//         if count > 0 {
-//             out.WriteByte(s[i])
-//         }
-//     }
-//     return out.String()
+//     // tc = o(n)
+//     // sc = o(n)
+//     sList := strings.Split(s, "")
+//     // tc = o(nlogn)
+//     // sc = o(n)
+//     sort.Slice(sList, func(i, j int)bool{
+//         iChar := sList[i]
+//         jChar := sList[j]
+//         return orderIdx[iChar] < orderIdx[jChar]
+//     })
+//     // tc = o(n)
+//     return strings.Join(sList,"")
 // }
 
 
+// we know the order in order string
+// put s chars in a freq map 
+// take a ptr on order string
+// and write the output string if order[i] exists in s ( freq num of times )
 func customSortString(order string, s string) string {
-    orderIdx := map[string]int{}
+    freq := map[byte]int{}
+    for i := 0; i < len(s); i++ {freq[s[i]]++}
+    out := new(strings.Builder)
     for i := 0; i < len(order); i++ {
-        orderIdx[string(order[i])] = i
+        for freq[order[i]] > 0 {
+            out.WriteByte(order[i])
+            freq[order[i]]--
+        }
     }
-    sList := strings.Split(s, "")
-    sort.Slice(sList, func(i, j int)bool{
-        iChar := sList[i]
-        jChar := sList[j]
-        return orderIdx[iChar] < orderIdx[jChar]
-    })
-    return strings.Join(sList,"")
+    for i := 0; i < len(s); i++ {
+        for freq[s[i]] > 0 {out.WriteByte(s[i]); freq[s[i]]--}
+    }
+    
+    return out.String()
 }
