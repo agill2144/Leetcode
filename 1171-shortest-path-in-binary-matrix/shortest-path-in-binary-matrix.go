@@ -25,6 +25,7 @@ func shortestPathBinaryMatrix(grid [][]int) int {
                 if nr >= 0 && nr < m && nc >= 0 && nc < n && grid[nr][nc] == 0 {
                     q = append(q, []int{nr, nc})
                     grid[nr][nc] = -1
+                    if nr == m-1 && nc == n-1 {return level+1}
                 }
             }
             qSize--
