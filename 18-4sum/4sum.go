@@ -1,43 +1,29 @@
 func fourSum(nums []int, target int) [][]int {
-    sort.Ints(nums)
-    result := [][]int{}
+    set := map[[4]int]bool{}
+    out := [][]int{}
     n := len(nums)
-    
-    for i := 0; i < n-3; i++ {
-        if i > 0 && nums[i] == nums[i-1] { continue}
-        for j := i+1; j < n-2; j++ {
-            /*
-                [2,2,2,3,4....]
-                 i j
-                - we want the first j to get processed even if jth val is same as j-1th val
-                - because this is the first time we are making quads starting with [2,2,x,y]
-
-                [2,2,2,3,4....]
-                 i   j
-                - now we can skip this jth ptr pointing at the same value as prev value
-                - because continuing with this will create another quad starting with [2,2,x,y]
-                    that we had discovered in the last iteration ( above )
-
-                - therefore j > i+1 for j to skip curr position if curr position value is same as prev
-            */
-            if j > i+1 && nums[j] == nums[j-1] {continue}
-            left, right := j+1, n-1
-            for left < right {
-                sum := nums[i] + nums[j] + nums[left] + nums[right] 
-                if sum == target {
-                    result = append(result, []int{nums[i], nums[j], nums[left], nums[right]})                    
-                    left++
-                    for left < right && nums[left] == nums[left-1] {left++}
-                    right--
-                    for left < right && nums[right] == nums[right+1] {right--}                    
-                } else if sum < target {
-                    left++
-                } else {
-                    right--
+    // n = 6 
+    // we need atleast 4 elements
+    // n-4 = 6-4 = 2 is the last ith idx
+    for i := 0; i < n; i++ {
+        iTarget := target - nums[i]
+        for j := i+1; j < n; j++ {
+            jTarget := iTarget-nums[j]
+            seen := map[int]bool{}
+            for k := j+1; k < n; k++ {
+                diff := jTarget - nums[k]
+                if seen[diff] {
+                    tmp := []int{nums[i], nums[j],diff , nums[k]}
+                    sort.Ints(tmp)
+                    tmp2 := [4]int{tmp[0],tmp[2],tmp[2],tmp[3]}
+                    if !set[tmp2] {
+                        set[tmp2] = true
+                        out = append(out, tmp)
+                    }
                 }
+                seen[nums[k]] = true
             }
         }
     }
-    
-    return result
+    return out
 }
