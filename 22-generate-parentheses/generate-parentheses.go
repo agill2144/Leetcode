@@ -9,6 +9,10 @@ func generateParenthesis(n int) []string {
         if o > 0 {
             dfs(o-1, c, path + "(")
         }
+        // there must be open parans for us to close
+        // and thats only possible if open count was less than close count
+        // meaning we have more close parans left than open
+        // meaning there are open parans that have yet to be closed, therefore start closing them
         if c > o {
             dfs(o, c-1, path + ")")
         }
