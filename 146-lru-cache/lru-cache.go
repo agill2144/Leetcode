@@ -1,56 +1,8 @@
-type LRUCache struct {
-    capacity int
-    head *listNode
-    tail *listNode
-    m map[int]*listNode
-}
-
-
-func Constructor(capacity int) LRUCache {
-    return LRUCache{
-        capacity: capacity,
-        m: map[int]*listNode{},
-    }    
-}
-
-
-func (this *LRUCache) Get(key int) int {
-    node, ok := this.m[key]
-    if !ok {return -1}
-    this.removeNode(node)
-    this.addToHead(node)
-    return node.value    
-}
-
-
-func (this *LRUCache) Put(key int, value int)  {
-    node, ok := this.m[key]
-    if ok {
-        node.value = value
-        this.removeNode(node)
-        this.addToHead(node)
-        return
-    }
-    if len(this.m) == this.capacity {
-        toBeDeleted := this.m[this.tail.key]
-        this.removeNode(toBeDeleted)
-        delete(this.m, toBeDeleted.key)
-    }
-    newHead := &listNode{key:key,value:value}
-    this.addToHead(newHead)
-    this.m[key] = newHead
-}
-
-func (this *LRUCache) printLL() {
-    msg := "Head->"
-    curr := this.head
-    for curr != nil {
-        msg += fmt.Sprintf("%v", curr.value)
-        if curr.next != nil {msg += "-"}
-        curr = curr.next
-    }
-    msg += "<-Tail"
-    fmt.Println(msg)
+type listNode struct {
+    key int
+    val int
+    next *listNode
+    prev *listNode
 }
 
 func (this *LRUCache) addToHead(node *listNode) {
@@ -59,35 +11,78 @@ func (this *LRUCache) addToHead(node *listNode) {
         this.tail = node
         return
     }
+
     node.next = this.head
     this.head.prev = node
     this.head = node
 }
 
 func (this *LRUCache) removeNode(node *listNode) {
-    if node == nil {return}
-    prev := node.prev
     next := node.next
-    node.prev = nil
+    prev := node.prev
     node.next = nil
+    node.prev = nil
 
-    // when this is a head node
-    if this.head == node {
+    // when node is head node
+    if node == this.head {
         this.head = next
         if next != nil {next.prev = nil}
-        return        
+        return
     }
 
-    // when this is a tail node
+    // when node is tail node
     if node == this.tail {
         prev.next = nil
         this.tail = prev
         return
     }
 
-    // when this is a node in the middle
-    prev.next = next
+
+    // when node is some middle node
     next.prev = prev
+    prev.next = next
+}
+
+
+
+type LRUCache struct {
+    head *listNode
+    tail *listNode
+    m map[int]*listNode
+    capacity int
+}
+
+
+func Constructor(capacity int) LRUCache {
+    return LRUCache{m: map[int]*listNode{}, capacity: capacity}
+}
+
+
+func (this *LRUCache) Get(key int) int {
+    node, ok := this.m[key]
+    if !ok {return -1}
+    this.removeNode(node)
+    this.addToHead(node)
+    return node.val
+}
+
+
+func (this *LRUCache) Put(key int, value int)  {
+    node, ok := this.m[key]
+    if ok {
+        node.val = value
+        this.removeNode(node)
+        this.addToHead(node)
+        return
+    }
+    if len(this.m) == this.capacity {
+        deletedTail := this.tail
+        this.removeNode(deletedTail)
+        delete(this.m, deletedTail.key)
+    }
+    newNode := &listNode{key:key, val:value}
+    this.addToHead(newNode)
+    this.m[key] = newNode
 }
 
 
@@ -97,10 +92,3 @@ func (this *LRUCache) removeNode(node *listNode) {
  * param_1 := obj.Get(key);
  * obj.Put(key,value);
  */
-
-type listNode struct {
-    key int
-    value int
-    next *listNode
-    prev *listNode
-}
