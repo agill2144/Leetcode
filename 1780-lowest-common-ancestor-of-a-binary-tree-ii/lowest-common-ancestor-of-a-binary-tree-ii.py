@@ -7,8 +7,6 @@
 
 class Solution:
     def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
-        if not p or not q or not root:
-            return None
         p_exists = False
         q_exists = False
         def dfs(r: 'TreeNode') -> 'TreeNode':
@@ -17,7 +15,6 @@ class Solution:
             # base
             if not r:
                 return None
-
             # logic
             left = dfs(r.left)
             right = dfs(r.right)
@@ -29,7 +26,9 @@ class Solution:
                 return r
             if left and right:
                 return r
-            return left if left else right
+            if left:
+                return left
+            return right
         res = dfs(root)
         if p_exists and q_exists:
             return res
