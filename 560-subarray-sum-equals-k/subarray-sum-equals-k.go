@@ -1,11 +1,11 @@
 func subarraySum(nums []int, k int) int {
-    rSum := 0
+    count := 0
     freq := map[int]int{0:1}
-    total := 0
+    rSum := 0
     for i := 0; i < len(nums); i++ {
         rSum += nums[i]
-        total += freq[rSum-k]
+        count += freq[rSum - k]
         freq[rSum]++
     }
-    return total
+    return count
 }
