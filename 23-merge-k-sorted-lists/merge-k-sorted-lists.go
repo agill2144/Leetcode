@@ -6,7 +6,6 @@
  * }
  */
 func mergeKLists(lists []*ListNode) *ListNode {
-    // if len(lists) == 0 {return nil}
     var dfs func(left, right int) *ListNode
     dfs = func(left,right int) *ListNode {
         // base
