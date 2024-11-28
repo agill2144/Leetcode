@@ -5,6 +5,7 @@
  *     Next *ListNode
  * }
  */
+
 func mergeKLists(lists []*ListNode) *ListNode {
     var dfs func(left, right int) *ListNode
     dfs = func(left,right int) *ListNode {
