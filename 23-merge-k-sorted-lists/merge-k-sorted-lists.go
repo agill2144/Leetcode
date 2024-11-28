@@ -6,12 +6,12 @@
  * }
  */
 func mergeKLists(lists []*ListNode) *ListNode {
-    if len(lists) == 0 {return nil}
+    // if len(lists) == 0 {return nil}
     var dfs func(left, right int) *ListNode
     dfs = func(left,right int) *ListNode {
         // base
-        if left == right {return lists[left]}
         if left > right {return nil}
+        if left == right {return lists[left]}
 
         // logic
         mid := left + (right-left)/2
