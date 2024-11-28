@@ -1,4 +1,8 @@
 /*
+    approach: custom sort based on freq
+    tc = o(nlogn)
+    sc = o(n)
+
     approach: min heap
     tc = o(n) + o(n*logk) + o(k)
     sc = o(n) + o(k)
@@ -84,21 +88,19 @@
 
 */
 func topKFrequent(nums []int, k int) []int {
-    n := len(nums)
     freq := map[int]int{}
-    for i := 0; i < n; i++ {
+    tmp := []int{}
+    for i := 0; i < len(nums); i++ {
+        if freq[nums[i]] == 0 {tmp = append(tmp, nums[i])}
         freq[nums[i]]++
     }
-    bucket := make([][]int, n+1)
-    for k, v := range freq {
-        if bucket[v] == nil {bucket[v] = []int{}}
-        bucket[v] = append(bucket[v],k)
-    }
+
+    sort.Slice(tmp, func(i, j int)bool{
+        return freq[tmp[i]] < freq[tmp[j]]
+    })
     out := []int{}
-    for i := n; i >= 0 && len(out) != k; i-- {
-        if bucket[i] != nil {
-            out = append(out, bucket[i]...)
-        }
+    for i := len(tmp)-1; i >= 0 && len(out) != k; i-- {
+        out = append(out, tmp[i])
     }
     return out
 }
