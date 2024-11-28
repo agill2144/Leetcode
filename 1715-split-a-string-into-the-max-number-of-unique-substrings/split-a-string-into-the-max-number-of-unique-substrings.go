@@ -1,10 +1,12 @@
 func maxUniqueSplit(s string) int {
-    maxCount := 0
-    var dfs func(start int, path map[string]bool)
+    count := 0
+    var dfs func(start int, paths map[string]bool)
     dfs = func(start int, path map[string]bool) {
         // base
-        maxCount = max(maxCount, len(path))
-        if start == len(s) {return}
+        if start == len(s) {
+            count = max(count, len(path))
+            return
+        }
         // logic
         for i := start; i < len(s); i++ {
             subStr := s[start:i+1]
@@ -15,6 +17,6 @@ func maxUniqueSplit(s string) int {
             }
         }
     }
-    dfs(0, map[string]bool{})
-    return maxCount
+    dfs(0,map[string]bool{})
+    return count
 }
