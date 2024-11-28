@@ -4,19 +4,23 @@ func topKFrequent(nums []int, k int) []int {
         freq[nums[i]]++
     }
     mn := &minHeap{items: [][]int{}}
-    for num, count := range freq {
-        heap.Push(mn, []int{num, count})
+    for key,v := range freq {
+        heap.Push(mn, []int{key,v})
         if mn.Len() > k {
             heap.Pop(mn)
         }
     }
     out := []int{}
-    for mn.Len() != 0 {out = append(out, heap.Pop(mn).([]int)[0])}
+    for mn.Len() != 0 {
+        out = append(out, heap.Pop(mn).([]int)[0])
+    }
     return out
 }
 
+
+
 type minHeap struct {
-	items [][]int // [ [val, freq] ]
+	items [][]int // <val, freq>
 }
 
 func (m *minHeap) Less(i, j int) bool {
