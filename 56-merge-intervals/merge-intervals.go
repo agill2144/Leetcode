@@ -7,7 +7,7 @@ func merge(intervals [][]int) [][]int {
         start, end := intervals[i][0], intervals[i][1]
         prevEnd := out[len(out)-1][1]
         if start <= prevEnd {
-            out[len(out)-1][1] = max(prevEnd, end)
+            out[len(out)-1][1] = max(end, prevEnd)
         } else {
             out = append(out, intervals[i])
         }
