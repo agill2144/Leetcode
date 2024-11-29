@@ -8,8 +8,8 @@ func topKFrequent(nums []int, k int) []int {
         if mn.Len() > k {heap.Pop(mn)}
     }
     out := []int{}
-    for mn.Len() != 0 {
-        out = append(out, heap.Pop(mn).([]int)[0])
+    for i := 0; i < mn.Len(); i++ {
+        out = append(out, mn.items[i][0])
     }
     return out
 }
