@@ -1,21 +1,21 @@
 type Solution struct {
-    idx map[int][]int // {val: [idx1, idx2, idx3]}
+    idxs map[int][]int
 }
 
 
 func Constructor(nums []int) Solution {
-    m := map[int][]int{}
+    idxs := map[int][]int{}    
     for i := 0; i < len(nums); i++ {
-        m[nums[i]] = append(m[nums[i]], i)
+        idxs[nums[i]] = append(idxs[nums[i]], i)
     }
-    return Solution{idx:m}
+    return Solution{idxs}
 }
 
 
 func (this *Solution) Pick(target int) int {
-    indices := this.idx[target]
-    r := rand.Intn(len(indices))
-    return indices[r]
+    idxs := this.idxs[target]    
+    r := rand.Intn(len(idxs))
+    return idxs[r]
 }
 
 
