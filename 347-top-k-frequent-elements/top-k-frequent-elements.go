@@ -2,14 +2,15 @@ func topKFrequent(nums []int, k int) []int {
     freq := map[int]int{}
     for i := 0; i < len(nums); i++ {freq[nums[i]]++}
 
-    mn := &minHeap{items: [][]int{}}
-    for key, val := range freq {
-        heap.Push(mn, []int{key, val})
-        if mn.Len() > k {heap.Pop(mn)}
+    bucket := make([][]int, len(nums)+1)
+    for num, count := range freq {
+        if bucket[count] == nil {bucket[count] = []int{}}
+        bucket[count] = append(bucket[count], num)
     }
     out := []int{}
-    for i := 0; i < mn.Len(); i++ {
-        out = append(out, mn.items[i][0])
+    for i := len(bucket)-1; i >= 0 && len(out) != k; i-- {
+        if bucket[i] == nil {continue}
+        out = append(out, bucket[i]...)
     }
     return out
 }
