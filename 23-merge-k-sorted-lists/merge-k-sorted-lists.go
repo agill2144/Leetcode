@@ -8,10 +8,12 @@
 func mergeKLists(lists []*ListNode) *ListNode {
     if len(lists) == 0 {return nil}
     pairIncr := 1
+    iIncr := 2
     for pairIncr < len(lists) {
-        for i := 0; i + pairIncr < len(lists); i += (pairIncr*2) {
+        for i := 0; i + pairIncr < len(lists); i += iIncr {
             lists[i] = merge2Lists(lists[i], lists[i+pairIncr])
         }
+        iIncr *= 2
         pairIncr *= 2
     }
     return lists[0]
