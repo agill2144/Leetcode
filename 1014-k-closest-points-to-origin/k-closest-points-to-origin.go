@@ -1,6 +1,6 @@
 func kClosest(points [][]int, k int) [][]int {
     type distNode struct {
-        dist float64
+        dist int
         cord []int
     }
     dists := []distNode{}
@@ -38,6 +38,6 @@ func kClosest(points [][]int, k int) [][]int {
     return out
 }
 
-func calcDist(x, y int) float64 {
-    return math.Sqrt(float64((x*x) + (y*y)))
+func calcDist(x, y int) int {
+    return (x*x) + (y*y)
 }
