@@ -1,18 +1,17 @@
 func validPalindrome(s string) bool {
-    left := 0
-    right := len(s)-1
+    left, right := 0, len(s)-1
     for left < right {
-        if s[left] != s[right] {
-            return isValid(left+1, right, s) || isValid(left, right-1, s)
+        if s[left] == s[right] {
+            left++
+            right--
+        } else {
+            return isValid(s, left+1, right) || isValid(s, left, right-1)
         }
-        left++
-        right--
     }
     return true
 }
 
-func isValid(left, right int, s string) bool {
-    if right-left+1 <= 1 {return true}
+func isValid(s string, left, right int) bool {
     for left <= right {
         if s[left] != s[right] {return false}
         left++
