@@ -4,6 +4,7 @@ func topKFrequent(words []string, k int) []string {
         freq[words[i]]++
     }
     deduped := []string{}
+    sort.Strings(deduped)
     for k, _ := range freq {deduped = append(deduped, k)}
     targetIdx := len(deduped)-k  
     left := 0
@@ -17,8 +18,11 @@ func topKFrequent(words []string, k int) []string {
             iFreq := freq[iVal]
             pivotFreq := freq[pivotVal]
             if iFreq == pivotFreq {
-                // fmt.Println("same freq! ", iVal, pivotVal, strings.Compare(iVal, pivotVal))
                 //The result will be 0 if a == b, -1 if a < b, and +1 if a > b.
+                // so then shouldn't this be == -1 ?
+                // no, because we want our final quick select partition to contain the smaller word!
+                // our final partition is towards the end of the array, so if we move iVal to left, we have lost an answer, when this iVal < pivotVal, we want iVal to be in our partition ( i.e the right side )
+                // we actually want to move lexicographically larger words towards the beginning during partitioning and smaller ones towards the end of the array 
                 if strings.Compare(iVal, pivotVal) == 1 {
                     deduped[nsf], deduped[i] = deduped[i], deduped[nsf]
                     nsf++
@@ -36,7 +40,6 @@ func topKFrequent(words []string, k int) []string {
             right = nsf-1
         }
     }
-    // fmt.Println(freq, deduped, deduped[targetIdx:])
     out := deduped[targetIdx:]
     sort.Slice(out, func(i, j int)bool{
         if freq[out[i]] == freq[out[j]] {
