@@ -15,7 +15,12 @@ func Constructor(length int) SnapshotArray {
 func (this *SnapshotArray) Set(index int, val int)  {
     items := this.items[index]
     if items == nil { items = [][]int{}}
-    items = append(items, []int{val, this.id})
+    if len(items) > 0 && items[len(items)-1][1] == this.id {
+        items[len(items)-1][0] = val
+    } else {
+        items = append(items, []int{val, this.id})
+
+    }
     this.items[index] = items
 }
 
