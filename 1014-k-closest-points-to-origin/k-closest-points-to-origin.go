@@ -2,32 +2,32 @@ type distNode struct {
     dist float64
     cord []int
 }
-// appraoch: quick select
+// approach: quick select
 // we want k closest to origin
 // origin is 0,0 -> euclidean dist of origin is 0
 // i.e we want k smallest distances
 // using quick select, we can make k size partition on left
 func kClosest(points [][]int, k int) [][]int {
-    distances := []*distNode{}
+    dists := []*distNode{}
     for i := 0; i < len(points); i++ {
         node := &distNode{
             dist: calcDist(points[i][0],points[i][1]),
             cord: points[i],
         }
-        distances = append(distances, node)
+        dists = append(dists, node)
     }
     left := 0
-    right := len(distances)-1
+    right := len(dists)-1
     for left <= right {
         pivot := right
         nextSmaller := left
         for i := left; i < pivot; i++ {
-            if distances[i].dist <= distances[pivot].dist {
-                distances[i], distances[nextSmaller] = distances[nextSmaller], distances[i]
+            if dists[i].dist <= dists[pivot].dist {
+                dists[i], dists[nextSmaller] = dists[nextSmaller], dists[i]
                 nextSmaller++
             }
         }
-        distances[pivot], distances[nextSmaller] = distances[nextSmaller], distances[pivot]
+        dists[pivot], dists[nextSmaller] = dists[nextSmaller], dists[pivot]
         if nextSmaller == k-1 {
             break
         } else if k-1 > nextSmaller {
@@ -39,7 +39,7 @@ func kClosest(points [][]int, k int) [][]int {
 
     out := [][]int{}
     for i := 0; i < k; i++ {
-        out = append(out, distances[i].cord)
+        out = append(out, dists[i].cord)
     }
     return out
 }
@@ -121,8 +121,6 @@ func kClosest(points [][]int, k int) [][]int {
 //     }
 //     return out
 // }
-
-
 
 func calcDist(x, y int) float64 {
     return math.Sqrt(float64(x*x) + float64(y*y))
