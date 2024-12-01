@@ -6,26 +6,42 @@
  * }
  */
 
-// approach: divide and conquer / merge sort ( recursive )
-// tc = o(N * logk)
-// sc = o(k) for recursive depth
 func mergeKLists(lists []*ListNode) *ListNode {
     k := len(lists)
     if k == 0 {return nil}
-    var dfs func(left, right int) *ListNode
-    dfs = func(left, right int) *ListNode {
-        // base
-        if left == right {return lists[left]}
-        if left > right {return nil}
-
-        // logic
-        mid := left + (right-left)/2
-        l1 := dfs(left, mid)
-        l2 := dfs(mid+1, right)
-        return merge2Lists(l1, l2)
+    pairIncr := 1
+    iIncr := 2
+    for pairIncr < k {
+        for i := 0; i + pairIncr < k; i += iIncr {
+            lists[i] = merge2Lists(lists[i], lists[i+pairIncr])
+        }
+        pairIncr *= 2
+        iIncr *= 2
     }
-    return dfs(0, k-1)
+    return lists[0]
 }
+
+
+// approach: divide and conquer / merge sort ( recursive )
+// tc = o(N * logk)
+// sc = o(k) for recursive depth
+// func mergeKLists(lists []*ListNode) *ListNode {
+//     k := len(lists)
+//     if k == 0 {return nil}
+//     var dfs func(left, right int) *ListNode
+//     dfs = func(left, right int) *ListNode {
+//         // base
+//         if left == right {return lists[left]}
+//         if left > right {return nil}
+
+//         // logic
+//         mid := left + (right-left)/2
+//         l1 := dfs(left, mid)
+//         l2 := dfs(mid+1, right)
+//         return merge2Lists(l1, l2)
+//     }
+//     return dfs(0, k-1)
+// }
 
 
 
