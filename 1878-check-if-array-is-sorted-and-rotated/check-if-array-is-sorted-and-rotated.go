@@ -28,7 +28,8 @@ func check(nums []int) bool {
     }
     if end == -1 {return true}
     // now loop from end+1 to end
-    for i := (end+1)%n; i%n != end; i++ {
+    start := (end+1)%n
+    for i := start; i%n != end; i++ {
         curr := nums[i%n]
         next := nums[(i+1)%n]
         if curr > next {return false}
