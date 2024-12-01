@@ -75,8 +75,8 @@ func (this *LRUCache) removeNode(node *listNode) {
 
     // node is a tail node
     if node == this.tail {
-        prev.next = nil
         this.tail = prev
+        if prev != nil {prev.next = nil}
         return
     }
 
