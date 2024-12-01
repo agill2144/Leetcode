@@ -1,16 +1,16 @@
 func check(nums []int) bool {
     n := len(nums)
-    if n <= 1 {return true}
-    idx := -1
-    for i := 0; i < n; i++ {
-        if i == 0 {continue}
-        if nums[i] < nums[i-1] {idx = i; break}
+    end := -1
+    for i := 0; i < 2*n; i++ {
+        if nums[i%n] > nums[(i+1)%n] {end = i}
     }
-    if idx == -1 {return true}
-    start := idx+1
-    end := idx
-    for (start%n) != end {
-        if nums[start%n] >=  nums[(start-1)%n] {start++} else {return false}
+    if end == -1 {return true}
+    start := end+1
+    for start%n != end%n {
+        curr := nums[start % n ]
+        next := nums[(start+1) % n]
+        if curr > next {return false}
+        start++
     }
     return true
 }
