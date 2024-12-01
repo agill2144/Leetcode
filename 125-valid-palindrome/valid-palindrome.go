@@ -1,22 +1,22 @@
 func isPalindrome(s string) bool {
-    l := 0
-    r := len(s)-1
-    for l < r {
-        for l < r && !isAlphaNumeric(s[l]) {l++}
-        if l == r {break}
-        
-        for l < r && !isAlphaNumeric(s[r]) {r--}
-        if l == r {break}
-
-        if strings.ToLower(string(s[l])) != strings.ToLower(string(s[r])) {return false}
-        l++
-        r--
+    left := 0
+    right := len(s)-1
+    for left < right {
+        for left < right && !isAlphaNumeric(s[left]) {left++}
+        if left == right {break}
+        for left < right && !isAlphaNumeric(s[right]) {right--}
+        if left == right {break}
+        if strings.ToLower(string(s[left])) != strings.ToLower(string(s[right])) {return false}
+        left++
+        right--
     }
     return true
 }
 
-func isAlphaNumeric(char byte)bool {
+func isAlphaNumeric(char byte) bool {
     return (char >= '0' && char <= '9') || 
-            (char >= 'a' && char <= 'z') ||
+            (char >= 'a' && char <= 'z') || 
             (char >= 'A' && char <= 'Z')
 }
+
+
