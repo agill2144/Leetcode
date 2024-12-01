@@ -5,8 +5,12 @@ type SnapshotArray struct {
 
 
 func Constructor(length int) SnapshotArray {
+    items := make([][][]int , length)
+    for i := 0; i < len(items); i++ {
+        items[i] = [][]int{{0,0}}
+    }
     return SnapshotArray{
-        items: make([][][]int, length),
+        items: items,
         id: 0,
     }
 }
@@ -19,7 +23,6 @@ func (this *SnapshotArray) Set(index int, val int)  {
         items[len(items)-1][0] = val
     } else {
         items = append(items, []int{val, this.id})
-
     }
     this.items[index] = items
 }
@@ -34,9 +37,10 @@ func (this *SnapshotArray) Snap() int {
 func (this *SnapshotArray) Get(index int, snap_id int) int {
     // right most on left side of snap_id
     items := this.items[index]
+
     left := 0
     right := len(items)-1
-    ans := 0
+    ans := -1
     for left <= right {
         mid := left + (right-left)/2
         if items[mid][1] <= snap_id {
