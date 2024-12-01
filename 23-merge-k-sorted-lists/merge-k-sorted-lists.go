@@ -6,6 +6,9 @@
  * }
  */
 
+// approach: divide and conquer / merge sort ( recursive )
+// tc = o(N * logk)
+// sc = o(k) for recursive depth
 func mergeKLists(lists []*ListNode) *ListNode {
     k := len(lists)
     if k == 0 {return nil}
