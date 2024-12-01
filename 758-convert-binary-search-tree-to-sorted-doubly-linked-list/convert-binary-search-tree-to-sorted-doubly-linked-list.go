@@ -8,9 +8,9 @@
  */
 
 func treeToDoublyList(root *Node) *Node {
-    if root == nil {return nil}
-    dummy := &Node{Val: 0}
-    tail := dummy
+    if root == nil {return root}
+    head := &Node{Val: 0}
+    tail := head
     var dfs func(r *Node)
     dfs = func(r *Node) {
         // base
@@ -24,7 +24,7 @@ func treeToDoublyList(root *Node) *Node {
         dfs(r.Right)
     }
     dfs(root)
-    head := dummy.Right
+    head = head.Right
     head.Left = tail
     tail.Right = head
     return head
