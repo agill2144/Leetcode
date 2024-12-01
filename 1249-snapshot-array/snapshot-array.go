@@ -5,6 +5,12 @@ type SnapshotArray struct {
 
 
 func Constructor(length int) SnapshotArray {
+    // its possible we take a bunch of snap() first before setting anything
+    // in that case, if we do not create all idx arrays right away
+    // those lists will be nil, but in this case , we want to return 0 ( default int value )
+    // technically, the correct return value should be -1 or something that indicates a value has not been stored yet
+    // 0 is a valid value and could be used as real value :shrug
+    // therefore pre-setting 0 values with id = 0
     items := make([][][]int , length)
     for i := 0; i < len(items); i++ {
         items[i] = [][]int{{0,0}}
