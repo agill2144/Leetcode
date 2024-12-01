@@ -1,48 +1,41 @@
-
 type SnapshotArray struct {
+    items [][][]int
     id int
-    histories [][][]int
 }
 
 
 func Constructor(length int) SnapshotArray {
     return SnapshotArray{
-        histories: make([][][]int, length),
+        items: make([][][]int, length),
         id: 0,
     }
 }
 
 
 func (this *SnapshotArray) Set(index int, val int)  {
-    vals := this.histories[index]
-    if vals == nil {vals = [][]int{}}
-    prevID := -1
-    if len(vals) != 0 {prevID = vals[len(vals)-1][1]}
-    if prevID == this.id {
-        vals[len(vals)-1][0] = val
-    } else {
-        vals = append(vals, []int{val, this.id})
-    }
-    this.histories[index] = vals
+    items := this.items[index]
+    if items == nil { items = [][]int{}}
+    items = append(items, []int{val, this.id})
+    this.items[index] = items
 }
 
 
 func (this *SnapshotArray) Snap() int {
-    out := this.id
     this.id++
-    return out
+    return this.id-1
 }
 
 
 func (this *SnapshotArray) Get(index int, snap_id int) int {
-    vals := this.histories[index]        
+    // right most on left side of snap_id
+    items := this.items[index]
     left := 0
-    right := len(vals)-1
+    right := len(items)-1
     ans := 0
     for left <= right {
         mid := left + (right-left)/2
-        if vals[mid][1] <= snap_id {
-            ans = vals[mid][0]
+        if items[mid][1] <= snap_id {
+            ans = items[mid][0]
             left = mid+1
         } else {
             right = mid-1
@@ -58,4 +51,17 @@ func (this *SnapshotArray) Get(index int, snap_id int) int {
  * obj.Set(index,val);
  * param_2 := obj.Snap();
  * param_3 := obj.Get(index,snap_id);
+
+["SnapshotArray","set","snap","snap","snap","get","snap","snap","get"]
+[[1],[0,15],[],[],[],[0,2],[],[],[0,0]]
+
+SnapshotArray(1) ; id = 0
+set(0,15)
+snap() id = 1
+snap() id = 2
+snap() id = 3
+get(0,2)
+snap() id = 4
+snap() id = 5
+get(0,0) 
  */
