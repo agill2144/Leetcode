@@ -14,6 +14,7 @@ func combinationSum2(nums []int, target int) [][]int {
 
         // logic
         for i := start; i < len(nums); i++ {
+            // skip if current number is same as prev number
             if i > start && nums[i] == nums[i-1] {continue}
             if sum + nums[i] > target {return}
             // action
