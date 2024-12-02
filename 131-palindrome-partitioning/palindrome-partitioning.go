@@ -4,9 +4,9 @@ func partition(s string) [][]string {
     dfs = func(start int, path []string) {
         // base
         if start == len(s) {
-            newP := make([]string, len(path))
-            copy(newP, path)
-            out = append(out, newP)
+            newL := make([]string, len(path))
+            copy(newL, path)
+            out = append(out, newL)
             return
         }
 
@@ -24,13 +24,13 @@ func partition(s string) [][]string {
     return out
 }
 
-
 func isPalindrome(s string) bool {
-    l, r := 0, len(s)-1
-    for l < r {
-        if s[l] != s[r] {return false}
-        l++
-        r--
+    left := 0
+    right := len(s)-1
+    for left< right {
+        if s[left] != s[right] {return false}
+        left++
+        right--
     }
     return true
 }
