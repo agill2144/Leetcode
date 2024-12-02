@@ -16,7 +16,7 @@ func exist(board [][]byte, word string) bool {
         for _, dir := range dirs {
             nr := r+dir[0]
             nc := c+dir[1]
-            if dfs(nr, nc, ptr+1) {return true}
+            if dfs(nr, nc, ptr+1) {board[r][c] = tmp; return true}
         }
         board[r][c] = tmp
         return false
