@@ -22,6 +22,10 @@ func exist(board [][]byte, word string) bool {
         return false
     }
 
+    // m = len(board)
+    // n = len(board[0])
+    // w = len(word)
+    // o(m*n * 3^w)
     for i := 0; i < m; i++ {
         for j := 0; j < n; j++ {
             if board[i][j] == word[0] {
