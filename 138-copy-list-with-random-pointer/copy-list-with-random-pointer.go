@@ -19,6 +19,7 @@
     
     #3
     - extract out the duplicated LL
+    - use a dummy / sentinel node to make this extraction easy 
 */
 func copyRandomList(head *Node) *Node {
     if head == nil {return nil}
@@ -42,10 +43,6 @@ func copyRandomList(head *Node) *Node {
     }
 
     curr = head
-    // |---|
-    // 1 1 2 2-3-3-4-4-5-5
-    //   |___|
-    // c   n
     dummy := &Node{Val: 0}
     tail := dummy
     for curr != nil {
