@@ -14,16 +14,14 @@ func combinationSum2(nums []int, target int) [][]int {
 
         // logic
         for i := start; i < len(nums); i++ {
-            if i > start && nums[i] == nums[i-1] {continue}
             if sum + nums[i] > target {return}
             // action
-            sum += nums[i]
             path = append(path, nums[i])
             // recurse
-            dfs(i+1, sum, path)
+            dfs(i+1, sum+nums[i], path)
             // backtrack
             path = path[:len(path)-1]
-            sum -= nums[i]
+            for i+1 < len(nums) && nums[i] == nums[i+1] {i++}
         }
     }
     dfs(0,0, []int{})
