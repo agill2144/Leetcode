@@ -1,27 +1,23 @@
+// tc = o(2^n * n)
+// sc = o(n) + o(n) + o(n)
 func subsetsWithDup(nums []int) [][]int {
-    m := map[int]int{}
-    for i := 0; i < len(nums); i++ {m[nums[i]]++}
-    freq := [][]int{}
-    for k, v := range m {freq = append(freq, []int{k,v})}
+    sort.Ints(nums)
     out := [][]int{}
     var dfs func(start int, path []int)
     dfs = func(start int, path []int) {
         // base
-
         newL := make([]int, len(path))
         copy(newL, path)
         out = append(out, newL)
 
         // logic
-        for i := start; i < len(freq); i++ {
-            if freq[i][1] == 0 {continue}
+        for i := start; i < len(nums); i++ {
+            if i > start && nums[i] == nums[i-1] {continue}
             // action
-            path = append(path, freq[i][0])
-            freq[i][1]--
+            path = append(path, nums[i])
             // recurse
-            dfs(i, path)
+            dfs(i+1, path)
             // backtrack
-            freq[i][1]++
             path = path[:len(path)-1]
         }
     }
