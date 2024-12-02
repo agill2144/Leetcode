@@ -19,6 +19,7 @@ func subsetsWithDup(nums []int) [][]int {
             dfs(i+1, path)
             // backtrack
             path = path[:len(path)-1]
+            // not-choose case; do not choose this number and also skip all instances of this number
             for i+1 < len(nums) && nums[i] == nums[i+1] {i++; continue}
         }
     }
