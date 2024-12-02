@@ -1,35 +1,38 @@
-func combinationSum2(candidates []int, target int) [][]int {
-    sort.Ints(candidates)
+func combinationSum2(nums []int, target int) [][]int {
+    m := map[int]int{}
+    n := len(nums)
+    for i := 0; i < n; i++ {m[nums[i]]++}
+    freq := [][]int{} // [ [val, count] ]
+    for k, v := range m {
+        freq = append(freq, []int{k, v})
+    }
     out := [][]int{}
-
-    var dfs func(start int, sum int, path []int)
-    dfs = func(start, sum int, path []int) {
+    var dfs func(start int, path []int, sum int)
+    dfs = func(start int, path []int, sum int) {
         // base
-        if sum > target {return}
         if sum == target {
             newL := make([]int, len(path))
             copy(newL, path)
             out = append(out, newL)
             return
         }
+        if sum > target || start == len(freq) {return}
 
         // logic
-        for i := start; i < len(candidates); i++ {
-            // skip if ith element == prev element ( to avoid duplicate combinations )
-            // at every single start idx, we are starting a new path
-            // when i == start, we want to use this numnber
-            // when i > start then we dont want to use the curr number
-            // if curr number is same as prev number
-            // because if prev == curr, then at the prev idx, we have already used prev number
-            // in the prev path, therefore dont use it again
-            if i > start && candidates[i] == candidates[i-1] {continue}
-            sum += candidates[i]
-            path = append(path, candidates[i])
-            dfs(i+1, sum, path)
+        for i := start; i < len(freq); i++ {
+            if freq[i][1] == 0 {continue}
+            // action
+            sum += freq[i][0]
+            freq[i][1]--
+            path = append(path, freq[i][0])
+            // recurse
+            dfs(i, path, sum)
+            // backtrack
             path = path[:len(path)-1]
-            sum -= candidates[i]
+            freq[i][1]++
+            sum -= freq[i][0]
         }
     }
-    dfs(0,0, nil)
+    dfs(0, nil, 0)
     return out
 }
