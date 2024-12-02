@@ -1,36 +1,31 @@
 func exist(board [][]byte, word string) bool {
+    var visited byte = '.'
     m := len(board)
     n := len(board[0])
     dirs := [][]int{{1,0},{-1,0},{0,1},{0,-1}}
-    var dfs func(r, c, ptr int) bool
-    dfs = func(r, c, ptr int) bool {
+    var dfs func(r, c int, ptr int) bool
+    dfs = func(r, c int, ptr int) bool {
         // base
         if ptr == len(word) {return true}
-
+        if r < 0 || r == m || c < 0 || c == n || board[r][c] != word[ptr] {return false}
 
         // logic
+        // action
+        tmp := board[r][c]
+        board[r][c] = visited
         for _, dir := range dirs {
-            nr, nc := r+dir[0], c+dir[1]
-            if nr >= 0 && nr < m && nc >= 0 && nc < n && word[ptr] == board[nr][nc] {
-                // action
-                tmp := board[nr][nc]
-                board[nr][nc] = '.'
-                // recurse
-                if dfs(nr,nc,ptr+1) {
-                    return true
-                }
-                // backtrack
-                board[nr][nc] = tmp
-            }
+            nr := r+dir[0]
+            nc := c+dir[1]
+            if dfs(nr, nc, ptr+1) {return true}
         }
+        board[r][c] = tmp
         return false
     }
+
     for i := 0; i < m; i++ {
         for j := 0; j < n; j++ {
             if board[i][j] == word[0] {
-                board[i][j] = '.'
-                if dfs(i, j, 1) {return true}
-                board[i][j] = word[0]
+                if dfs(i, j, 0) {return true}
             }
         }
     }
