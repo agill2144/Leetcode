@@ -3,6 +3,7 @@ func solveSudoku(board [][]byte)  {
     rowSet := make([]*set, 9)
     colSet := make([]*set, 9)
     boxSet := map[string]*set{}
+    sr, sc := -1, -1
     for i := 0; i < n; i++ {
         if rowSet[i] == nil {rowSet[i] = newSet()}
         if colSet[i] == nil {colSet[i] = newSet()}
@@ -16,20 +17,17 @@ func solveSudoku(board [][]byte)  {
             if board[j][i] != '.' {
                 colSet[i].add(board[j][i])
             }
+            if board[i][j] == '.' && sr == -1 {sr = i; sc = j}
         }
     }
     choices := []byte{'1','2','3','4','5','6','7','8','9'}
     var dfs func(r, c int) bool
     dfs = func(r, c int)bool {
         // base
-        if r == n-1 && c == n {
-            return true
-        }
+        if r == n {return true}
         if c == n {
-            r++
-            c = 0
+            return dfs(r+1, 0)
         }
-
         if board[r][c] != '.' {
             return dfs(r, c+1)
         }
@@ -59,7 +57,7 @@ func solveSudoku(board [][]byte)  {
         }
         return false
     }
-    dfs(0,0)
+    dfs(sr,sc)
 }
 
 
