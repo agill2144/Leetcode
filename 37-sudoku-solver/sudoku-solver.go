@@ -4,7 +4,7 @@ func solveSudoku(board [][]byte)  {
     box := map[string]map[byte]bool{}
     m := len(board)
     n := len(board[0])
-
+    sr, sc := -1,-1
     for i := 0; i < m; i++ {
         for j := 0; j < n; j++ {
             if row[i] == nil {row[i] = map[byte]bool{}}
@@ -15,6 +15,7 @@ func solveSudoku(board [][]byte)  {
             if rowVal != '.' {row[i][rowVal] = true; box[boxKey][rowVal] = true}
             colVal := board[j][i]
             if colVal != '.' {col[i][colVal] = true}
+            if board[i][j] == '.' && sr == -1 {sr = i; sc = j}
         }
     }
     choices := []byte{'1','2','3','4','5','6','7','8','9'}
@@ -57,13 +58,7 @@ func solveSudoku(board [][]byte)  {
         return false
     }
 
-    for i := 0; i < m; i++ {
-        for j := 0; j < n; j++ {
-            if board[i][j] == '.' {
-                if dfs(i, j) {return}
-            }
-        }
-    }
+    dfs(sr,sc)
 }
 
 
