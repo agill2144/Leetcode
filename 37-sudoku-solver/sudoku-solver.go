@@ -1,84 +1,69 @@
 func solveSudoku(board [][]byte)  {
-    n := len(board)
-    rowSet := make([]*set, 9)
-    colSet := make([]*set, 9)
-    boxSet := map[string]*set{}
-    sr, sc := -1, -1
-    for i := 0; i < n; i++ {
-        if rowSet[i] == nil {rowSet[i] = newSet()}
-        if colSet[i] == nil {colSet[i] = newSet()}
+    row := map[int]map[byte]bool{}
+    col := map[int]map[byte]bool{}    
+    box := map[string]map[byte]bool{}
+    m := len(board)
+    n := len(board[0])
+
+    for i := 0; i < m; i++ {
         for j := 0; j < n; j++ {
-            boxKey := fmt.Sprintf("%v-%v", i/3, j/3)
-            if boxSet[boxKey] == nil { boxSet[boxKey] = newSet() }
-            if board[i][j] != '.' {
-                rowSet[i].add(board[i][j])
-                boxSet[boxKey].add(board[i][j])            
-            }
-            if board[j][i] != '.' {
-                colSet[i].add(board[j][i])
-            }
-            if board[i][j] == '.' && sr == -1 {sr = i; sc = j}
+            if row[i] == nil {row[i] = map[byte]bool{}}
+            if col[i] == nil {col[i] = map[byte]bool{}}
+            boxKey := fmt.Sprintf("%v-%v",i/3, j/3)
+            if box[boxKey] == nil {box[boxKey] = map[byte]bool{}}
+            rowVal := board[i][j]
+            if rowVal != '.' {row[i][rowVal] = true; box[boxKey][rowVal] = true}
+            colVal := board[j][i]
+            if colVal != '.' {col[i][colVal] = true}
         }
     }
     choices := []byte{'1','2','3','4','5','6','7','8','9'}
     var dfs func(r, c int) bool
-    dfs = func(r, c int)bool {
+    dfs = func(r, c int) bool {
         // base
-        if r == n {return true}
-        if c == n {
-            return dfs(r+1, 0)
-        }
-        if board[r][c] != '.' {
-            return dfs(r, c+1)
-        }
+        if r == m {return true}
+        if c == n {return dfs(r+1, 0)}
 
-
+        if board[r][c] != '.' {return dfs(r,c+1)}
         // logic
-        boxKey := fmt.Sprintf("%v-%v",r/3,c/3)
-        rowData := rowSet[r]
-        colData := colSet[c]
-        boxData := boxSet[boxKey]
+        boxKey := fmt.Sprintf("%v-%v", r/3,c/3)
+        rowSet := row[r]
+        colSet := col[c]
+        boxSet := box[boxKey]
         for i := 0; i < len(choices); i++ {
             choice := choices[i]
-            inRow := rowData.contains(choice)
-            inCol := colData.contains(choice)
-            inBox := boxData.contains(choice)
-            if !inRow && !inCol && !inBox {
+            inRow := rowSet[choice]
+            inCol := colSet[choice]
+            inBox := boxSet[choice]
+            canUse := !inRow && !inCol && !inBox
+            if canUse {
+
+                // action
                 board[r][c] = choice
-                rowData.add(choice)
-                colData.add(choice)
-                boxData.add(choice)
-                if dfs(r, c+1) {return true}
-                boxData.remove(choice)
-                colData.remove(choice)
-                rowData.remove(choice)
+                rowSet[choice] = true
+                colSet[choice] = true
+                boxSet[choice] = true
+
+                // recurse
+                if dfs(r,c+1) {return true}
+
+                // backtrack
+                delete(boxSet, choice)
+                delete(colSet, choice)
+                delete(rowSet,choice)
                 board[r][c] = '.'
             }
         }
         return false
     }
-    dfs(sr,sc)
+
+    for i := 0; i < m; i++ {
+        for j := 0; j < n; j++ {
+            if board[i][j] == '.' {
+                if dfs(i, j) {return}
+            }
+        }
+    }
 }
 
-
-type set struct {
-    items map[byte]struct{}
-}
-
-func newSet() *set {
-    return &set{items: map[byte]struct{}{}}
-}
-
-func (s *set) add(key byte) {
-    s.items[key] = struct{}{}
-}
-
-func (s *set) remove(key byte) {
-    delete(s.items, key)
-}
-
-func (s *set) contains(key byte) bool {
-    _, ok := s.items[key]
-    return ok
-}
 
