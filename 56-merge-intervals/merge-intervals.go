@@ -1,5 +1,6 @@
 func merge(intervals [][]int) [][]int {
-    sort.Slice(intervals, func(i, j int)bool{
+    if len(intervals) == 0 {return nil}
+    sort.Slice(intervals, func(i, j int)bool {
         return intervals[i][0] < intervals[j][0]
     })
     out := [][]int{intervals[0]}
