@@ -4,14 +4,18 @@ func solveSudoku(board [][]byte)  {
     colSet := make([]*set, 9)
     boxSet := map[string]*set{}
     for i := 0; i < n; i++ {
+        if rowSet[i] == nil {rowSet[i] = newSet()}
+        if colSet[i] == nil {colSet[i] = newSet()}
         for j := 0; j < n; j++ {
-            if rowSet[i] == nil {rowSet[i] = newSet()}
-            if colSet[i] == nil {colSet[i] = newSet()}
             boxKey := fmt.Sprintf("%v-%v", i/3, j/3)
             if boxSet[boxKey] == nil { boxSet[boxKey] = newSet() }
-            rowSet[i].add(board[i][j])
-            colSet[i].add(board[j][i])
-            boxSet[boxKey].add(board[i][j])
+            if board[i][j] != '.' {
+                rowSet[i].add(board[i][j])
+                boxSet[boxKey].add(board[i][j])            
+            }
+            if board[j][i] != '.' {
+                colSet[i].add(board[j][i])
+            }
         }
     }
     choices := []byte{'1','2','3','4','5','6','7','8','9'}
