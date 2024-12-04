@@ -1,19 +1,14 @@
 func topKFrequent(nums []int, k int) []int {
     freq := map[int]int{}
-    for i := 0; i < len(nums); i++ {
-        freq[nums[i]]++
-    }
-    sort.Slice(nums, func(i, j int)bool{
-        if freq[nums[i]] == freq[nums[j]] {
-            return nums[i] < nums[j]
-        }
-        return freq[nums[i]] < freq[nums[j]]
-    })
+    for i := 0; i < len(nums); i++ {freq[nums[i]]++}
+    freqToNums := map[int][]int{}
+    maxFreq := 0
+    for k, v := range freq {maxFreq = max(maxFreq,v); freqToNums[v] = append(freqToNums[v], k)}
     out := []int{}
-    for i := len(nums)-1; i >= 0 && len(out) != k; i-- {
-        if len(out) == 0 || out[len(out)-1] != nums[i] {
-            out = append(out, nums[i])
-        }
+    for len(out) != k {
+        items := freqToNums[maxFreq]
+        for i := 0; i < len(items) && len(out) != k; i++ {out = append(out, items[i])}
+        maxFreq--
     }
     return out
 }
