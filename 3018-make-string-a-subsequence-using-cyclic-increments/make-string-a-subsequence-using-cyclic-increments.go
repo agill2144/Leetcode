@@ -8,8 +8,3 @@ func canMakeSubsequence(str1 string, str2 string) bool {
     }
     return s2 == len(str2)
 }
-
-func abs(x int) int {
-    if x < 0 {return x*-1}
-    return x
-}
