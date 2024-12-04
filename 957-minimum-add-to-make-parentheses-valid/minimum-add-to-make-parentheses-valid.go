@@ -1,13 +1,16 @@
 func minAddToMakeValid(s string) int {
-    extraClosing := 0
-    open := 0
+    countOpen := 0
+    invalidClosing := 0
     for i := 0; i < len(s); i++ {
         if s[i] == '(' {
-            open++
+            countOpen++
         } else if s[i] == ')' {
-            if open == 0 {extraClosing++; continue}
-            open--
+            if countOpen > 0 {
+                countOpen--
+            } else {
+                invalidClosing++
+            }
         }
     }
-    return open + extraClosing
+    return countOpen + invalidClosing
 }
