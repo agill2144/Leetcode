@@ -13,20 +13,31 @@ func Constructor(nums []int) SparseVector {
 
 // Return the dotProduct of two sparse vectors
 func (this *SparseVector) dotProduct(vec SparseVector) int {
+    if len(vec.items) < len(this.items) {return vec.dotProduct(*this)}
     sum := 0
-    v1, v2 := 0, 0
-    for v1 < len(this.items) && v2 < len(vec.items) {
-        v1Idx, v2Idx := this.items[v1][1], vec.items[v2][1]
-        if v1Idx == v2Idx {
-            sum += (this.items[v1][0] * vec.items[v2][0])
-            v1++; v2++
-        } else if v1Idx < v2Idx {
-            v1++
-        } else {
-            v2++
+    for i := 0; i < len(this.items); i++ {
+        val, idx := this.items[i][0], this.items[i][1]
+        idx2 := search(vec.items, idx)
+        if idx2 != -1 {
+            sum += (val * vec.items[idx2][0])
         }
     }
     return sum
+}
+
+func search(items[][]int, targetIdx int) int {
+    left := 0
+    right := len(items)-1
+    for left <= right {
+        mid := left + (right-left)/2
+        if items[mid][1] == targetIdx {return mid}
+        if targetIdx > items[mid][1] {
+            left = mid+1
+        } else {
+            right = mid-1
+        }
+    }
+    return -1
 }
 
 /**
