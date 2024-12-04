@@ -8,7 +8,9 @@ func topKFrequent(nums []int, k int) []int {
     }
     out := []int{}
     for i := len(bucket)-1; i >= 0 && len(out) != k; i-- {
-        out = append(out, bucket[i]...)
+        // need := k - len(out)
+        fmt.Println()
+        out = append(out, bucket[i][:min(k-len(out),len(bucket[i]))]...)
     }
     return out
 }
