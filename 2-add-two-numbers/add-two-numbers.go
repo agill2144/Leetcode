@@ -23,6 +23,28 @@
         - numbers are too big
         - some integers are so large that they dont fit int64
         - cant use float64, because golang does not support % on float64
+
+    approach: paper math!
+    - just like we would do math on paper
+    - perform the sum of 2 digits on paper
+    - from left to right
+    - we can take 2 ptrs on both linkedlists
+    - and then take the sum
+    - what if the sum was > 10 ?
+    - we need to carry 1 over
+    - then define a carry var and store the res of sum / 10
+    - we can make use of sentinal node to keep appending new listnodes
+    - if the the linkedlists are of 2 different sizes
+        - then we can assume 0 value for the list thats out of bound
+        - therefore we can keep iterating until either ptr is inbound
+    - finally, its possible that carry still has value after the traversal
+        - we could have a 9+9 at the very end of the LL
+        - therefore check if carry has any value 
+        - and add a new node at the end if carry has a value
+    - finally, we can return the linkedlist
+
+    tc = o(l1+l2)
+    sc = o(l1+l2)
     
 */  
 func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
