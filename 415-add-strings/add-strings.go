@@ -17,7 +17,12 @@
         - carry 1 over
     - paper math, we start from the right to left
     - we will do the same
-
+    - we will first write the sum of each digit from right to left
+        - in a temp array
+    - then we will loop from back of the temp array to create the
+        final output string
+    - we started summing from the back, therefore the sum is saved backwards
+    - hence the need to loop from back of the array
 
 
 */
