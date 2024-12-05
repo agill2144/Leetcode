@@ -1,30 +1,47 @@
+/*
+    approach: brute force ( does not work )
+    - conver to int
+    - sum
+    - return str(sum)
+    - integer overflow!
+    - can we use float64?
+        - yes and no
+        - yes, because conversions might work
+        - but the result might be 1.123e^19
+        - which does not match the format of output
+
+    approach: paper math
+    - add 2 digits at a time, no worry about overflow
+    - but you do have to worry about carry
+        - 9+9 = 18
+        - carry 1 over
+    - paper math, we start from the right to left
+    - we will do the same
+
+
+
+*/
 func addStrings(num1 string, num2 string) string {
     tmp := []int{}
-    n1 := len(num1)
-    n2 := len(num2)
+    n1 := len(num1)-1
+    n2 := len(num2)-1
     carry := 0
-    p1 := n1-1
-    p2 := n2-1
-    for p1 >= 0 || p2 >= 0 {
-        p1Val := 0
-        if p1 >= 0 {p1Val = int(num1[p1]-'0'); p1--}
-        p2Val := 0
-        if p2 >= 0 {p2Val = int(num2[p2]-'0'); p2--}
-
-        total := p1Val + p2Val + carry
-        toAdd := total%10
-        carry = total/10
-        tmp = append(tmp, toAdd)
+    for n1 >= 0 || n2 >= 0 {
+        n1Val := 0
+        if n1 >= 0 {n1Val = int(num1[n1]-'0'); n1--}
+        n2Val := 0
+        if n2 >= 0 {n2Val = int(num2[n2]-'0'); n2--}
+        sum := n1Val + n2Val + carry
+        tmp = append(tmp, sum%10)
+        carry = sum / 10
     }
     if carry != 0 {
         tmp = append(tmp, carry)
+        carry = 0
     }
-    out := new(strings.Builder)
+    res := new(strings.Builder)
     for i := len(tmp)-1; i >= 0; i-- {
-        out.WriteString(fmt.Sprintf("%v", tmp[i]))
+        res.WriteString(fmt.Sprintf("%v", tmp[i]))
     }
-    return out.String()
+    return res.String()
 }
-
-// 24 / 10 = 2
-// 2753 / 10 = 275
