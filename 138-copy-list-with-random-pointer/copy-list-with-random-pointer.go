@@ -32,5 +32,5 @@ func copyRandomList(head *Node) *Node {
         }
         curr = next
     }
-    return m[head]
+    return dummy.Next
 }
