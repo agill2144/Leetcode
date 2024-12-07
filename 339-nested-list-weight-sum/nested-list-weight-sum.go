@@ -24,21 +24,20 @@
  * func (n NestedInteger) GetList() []*NestedInteger {}
  */
 func depthSum(nestedList []*NestedInteger) int {
-    var dfs func(curr []*NestedInteger, depth int) int
-    dfs = func(curr []*NestedInteger, depth int) int {
+    total := 0
+    var dfs func(curr []*NestedInteger, depth int)
+    dfs = func(curr []*NestedInteger, depth int) {
         // base
-        if curr == nil || len(curr) == 0 {return 0}
-
+        if curr == nil || len(curr) == 0 {return}
         // logic
-        total := 0
         for i := 0; i < len(curr); i++ {
             if curr[i].IsInteger() {
                 total += (curr[i].GetInteger() * depth)
             } else {
-                total += dfs(curr[i].GetList(), depth+1)
+                dfs(curr[i].GetList(), depth+1)
             }
         }
-        return total
     }
-    return dfs(nestedList, 1)
+    dfs(nestedList, 1)
+    return total
 }
