@@ -1,27 +1,26 @@
 func fourSum(nums []int, target int) [][]int {
-    set := map[[4]int]bool{}
+    sort.Ints(nums)
     out := [][]int{}
-    n := len(nums)
-    // n = 6 
-    // we need atleast 4 elements
-    // n-4 = 6-4 = 2 is the last ith idx
-    for i := 0; i < n; i++ {
-        iTarget := target - nums[i]
-        for j := i+1; j < n; j++ {
+    for i := 0; i < len(nums); i++ {
+        if i > 0 && nums[i] == nums[i-1] {continue}
+        iTarget := target-nums[i]
+        for j := i+1; j < len(nums); j++ {
+            if j > i+1 && nums[j] == nums[j-1] {continue}
             jTarget := iTarget-nums[j]
-            seen := map[int]bool{}
-            for k := j+1; k < n; k++ {
-                diff := jTarget - nums[k]
-                if seen[diff] {
-                    tmp := []int{nums[i], nums[j],diff , nums[k]}
-                    sort.Ints(tmp)
-                    tmp2 := [4]int{tmp[0],tmp[2],tmp[2],tmp[3]}
-                    if !set[tmp2] {
-                        set[tmp2] = true
-                        out = append(out, tmp)
-                    }
+            left := j+1
+            right := len(nums)-1
+            for left < right {
+                if nums[left] + nums[right] == jTarget {
+                    out = append(out, []int{nums[i], nums[j], nums[left], nums[right]})
+                    left++
+                    for left < right && nums[left] == nums[right] {left++}
+                    right--
+                    for left < right && nums[right] == nums[right+1] {right--}
+                } else if nums[left] + nums[right] > jTarget {
+                    right--
+                } else {
+                    left++
                 }
-                seen[nums[k]] = true
             }
         }
     }
