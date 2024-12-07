@@ -1,21 +1,19 @@
 func validWordAbbreviation(word string, abbr string) bool {
-    w := 0
-    a := 0
-    n := 0
-    for w < len(word) && a < len(abbr) {
+    w, a, n := 0, 0, 0
+    for a < len(abbr) && w < len(word) {
         for a < len(abbr) && abbr[a] >= '0' && abbr[a] <= '9' {
             if abbr[a] == '0' && n == 0 {return false}
-            n = n * 10 + int(abbr[a]-'0')
+            n = n*10 + int(abbr[a]-'0')
             a++
         }
-        for n != 0 && w < len(word) {
-            n--
-            w++
-        }
-        if a == len(abbr) || w == len(word) {break} 
+        w += n
+        n = 0
+
+        if a == len(abbr) || w == len(word) {break}
         if abbr[a] != word[w] {return false}
         a++; w++
     }
-    for n != 0 && w < len(word) {n--; w++}
-    return n == 0 && a == len(abbr) && w == len(word)
+    w += n
+    n = 0
+    return a == len(abbr) && w == len(word) && n == 0
 }
