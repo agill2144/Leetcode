@@ -1,15 +1,31 @@
 func topKFrequent(nums []int, k int) []int {
     freq := map[int]int{}
-    maxFreq := 0
-    for i := 0; i < len(nums); i++ {freq[nums[i]]++; maxFreq = max(maxFreq, freq[nums[i]])}
-    bucket := make([][]int, maxFreq+1)
-    for num , count := range freq {
-        if bucket[count] == nil {bucket[count] = []int{}}
-        bucket[count] = append(bucket[count], num)
+    deduped := []int{}
+    for i := 0; i < len(nums); i++ {
+        if freq[nums[i]] == 0 {
+            deduped = append(deduped, nums[i])
+        }
+        freq[nums[i]]++
     }
-    out := []int{}
-    for i := len(bucket)-1; i >= 0 && len(out) != k; i-- {
-        out = append(out, bucket[i]...)
+    left := 0
+    right := len(deduped)-1
+    targetIdx := len(deduped)-k
+    for left <= right {
+        pivot := right
+        nsf := left
+        for i := left; i < pivot; i++ {
+            if freq[deduped[i]] <= freq[deduped[pivot]] {
+                deduped[nsf], deduped[i] = deduped[i], deduped[nsf]
+                nsf++ 
+            }
+        }
+        deduped[pivot], deduped[nsf] = deduped[nsf], deduped[pivot]
+        if nsf == targetIdx {return deduped[nsf:]}
+        if targetIdx < nsf {
+            right = nsf-1
+        } else {
+            left = nsf+1
+        }
     }
-    return out
+    return nil
 }
