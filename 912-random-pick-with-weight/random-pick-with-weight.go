@@ -4,26 +4,21 @@ type Solution struct {
 
 
 func Constructor(w []int) Solution {
-    c := []int{w[0]}    
-    for i := 1; i < len(w); i++ {
-        c = append(c, w[i] + c[i-1])
+    compressedRanges := make([]int, len(w))    
+    for i := 0; i < len(w); i++ {
+        compressedRanges[i] += w[i]
+        if i-1 >= 0 {compressedRanges[i] += compressedRanges[i-1]}
     }
-    return Solution{c}
+    return Solution{compressedRanges}
 }
 
 
 func (this *Solution) PickIndex() int {
     n := len(this.compressedRanges)
-    maxRange := this.compressedRanges[n-1]
-    r := rand.Intn(maxRange)
+    r := rand.Intn(this.compressedRanges[n-1])
     ans := -1
     left := 0
     right := n-1
-    // mid position tells us the ending of range at mid idx
-    // EXCLUDING mid value
-    // if mid idx(2) val is 3
-    // it means, the range at mid pos ends at 3( does not include 3)
-    // we want to a smallest such mid where r IN the range (not equal to, but r < mid range )
     for left <= right {
         mid := left + (right-left)/2
         if r < this.compressedRanges[mid] {
@@ -34,7 +29,6 @@ func (this *Solution) PickIndex() int {
         }
     }
     return ans
-    
 }
 
 
