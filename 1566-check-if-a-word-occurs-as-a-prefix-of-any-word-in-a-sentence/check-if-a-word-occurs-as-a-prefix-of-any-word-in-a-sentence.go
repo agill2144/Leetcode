@@ -1,6 +1,5 @@
 func isPrefixOfWord(sentence string, searchWord string) int {
     root := &trieNode{childs: [26]*trieNode{}}
-    
     wordCount := 1
     tmp := new(strings.Builder)
     for i := 0; i < len(sentence); i++ {
@@ -26,15 +25,15 @@ func isPrefixOfWord(sentence string, searchWord string) int {
 type trieNode struct {
 	isEnd  bool
 	childs [26]*trieNode
-    idx int
+    wordIdx int
 }
 
-func (r *trieNode) insert(word string, startIdx int) {
+func (r *trieNode) insert(word string, wordIdx int) {
 	curr := r
 	for i := 0; i < len(word); i++ {
 		idx := int(word[i] - 'a')
 		if curr.childs[idx] == nil {
-			curr.childs[idx] = &trieNode{childs: [26]*trieNode{}, idx: startIdx}
+			curr.childs[idx] = &trieNode{childs: [26]*trieNode{}, wordIdx: wordIdx}
 		}
 		curr = curr.childs[idx]
 	}
@@ -51,5 +50,5 @@ func (r *trieNode) searchPrefix(prefix string) int {
 		}
 		curr = curr.childs[idx]
 	}
-	return curr.idx
+	return curr.wordIdx
 }
