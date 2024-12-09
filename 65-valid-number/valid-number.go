@@ -4,6 +4,7 @@
     - "+" or "-" are only allowed 2 times, and never allowed at the last position
         - at the beginning
         - right after "e" || "E"
+        - so its not allowed when i == n-1 || prev char is not a e and not a E
     - "e" and "E" is not allowed
         - when we have not seen digit yet, cannot have a exponent without a base number
         - this is at the last position
@@ -28,7 +29,7 @@ func isNumber(s string) bool {
                     return false
                 }
         } else if char == 'e' || char == 'E' {
-            if seenExp || !seenDigit || i == n-1 {return false}
+            if i == n-1 || seenExp || !seenDigit {return false}
             seenExp = true
         } else if char == '.' {
             if seenExp || seenDecimal {return false}
