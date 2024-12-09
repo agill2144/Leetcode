@@ -5,12 +5,12 @@ func merge(intervals [][]int) [][]int {
     })
     out := [][]int{intervals[0]}
     for i := 1; i < len(intervals); i++ {
-        start, end := intervals[i][0], intervals[i][1]
-        prevEnd := out[len(out)-1][1]
-        if start <= prevEnd {
-            out[len(out)-1][1] = max(end, prevEnd)
-        } else {
+        // when is it not overlapping ?
+        // when i starts after prev ends
+        if intervals[i][0] > out[len(out)-1][1] {
             out = append(out, intervals[i])
+        } else {
+            out[len(out)-1][1] = max(intervals[i][1], out[len(out)-1][1])
         }
     }
     return out
