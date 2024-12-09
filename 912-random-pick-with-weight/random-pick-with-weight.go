@@ -16,13 +16,13 @@ func Constructor(w []int) Solution {
 func (this *Solution) PickIndex() int {
     n := len(this.compressedRanges)
     total := this.compressedRanges[n-1]
-    r := rand.Intn(total)
+    rIdx := rand.Intn(total)
     left := 0
     right := n-1
     ans := -1
     for left <= right {
         mid := left + (right-left)/2
-        if r >= this.compressedRanges[mid] {
+        if rIdx >= this.compressedRanges[mid] {
             left = mid+1
         } else {
             ans = mid
