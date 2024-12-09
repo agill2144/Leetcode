@@ -6,7 +6,7 @@ func merge(intervals [][]int) [][]int {
     out := [][]int{intervals[0]}
     for i := 1; i < len(intervals); i++ {
         // when is it not overlapping ?
-        // when i starts after prev ends
+        // when i starts after prev ends ( prev = last element in output array )
         if intervals[i][0] > out[len(out)-1][1] {
             out = append(out, intervals[i])
         } else {
