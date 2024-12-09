@@ -6,8 +6,8 @@ type Solution struct {
 func Constructor(w []int) Solution {
     compressedRanges := make([]int, len(w))    
     for i := 0; i < len(w); i++ {
-        compressedRanges[i] += w[i]
-        if i-1 >= 0 {compressedRanges[i] += compressedRanges[i-1]}
+        compressedRanges[i] = w[i]
+        if i-1 >= 0 {compressedRanges[i]+=compressedRanges[i-1]}
     }
     return Solution{compressedRanges}
 }
@@ -15,17 +15,18 @@ func Constructor(w []int) Solution {
 
 func (this *Solution) PickIndex() int {
     n := len(this.compressedRanges)
-    r := rand.Intn(this.compressedRanges[n-1])
-    ans := -1
+    total := this.compressedRanges[n-1]
+    r := rand.Intn(total)
     left := 0
     right := n-1
+    ans := -1
     for left <= right {
         mid := left + (right-left)/2
-        if r < this.compressedRanges[mid] {
+        if r >= this.compressedRanges[mid] {
+            left = mid+1
+        } else {
             ans = mid
             right = mid-1
-        } else {
-            left = mid+1
         }
     }
     return ans
