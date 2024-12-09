@@ -12,8 +12,7 @@ func isNumber(s string) bool {
         char := s[i]
         if char == '+' || char == '-' {
             if i == len(s)-1 {return false}
-            if i-1 >= 0 && (s[i-1] == 'e' || s[i-1] == 'E') && i != len(s)-1 {continue}
-            return false
+            if i-1 >= 0 && s[i-1] != 'e' && s[i-1] != 'E' {return false}
         } else if char == 'E' || char == 'e' {
             if !seenDigit || i == len(s)-1 {return false}
             if seenExp {return false}
