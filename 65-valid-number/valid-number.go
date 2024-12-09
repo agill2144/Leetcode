@@ -28,6 +28,7 @@ func isNumber(s string) bool {
             if seenDecimal || seenExp {return false}
             seenDecimal = true
         } else {
+            // random char that is not valid "~", "a", "b", "?" etc..
             return false
         }
     }
