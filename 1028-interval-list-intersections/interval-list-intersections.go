@@ -6,10 +6,12 @@ func intervalIntersection(firstList [][]int, secondList [][]int) [][]int {
         bStart, bEnd := secondList[b][0], secondList[b][1]
         // 1. if there is no intersection, move on
         if aStart > bEnd {
-            // if a starts after b ends
+            // a starts after b
+            // b is over, not usable, move away from b
             b++
         } else if bStart > aEnd {
-            // b starts after a ends
+            // b starts after a
+            // a is over, not usable, move away from a
             a++
         } else {
             // there is an intersection!
