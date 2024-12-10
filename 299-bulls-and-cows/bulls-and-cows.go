@@ -45,9 +45,12 @@ func getHint(secret string, guess string) string {
         if s == g {
             bulls++
         } else {
+            // could s match with a previously seen g? (g is added with negative freq )
             // was there a previously seen g char that s can pair with?
             // non-matching g char have negative freq
             if freq[s] < 0 {cows++} 
+
+            // could g match with previously seen s? (s is added with positive freq )
             // was there a previosly seen s char that g can pair with?
             // non matching s char have postive freq
             if freq[g] > 0 {cows++}
