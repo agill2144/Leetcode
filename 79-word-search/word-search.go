@@ -20,9 +20,7 @@ func exist(board [][]byte, word string) bool {
     }
     for i := 0; i < m; i++ {
         for j := 0; j < n; j++ {
-            if board[i][j] == word[0] {
-                if dfs(i,j,0) {return true}
-            }
+            if board[i][j] == word[0] && dfs(i,j,0) {return true}
         }
     }
     return false
