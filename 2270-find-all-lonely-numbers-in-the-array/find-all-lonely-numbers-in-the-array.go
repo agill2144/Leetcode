@@ -2,7 +2,6 @@ func findLonely(nums []int) []int {
     sort.Ints(nums)
     out := []int{}
     for i := 0; i < len(nums); i++ {
-        if i-1 >= 0 && nums[i] == nums[i-1] {continue}
         prev := math.MinInt64
         next := math.MaxInt64
         if i-1 >= 0 {prev = nums[i-1]}
