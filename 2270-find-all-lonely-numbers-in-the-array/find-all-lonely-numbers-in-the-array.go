@@ -1,12 +1,16 @@
 func findLonely(nums []int) []int {
+    sort.Ints(nums)
     out := []int{}
-    freq := map[int]int{}
-    for i := 0; i < len(nums); i++ {freq[nums[i]]++}
-    for key, val := range freq {
-        curr := key
-        prev := curr-1
-        next := curr+1
-        if freq[next] == 0 && freq[prev] == 0 && val == 1 {out = append(out, curr)}
+    for i := 0; i < len(nums); i++ {
+        if i-1 >= 0 && nums[i] == nums[i-1] {continue}
+        prev := math.MinInt64
+        next := math.MaxInt64
+        if i-1 >= 0 {prev = nums[i-1]}
+        if i+1 < len(nums) {next = nums[i+1]}
+        if nums[i] + 1 != next &&
+            nums[i] - 1 != prev && 
+            nums[i] != prev &&
+            nums[i] != next {out = append(out, nums[i])}
     }
     return out
 }
