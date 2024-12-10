@@ -1,6 +1,6 @@
 func maximumLength(s string) int {
     left := 1
-    right := len(s)-1
+    right := len(s)-2
     ans := -1
     for left <= right {
         mid := left + (right-left)/2
