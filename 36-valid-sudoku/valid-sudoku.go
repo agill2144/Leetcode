@@ -1,26 +1,26 @@
 func isValidSudoku(board [][]byte) bool {
     n := len(board)
-    boxes := map[string]map[byte]bool{}
+    boxSet := map[string][]bool{}
     for i := 0; i < n; i++ {
-        row := map[byte]bool{}
-        col := map[byte]bool{}
+        rowSet := make([]bool, n+1)
+        colSet := make([]bool, n+1)
         for j := 0; j < n; j++ {
-            val := board[i][j]
-            if val != '.'{
-                if row[val] {return false}
-                row[val] = true
-                r, c := i/3, j/3
-                key := fmt.Sprintf("%v_%v", r, c)
-                if boxes[key] == nil {boxes[key] = map[byte]bool{}}
-                if boxes[key][val] {return false}
-                boxes[key][val] = true
+            if board[i][j] != '.'{
+                rowVal := int(board[i][j]-'0')
+                if rowSet[rowVal] {return false}
+                rowSet[rowVal] = true
+
+                boxKey := fmt.Sprint("%v-%v", i/3,j/3)
+                if boxSet[boxKey] == nil {boxSet[boxKey] = make([]bool, n+1)}
+                if boxSet[boxKey][rowVal] {return false}
+                boxSet[boxKey][rowVal] = true
 
             }
 
-            val = board[j][i]
-            if val != '.' {
-                if col[val] {return false}
-                col[val] = true
+            if board[j][i] != '.' {
+                colVal := int(board[j][i]-'0')
+                if colSet[colVal] {return false}
+                colSet[colVal] = true
             }
         }
     }
