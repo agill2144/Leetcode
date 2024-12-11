@@ -1,3 +1,22 @@
+/*
+    not allowed rules tldr
+    - we must have seen a digit
+    - "+" or "-" are only allowed 2 times
+        - at the beginning
+        - right after "e" || "E"
+        - not allowed when at n-1 idx 
+        - not allowe when prev char is not "e" or "E"
+    - "e" and "E":
+        - not allowed when we haven't seen a digit yet
+        - not allowed when at n-1 idx 
+        - not we have already seen an e || E before
+    - "." is not allowed;
+        - not allowed when we have already seen one before
+        - not allowed after exp, ie; we have seen an exp before this alreay
+    
+    tc = o(s)
+    sc = o(1)
+*/
 func isNumber(s string) bool {
     seenDigit := false
     seenExp := false
