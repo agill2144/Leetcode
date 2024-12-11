@@ -24,10 +24,10 @@ func widthOfBinaryTree(root *TreeNode) int {
         if _, ok := idx[level]; !ok {idx[level] = []int{math.MaxInt64, math.MinInt64}}
         idx[level][0] = min(idx[level][0], currIdx)
         idx[level][1] = max(idx[level][1], currIdx)
-        dfs(r.Left, 2*currIdx, level+1)
-        dfs(r.Right, 2*currIdx+1, level+1)
+        dfs(r.Left, 2*currIdx+1, level+1)
+        dfs(r.Right, 2*currIdx+2, level+1)
     }
-    dfs(root, 1, 0)
+    dfs(root, 0, 0)
     maxW := -1
     for i := maxLevel; i >= 0; i-- {
         startIdx, endIdx := idx[i][0], idx[i][1]
