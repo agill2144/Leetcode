@@ -6,29 +6,31 @@
  *     Right *TreeNode
  * }
  */
+
+/*
+    approach: bfs
+    - once we run into a null node
+    - we should no longer run into a null node
+    - for each non-null node, blindly add left and right childs
+    - if we run into a non-null node, a flag should tell us whether we had seen null node before this
+    - if the flag tells us that we have seen a null node before, and we run into a non null node, this tree is not complete
+
+    tc = o(n)
+    sc = o(maxWidth of the tree); o(n/2) ; o(n)
+*/
 func isCompleteTree(root *TreeNode) bool {
     if root == nil {return true}
-    n := 0
-    var count func(r *TreeNode)
-    count = func(r *TreeNode) {
-        // base
-        if r == nil {return}
-
-        // logic
-        n++
-        count(r.Left)
-        count(r.Right)
+    q := []*TreeNode{root}    
+    seenNil := false
+    for len(q) != 0 {
+        dq := q[0]
+        q = q[1:]
+        if dq == nil {seenNil = true}
+        if dq != nil {
+            if seenNil {return false}
+            q = append(q, dq.Left)
+            q = append(q, dq.Right)
+        }
     }
-    count(root)
-    var dfs func(r *TreeNode, idx int) bool
-    dfs = func(r *TreeNode, idx int) bool {
-        // base
-        if r == nil {return true}
-
-        // logic
-        if idx >= n {return false}
-        if !dfs(r.Left, 2*idx+1) {return false}
-        return dfs(r.Right, 2*idx+2)
-    }
-    return dfs(root,0)
+    return true
 }
