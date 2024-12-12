@@ -24,12 +24,12 @@ func (this *SparseVector) dotProduct(vec SparseVector) int {
             v2++
         } else if idx1 < idx2 {
             // Move v1 using binary search
-            v1 = rightMostOnLeftSide(this.nums, v1+1, idx2)
-            if v1 == -1 { break   }
+            v1 = rightMostOnLeftSide(this.nums, v1, idx2)
+            if this.nums[v1][1] != idx2 {v1++; v2++}
         } else {
             // Move v2 using binary search
-            v2 = rightMostOnLeftSide(vec.nums, v2+1, idx1)
-            if v2 == -1 { break }
+            v2 = rightMostOnLeftSide(vec.nums, v2, idx1)
+            if vec.nums[v2][1] != idx1 {v1++;v2++}
         }
     }
 
@@ -38,15 +38,16 @@ func (this *SparseVector) dotProduct(vec SparseVector) int {
 
 func rightMostOnLeftSide(nums [][]int, left int, target int) int {
     right := len(nums) - 1
-    ans := -1
+    ans := left
 
     for left <= right {
         mid := left + (right-left)/2
-        if nums[mid][1] >= target { // Compare indices, not values
+        if nums[mid][1] <=  target {
+            if nums[mid][1] == target {return mid}
             ans = mid
-            right = mid - 1
+            left = mid+1
         } else {
-            left = mid + 1
+            right = mid-1
         }
     }
 
