@@ -32,3 +32,14 @@ func findRightInterval(intervals [][]int) []int {
     }
     return out
 }
+
+/*
+    [[3,4],[2,3],[1,2]]
+    
+    ogIdxs = {
+        [3,4]: 0,
+        [2,3]: 1,
+        [1,2]: 2
+    }
+    [[1,2], [2,3], [3,4]]
+*/
