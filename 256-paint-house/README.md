@@ -1,4 +1,4 @@
-<h2><a href="https://leetcode.com/problems/paint-house/">256. Paint House</a></h2><h3>Medium</h3><hr><div><p>There is a row of <code>n</code> houses, where each house can be painted one of three colors: red, blue, or green. The cost of painting each house with a certain color is different. You have to paint all the houses such that no two adjacent houses have the same color.</p>
+<h2><a href="https://leetcode.com/problems/paint-house">Paint House</a></h2> <img src='https://img.shields.io/badge/Difficulty-Medium-orange' alt='Difficulty: Medium' /><hr><p>There is a row of <code>n</code> houses, where each house can be painted one of three colors: red, blue, or green. The cost of painting each house with a certain color is different. You have to paint all the houses such that no two adjacent houses have the same color.</p>
 
 <p>The cost of painting each house with a certain color is represented by an <code>n x 3</code> cost matrix <code>costs</code>.</p>
 
@@ -9,17 +9,19 @@
 <p>Return <em>the minimum cost to paint all houses</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
-<pre><strong>Input:</strong> costs = [[17,2,17],[16,16,5],[14,3,19]]
+<pre>
+<strong>Input:</strong> costs = [[17,2,17],[16,16,5],[14,3,19]]
 <strong>Output:</strong> 10
 <strong>Explanation:</strong> Paint house 0 into blue, paint house 1 into green, paint house 2 into blue.
 Minimum cost: 2 + 5 + 3 = 10.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
-<pre><strong>Input:</strong> costs = [[7,6,2]]
+<pre>
+<strong>Input:</strong> costs = [[7,6,2]]
 <strong>Output:</strong> 2
 </pre>
 
@@ -32,4 +34,3 @@ Minimum cost: 2 + 5 + 3 = 10.
 	<li><code>1 &lt;= n &lt;= 100</code></li>
 	<li><code>1 &lt;= costs[i][j] &lt;= 20</code></li>
 </ul>
-</div>
