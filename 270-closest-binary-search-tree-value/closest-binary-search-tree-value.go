@@ -7,33 +7,23 @@
  * }
  */
 func closestValue(root *TreeNode, target float64) int {
-    minDiff := math.MaxFloat64
-    minVal := math.MaxInt64
-
-    var dfs func(r *TreeNode)
-    dfs = func(r *TreeNode) {
-        // base
-        if r == nil {return}
+    closest := root.Val
+    closestDiff := abs(float64(root.Val)-target)
+    for root != nil {
+        diff := abs(float64(root.Val)-target)
+        if diff < closestDiff {closest = root.Val; closestDiff = diff}
+        if diff == closestDiff {closest = min(root.Val, closest)}
         
-        // logic
-        diff := abs(float64(r.Val) - target)
-
-        if diff < minDiff || diff == minDiff {
-            if diff < minDiff { minDiff = diff; minVal = r.Val}
-            if diff == minDiff { minVal = min(r.Val, minVal) }
-        }
-
-        if target > float64(r.Val) {
-            dfs(r.Right)
+        if target < float64(root.Val) {
+            root = root.Left
         } else {
-            dfs(r.Left)
+            root = root.Right
         }
     }
-    dfs(root)
-    return minVal
+    return closest
 }
 
 func abs(x float64) float64 {
-    if x < 0.0 {return x * -1.0}
+    if x < 0 {return x * -1.0}
     return x
 }
