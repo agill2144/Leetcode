@@ -1,28 +1,56 @@
 type SparseVector struct {
-    idxToVal map[int]int
+    nums [][]int // [ [val, idx] ]
 }
 
 func Constructor(nums []int) SparseVector {
-    idxToVal := map[int]int{}
+    vals := [][]int{}
     for i := 0; i < len(nums); i++ {
-        if nums[i] != 0 {idxToVal[i] = nums[i]}
+        if nums[i] != 0 {vals = append(vals, []int{nums[i], i})}
     }
-    return SparseVector{idxToVal}
+    return SparseVector{vals}
 }
 
 // Return the dotProduct of two sparse vectors
 func (this *SparseVector) dotProduct(vec SparseVector) int {
-    if len(vec.idxToVal) < len(this.idxToVal) {
-        return vec.dotProduct(*this)
-    } 
     sum := 0
-    for idx, num := range this.idxToVal {
-        num2, ok := vec.idxToVal[idx]
-        if ok {
-            sum += (num*num2)
+    v1, v2 := 0, 0
+
+    for v1 < len(this.nums) && v2 < len(vec.nums) {
+        idx1, idx2 := this.nums[v1][1], vec.nums[v2][1]
+
+        if idx1 == idx2 {
+            sum += this.nums[v1][0] * vec.nums[v2][0]
+            v1++
+            v2++
+        } else if idx1 < idx2 {
+            // Move v1 using binary search
+            v1 = rightMostOnLeftSide(this.nums, v1+1, idx2)
+            if v1 == -1 { break   }
+        } else {
+            // Move v2 using binary search
+            v2 = rightMostOnLeftSide(vec.nums, v2+1, idx1)
+            if v2 == -1 { break }
         }
     }
+
     return sum
+}
+
+func rightMostOnLeftSide(nums [][]int, left int, target int) int {
+    right := len(nums) - 1
+    ans := -1
+
+    for left <= right {
+        mid := left + (right-left)/2
+        if nums[mid][1] >= target { // Compare indices, not values
+            ans = mid
+            right = mid - 1
+        } else {
+            left = mid + 1
+        }
+    }
+
+    return ans
 }
 
 /**
