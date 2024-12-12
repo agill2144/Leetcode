@@ -1,29 +1,31 @@
 type MovingAverage struct {
     nums []int
     left int
-    size int
+    right int
     sum int    
 }
 
 
 func Constructor(size int) MovingAverage {
     return MovingAverage{
-        nums: []int{},
-        size: size,
-        left: 0,
         sum: 0,
+        left: 0,
+        right: 0,
+        nums: make([]int, size),
     }
 }
 
 
 func (this *MovingAverage) Next(val int) float64 {
-    this.nums = append(this.nums, val)
-    this.sum += val
-    if len(this.nums) > this.size {
-        this.sum -= this.nums[this.left]
+    n := len(this.nums)
+    if this.right - this.left == n {
+        this.sum -= this.nums[this.left%n]
         this.left++
     }
-    return float64(this.sum) / float64(len(this.nums)-1 - this.left+1)
+    this.sum += val
+    this.nums[this.right%n] = val
+    this.right++
+    return float64(this.sum) / float64(this.right-this.left)
 }
 
 
