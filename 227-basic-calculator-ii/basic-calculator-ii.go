@@ -1,33 +1,32 @@
 func calculate(s string) int {
-	n := len(s)
-	curr := 0
-	var op byte = '+'
-	total := 0
-	lastContr := 0
-	for i := 0; i < n; i++ {
-		char := s[i]
-		if char >= '0' && char <= '9' {
-			curr = curr * 10 + int(char-'0')
-		}
-		if i == n-1 || char == '+' || char == '-' || char == '/' || char == '*' {
-			if op == '+' {
-				total += curr
-				lastContr = +curr
-			} else if op == '-' {
-				total -= curr
-				lastContr = -curr
-			} else if op == '*' {
-				multiRes := lastContr * curr
-				total = total - lastContr + multiRes
-				lastContr = multiRes
-			} else if op == '/' {
-				divRes := lastContr / curr
-				total = total - lastContr + divRes
-				lastContr = divRes
-			}
-			curr = 0
-			op = char
-		}
-	}
-	return total
+    s = strings.TrimSpace(s)
+    st := []int{}
+    var lastOp byte = '+'
+    curr := 0
+    for i := 0; i < len(s); i++ {
+        char := s[i]
+        charInt := int(s[i]-'0')
+        if char >= '0' && char <= '9' {
+            curr = (curr*10)+charInt            
+        }
+        
+        if i == len(s)-1 || char == '+' || char == '-' || char == '*' || char == '/' {
+            if lastOp == '+' {
+                st = append(st, curr)
+            } else if lastOp == '-' {
+                st = append(st, -curr)
+            } else if lastOp == '*' {
+                st[len(st)-1] *= curr
+            } else if lastOp == '/' {
+                st[len(st)-1] /= curr
+            }
+            curr = 0 
+            lastOp = char
+        }
+    }
+    total := 0
+    for i := 0; i < len(st); i++ {
+        total += st[i]
+    }
+    return total
 }
