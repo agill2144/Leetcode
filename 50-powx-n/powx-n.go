@@ -14,5 +14,5 @@ func myPow(x float64, n int) float64 {
             n--
         }
     }
-    return extraTerms * x
+    return x * extraTerms
 }
