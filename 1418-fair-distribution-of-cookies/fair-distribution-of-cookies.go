@@ -10,10 +10,11 @@ func distributeCookies(cookies []int, k int) int {
         }
 
         // logic
-        for i := start; i < len(childs); i++ {
+        for i := 0; i < len(childs); i++ {
             // action
+            if childs[i] + cookies[cookiePtr] > minVal {continue}
             childs[i] += cookies[cookiePtr]
-            dfs(start, cookiePtr+1, max(maxCookies, childs[i]))
+            dfs(i+1, cookiePtr+1, max(maxCookies, childs[i]))
             childs[i] -= cookies[cookiePtr]
         }
     }
