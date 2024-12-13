@@ -1,3 +1,4 @@
+// time = o(n) + o(nlogn) + o(n)
 func findScore(nums []int) int64 {
     pairs := [][]int{} // [[idx,val]]
     for i := 0; i < len(nums); i++ {
