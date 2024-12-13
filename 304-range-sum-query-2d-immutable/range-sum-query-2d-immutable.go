@@ -16,6 +16,10 @@ func Constructor(matrix [][]int) NumMatrix {
             if i-1 >= 0 {above = prefixSum[i-1][j]}
             overlap := 0
             if i-1 >= 0 && j-1 >= 0 {overlap = prefixSum[i-1][j-1]}
+            // sum at i, j = left panel + top panel ( prev + above )
+            // left panel and top panel could have overlapping cells
+            // so they get added twice, therefore remvove the overlapping cells
+            // that got added twice
             prefixSum[i][j] = matrix[i][j] + prev + above - overlap
         }
     }
