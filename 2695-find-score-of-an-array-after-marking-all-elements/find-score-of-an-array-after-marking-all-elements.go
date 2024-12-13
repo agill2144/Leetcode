@@ -1,4 +1,5 @@
 // time = o(n) + o(nlogn) + o(n)
+// sc = o(2n)
 func findScore(nums []int) int64 {
     pairs := [][]int{} // [[idx,val]]
     for i := 0; i < len(nums); i++ {
@@ -25,7 +26,7 @@ func findScore(nums []int) int64 {
 
 // min heap
 // tc = o(nlogn) + o(nlogn)
-// sc = o(n)
+// sc = o(2n)
 // func findScore(nums []int) int64 {
 //     mn := &minHeap{items: [][]int{}}
 //     for i := 0; i < len(nums); i++ {
