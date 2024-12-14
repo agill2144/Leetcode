@@ -11,18 +11,16 @@ func letterCombinations(digits string) []string {
         '8': {'t', 'u', 'v'},
         '9': {'w', 'x', 'y', 'z'},
     }
-    var dfs func(digitPtr int, path string)
-    dfs = func(digitPtr int, path string) {
+    var dfs func(ptr int, path string) 
+    dfs = func(ptr int, path string) {
         // base
-        if digitPtr == len(digits) {
-            out = append(out, path)
-            return
-        }
+        if ptr == len(digits) {out = append(out,path); return}
 
         // logic
-        for i := 0; i < len(numberPad[digits[digitPtr]]); i++ {
-            path += string(numberPad[digits[digitPtr]][i])
-            dfs(digitPtr+1, path)
+        ds := numberPad[digits[ptr]]
+        for i := 0; i < len(ds); i++ {
+            path += string(ds[i])
+            dfs(ptr+1, path)
             path = path[:len(path)-1]
         }
     }
