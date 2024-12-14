@@ -7,43 +7,42 @@
  * }
  */
 func verticalTraversal(root *TreeNode) [][]int {
-    widthToNodes := map[int][]int{}
+    if root == nil {return nil}
     type qNode struct {
         node *TreeNode
-        row int
         col int
     }
-    minC := math.MaxInt64
-    maxC := math.MinInt64
-    q := []*qNode{&qNode{root,0,0}}
+    minCol := math.MaxInt64
+    maxCol := math.MinInt64
+    colToNodes := map[int][]int{}
+    q := []*qNode{&qNode{root,0}}
     for len(q) != 0 {
         qSize := len(q)
-        levelWidthToNodes := map[int][]int{}
+        levelColToNodes := map[int][]int{}
         for qSize != 0 {
             dq := q[0]
             q = q[1:]
-            node := dq.node
-            row := dq.row
-            col := dq.col
-            minC = min(minC, col)
-            maxC = max(maxC, col)
-            levelWidthToNodes[col] = append(levelWidthToNodes[col], node.Val)
-            if node.Left != nil {
-                q = append(q, &qNode{node.Left, row+1,col-1})
-            }
-            if node.Right != nil {
-                q = append(q, &qNode{node.Right, row+1,col+1})
-            }
             qSize--
+            curr := dq.node
+            col := dq.col
+            minCol = min(minCol, col)
+            maxCol = max(maxCol, col)
+            levelColToNodes[col] = append(levelColToNodes[col], curr.Val)
+            if curr.Left != nil {
+                q = append(q, &qNode{curr.Left, col-1})
+            }
+            if curr.Right != nil {
+                q = append(q, &qNode{curr.Right, col+1})
+            }
         }
-        for k, v := range levelWidthToNodes {
-            sort.Ints(v)
-            widthToNodes[k] = append(widthToNodes[k], v...)
+        for col, nodes := range levelColToNodes {
+            sort.Ints(nodes)
+            colToNodes[col] = append(colToNodes[col], nodes...)
         }
     }
     out := [][]int{}
-    for i := minC; i <= maxC; i++ {
-        out = append(out, widthToNodes[i])
+    for i := minCol; i <= maxCol; i++ {
+        out = append(out, colToNodes[i])
     }
     return out
 }
