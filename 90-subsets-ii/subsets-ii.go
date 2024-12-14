@@ -1,3 +1,10 @@
+// o(numberOfOptionsPerNode ^ numOfOptions * extraWorkAtEachNode )
+// numberOfOptionsPerNode = 2; choose and not-choose
+// numOfOptions = n
+// extraWorkAtEachNode = o(n) ; copy path into a new list
+// tc = o(nlogn) +  o(n*2^n) 
+// 2 = number of options
+// sc = o(n) + o(n) = 2n = o(n)
 func subsetsWithDup(nums []int) [][]int {
     sort.Ints(nums)
     out := [][]int{}
