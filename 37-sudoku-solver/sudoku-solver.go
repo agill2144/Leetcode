@@ -1,4 +1,10 @@
+// numOfChoicesPerNode^maxDepthOfRecursion * extraWorkAtEachRecursion
+// numOfChoicesPerNode = 9, but choices reduce by 1 each time we use a numer
+// maxDepthOfRecursion = 9
+// tc = (9!)^9 = constant = o(1)
+// sc = 9*9 = 81 = o(1)
 func solveSudoku(board [][]byte)  {
+    // using constant sized arrays is better instead of dynamic slices
     rows := [10][10]bool{}
     cols := [10][10]bool{}
     box :=  [3][3][10]bool{}
