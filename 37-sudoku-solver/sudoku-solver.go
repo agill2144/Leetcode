@@ -1,93 +1,61 @@
-type Solution struct {
-    N                    int
-    n                    int
-    rows, columns, boxes [][]int
-    board                [][]byte
-    sudokuSolved         bool
-}
-
-func Constructor() Solution {
-    n := 3
-    N := n * n
-    rows := make([][]int, N)
-    columns := make([][]int, N)
-    boxes := make([][]int, N)
-    for i := range rows {
-        rows[i] = make([]int, N+1)
-        columns[i] = make([]int, N+1)
-        boxes[i] = make([]int, N+1)
-    }
-    return Solution{
-        N:            N,
-        n:            n,
-        rows:         rows,
-        columns:      columns,
-        boxes:        boxes,
-        sudokuSolved: false,
-    }
-}
-
-func (this *Solution) couldPlace(d, row, col int) bool {
-    idx := (row/this.n)*this.n + col/this.n
-    return this.rows[row][d]+this.columns[col][d]+this.boxes[idx][d] == 0
-}
-
-func (this *Solution) placeNumber(d, row, col int) {
-    idx := (row/this.n)*this.n + col/this.n
-    this.rows[row][d]++
-    this.columns[col][d]++
-    this.boxes[idx][d]++
-    this.board[row][col] = byte(d) + '0'
-}
-
-func (this *Solution) removeNumber(d, row, col int) {
-    idx := (row/this.n)*this.n + col/this.n
-    this.rows[row][d]--
-    this.columns[col][d]--
-    this.boxes[idx][d]--
-    this.board[row][col] = '.'
-}
-
-func (this *Solution) placeNextNumbers(row, col int) {
-    if (col == this.N-1) && (row == this.N-1) {
-        this.sudokuSolved = true
-    } else {
-        if col == this.N-1 {
-            this.backTrack(row+1, 0)
-        } else {
-            this.backTrack(row, col+1)
-        }
-    }
-}
-
-func (this *Solution) backTrack(row, col int) {
-    if this.board[row][col] == '.' {
-        for d := 1; d < 10; d++ {
-            if this.couldPlace(d, row, col) {
-                this.placeNumber(d, row, col)
-                this.placeNextNumbers(row, col)
-                if !this.sudokuSolved {
-                    this.removeNumber(d, row, col)
-                }
-            }
-        }
-    } else {
-        this.placeNextNumbers(row, col)
-    }
-}
-
 func solveSudoku(board [][]byte) {
-    s := Constructor()
-    s.board = board
-    for i := 0; i < s.N; i++ {
-        for j := 0; j < s.N; j++ {
-            num := board[i][j]
-            if num != '.' {
-                d := int(num - '0')
-                s.placeNumber(d, i, j)
+    var rows, cols [9][10]bool
+    var boxes [3][3][10]bool
+
+    // First pass: mark existing numbers
+    for i := 0; i < 9; i++ {
+        for j := 0; j < 9; j++ {
+            if board[i][j] != '.' {
+                num := int(board[i][j] - '0')
+                rows[i][num] = true
+                cols[j][num] = true
+                boxes[i/3][j/3][num] = true
             }
         }
     }
-    s.backTrack(0, 0)
-    board = s.board
+
+    var solve func(int, int) bool
+    solve = func(r, c int) bool {
+        // Base case: solved the entire board
+        if r == 9 {
+            return true
+        }
+
+        // Move to next row if column is full
+        if c == 9 {
+            return solve(r+1, 0)
+        }
+
+        // Skip filled cells
+        if board[r][c] != '.' {
+            return solve(r, c+1)
+        }
+
+        // Try placing numbers 1-9
+        for num := 1; num <= 9; num++ {
+            // Check if number can be placed
+            if !rows[r][num] && !cols[c][num] && !boxes[r/3][c/3][num] {
+                // Place the number
+                board[r][c] = byte(num) + '0'
+                rows[r][num] = true
+                cols[c][num] = true
+                boxes[r/3][c/3][num] = true
+
+                // Try solving the rest of the board
+                if solve(r, c+1) {
+                    return true
+                }
+
+                // Backtrack
+                board[r][c] = '.'
+                rows[r][num] = false
+                cols[c][num] = false
+                boxes[r/3][c/3][num] = false
+            }
+        }
+
+        return false
+    }
+
+    solve(0, 0)
 }
