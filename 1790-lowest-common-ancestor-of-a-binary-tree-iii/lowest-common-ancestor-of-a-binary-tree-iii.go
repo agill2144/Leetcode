@@ -9,22 +9,10 @@
  */
 
 func lowestCommonAncestor(p *Node, q *Node) *Node {
-    getH := func(r *Node) int {
-        h := 0
-        for r != nil {
-            h++
-            r = r.Parent
-        }
-        return h
+    p1, p2 := p, q
+    for p1 != p2 {
+        if p1.Parent == nil {p1 = q} else {p1 = p1.Parent}
+        if p2.Parent == nil {p2 = p} else {p2 = p2.Parent}
     }
-
-    ph := getH(p)
-    qh := getH(q)
-    for ph > qh {p = p.Parent; ph--}
-    for qh > ph {q = q.Parent; qh--}
-    for p != q {
-        p = p.Parent
-        q = q.Parent
-    }
-    return p
+    return p1
 }
