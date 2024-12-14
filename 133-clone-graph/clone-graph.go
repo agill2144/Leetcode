@@ -7,19 +7,18 @@
  */
 
 func cloneGraph(node *Node) *Node {
-    if node == nil {return nil}
     copies := map[*Node]*Node{}
     var dfs func(curr *Node)
     dfs = func(curr *Node) {
         // base
+        if curr == nil {return}
         if copies[curr] != nil {return}
 
         // logic
-        cp := &Node{Val: curr.Val}
-        copies[curr] = cp
+        copies[curr] = &Node{Val:curr.Val}
         for _, nei := range curr.Neighbors {
             dfs(nei)
-            cp.Neighbors = append(cp.Neighbors, copies[nei])
+            copies[curr].Neighbors = append(copies[curr].Neighbors, copies[nei])
         }
     }
     dfs(node)
