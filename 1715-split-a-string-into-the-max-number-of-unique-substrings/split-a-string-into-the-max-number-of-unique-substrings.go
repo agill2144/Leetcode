@@ -9,7 +9,7 @@ func maxUniqueSplit(s string) int {
         }
 
         // short circuit 
-        if (len(s)-1)-start+1 + len(path) <= maxSplit {return}
+        if len(s)-start + len(path) <= maxSplit {return}
 
         // logic
         for i := start; i < len(s); i++ {
