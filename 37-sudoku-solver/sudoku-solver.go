@@ -1,60 +1,93 @@
-func solveSudoku(board [][]byte)  {
-    rows := make([][]bool, 10)
-    cols := make([][]bool, 10)
-    box := map[string][]bool{}
-    for i := 0; i < len(rows); i++ {
-        rows[i] = make([]bool, 10)
-        cols[i] = make([]bool, 10)
+type Solution struct {
+    N                    int
+    n                    int
+    rows, columns, boxes [][]int
+    board                [][]byte
+    sudokuSolved         bool
+}
+
+func Constructor() Solution {
+    n := 3
+    N := n * n
+    rows := make([][]int, N)
+    columns := make([][]int, N)
+    boxes := make([][]int, N)
+    for i := range rows {
+        rows[i] = make([]int, N+1)
+        columns[i] = make([]int, N+1)
+        boxes[i] = make([]int, N+1)
     }
-    n := len(board)
-    for i := 0; i < n; i++ {
-        for j := 0; j < n; j++ {
-            boxKey := fmt.Sprintf("%v-%v", i/3, j/3)
-            if box[boxKey] == nil {box[boxKey] = make([]bool, 10)}
-            if board[i][j] != '.' {
-                idx := int(board[i][j]-'0')
-                rows[i][idx] = true
-                box[boxKey][idx] = true
+    return Solution{
+        N:            N,
+        n:            n,
+        rows:         rows,
+        columns:      columns,
+        boxes:        boxes,
+        sudokuSolved: false,
+    }
+}
+
+func (this *Solution) couldPlace(d, row, col int) bool {
+    idx := (row/this.n)*this.n + col/this.n
+    return this.rows[row][d]+this.columns[col][d]+this.boxes[idx][d] == 0
+}
+
+func (this *Solution) placeNumber(d, row, col int) {
+    idx := (row/this.n)*this.n + col/this.n
+    this.rows[row][d]++
+    this.columns[col][d]++
+    this.boxes[idx][d]++
+    this.board[row][col] = byte(d) + '0'
+}
+
+func (this *Solution) removeNumber(d, row, col int) {
+    idx := (row/this.n)*this.n + col/this.n
+    this.rows[row][d]--
+    this.columns[col][d]--
+    this.boxes[idx][d]--
+    this.board[row][col] = '.'
+}
+
+func (this *Solution) placeNextNumbers(row, col int) {
+    if (col == this.N-1) && (row == this.N-1) {
+        this.sudokuSolved = true
+    } else {
+        if col == this.N-1 {
+            this.backTrack(row+1, 0)
+        } else {
+            this.backTrack(row, col+1)
+        }
+    }
+}
+
+func (this *Solution) backTrack(row, col int) {
+    if this.board[row][col] == '.' {
+        for d := 1; d < 10; d++ {
+            if this.couldPlace(d, row, col) {
+                this.placeNumber(d, row, col)
+                this.placeNextNumbers(row, col)
+                if !this.sudokuSolved {
+                    this.removeNumber(d, row, col)
+                }
             }
-            if board[j][i] != '.' {
-                idx := int(board[j][i]-'0')
-                cols[i][idx] = true
+        }
+    } else {
+        this.placeNextNumbers(row, col)
+    }
+}
+
+func solveSudoku(board [][]byte) {
+    s := Constructor()
+    s.board = board
+    for i := 0; i < s.N; i++ {
+        for j := 0; j < s.N; j++ {
+            num := board[i][j]
+            if num != '.' {
+                d := int(num - '0')
+                s.placeNumber(d, i, j)
             }
         }
     }
-    choices := []byte{'1','2','3','4','5','6','7','8','9'}
-    var dfs func(r, c int) bool
-    dfs = func(r, c int) bool {
-        // base
-        if r == n {return true}
-        if c == n {return dfs(r+1, 0)}
-        if board[r][c] != '.' {return dfs(r,c+1)}
-
-        // logic
-        for i := 0; i < len(choices); i++ {
-            choice := choices[i]
-            idx := int(choice-'0')
-            boxKey := fmt.Sprintf("%v-%v", r/3, c/3)
-            if box[boxKey] == nil {box[boxKey] = make([]bool, 10)}
-            
-            inRow := rows[r][idx]
-            inCol := cols[c][idx]
-            inBox := box[boxKey][idx]
-            canUse := !inRow && !inCol && !inBox
-
-            if canUse {
-                rows[r][idx] = true
-                cols[c][idx] = true
-                box[boxKey][idx] = true
-                board[r][c] = choice
-                if dfs(r, c+1) {return true}
-                board[r][c] = '.'
-                box[boxKey][idx] = false
-                cols[c][idx] = false
-                rows[r][idx] = false
-            }
-        }
-        return false
-    }
-    dfs(0, 0)
+    s.backTrack(0, 0)
+    board = s.board
 }
