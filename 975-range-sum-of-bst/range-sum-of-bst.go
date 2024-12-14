@@ -8,7 +8,7 @@
  */
 func rangeSumBST(root *TreeNode, low int, high int) int {
     total := 0
-    var dfs func(r *TreeNode) 
+    var dfs func(r *TreeNode)
     dfs = func(r *TreeNode) {
         // base
         if r == nil {return}
