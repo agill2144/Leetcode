@@ -8,6 +8,14 @@
  */
 func verticalTraversal(root *TreeNode) [][]int {
     /*
+        nodes on the SAME ROW AND SAME COL need to be sorted
+        we also want the ability to search by col because at the end
+        we are storing from left to right side of the col
+        the leftest col is min col and rightest col is max col val
+        therefore store by cols as initial key.
+        then we to group nodes that are on the same row within col
+        hence using another map {rowNum: [nodes]}
+        so that we can sort nodes in the same row and col; data[$col][$rowNum]  
         {
             $col: {$row: [nodes]}
         }
@@ -43,43 +51,3 @@ func verticalTraversal(root *TreeNode) [][]int {
     }
     return out
 }
-// func verticalTraversal(root *TreeNode) [][]int {
-//     if root == nil {return nil}
-//     type qNode struct {
-//         node *TreeNode
-//         col int
-//     }
-//     minCol := math.MaxInt64
-//     maxCol := math.MinInt64
-//     colToNodes := map[int][]int{}
-//     q := []*qNode{&qNode{root,0}}
-//     for len(q) != 0 {
-//         qSize := len(q)
-//         levelColToNodes := map[int][]int{}
-//         for qSize != 0 {
-//             dq := q[0]
-//             q = q[1:]
-//             qSize--
-//             curr := dq.node
-//             col := dq.col
-//             minCol = min(minCol, col)
-//             maxCol = max(maxCol, col)
-//             levelColToNodes[col] = append(levelColToNodes[col], curr.Val)
-//             if curr.Left != nil {
-//                 q = append(q, &qNode{curr.Left, col-1})
-//             }
-//             if curr.Right != nil {
-//                 q = append(q, &qNode{curr.Right, col+1})
-//             }
-//         }
-//         for col, nodes := range levelColToNodes {
-//             sort.Ints(nodes)
-//             colToNodes[col] = append(colToNodes[col], nodes...)
-//         }
-//     }
-//     out := [][]int{}
-//     for i := minCol; i <= maxCol; i++ {
-//         out = append(out, colToNodes[i])
-//     }
-//     return out
-// }
