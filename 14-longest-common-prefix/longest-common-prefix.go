@@ -1,3 +1,9 @@
+/*
+    num of words = n
+    avg size of each word = k
+    tc = o(k * n*k)
+    sc = o(1)
+*/
 func longestCommonPrefix(strs []string) string {
     if len(strs) <= 1 {
         if len(strs) == 1 {return strs[0]}
