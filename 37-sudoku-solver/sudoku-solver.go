@@ -1,64 +1,60 @@
 func solveSudoku(board [][]byte)  {
-    row := map[int]map[byte]bool{}
-    col := map[int]map[byte]bool{}    
-    box := map[string]map[byte]bool{}
-    m := len(board)
-    n := len(board[0])
-    sr, sc := -1,-1
-    for i := 0; i < m; i++ {
+    rows := make([][]bool, 10)
+    cols := make([][]bool, 10)
+    box := map[string][]bool{}
+    for i := 0; i < len(rows); i++ {
+        rows[i] = make([]bool, 10)
+        cols[i] = make([]bool, 10)
+    }
+    n := len(board)
+    for i := 0; i < n; i++ {
         for j := 0; j < n; j++ {
-            if row[i] == nil {row[i] = map[byte]bool{}}
-            if col[i] == nil {col[i] = map[byte]bool{}}
-            boxKey := fmt.Sprintf("%v-%v",i/3, j/3)
-            if box[boxKey] == nil {box[boxKey] = map[byte]bool{}}
-            rowVal := board[i][j]
-            if rowVal != '.' {row[i][rowVal] = true; box[boxKey][rowVal] = true}
-            colVal := board[j][i]
-            if colVal != '.' {col[i][colVal] = true}
-            if board[i][j] == '.' && sr == -1 {sr = i; sc = j}
+            boxKey := fmt.Sprintf("%v-%v", i/3, j/3)
+            if box[boxKey] == nil {box[boxKey] = make([]bool, 10)}
+            if board[i][j] != '.' {
+                idx := int(board[i][j]-'0')
+                rows[i][idx] = true
+                box[boxKey][idx] = true
+            }
+            if board[j][i] != '.' {
+                idx := int(board[j][i]-'0')
+                cols[i][idx] = true
+            }
         }
     }
     choices := []byte{'1','2','3','4','5','6','7','8','9'}
     var dfs func(r, c int) bool
     dfs = func(r, c int) bool {
         // base
-        if r == m {return true}
+        if r == n {return true}
         if c == n {return dfs(r+1, 0)}
-
         if board[r][c] != '.' {return dfs(r,c+1)}
+
         // logic
-        boxKey := fmt.Sprintf("%v-%v", r/3,c/3)
-        rowSet := row[r]
-        colSet := col[c]
-        boxSet := box[boxKey]
         for i := 0; i < len(choices); i++ {
             choice := choices[i]
-            inRow := rowSet[choice]
-            inCol := colSet[choice]
-            inBox := boxSet[choice]
+            idx := int(choice-'0')
+            boxKey := fmt.Sprintf("%v-%v", r/3, c/3)
+            if box[boxKey] == nil {box[boxKey] = make([]bool, 10)}
+            
+            inRow := rows[r][idx]
+            inCol := cols[c][idx]
+            inBox := box[boxKey][idx]
             canUse := !inRow && !inCol && !inBox
+
             if canUse {
-
-                // action
+                rows[r][idx] = true
+                cols[c][idx] = true
+                box[boxKey][idx] = true
                 board[r][c] = choice
-                rowSet[choice] = true
-                colSet[choice] = true
-                boxSet[choice] = true
-
-                // recurse
-                if dfs(r,c+1) {return true}
-
-                // backtrack
-                delete(boxSet, choice)
-                delete(colSet, choice)
-                delete(rowSet,choice)
+                if dfs(r, c+1) {return true}
                 board[r][c] = '.'
+                box[boxKey][idx] = false
+                cols[c][idx] = false
+                rows[r][idx] = false
             }
         }
         return false
     }
-
-    dfs(sr,sc)
+    dfs(0, 0)
 }
-
-
