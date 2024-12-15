@@ -1,28 +1,26 @@
 func minWindow(s string, t string) string {
-    tMap := map[byte]int{}
-    for i := 0; i < len(t); i++ {
-        tMap[t[i]]++
-    }
-    fm := len(tMap)
-    ans := ""
+    freq := map[byte]int{}
+    for i := 0; i < len(t); i++ {freq[t[i]]++}
+    fullMatch := 0
     left := 0
+    res := ""
     for i := 0; i < len(s); i++ {
-        _, ok := tMap[s[i]]
-        if ok {
-            tMap[s[i]]--
-            if tMap[s[i]] == 0 {fm--}
-            for fm == 0 {
-                if ans == "" || i-left+1 < len(ans) {
-                    ans = s[left:i+1]
+        if _, ok := freq[s[i]]; ok {
+            freq[s[i]]--
+            if freq[s[i]] == 0 {fullMatch++}
+            for left <= i && fullMatch == len(freq) {
+                if res == "" || i-left+1 < len(res) {
+                    res = s[left:i+1]
                 }
-                _, ok2 := tMap[s[left]]
-                if ok2 {
-                    tMap[s[left]]++
-                    if tMap[s[left]] == 1{fm++}
+                if _, ok := freq[s[left]]; ok {
+                    freq[s[left]]++
+                    if freq[s[left]] == 1 {
+                        fullMatch--
+                    }
                 }
                 left++
             }
         }
     }
-    return ans
+    return res
 }
