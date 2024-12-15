@@ -20,6 +20,21 @@
     - the f from the last word is at a level below 1st level
     - This means, count at a node represents how many times we have seen this char at this level
     - and it must be len(strs) - because we want to find common prefix that exists in ALL strs
+
+    S = total num of chars in all words
+    m = len of smallest word in strs list
+
+    tc:
+    - insert into trie = o(S)
+    - dfs to search prefix
+        - we only go as far as the len of smallest word
+        - therefore = o(m)
+    total = o(S) + o(m)
+
+    sc:
+    - for trie; o(S)
+    - dfs stack; o(m)
+    total = o(S) + o(m)
 */
 
 
