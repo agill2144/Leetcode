@@ -29,21 +29,28 @@ type trieNode struct {
     childs [26]*trieNode
 }
 
+func newTrieNode() *trieNode {
+    return &trieNode{childs:[26]*trieNode{}}
+}
+
 func (r *trieNode) insert(word string) {
     curr := r
     for i := 0; i < len(word); i++ {
         idx := int(word[i]-'a')
-        if curr.childs[idx] == nil {curr.childs[idx] = &trieNode{childs:[26]*trieNode{}}}
+        if curr.childs[idx] == nil {
+            curr.childs[idx] = newTrieNode()
+        }
         curr = curr.childs[idx]
         curr.count++
     }
     curr.isEnd = true
 }
 
+
 func longestCommonPrefix(strs []string) string {
     n := len(strs)
     if n <= 1 {if n == 1 {return strs[0]}; return ""}
-    root := &trieNode{childs: [26]*trieNode{}}
+    root := newTrieNode()
     for i := 0; i < len(strs); i++ {
         root.insert(strs[i])
     }
