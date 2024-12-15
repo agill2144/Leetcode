@@ -25,7 +25,6 @@ func longestCommonPrefix(strs []string) string {
                 }
             }
         }
-        if count != n-1 {break}
     }
     return ans
 }
