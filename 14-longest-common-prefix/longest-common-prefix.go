@@ -1,4 +1,71 @@
 /*
+    approach: strings + prefix = trie
+    - anytime we see strings and something related to prefix/suffix - think TRIE!
+    - toss all words into a trie
+        - with an additional field at each node
+        - count, everytime a char is inserted, the count of that char goes up by 1
+    - then perform a dfs to create and find the longest common prefix
+        - loop over root childs ( 26 childs )
+        - if a child exists and its COUNT == len(strs)
+        - meaning at this level, we have seen len(strs) occurences of this char
+        - take this char into our path, and recurse on this node ( this node becomes root for next recursion )
+        - repeat ... 
+        - keep updating our answer with our path
+            - if the path we have formed so far is greater in size then the path in our answer, update our answer
+    
+    - wouldn't we run into cases where; [fl, flox, xflow ]
+    - char f is repeated 3 times, so f is valid prefix
+    - no, this wont happen
+    - because at level 0 of the trie, we wont have f repeating 3 times, only 2 times
+    - the f from the last word is at a level below 1st level
+    - This means, count at a node represents how many times we have seen this char at this level
+    - and it must be len(strs) - because we want to find common prefix that exists in ALL strs
+*/
+
+
+type trieNode struct {
+    isEnd bool
+    count int
+    childs [26]*trieNode
+}
+
+func (r *trieNode) insert(word string) {
+    curr := r
+    for i := 0; i < len(word); i++ {
+        idx := int(word[i]-'a')
+        if curr.childs[idx] == nil {curr.childs[idx] = &trieNode{childs:[26]*trieNode{}}}
+        curr = curr.childs[idx]
+        curr.count++
+    }
+    curr.isEnd = true
+}
+
+func longestCommonPrefix(strs []string) string {
+    n := len(strs)
+    if n <= 1 {if n == 1 {return strs[0]}; return ""}
+    root := &trieNode{childs: [26]*trieNode{}}
+    for i := 0; i < len(strs); i++ {
+        root.insert(strs[i])
+    }
+    ans := ""
+    var dfs func(curr *trieNode, path string)
+    dfs = func(curr *trieNode, path string) {
+        // base
+        if len(path) > len(ans) {ans = path}
+
+        // logic
+        for i := 0; i < len(curr.childs); i++ {
+            if curr.childs[i] != nil && curr.childs[i].count == n {
+                path += string(i+'a')
+                dfs(curr.childs[i], path)
+                path = path[:len(path)-1]
+            }
+        }
+    }
+    dfs(root, "")
+    return ans
+}
+/*
     assume strs were sorted
     approach: 2 ptrs
     - if the list was sorted in asc order
@@ -15,18 +82,18 @@
     tc = o(nk logn) + o(k)
     sc = o(1) if not assuming sorting space
 */
-func longestCommonPrefix(strs []string) string {
-    n := len(strs)
-    if n <= 1 {if n == 0 {return ""}; return strs[0]}
-    sort.Strings(strs)
-    p1, p2 := 0, 0
-    for p1 < len(strs[0]) && p2 < len(strs[n-1]) {
-        if strs[0][p1] != strs[n-1][p2] {return strs[0][:p1]}
-        p1++
-        p2++
-    }
-    return strs[0]
-}
+// func longestCommonPrefix(strs []string) string {
+//     n := len(strs)
+//     if n <= 1 {if n == 0 {return ""}; return strs[0]}
+//     sort.Strings(strs)
+//     p1, p2 := 0, 0
+//     for p1 < len(strs[0]) && p2 < len(strs[n-1]) {
+//         if strs[0][p1] != strs[n-1][p2] {return strs[0][:p1]}
+//         p1++
+//         p2++
+//     }
+//     return strs[0]
+// }
 
 /*
     approach: stack words on top and perform char scan idx-by-idx
