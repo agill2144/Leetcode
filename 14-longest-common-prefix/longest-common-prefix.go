@@ -1,5 +1,35 @@
 /*
-    approach: vertical scanning
+    assume strs were sorted
+    approach: 2 ptrs
+    - if the list was sorted in asc order
+    - the common prefixes will be grouped automatically
+    - [flow, fl, flag, pet, peter, petrol]
+    - but we want all prefixes to match
+    - meaning all strs should have the same prefix
+    - stack the sorted words on top of each other
+    - and take 2 ptrs to compare char at strs[0] and strs[n-1] ; idx-by-idx
+    - if an chars do not match in this sorted list
+        - it means whatever we have matched so far is at strs[0][:ptr1]
+    n = len(words)
+    k = avg len of each word
+    tc = o(nk logn) + o(k)
+    sc = o(1) if not assuming sorting space
+*/
+func longestCommonPrefix(strs []string) string {
+    n := len(strs)
+    if n <= 1 {if n == 0 {return ""}; return strs[0]}
+    sort.Strings(strs)
+    p1, p2 := 0, 0
+    for p1 < len(strs[0]) && p2 < len(strs[n-1]) {
+        if strs[0][p1] != strs[n-1][p2] {return strs[0][:p1]}
+        p1++
+        p2++
+    }
+    return strs[0]
+}
+
+/*
+    approach: stack words on top and perform char scan idx-by-idx
     - instead of creating $evalPrefix
     - and then comparing with rest of words,
     - we can just compare whether ith idx char in reserved word 
@@ -16,21 +46,21 @@
     tc = o(S)
     sc = o(1)
 */
-func longestCommonPrefix(strs []string) string {
-    n := len(strs)
-    if n <= 1 {
-        if n == 1 {return strs[0]}
-        return ""
-    }
-    reserved := strs[0]
-    for i := 0; i < len(reserved); i++ {
-        for j := 1; j < len(strs); j++ {
-            word := strs[j]
-            if i == len(word) || word[i] != reserved[i] {return reserved[:i]}
-        }
-    }
-    return reserved
-}
+// func longestCommonPrefix(strs []string) string {
+//     n := len(strs)
+//     if n <= 1 {
+//         if n == 1 {return strs[0]}
+//         return ""
+//     }
+//     reserved := strs[0]
+//     for i := 0; i < len(reserved); i++ {
+//         for j := 1; j < len(strs); j++ {
+//             word := strs[j]
+//             if i == len(word) || word[i] != reserved[i] {return reserved[:i]}
+//         }
+//     }
+//     return reserved
+// }
 /*
     approach: brute force
     - create all possible substr from strs[0]; starting from size 1, then 2, then 3
