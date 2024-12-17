@@ -11,26 +11,22 @@ type Solution struct {
 
 
 func Constructor(head *ListNode) Solution {
-    return Solution{head}    
+    return Solution{head}
 }
 
 
 func (this *Solution) GetRandom() int {
-    res := -1
-    curr := this.head
     count := 0
+    curr := this.head
+    res := -1
     for curr != nil {
         count++
-        randNum := rand.Intn(count)        
-        // With probability 1/count, replace the reservoir
-        if randNum == 0 {
+        if rand.Intn(count) == 0 {
             res = curr.Val
-        }        
+        }
         curr = curr.Next
     }
-    
     return res
-    
 }
 
 
