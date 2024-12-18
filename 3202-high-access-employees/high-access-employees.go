@@ -19,7 +19,7 @@ func findHighAccessEmployees(access_times [][]string) []string {
             for left <= i && curr >= times[left]+60 {
                 left++
             }
-            if curr < prev+60 && curr < times[left]+60 && i-left+1 == 3{
+            if curr < prev+60 && i-left+1 == 3{
                 out = append(out, name)
                 break
             }
