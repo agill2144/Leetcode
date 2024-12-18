@@ -12,11 +12,7 @@ func insert(aNode *Node, x int) *Node {
         node.Next = node
         return node
     }
-    if aNode.Next == aNode {
-        aNode.Next = node
-        node.Next = aNode
-        return aNode
-    }
+    
     curr := aNode
     for curr.Next != aNode {
         next := curr.Next
