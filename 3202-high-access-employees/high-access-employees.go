@@ -1,3 +1,8 @@
+/*
+    approach: sort first, then use sliding window
+    tc = o(nlogn) + o(2n) = o(nlogn) + o(n)
+    sc = o(1)
+*/
 func findHighAccessEmployees(access_times [][]string) []string {
     sort.Slice(access_times, func(i, j int)bool{
         if access_times[i][0] == access_times[j][0] {
