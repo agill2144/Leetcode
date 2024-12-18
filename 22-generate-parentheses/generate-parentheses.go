@@ -1,3 +1,8 @@
+// numberOfOptionsPerNode^totalNumberOfOptions * extraWorkPerRecursion
+// numberOfOptionsPerNode = 2
+// totalNumberOfOptions = n
+// extraWorkPerRecursion = 0
+// tc = o(2^n)
 func generateParenthesis(n int) []string {
     out := []string{}
     var dfs func(o, c int, path string)
