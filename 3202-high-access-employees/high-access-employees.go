@@ -23,7 +23,12 @@ func findHighAccessEmployees(access_times [][]string) []string {
             for left <= i && times[i] >= times[left]+60 {
                 left++
             }
-            // 
+            // we dont need to check adj times, 
+            // because, the largest possible diff in a sorted array
+            // will always be the lastElement - firstElement
+            // if our extreme end is satisfied ( right Time - left time < 60 mins )
+            // the entire subarray is satisfied
+            // if we have a subarray of size 3, save this ans
             if i-left+1 == 3 {out =append(out, name); break}
         }
     }
