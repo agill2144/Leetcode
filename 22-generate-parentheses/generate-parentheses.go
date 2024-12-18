@@ -3,19 +3,19 @@ func generateParenthesis(n int) []string {
     var dfs func(o, c int, path string)
     dfs = func(o, c int, path string) {
         // base
-        if o == n && c == n {
+        if o == 0 && c == 0 {
             out = append(out, path)
             return
         }
 
         // logic
-        if o < n {
-            dfs(o+1, c, path + "(")
+        if o > 0 {
+            dfs(o-1, c, path + "(")
         }
-        if c < o {
-            dfs(o, c+1, path + ")")
+        if c > 0 && o < c {
+            dfs(o, c-1, path + ")")
         }
     }
-    dfs(0,0,"")
+    dfs(n, n, "")
     return out
 }
