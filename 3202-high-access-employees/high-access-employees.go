@@ -14,17 +14,14 @@ func findHighAccessEmployees(access_times [][]string) []string {
         sort.Ints(times)
         count := 1
         slow := 0
-        // fmt.Println(name, times)
         for i := 1; i < len(times); i++ {
             curr := times[i]
             prev := times[i-1]
-            for slow < i && curr >= times[slow]+60 {
+            for slow <= i && curr >= times[slow]+60 {
                 slow++
                 count--
                 if count < 0 {count=0}
             }
-            // fmt.Println("limit: ", slow, times[slow]+60)
-            // fmt.Println(prev, curr, curr < prev+60, curr < times[slow]+60)
             if curr < prev+60 && curr < times[slow]+60 {
                 count++
                 if count == 3 {
