@@ -7,29 +7,24 @@
  */
 
 func insert(aNode *Node, x int) *Node {
-    node := &Node{Val: x}
+    newNode := &Node{Val: x}
     if aNode == nil {
-        node.Next = node
-        return node
+        newNode.Next = newNode
+        return newNode
     }
-    
+
     curr := aNode
     for curr.Next != aNode {
         next := curr.Next
         if curr.Val <= next.Val {
-            if x >= curr.Val && x <= next.Val {
-                break
-            }
+            if x >= curr.Val && x <= next.Val{break}
         } else {
-            if x >= curr.Val || x <= next.Val {
-                break
-            }   
+            if x >= curr.Val || x <= next.Val {break}
         }
-
         curr = next
     }
     next := curr.Next
-    curr.Next = node
-    node.Next = next
+    curr.Next = newNode
+    newNode.Next = next
     return aNode
 }
