@@ -5,31 +5,25 @@ func findHighAccessEmployees(access_times [][]string) []string {
         }
         return access_times[i][0] < access_times[j][0]
     })
-    /*
-        [
-            [r 0414] [r 0440] [r 0515] [r 0525] 
-            [va 0436] [va 0505] [va 0509] 
-            [wjmqm 0442] [wjmqm 0504]
-        ]
-    */
-    ptr := 0
+    
     out := []string{}
-    for ptr < len(access_times) {
-        name := access_times[ptr][0]
-        i := ptr
-        left := ptr
-        for i < len(access_times) && access_times[i][0] == name {
-            if i < len(access_times) && i-left+1 < 3 {i++; continue}
-            for left <= i && timeDiffInMins(left, i, access_times) >= 60 {
+    i := 0
+    for i < len(access_times) {
+        name := access_times[i][0]
+        left := i
+        right := i
+        for right < len(access_times) && access_times[right][0] == name {
+            if right < len(access_times) && right-left+1 < 3 {right++; continue}
+            for left <= right && timeDiffInMins(left, right, access_times) >= 60 {
                 left++
             }
-            if i-left+1 >= 3 {
+            if right-left+1 >= 3 {
                 out = append(out, name)
                 break
             }
         }
-        ptr = i
-        for ptr < len(access_times) && access_times[ptr][0] == name{ptr++}
+        i = right
+        for i < len(access_times) && access_times[i][0] == name {i++}
     }
     return out
 }
