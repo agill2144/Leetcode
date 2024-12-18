@@ -1,15 +1,9 @@
 func majorityElement(nums []int) int {
-    ele := math.MinInt64
-    count := 0
-    for i := 0; i < len(nums); i++ {
-        if count == 0 {
-            count = 1
-            ele = nums[i]
-        } else if ele == nums[i] {
-            count++
-        } else {
-            count--
-        }
+    n := len(nums)
+    freq := map[int]int{}
+    for i := 0; i < n; i++ {
+        freq[nums[i]]++
+        if freq[nums[i]] > n/2 {return nums[i]}
     }
-    return ele
+    return -1
 }
