@@ -14,11 +14,17 @@ func findHighAccessEmployees(access_times [][]string) []string {
         sort.Ints(times)
         left := 0
         for i := 0; i < len(times); i++ {
+            // get a window of size 3 first
             if i-left+1 < 3 {continue}
+            // when we have a window of size 3
+            // then make sure its the 2 entreme ends
+            // are within the limit (highest time, lowest time)
+            // if they are not < 60 mins, shrink window from left
             for left <= i && times[i] >= times[left]+60 {
                 left++
             }
-            if times[i] < times[i-1]+60 && i-left+1 == 3 {out =append(out, name); break}
+            // 
+            if i-left+1 == 3 {out =append(out, name); break}
         }
     }
     return out
