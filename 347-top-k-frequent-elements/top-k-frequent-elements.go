@@ -5,20 +5,20 @@ func topKFrequent(nums []int, k int) []int {
     for i := 0; i < len(nums); i++ {freq[nums[i]]++}
     deduped := []int{}
     for key, _ := range freq {deduped= append(deduped, key)}
-    targetIdx := len(deduped)-k
+    targetIdx := k-1
     left := 0
     right := len(deduped)-1
     for left <= right {
         nsf := left
         pivot := right
         for i := left; i < pivot; i++ {
-            if freq[deduped[i]] <= freq[deduped[pivot]] {
+            if freq[deduped[i]] >= freq[deduped[pivot]] {
                 deduped[i], deduped[nsf] = deduped[nsf], deduped[i]
                 nsf++
             }
         }
         deduped[pivot], deduped[nsf] = deduped[nsf], deduped[pivot]
-        if nsf == targetIdx {return deduped[targetIdx:]}
+        if nsf == targetIdx {return deduped[:k]}
         if targetIdx > nsf {
             left = nsf+1
         } else {
