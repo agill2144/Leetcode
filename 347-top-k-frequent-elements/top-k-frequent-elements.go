@@ -18,7 +18,7 @@ func topKFrequent(nums []int, k int) []int {
             }
         }
         deduped[pivot], deduped[nsf] = deduped[nsf], deduped[pivot]
-        if nsf == targetIdx {return deduped[:k]}
+        if nsf == targetIdx {return deduped[:targetIdx+1]}
         if targetIdx > nsf {
             left = nsf+1
         } else {
