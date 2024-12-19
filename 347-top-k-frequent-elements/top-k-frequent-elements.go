@@ -1,40 +1,58 @@
 func topKFrequent(nums []int, k int) []int {
     freq := map[int]int{}
     for i := 0; i < len(nums); i++ {freq[nums[i]]++}
-    mn := &minHeap{items: [][]int{}}
+    bucket := make([][]int, len(nums)+1)
     for key, val := range freq {
-        heap.Push(mn, []int{key, val})
-        if mn.Len() > k {heap.Pop(mn)}
+        bucket[val] = append(bucket[val], key)
     }
     out := []int{}
-    for i := 0; i < len(mn.items); i++ {
-        out = append(out, mn.items[i][0])
+    for i := len(bucket)-1; i >= 0 && len(out) != k; i-- {
+        if bucket[i] != nil {
+            out = append(out, bucket[i]...)
+        }
     }
     return out
 }
 
+// tc = o(n) + o(nlogk) + o(k)
+// sc = o(n) + o(k)
+// func topKFrequent(nums []int, k int) []int {
+//     freq := map[int]int{}
+//     for i := 0; i < len(nums); i++ {freq[nums[i]]++}
+//     mn := &minHeap{items: [][]int{}}
+//     for key, val := range freq {
+//         heap.Push(mn, []int{key, val})
+//         if mn.Len() > k {heap.Pop(mn)}
+//     }
+//     out := []int{}
+//     for i := 0; i < len(mn.items); i++ {
+//         out = append(out, mn.items[i][0])
+//     }
+//     return out
+// }
 
-type minHeap struct {
-	items [][]int
-}
 
-func (m *minHeap) Less(i, j int) bool {
-	return m.items[i][1] < m.items[j][1]
-}
-func (m *minHeap) Swap(i, j int) {
-	m.items[i], m.items[j] = m.items[j], m.items[i]
-}
-func (m *minHeap) Len() int {
-	return len(m.items)
-}
-func (m *minHeap) Push(x interface{}) {
-	m.items = append(m.items, x.([]int))
-}
-func (m *minHeap) Pop() interface{} {
-	out := m.items[len(m.items)-1]
-	m.items = m.items[:len(m.items)-1]
-	return out
-}
+// type minHeap struct {
+// 	items [][]int
+// }
+
+// func (m *minHeap) Less(i, j int) bool {
+// 	return m.items[i][1] < m.items[j][1]
+// }
+// func (m *minHeap) Swap(i, j int) {
+// 	m.items[i], m.items[j] = m.items[j], m.items[i]
+// }
+// func (m *minHeap) Len() int {
+// 	return len(m.items)
+// }
+// func (m *minHeap) Push(x interface{}) {
+// 	m.items = append(m.items, x.([]int))
+// }
+// func (m *minHeap) Pop() interface{} {
+// 	out := m.items[len(m.items)-1]
+// 	m.items = m.items[:len(m.items)-1]
+// 	return out
+// }
 
 
 // sort by freq
