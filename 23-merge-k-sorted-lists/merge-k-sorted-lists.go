@@ -9,7 +9,7 @@
 // N = total number of nodes in final LL
 // k = number of LL's in lists array
 // tc = N * logk
-// sc = k
+// sc = 1
 func mergeKLists(lists []*ListNode) *ListNode {
     if len(lists) == 0 {return nil}
     pairIncr := 1
