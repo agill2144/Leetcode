@@ -5,7 +5,6 @@ func topKFrequent(nums []int, k int) []int {
     for i := 0; i < len(nums); i++ {freq[nums[i]]++}
     deduped := []int{}
     for key, _ := range freq {deduped= append(deduped, key)}
-    targetIdx := k-1
     left := 0
     right := len(deduped)-1
     for left <= right {
@@ -18,8 +17,8 @@ func topKFrequent(nums []int, k int) []int {
             }
         }
         deduped[pivot], deduped[nsf] = deduped[nsf], deduped[pivot]
-        if nsf == targetIdx {return deduped[:targetIdx+1]}
-        if targetIdx > nsf {
+        if nsf == k-1 {return deduped[:k]}
+        if k-1 > nsf {
             left = nsf+1
         } else {
             right = nsf-1
