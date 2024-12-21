@@ -1,7 +1,7 @@
 func isToeplitzMatrix(matrix [][]int) bool {
     m := len(matrix)
     n := len(matrix[0])
-    if m <= 1 || n <= 1 {return true}
+    // if m <= 1 || n <= 1 {return true}
     for i := 1; i < m; i++ {
         for j := 0; j < n; j++ {
             prev := matrix[i][j]
