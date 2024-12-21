@@ -1,6 +1,9 @@
 /*
     approach: bfs from each house
-    - run a bfs from each house
+    - instead of bfs from each 0 cell
+        - there could be more 0s than 1s
+        - therefore this would take more time in worst case
+    - run a bfs from each house ( because number of 1s < number of 0s )
         - looking for adj 0's
         - and marking dist from that house to this 0 cell
         - dist == level
