@@ -1,19 +1,18 @@
 func sortColors(nums []int)  {
-    n := len(nums)
     zero := 0
-    two := n-1
+    two := len(nums)-1
     i := 0
     for i <= two {
         if nums[i] == 2 {
-            nums[two], nums[i] = nums[i], nums[two]
+            nums[i], nums[two] = nums[two], nums[i]
             two--
         } else if nums[i] == 0 {
-            nums[zero], nums[i] = nums[i], nums[zero]
+            nums[i], nums[zero] = nums[zero], nums[i]
             zero++
             i++
         } else {
             i++
         }
     }
-    
+
 }
