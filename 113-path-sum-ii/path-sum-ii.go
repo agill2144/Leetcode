@@ -14,19 +14,19 @@ func pathSum(root *TreeNode, target int) [][]int {
         if r == nil {return}
 
         // logic
-        sum += r.Val
         path = append(path, r.Val)
+        sum += r.Val
         if r.Left == nil && r.Right == nil {
             if sum == target {
-                newP := make([]int, len(path))
-                copy(newP, path)
-                out = append(out, newP)
+                newL := make([]int, len(path))
+                copy(newL, path)
+                out = append(out, newL)
             }
-            path = path[:len(path)-1]
             return
-        }
+        } 
         dfs(r.Left, sum, path)
-        dfs(r.Right, sum, path)
+        dfs(r.Right, sum, path)   
+        sum -= r.Val            
         path = path[:len(path)-1]
     }
     dfs(root, 0, nil)
