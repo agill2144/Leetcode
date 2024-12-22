@@ -6,27 +6,24 @@
  * }
  */
 type Solution struct {
-    head *ListNode
+    items []int
 }
 
 
 func Constructor(head *ListNode) Solution {
-    return Solution{head}    
+    items := []int{}
+    for head != nil {
+        items = append(items, head.Val)
+        head = head.Next
+    }
+    return Solution{items}    
 }
 
 
 func (this *Solution) GetRandom() int {
-    res := -1
-    count := 0
-    curr := this.head
-    for curr != nil {
-        count++
-        if rand.Intn(count) == 0 {
-            res = curr.Val
-        }
-        curr = curr.Next
-    }
-    return res
+    n := len(this.items)
+    r := rand.Intn(n)
+    return this.items[r]
 }
 
 
