@@ -1,23 +1,17 @@
 func removeDuplicates(nums []int) int {
-    count := 0
-    slow := 0
-    fast := 0
+    n := len(nums)
     k := 2
-    for fast < len(nums) {
-        curr := nums[fast]
-        prev := curr
-        if fast - 1 >= 0 {prev = nums[fast-1]}
-        if curr == prev {
+    slow := 1
+    count := 1
+    for i := 1; i < n; i++ {
+        if nums[i] == nums[i-1] {
             count++
         } else {
             count = 1
         }
         if count <= k {
-            nums[slow] = nums[fast]
+            nums[slow] = nums[i]
             slow++
-            fast++
-        } else {
-            fast++
         }
     }
     return slow
