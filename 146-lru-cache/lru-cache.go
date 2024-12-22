@@ -6,50 +6,13 @@ type listNode struct {
 }
 
 type LRUCache struct {
-    head *listNode
-    tail *listNode
-    m map[int]*listNode
-    capacity int
+    data map[int]*listNode
+    head *listNode // most recent node , append new nodes here
+    tail *listNode // least recently used node, discard from tail
+    cap int    
 }
 
-
-func Constructor(capacity int) LRUCache {
-    return LRUCache{
-        m: map[int]*listNode{},
-        capacity: capacity,
-    }
-}
-
-
-func (this *LRUCache) Get(key int) int {
-    node, ok := this.m[key]
-    if !ok { return -1 }
-    this.removeNode(node)
-    this.addToHead(node)
-    return node.val
-}
-
-
-func (this *LRUCache) Put(key int, value int)  {
-    node, ok := this.m[key]
-    if ok {
-        node.val = value
-        this.removeNode(node)
-        this.addToHead(node)
-        return 
-    }
-    if len(this.m) == this.capacity {
-        toBeDeleted := this.tail
-        this.removeNode(toBeDeleted)
-        delete(this.m, toBeDeleted.key)
-    }
-    newNode := &listNode{key:key, val:value}
-    this.addToHead(newNode)
-    this.m[key] = newNode
-}
-
-
-func (this *LRUCache) addToHead(node *listNode) {
+func (this *LRUCache) addNode(node *listNode) {
     if this.head == nil {
         this.head = node
         this.tail = node
@@ -65,24 +28,58 @@ func (this *LRUCache) removeNode(node *listNode) {
     prev := node.prev
     node.next = nil
     node.prev = nil
-
-    // node is a head node
     if node == this.head {
         this.head = next
         if next != nil {next.prev = nil}
         return
     }
-
-    // node is a tail node
+    
     if node == this.tail {
         this.tail = prev
         if prev != nil {prev.next = nil}
         return
     }
 
-    // node is somewhere in the middle
-    next.prev = prev
     prev.next = next
+    if next != nil {next.prev = prev}
+}
+
+
+func Constructor(capacity int) LRUCache {
+    return LRUCache{
+        data: map[int]*listNode{},
+        cap: capacity,
+    }
+}
+
+
+func (this *LRUCache) Get(key int) int {
+    node, ok := this.data[key]
+    if !ok {return -1}
+    this.removeNode(node)
+    this.addNode(node)
+    return node.val
+}
+
+
+func (this *LRUCache) Put(key int, value int)  {
+    node, ok := this.data[key]
+    if ok {
+        node.val = value
+        this.removeNode(node)
+        this.addNode(node)
+        return
+    }
+    if len(this.data) == this.cap {
+        toBeDeleted := this.tail
+        this.removeNode(toBeDeleted)
+        delete(this.data, toBeDeleted.key)
+    }
+
+    newNode := &listNode{key:key, val:value}
+    this.addNode(newNode)
+    this.data[key] = newNode
+    
 }
 
 
