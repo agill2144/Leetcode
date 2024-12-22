@@ -23,9 +23,4 @@ func hash(word string) string {
         out.WriteString(fmt.Sprintf("%v-", diff))
     }
     return out.String()
-} 
-
-func abs(x int) int {
-    if x < 0 {return x*-1}
-    return x
 }
