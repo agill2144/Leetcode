@@ -1,3 +1,17 @@
+/*
+time = o(numberOfOptionsPerNode ^ numOfOptions  * extraWorkAtEachNode )
+
+numberOfOptionsPerNode = 4
+numOfOptions = n
+extraWorkAtEachNode = n ( substr creation )
+
+space = o(maxDepthOfRecursion)
+maxDepthOfRecursion = n 
+
+tc = o(4^n * n)
+sc = o(n)
+
+*/
 func addOperators(num string, target int) []string {
     out := []string{}
     var dfs func(start int, res int, prevContr int, exp string)
