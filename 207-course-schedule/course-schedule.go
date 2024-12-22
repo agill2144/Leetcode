@@ -19,7 +19,6 @@ func canFinish(numCourses int, pre [][]int) bool {
         visited[curr] = true
         completed++
         for _, nei := range adjList[curr] {
-            // if nei == prev {continue}
             if !dfs(nei, curr, path) {return false}
         }
         path[curr] = false
