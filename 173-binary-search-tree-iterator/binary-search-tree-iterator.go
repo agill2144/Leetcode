@@ -7,34 +7,33 @@
  * }
  */
 type BSTIterator struct {
-    st []*TreeNode    
+    st []*TreeNode
 }
 
 
 func Constructor(root *TreeNode) BSTIterator {
     out := BSTIterator{st: []*TreeNode{}}
-    out.pushChilds(root)
+    out.insertNodes(root)
     return out
 }
 
-func (this *BSTIterator) pushChilds(root *TreeNode) {
-    for root != nil {
-        this.st = append(this.st, root)
-        root = root.Left
+func (this *BSTIterator) insertNodes(r *TreeNode) {
+    for r != nil {
+        this.st = append(this.st, r)
+        r = r.Left
     }
-}
-
+} 
 
 func (this *BSTIterator) Next() int {
     top := this.st[len(this.st)-1]
     this.st = this.st[:len(this.st)-1]
-    this.pushChilds(top.Right)
-    return top.Val
+    this.insertNodes(top.Right)
+    return top.Val    
 }
 
 
 func (this *BSTIterator) HasNext() bool {
-    return len(this.st) > 0
+    return len(this.st) != 0 
 }
 
 
