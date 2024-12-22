@@ -1,26 +1,24 @@
 func groupStrings(strings []string) [][]string {
-    groups := map[string][]string{}
+    grps := map[string][]string{}
     for i := 0; i < len(strings); i++ {
         key := hash(strings[i])
-        groups[key] = append(groups[key], strings[i])
+        grps[key] = append(grps[key], strings[i])
     }
     out := [][]string{}
-    for _, v := range groups {
-        out = append(out, v)
+    for _, v := range grps {
+        out = append(out,v)
     }
     return out
 }
 
-
 func hash(word string) string {
-    if len(word) <= 1 {return "0"}
-    out := new(strings.Builder)
+    if len(word) == 1 { return "0" }
+    res := new(strings.Builder)
     for i := 1; i < len(word); i++ {
-        curr := int(word[i]-'a')
-        prev := int(word[i-1]-'a')
-        diff := curr-prev
-        if diff < 0 {diff += 26}
-        out.WriteString(fmt.Sprintf("%v-", diff))
+        diff := int(word[i]-'a') - int(word[i-1]-'a')
+        if diff < 0 {diff += 26 }
+        res.WriteString(string(diff+'a'))
+        res.WriteString("-")
     }
-    return out.String()
+    return res.String()
 }
