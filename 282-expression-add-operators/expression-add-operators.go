@@ -13,6 +13,11 @@ func addOperators(num string, target int) []string {
         // logic
         for i := start; i < len(num); i++ {
             numStr := num[start:i+1]
+            // EDGE CASE!
+            // WHENEVER CONSTRUCTING NUMBERS, CHECK FOR LEADING ZERO CASES!
+            // substr could have more than 1 digit
+            // but substr starts with 0
+            // which is not a valid number
             if len(numStr) > 1 && numStr[0] == '0' {continue}
             n, _ := strconv.Atoi(numStr)
             if len(exp) == 0 {
