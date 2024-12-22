@@ -26,24 +26,24 @@ func (this *LRUCache) addNode(node *listNode) {
 func (this *LRUCache) removeNode(node *listNode) {
     next := node.next
     prev := node.prev
-    if prev != nil {prev.next = next}
-    if next != nil {next.prev = prev}
     node.next = nil
     node.prev = nil
+    // prev -> next ( if prev not nil )
+    // next <- prev ( if next not nil )
+    if prev != nil {prev.next = next}
+    if next != nil {next.prev = prev}
+
+    // update head ptr
     if node == this.head {
         this.head = next
         return
     }
     
+    // update tail ptr
     if node == this.tail {
-        // prev node is our tail now
-        // its okay if its nil
         this.tail = prev
         return
     }
-
-    prev.next = next
-    if next != nil {next.prev = prev}
 }
 
 
