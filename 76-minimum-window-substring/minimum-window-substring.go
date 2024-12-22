@@ -13,7 +13,7 @@ func minWindow(s string, t string) string {
     }
     fullMatch := 0
     left := 0
-    res := ""
+    start, end := -1,-1
     for i := 0; i < len(filtered); i++ {
         char := filtered[i].char
         idx := filtered[i].idx
@@ -22,16 +22,16 @@ func minWindow(s string, t string) string {
         for fullMatch == len(freq) {
             leftChar := filtered[left].char
             leftIdx := filtered[left].idx
-            if res == "" || idx-leftIdx+1 < len(res) {
-                subStr := s[leftIdx:idx+1]
-                res = subStr
+            if start == -1 || idx-leftIdx+1 < end-start+1 {
+                start, end = leftIdx, idx
             }
             freq[leftChar]++
             if freq[leftChar] == 1 {fullMatch--}
             left++
         }
     }
-    return res
+    if start == -1 {return ""}
+    return s[start:end+1]
 }
 
 // func minWindow(s string, t string) string {
