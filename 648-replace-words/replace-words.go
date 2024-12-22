@@ -8,16 +8,9 @@ func replaceWords(dictionary []string, sentence string) string {
     words := strings.Split(sentence, " ")
     for i := 0; i < len(words); i++ {
         word := words[i]
-        found := false
-        for j := 0; j < len(word); j++ {
-            subStr := word[:j+1]
-            if root.search(subStr) {
-                found = true
-                out.WriteString(subStr)
-                break
-            }
-        }
-        if !found {out.WriteString(word)}
+        newWord := root.search(word)
+        if newWord == "" {newWord = word}
+        out.WriteString(newWord)
         if i != len(words)-1 {out.WriteString(" ")}
     }
     return out.String()
@@ -40,16 +33,17 @@ func (r *trieNode) insert(word string) {
 	curr.isEnd = true
 }
 
-func (r *trieNode) search(word string) bool {
+func (r *trieNode) search(word string) string {
 	curr := r
+    path := ""
 	for i := 0; i < len(word); i++ {
-		idx := int(word[i] - 'a')
-		if curr.childs[idx] == nil {
-			return false
-		}
-		curr = curr.childs[idx]
-	}
-	return curr.isEnd
+        idx := int(word[i]-'a')
+        if curr.childs[idx] == nil {return word}
+        path += string(word[i])
+        curr = curr.childs[idx]
+        if curr.isEnd {return path}
+    }
+	return word
 }
 
 // using hashset and without trie
