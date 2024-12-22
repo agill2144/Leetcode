@@ -1,29 +1,47 @@
 type SparseVector struct {
-    idxs map[int]int
+    items [][]int // [ [idx, val] ]
 }
 
 func Constructor(nums []int) SparseVector {
-    idxs := map[int]int{}
+    items := [][]int{}
     for i := 0; i < len(nums); i++ {
         if nums[i] == 0 {continue}
-        idxs[i] = nums[i]
+        items = append(items, []int{i, nums[i]})
     }
-    return SparseVector{idxs}
+    return SparseVector{items}
 }
 
 // Return the dotProduct of two sparse vectors
 func (this *SparseVector) dotProduct(vec SparseVector) int {
-    if len(vec.idxs) < len(this.idxs) {
+    if len(vec.items) < len(this.items) {
         return vec.dotProduct(*this)
     }
     total := 0
-    for key, val := range this.idxs {
-        val2, ok := vec.idxs[key]
-        if ok {
+    for i := 0; i < len(this.items); i++ {
+        idx, val := this.items[i][0], this.items[i][1]
+        val2 := binarySearch(vec.items, idx)
+        if val2 != -1 {
             total += (val * val2)
         }
     }
     return total
+}
+
+func binarySearch(items [][]int, targetIdx int) int {
+    left := 0
+    right := len(items)-1
+    for left <= right {
+        mid := left + (right-left)/2
+        midIdx, midVal := items[mid][0], items[mid][1]
+        if midIdx == targetIdx {
+            return midVal
+        } else if targetIdx > midIdx {
+            left = mid+1
+        } else {
+            right = mid-1
+        }
+    }
+    return -1
 }
 
 /**
