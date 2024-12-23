@@ -1,24 +1,20 @@
 func isNumber(s string) bool {
-    seenDecimal := false
     seenDigit := false
+    seenDecimal := false
     seenExp := false
     start := 0
-    if s[start] == '+' || s[start] == '-' {
-        start++
-    }
     n := len(s)
-    for i := start; i < n; i++ {
-        char := s[i]
-        if char == '+' || char == '-' {
-            // 12e+2
-            if (s[i-1] != 'e' && s[i-1] != 'E') || i == n-1 {return false}            
-        } else if char == 'e' || char == 'E' {
-            if !seenDigit || seenExp || i==n-1 {return false}
+    if s[start] == '+' || s[start] == '-' {start++}
+    for i := start; i < len(s); i++ {
+        if s[i] == '+' || s[i] == '-' {
+            if i == n-1 || (s[i-1] != 'e' && s[i-1] != 'E') {return false}             
+        } else if s[i] == 'e' || s[i] == 'E' {
+            if !seenDigit || seenExp || i == n-1 {return false}
             seenExp = true
-        } else if char == '.' {
-            if seenDecimal || seenExp {return false}
+        } else if s[i] == '.' {
+            if seenExp || seenDecimal {return false}
             seenDecimal = true
-        } else if char >= '0' && char <= '9' {
+        } else if s[i] >= '0' && s[i] <= '9' {
             seenDigit = true
         } else {
             return false
