@@ -1,94 +1,74 @@
-type Twitter struct {
-    tweets map[int][][]int // userId: [[tweetId, time]]
-    followers map[int]*set // userId: {userId}
+type tweet struct {
+    id int
     time int
+}
 
+type Twitter struct {
+    time int
+    followings map[int]*set
+    tweets map[int][]*tweet
 }
 
 
 func Constructor() Twitter {
     return Twitter{
-        tweets: map[int][][]int{},
-        followers: map[int]*set{},
+        followings: map[int]*set{},
+        tweets: map[int][]*tweet{},
     }
 }
 
 
-func (this *Twitter) PostTweet(userId int, tweetId int)  {
+func (this *Twitter) PostTweet(userId int, tweetId int) {
     this.Follow(userId, userId)
-    this.tweets[userId] = append(this.tweets[userId], []int{tweetId, this.time})
+    t := &tweet{tweetId, this.time}
     this.time++
+    this.tweets[userId] = append(this.tweets[userId], t)
 }
 
 
 func (this *Twitter) GetNewsFeed(userId int) []int {
-    if this.followers[userId] == nil {return nil}
-    mn := &minheap{items: [][]int{}}
-    for userId, _ := range this.followers[userId].items {
-        tweetsByUserId := this.tweets[userId]
-        for i := len(tweetsByUserId)-1; i >= 0; i-- {
-            heap.Push(mn, tweetsByUserId[i])
-            if mn.Len() > 10 {heap.Pop(mn)}
+    mn := &minHeap{items: []*tweet{}}
+    followings := this.followings[userId]
+    if followings == nil {return nil}
+    for id, _ := range followings.items {
+        for _, tweet := range this.tweets[id] {
+            heap.Push(mn, tweet)
+            if mn.Len() > 10 {
+                heap.Pop(mn)
+            }
         }
     }
-    out := make([]int, mn.Len())
-    for i := mn.Len()-1; i >= 0; i-- {
-        out[i] = heap.Pop(mn).([]int)[0]
+    out := []int{}
+    for mn.Len() != 0 {
+        out = append(out, heap.Pop(mn).(*tweet).id)
+    }
+    for i := 0; i < len(out)/2; i++ {
+        out[i], out[len(out)-1-i] = out[len(out)-1-i],out[i]
     }
     return out
 }
 
 
 func (this *Twitter) Follow(followerId int, followeeId int)  {
-    if this.followers[followerId] == nil {
-        this.followers[followerId] = newSet()
-    }
-    this.followers[followerId].add(followeeId)
+    if this.followings[followerId] == nil {this.followings[followerId] = newSet()}
+    this.followings[followerId].add(followeeId)
 }
 
 
 func (this *Twitter) Unfollow(followerId int, followeeId int)  {
-    if this.followers[followerId] == nil {return}
-    this.followers[followerId].remove(followeeId)
+    if this.followings[followerId] == nil {return}
+    this.followings[followerId].remove(followeeId)
 }
 
 
-type set struct {
-    items map[int]struct{}
-}
-
-func newSet() *set {
-    return &set{items:map[int]struct{}{}}
-}
-func (s *set) contains(item int) bool {
-    _, ok := s.items[item]
+type set struct {items map[int]bool}
+func newSet() *set {return &set{items: map[int]bool{}}}
+func (s *set) add(x int) {s.items[x] = true}
+func (s *set) contains(x int) bool{
+    _, ok := s.items[x]
     return ok
 }
-func (s *set) add(item int) {
-    s.items[item] = struct{}{}
-}
-func (s *set) remove(item int) {
-    delete(s.items, item)
-}
-
-// heap implementation ( sort by tweet.time )
-// we will use min heap
-type minheap struct {
-    items [][]int
-}
-func (m *minheap) Len() int {return len(m.items)}
-func (m *minheap) Less(i, j int) bool {return m.items[i][1] < m.items[j][1]}
-func (m *minheap) Swap(i, j int) { m.items[i],m.items[j] = m.items[j], m.items[i]}
-func (m *minheap) Push(x interface{}) {m.items = append(m.items, x.([]int))}
-func (m *minheap) Pop() interface{} {
-	i := m.items[len(m.items)-1]
-	m.items = m.items[:len(m.items)-1]
-	return i
-}
-
-
-
-
+func (s *set) remove(x int) {delete(s.items, x)}
 /**
  * Your Twitter object will be instantiated and called as such:
  * obj := Constructor();
@@ -97,3 +77,25 @@ func (m *minheap) Pop() interface{} {
  * obj.Follow(followerId,followeeId);
  * obj.Unfollow(followerId,followeeId);
  */
+
+type minHeap struct {
+	items []*tweet
+}
+
+func (m *minHeap) Less(i, j int) bool {
+	return m.items[i].time < m.items[j].time
+}
+func (m *minHeap) Swap(i, j int) {
+	m.items[i], m.items[j] = m.items[j], m.items[i]
+}
+func (m *minHeap) Len() int {
+	return len(m.items)
+}
+func (m *minHeap) Push(x interface{}) {
+	m.items = append(m.items, x.(*tweet))
+}
+func (m *minHeap) Pop() interface{} {
+	out := m.items[len(m.items)-1]
+	m.items = m.items[:len(m.items)-1]
+	return out
+}
