@@ -26,25 +26,28 @@ func minimumOperations(root *TreeNode) int {
         totalSwaps += countSwaps(level)
     }
     return totalSwaps
+    
 }
 
 func countSwaps(nums []int) int {
-    n := len(nums)
-    valIdx := [][]int{}
-    for i := 0; i < n; i++ {
-        valIdx = append(valIdx, []int{nums[i], i})
-    }
-    sort.Slice(valIdx, func(i, j int)bool{
-        return valIdx[i][0] < valIdx[j][0]
-    })
-    swaps := 0
-    for i := 0; i < n; i++ {
-        idx := valIdx[i][1]
-        for idx != i {
-            valIdx[i], valIdx[idx] = valIdx[idx], valIdx[i]
-            idx = valIdx[i][1]
-            swaps++
-        }
-    }
-    return swaps
+	sorted := make([]int, len(nums))
+	copy(sorted, nums)
+	sort.Ints(sorted)
+	idxs := map[int]int{}
+	for i := 0; i < len(nums); i++ {
+		idxs[nums[i]] = i
+	}
+	swaps := 0
+	for i := 0; i < len(nums); i++ {
+		if nums[i] == sorted[i] {
+			continue
+		}
+        currVal := nums[i]
+        needVal := sorted[i]
+        needValOldIdx := idxs[needVal]
+        nums[i], nums[needValOldIdx] = nums[needValOldIdx], nums[i]
+        idxs[currVal] = needValOldIdx
+		swaps++
+	}
+	return swaps
 }
