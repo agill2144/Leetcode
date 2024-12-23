@@ -44,8 +44,10 @@
     - finally, we can return the linkedlist
 
     tc = o(l1+l2)
-    sc = o(l1+l2)
-    
+    sc = o(1)
+        - we do create a new o(l1+l2) size LL
+        - but its output LL so we dont count it as extra space
+
 */  
 func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
     carry := 0
