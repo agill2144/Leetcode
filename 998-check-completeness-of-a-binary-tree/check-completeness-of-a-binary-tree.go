@@ -7,6 +7,33 @@
  * }
  */
 /*
+    approach: bfs
+    - another way to look at it is by doing level order
+    - once we run into a null node while processing a level
+    - there shouldnt be any more real nodes after the null node for that level
+        - and for the next level tooooo
+        - next level should not have any more non-null nodes
+*/
+func isCompleteTree(root *TreeNode) bool {
+    if root == nil {return true}
+    q := []*TreeNode{root}
+    seenNil := false
+    for len(q) != 0 {
+        dq := q[0]
+        q = q[1:]
+        if dq == nil {
+            seenNil = true
+        } else {
+            if seenNil {return false}
+            q = append(q, dq.Left)
+            q = append(q, dq.Right)
+        }
+    }
+    return true
+}
+
+
+/*
     approach: dfs with heap idxing
     - complete tree , consider heap idxs
     - heap idxs will mark nodes with an idx
@@ -28,25 +55,25 @@
     tc = o(2n)
     sc = o(2n)
 */
-func isCompleteTree(root *TreeNode) bool {
-    var count func(r *TreeNode) int
-    count = func(r *TreeNode) int {
-        // base
-        if r == nil {return 0}
-        // logic
-        return 1 + count(r.Left) + count(r.Right)
-    }
-    n := count(root)
-    if n == 0 {return true}
-    var dfs func(r *TreeNode, idx int) bool
-    dfs = func(r *TreeNode, idx int)bool {
-        // base
-        if r == nil {return true}
+// func isCompleteTree(root *TreeNode) bool {
+//     var count func(r *TreeNode) int
+//     count = func(r *TreeNode) int {
+//         // base
+//         if r == nil {return 0}
+//         // logic
+//         return 1 + count(r.Left) + count(r.Right)
+//     }
+//     n := count(root)
+//     if n == 0 {return true}
+//     var dfs func(r *TreeNode, idx int) bool
+//     dfs = func(r *TreeNode, idx int)bool {
+//         // base
+//         if r == nil {return true}
 
-        // logic
-        if idx >= n {return false}
-        if !dfs(r.Left, 2*idx+1) {return false}
-        return dfs(r.Right, 2*idx+2)
-    }
-    return dfs(root, 0)
-}
+//         // logic
+//         if idx >= n {return false}
+//         if !dfs(r.Left, 2*idx+1) {return false}
+//         return dfs(r.Right, 2*idx+2)
+//     }
+//     return dfs(root, 0)
+// }
