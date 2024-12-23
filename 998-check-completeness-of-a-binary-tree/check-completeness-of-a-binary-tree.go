@@ -6,6 +6,28 @@
  *     Right *TreeNode
  * }
  */
+/*
+    approach: dfs with heap idxing
+    - complete tree , consider heap idxs
+    - heap idxs will mark nodes with an idx
+    - we are essentially mapping each node to an array using heap idxs
+    - heaps left child idx in the array would be; 2*i+1
+    - heaps right child idx in the array would be; 2*i+2
+    - similarly we will start with 0 as the initial idx
+    - then for left child, the idx will be 2*i+1 and for right child ; 2*i+2
+    - how does this help? we dont have an array to physically map node to their idx positions
+    - we dont need a physical array
+    - if we knew the size of this array, then we would know the last possible idx
+    - array will store all n nodes of tree
+    - therefore we can perform a dfs to count nodes of the tree
+    - now we know the size of the array, we dont need to create it
+    - if a heap idx goes out of bounds ( idx >= n ), it means we do not have a complete tree
+    - heap idxs increase by 1 from top to bottom left to right
+    - and if we jumped over a nil node and went to right node , that right node idx will be greater than last possible idx
+    - therefore not a complete tree
+    tc = o(2n)
+    sc = o(2n)
+*/
 func isCompleteTree(root *TreeNode) bool {
     var count func(r *TreeNode) int
     count = func(r *TreeNode) int {
