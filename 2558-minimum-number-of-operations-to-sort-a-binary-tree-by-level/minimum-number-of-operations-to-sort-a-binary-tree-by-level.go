@@ -44,9 +44,12 @@ func countSwaps(nums []int) int {
 		}
         currVal := nums[i]
         needVal := sorted[i]
-        needValOldIdx := idxs[needVal]
-        nums[i], nums[needValOldIdx] = nums[needValOldIdx], nums[i]
-        idxs[currVal] = needValOldIdx
+        ogIdx := idxs[needVal]
+        nums[i], nums[ogIdx] = nums[ogIdx], nums[i]
+        // we swapped curr val with correct val
+        // and moved current value to somewhere to the right
+        // therefore update our state / idx map that the new idx of current value is ogIdx
+        idxs[currVal] = ogIdx
 		swaps++
 	}
 	return swaps
