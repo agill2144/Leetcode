@@ -7,17 +7,18 @@ func numOfMinutes(n int, headID int, manager []int, informTime []int) int {
         if p == -1 {continue}
         adjList[p] = append(adjList[p], c)
     }
-    maxTime := 0
-    var dfs func(node, t int)
-    dfs = func(node, t int) {
+    var dfs func(node int) int
+    dfs = func(node int) int {
         // base
-        
-        maxTime = max(maxTime, t)
+
         // logic
+        t := informTime[node]
+        maxChildT := 0
         for _, child := range adjList[node] {
-            dfs(child, t+informTime[node])
+            maxChildT = max(maxChildT, dfs(child))
         }
+        return maxChildT + t
     }
-    dfs(headID, 0)
-    return maxTime
+    
+    return dfs(headID)
 }
