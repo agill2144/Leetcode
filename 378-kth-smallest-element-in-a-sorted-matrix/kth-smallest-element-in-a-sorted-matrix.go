@@ -18,12 +18,14 @@ func kthSmallest(matrix [][]int, k int) int {
 
 func countLessThanOrEqualTo(matrix [][]int, target int) int {
     n := len(matrix)
-    r := n-1
-    c := 0
+    r := n-1; c := 0
     count := 0
     for r >= 0 && c < n {
         if matrix[r][c] <= target {
+            // entire col above this cell is <= target
+            // num of elements above this cell including itself is r+1
             count += (r+1)
+            // go to next col
             c++
         } else {
             r--
