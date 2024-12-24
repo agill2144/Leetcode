@@ -2,7 +2,6 @@ func kthSmallest(matrix [][]int, k int) int {
     n := len(matrix)
     left := matrix[0][0]
     right := matrix[n-1][n-1]
-
     res := -1
     for left <= right {
         mid := left + (right-left)/2
