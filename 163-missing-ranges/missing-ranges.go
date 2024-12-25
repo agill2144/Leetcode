@@ -1,24 +1,21 @@
 func findMissingRanges(nums []int, lower int, upper int) [][]int {
     if len(nums) == 0 {return [][]int{{lower, upper}}}
-    ptr := 0
     out := [][]int{}
-    n := len(nums)
-
-    if nums[ptr] != lower {
-        out = append(out, []int{lower, nums[ptr]-1})
+    if nums[0] > lower {
+        out = append(out, []int{lower, nums[0]-1})        
     }
-
-    for ptr < n-1 {
-        curr := nums[ptr]
-        next := nums[ptr+1]
-        if curr+1 != next {
-            out = append(out, []int{curr+1, next-1})
+    for i := 1; i < len(nums); i++ {
+        curr := nums[i]
+        prev := nums[i-1]
+        if prev + 1 == curr {continue}
+        currPrev := curr-1
+        prevNext := prev+1
+        if prevNext >= lower && currPrev <= upper {
+            out = append(out, []int{prevNext, currPrev})
         }
-        ptr++
     }
-    if nums[n-1] != upper {
-        out = append(out, []int{nums[n-1]+1, upper})
+    if nums[len(nums)-1] < upper {
+        out = append(out, []int{nums[len(nums)-1]+1, upper})
     }
-
     return out
 }
