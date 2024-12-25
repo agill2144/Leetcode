@@ -1,3 +1,7 @@
+// k = max num in nums array
+// n = len of nums array
+// tc = o(logk * n)
+// sc = o(1)
 func minimumSize(nums []int, maxOperations int) int {
     left := 1
     right := slices.Max(nums)
