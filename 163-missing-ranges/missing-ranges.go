@@ -20,24 +20,32 @@
     - a range could also be missing at the end
     - i.e nums[n-1] < upper
     - then missing end range is [nums[n-1]+1, upper]
+
+    tc = o(n)
+    sc = o(1)
 */
 func findMissingRanges(nums []int, lower int, upper int) [][]int {
     if len(nums) == 0 {return [][]int{{lower, upper}}}
     out := [][]int{}
+
+    // add missing start range (if any)
     if nums[0] > lower {
         out = append(out, []int{lower, nums[0]-1})        
     }
+
+    // add missing middle range(s) (if any)
     for i := 1; i < len(nums); i++ {
         curr := nums[i]
         prev := nums[i-1]
         if prev + 1 == curr {continue}
-        if curr > upper {break}
         currPrev := curr-1
         prevNext := prev+1
         if prevNext >= lower && currPrev <= upper {
             out = append(out, []int{prevNext, currPrev})
         }
     }
+
+    // add missing end range (if any) 
     if nums[len(nums)-1] < upper {
         out = append(out, []int{nums[len(nums)-1]+1, upper})
     }
