@@ -2,9 +2,9 @@ func smallestDivisor(nums []int, threshold int) int {
     left := 1
     right := -1
     for i := 0; i < len(nums); i++ {
-        right = max(right, nums[i])
+        right = max(nums[i], right)
     }
-    ans := 0
+    ans := -1
     for left <= right {
         mid := left + (right-left)/2
         sum := 0
