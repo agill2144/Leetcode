@@ -1,21 +1,14 @@
 func minimumTime(time []int, totalTrips int) int64 {
-    if totalTrips <= 0 {return 0}
     left := 1
-    right := 0
-    for i := 0; i < len(time); i++ {
-        right = max(right, time[i])
-    }
-    right *= totalTrips
+    right := slices.Max(time)*totalTrips
     var ans int64 = -1
-
     for left <= right {
         mid := left + (right-left)/2
-        
-        count := 0
+        completed := 0
         for i := 0; i < len(time); i++ {
-            count += mid/time[i]
+            completed += (mid/time[i])
         }
-        if count >= totalTrips {
+        if completed >= totalTrips {
             ans = int64(mid)
             right = mid-1
         } else {
