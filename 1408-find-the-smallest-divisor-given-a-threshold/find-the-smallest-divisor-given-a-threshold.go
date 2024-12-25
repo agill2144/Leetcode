@@ -1,9 +1,7 @@
 func smallestDivisor(nums []int, threshold int) int {
     left := 1
-    right := -1
-    for i := 0; i < len(nums); i++ {
-        right = max(nums[i], right)
-    }
+    right := slices.Max(nums)
+
     ans := -1
     for left <= right {
         mid := left + (right-left)/2
