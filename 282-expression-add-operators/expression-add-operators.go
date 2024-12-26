@@ -1,45 +1,26 @@
-/*
-time = o(numberOfOptionsPerNode ^ numOfOptions  * extraWorkAtEachNode )
-
-numberOfOptionsPerNode = 4
-numOfOptions = n
-extraWorkAtEachNode = n ( substr creation )
-
-space = o(maxDepthOfRecursion)
-maxDepthOfRecursion = n 
-
-tc = o(4^n * n)
-sc = o(n)
-
-*/
 func addOperators(num string, target int) []string {
     out := []string{}
-    var dfs func(start int, res int, prevContr int, exp string)
-    dfs = func(start int, res int, prevContr int, exp string) {
+    var dfs func(start int, total int, lastContr int, path string)
+    dfs = func(start int, total int, lastContr int, path string) {
         // base
         if start == len(num) {
-            if res == target {
-                out = append(out, exp)
+            if total == target {
+                out = append(out, path)
             }
             return
         }
 
         // logic
         for i := start; i < len(num); i++ {
-            numStr := num[start:i+1]
-            // EDGE CASE!
-            // WHENEVER CONSTRUCTING NUMBERS, CHECK FOR LEADING ZERO CASES!
-            // substr could have more than 1 digit
-            // but substr starts with 0
-            // which is not a valid number
-            if len(numStr) > 1 && numStr[0] == '0' {continue}
-            n, _ := strconv.Atoi(numStr)
-            if len(exp) == 0 {
-                dfs(i+1, n, n, numStr)
+            subStr := num[start:i+1]
+            if len(subStr) > 1 && subStr[0] == '0' {continue}
+            subStrInt, _ := strconv.Atoi(subStr)
+            if len(path) == 0 {
+                dfs(i+1, subStrInt, subStrInt, subStr)
             } else {
-                dfs(i+1, res+n, n, exp+"+"+numStr)
-                dfs(i+1, res-n, -n, exp+"-"+numStr)
-                dfs(i+1, (res-prevContr)+(prevContr*n), prevContr*n, exp+"*"+numStr)
+                dfs(i+1, total + subStrInt, subStrInt, path + "+" + subStr)
+                dfs(i+1, total - subStrInt, -subStrInt, path + "-" + subStr)
+                dfs(i+1, total - lastContr + lastContr * subStrInt, lastContr*subStrInt, path + "*" + subStr)
             }
         }
     }
