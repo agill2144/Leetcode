@@ -6,29 +6,18 @@
  *     Right *TreeNode
  * }
  */
- // count to k while traversing inorder
- // inorder == sorted order
 func kthSmallest(root *TreeNode, k int) int {
-    count := 0
-    var dfs func(r *TreeNode) (int, bool)
-    dfs = func(r *TreeNode) (int, bool) {
+    var dfs func(r *TreeNode) *TreeNode
+    dfs = func(r *TreeNode) *TreeNode{
         // base
-        if r == nil {return -1, false}
+        if r == nil {return nil}
 
         // logic
-        left, lok := dfs(r.Left)
-        if lok {return left, true}
-
-        count++
-        if count == k {
-            return r.Val, true
-        }
-
-        right, rok := dfs(r.Right)
-        if rok {return right, true}
-
-        return -1, false
+        left := dfs(r.Left)
+        if left != nil {return left}
+        k--
+        if k == 0 {return r}
+        return dfs(r.Right)
     }
-    val, _ := dfs(root)
-    return val
+    return dfs(root).Val
 }
