@@ -6,6 +6,7 @@
  *     Right *TreeNode
  * }
  */
+
 /*
     approach: brute force
     - traverse inorder
@@ -19,7 +20,11 @@
 */
 func recoverTree(root *TreeNode)  {
     if root == nil {return}
-    nums := []int{}    
+    var (
+        fb *TreeNode
+        sb *TreeNode
+    )
+    var prev *TreeNode
     var dfs func(r *TreeNode)
     dfs = func(r *TreeNode) {
         // base
@@ -27,22 +32,16 @@ func recoverTree(root *TreeNode)  {
 
         // logic
         dfs(r.Left)
-        nums = append(nums, r.Val)
+        if prev != nil {
+            if prev.Val >= r.Val {
+                if fb == nil {fb = prev}
+                sb = r
+            }
+        }
+        prev = r
         dfs(r.Right)
     }
     dfs(root)
-    sort.Ints(nums)
-    ptr := 0
-    var writeBack func(r *TreeNode)
-    writeBack = func(r *TreeNode) {
-        // base
-        if r == nil {return}
-
-        // logic
-        writeBack(r.Left)
-        r.Val = nums[ptr]
-        ptr++
-        writeBack(r.Right)
-    }
-    writeBack(root)
+    fb.Val, sb.Val = sb.Val, fb.Val
+    
 }
