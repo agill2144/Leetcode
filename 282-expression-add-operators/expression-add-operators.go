@@ -1,3 +1,9 @@
+// numberOfOptionsPerNode ^ totalNumberOfOptions * extraWorkPerRecursion
+// numberOfOptionsPerNode = 4
+// totalNumberOfOptions = n
+// extraWorkPerRecursion = 0
+// tc = 4^n
+// sc = n
 func addOperators(num string, target int) []string {
     out := []string{}
     var dfs func(start int, total int, lastContr int, path string)
