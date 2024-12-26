@@ -1,14 +1,17 @@
 func intervalIntersection(firstList [][]int, secondList [][]int) [][]int {
-    a, b := 0, 0
     out := [][]int{}
-    for a < len(firstList) && b < len(secondList) {
-        aStart, aEnd := firstList[a][0], firstList[a][1]
-        bStart, bEnd := secondList[b][0], secondList[b][1]
-        start, end := max(aStart,bStart), min(aEnd, bEnd)
-        if start <= end {
-            out = append(out, []int{start, end})            
+    f, s := 0, 0
+    for f < len(firstList) && s < len(secondList) {
+        aStart, aEnd := firstList[f][0], firstList[f][1]
+        bStart, bEnd := secondList[s][0], secondList[s][1]
+        
+        // there is no overlap when;
+        if aStart > bEnd || bStart > aEnd {
+            if aEnd < bEnd {f++} else {s++}
+        } else {
+            out = append(out, []int{max(aStart, bStart), min(aEnd, bEnd)})
+            if aEnd < bEnd {f++} else {s++}
         }
-        if aEnd < bEnd {a++}else{b++}
     }
     return out
 }
