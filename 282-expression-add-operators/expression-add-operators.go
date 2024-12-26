@@ -1,8 +1,8 @@
 // numberOfOptionsPerNode ^ totalNumberOfOptions * extraWorkPerRecursion
 // numberOfOptionsPerNode = 4
 // totalNumberOfOptions = n
-// extraWorkPerRecursion = 0
-// tc = 4^n
+// extraWorkPerRecursion = subStr creation takes n time
+// tc = 4^n * n
 // sc = n
 func addOperators(num string, target int) []string {
     out := []string{}
