@@ -1,12 +1,9 @@
 func maxProfit(prices []int) int {
-    bestBuyPrices := make([]int, len(prices))
-    bestBuyPrices[0] = prices[0]
-    for i := 1; i < len(prices); i++ {
-        bestBuyPrices[i] = min(prices[i], bestBuyPrices[i-1])
-    }
+    bestBuyPrice := prices[0]
     maxPr := 0
-    for i := 0; i < len(prices); i++ {
-        maxPr = max(maxPr, prices[i]-bestBuyPrices[i])
+    for i := 1; i < len(prices); i++ {
+        maxPr = max(maxPr, prices[i]-bestBuyPrice)
+        bestBuyPrice = min(prices[i], bestBuyPrice)
     }
     return maxPr
 }
