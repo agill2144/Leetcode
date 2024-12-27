@@ -17,6 +17,7 @@ func sortedListToBST(head *ListNode) *TreeNode {
     var dfs func(curr *ListNode) *TreeNode
     dfs = func(curr *ListNode) *TreeNode {
         if curr == nil {return nil}
+        if curr.Next == nil {return &TreeNode{Val: curr.Val}}
 
         // logic
         var prev *ListNode
@@ -28,7 +29,8 @@ func sortedListToBST(head *ListNode) *TreeNode {
             fast = fast.Next.Next
         }
         root := &TreeNode{Val: slow.Val}
-        if prev != nil {prev.Next = nil; root.Left = dfs(curr)}
+        prev.Next = nil
+        root.Left = dfs(curr)
         root.Right = dfs(slow.Next)
         return root
     }
