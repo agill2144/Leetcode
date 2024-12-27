@@ -14,23 +14,24 @@
  * }
  */
 func sortedListToBST(head *ListNode) *TreeNode {
-    var dfs func(left, right *ListNode) *TreeNode
-    dfs = func(left, right *ListNode) *TreeNode {
-        // base
-        if left == right {return nil}
+    var dfs func(curr *ListNode) *TreeNode
+    dfs = func(curr *ListNode) *TreeNode {
+        if curr == nil {return nil}
 
         // logic
-        slow := left
-        fast := left
-        for fast != right && fast.Next != right {
+        var prev *ListNode
+        slow := curr
+        fast := curr
+        for fast != nil && fast.Next != nil {
+            prev = slow
             slow = slow.Next
             fast = fast.Next.Next
         }
         root := &TreeNode{Val: slow.Val}
-        root.Left = dfs(left, slow)
-        root.Right = dfs(slow.Next, right)
+        if prev != nil {prev.Next = nil; root.Left = dfs(curr)}
+        root.Right = dfs(slow.Next)
         return root
     }
-    return dfs(head, nil)
+    return dfs(head)
 
 }
