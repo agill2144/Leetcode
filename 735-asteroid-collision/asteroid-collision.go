@@ -3,18 +3,12 @@ func asteroidCollision(asteroid []int) []int {
     for i := 0; i < len(asteroid); i++ {
         pushCurr := true
         for len(st) != 0 && asteroid[i] < 0 && st[len(st)-1] > 0 {
-            if abs(asteroid[i]) == st[len(st)-1] {
-                st = st[:len(st)-1]
+            if abs(asteroid[i]) <= st[len(st)-1] {
+                if abs(asteroid[i]) == st[len(st)-1] {st = st[:len(st)-1]}
                 pushCurr = false
                 break
             }
-            if abs(asteroid[i]) < st[len(st)-1] {
-                pushCurr = false
-                break                
-            }
-            if abs(asteroid[i]) > st[len(st)-1] {
-                st = st[:len(st)-1]                
-            }
+            st = st[:len(st)-1]                
         }
         if pushCurr {
             st = append(st, asteroid[i])
