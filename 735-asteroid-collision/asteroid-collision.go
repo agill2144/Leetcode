@@ -1,20 +1,23 @@
-func asteroidCollision(asteroids []int) []int {
-    st := []int{}    
-    for i := 0; i < len(asteroids); i++ {
-        curr := asteroids[i]
+func asteroidCollision(asteroid []int) []int {
+    st := []int{}
+    for i := 0; i < len(asteroid); i++ {
         pushCurr := true
-        for len(st) != 0 && st[len(st)-1] > 0 && curr < 0 {
-            top := st[len(st)-1]
-            if abs(curr) >= top {
+        for len(st) != 0 && asteroid[i] < 0 && st[len(st)-1] > 0 {
+            if abs(asteroid[i]) == st[len(st)-1] {
                 st = st[:len(st)-1]
-                if top == abs(curr) {pushCurr = false; break}
-            } else {
                 pushCurr = false
                 break
             }
+            if abs(asteroid[i]) < st[len(st)-1] {
+                pushCurr = false
+                break                
+            }
+            if abs(asteroid[i]) > st[len(st)-1] {
+                st = st[:len(st)-1]                
+            }
         }
         if pushCurr {
-            st = append(st, asteroids[i])
+            st = append(st, asteroid[i])
         }
     }
     return st
