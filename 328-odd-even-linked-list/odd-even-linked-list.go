@@ -5,39 +5,29 @@
  *     Next *ListNode
  * }
  */
-
-/*
-    - split the even LL into a new dummy chain
-    - in the main loop; focus on grouping odd nodes into curr ptr
-    - while the even nodes will be appended to dummy head
-    - at the end of the loop we will have splitted the LL into 2
-    - head = has collected all the odd index position nodes
-    - dummy = has colleced all the even index position nodes
-    - our initial curr ptr will be sitting at the tail of orignal LL (ones with all odd idx position nodes)
-    - simply connect the 2 linkedlists again!
-    - oddTail.next(curr ptr; odd nodes) = dummy.next( even nodes )
-    time = o(n)
-    space = o(1); dummyNode is constant; we reused all the nodes, created no new nodes
-*/
 func oddEvenList(head *ListNode) *ListNode {
-    if head == nil || head.Next == nil {return head}
+    d1 := &ListNode{Val:-1}; t1 := d1
+    d2 := &ListNode{Val:-1}; t2 := d2
+    
     curr := head
-    dummy := &ListNode{Val: 0}
-    eTail := dummy
-    for curr != nil && curr.Next != nil {
+    for curr != nil {
+        // The first node is considered odd, and the second node is even, and so on.
         next := curr.Next
-        nextNext := next.Next
-
-        eTail.Next = next
         curr.Next = nil
-        eTail = eTail.Next
-        eTail.Next = nil
-
-        curr.Next = nextNext
-        if nextNext != nil {
-            curr = nextNext
+        t1.Next = curr
+        t1 = t1.Next
+        curr = next
+        if curr != nil {
+            next = curr.Next
+            curr.Next = nil
+            t2.Next = curr
+            t2 = t2.Next
+            curr = next
         }
     }
-    curr.Next = dummy.Next
-    return head
+    d1 = d1.Next
+    d2 = d2.Next
+    t1.Next = d2
+    return d1
+    
 }
