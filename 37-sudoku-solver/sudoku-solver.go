@@ -1,21 +1,15 @@
 func solveSudoku(board [][]byte)  {
     n := 9
-    rows := make([][]bool, 10)
-    cols := make([][]bool, 10)
-    boxes := map[string][]bool{}
-    for i := 0; i < len(rows); i++ {
-        rows[i] = make([]bool, 10)
-        cols[i] = make([]bool, 10)
-    }
+    rows := [10][10]bool{}
+    cols := [10][10]bool{}
+    boxes := [3][3][10]bool{}
     for i := 0; i < n; i++ {
         for j := 0; j < n; j++ {
-            key := fmt.Sprintf("%v-%v",i/3,j/3)
-            if boxes[key] == nil {boxes[key] = make([]bool, 10)}
             if board[i][j] != '.' {
                 intVal := int(board[i][j]-'0')
                 rows[i][intVal] = true
                 cols[j][intVal] = true
-                boxes[key][intVal] = true
+                boxes[i/3][j/3][intVal] = true
             }
         }
     }
@@ -33,21 +27,20 @@ func solveSudoku(board [][]byte)  {
 
         // logic
         for i := 1; i <= 9; i++ {
-            key := fmt.Sprintf("%v-%v",r/3,c/3)
             inRow := rows[r][i]
             inCol := cols[c][i]
-            inBox := boxes[key][i]
+            inBox := boxes[r/3][c/3][i]
             canUse := !inRow && !inCol && !inBox
             if canUse {
                 rows[r][i] = true
                 cols[c][i] = true
-                boxes[key][i] = true
+                boxes[r/3][c/3][i] = true
                 board[r][c] = byte(i+'0')
 
                 if dfs(r,c+1) {return true}
 
                 board[r][c] = '.'
-                boxes[key][i] = false
+                boxes[r/3][c/3][i] = false
                 cols[c][i] = false
                 rows[r][i] = false
             }
