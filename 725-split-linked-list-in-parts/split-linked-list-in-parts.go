@@ -17,24 +17,22 @@ func splitListToParts(head *ListNode, k int) []*ListNode {
     m := n/k
     r := n%k
     curr = head
-    out := make([]*ListNode, k)
-    i := 0
-    for i < len(out) {
-        currSize := 0
+    out := []*ListNode{}
+    for i := 0; i < k; i++ {
+        size := 0
         h := curr
         tail := curr
-        for currSize != m && curr != nil {
+        for size != m && curr != nil {
             tail = curr
             curr = curr.Next
-            currSize++
+            size++
         }
         if r != 0 {
             tail = curr; curr=curr.Next
             r--
         }
         if tail != nil {tail.Next = nil}
-        out[i] = h
-        i++
+        out = append(out, h)
     }
     return out
 }
