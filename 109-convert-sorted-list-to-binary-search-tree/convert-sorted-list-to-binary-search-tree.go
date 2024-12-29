@@ -14,8 +14,10 @@
  * }
  */
 func sortedListToBST(head *ListNode) *TreeNode {
+    if head == nil {return nil}
     var dfs func(curr *ListNode) *TreeNode
     dfs = func(curr *ListNode) *TreeNode {
+        // base
         if curr == nil {return nil}
         if curr.Next == nil {return &TreeNode{Val: curr.Val}}
 
