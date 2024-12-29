@@ -1,24 +1,17 @@
 func findKthPositive(arr []int, k int) int {
-    if k < arr[0] {
-        return k
-    }
+    if k < arr[0] {return k}
     left := 0
     right := len(arr)-1
     for left <= right {
         mid := left + (right-left)/2
-        correctIdx := arr[mid]-1
-        missingOnLeft := correctIdx - mid
-        if k <= missingOnLeft {
+        missOnLeft := (arr[mid]-1)-mid
+        if k <= missOnLeft {
             right = mid-1
         } else {
             left = mid+1
         }
-        //  0 1 2 3 4
-        // [2,3,4,7,11]
-        // [1,2,3,4,5]
     }
-
-    correctRightIdx := arr[right]-1
-    missingOnLeft := correctRightIdx - right
-    return arr[right]+(k-missingOnLeft)
+    missOnLeft := (arr[right]-1)-right
+    k -= missOnLeft
+    return arr[right]+k
 }
