@@ -1,13 +1,13 @@
 func subarraysDivByK(nums []int, k int) int {
-    rems := map[int]int{0:1}
+    rem := map[int]int{0:1}
     count := 0
-    rSum := 0
+    sum := 0
     for i := 0; i < len(nums); i++ {
-        rSum += nums[i]
-        rem := rSum % k
-        if rem < 0 {rem += k}
-        count += rems[rem]
-        rems[rem]++
+        sum += nums[i]
+        r := sum % k
+        if r < 0 {r += k}
+        count += rem[r]
+        rem[r]++
     }
     return count
 }
