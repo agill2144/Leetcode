@@ -20,6 +20,9 @@ func insertGreatestCommonDivisors(head *ListNode) *ListNode {
     return head
 }
 
+// gcd = greatest common divisor
+// so be greedy and start with the highest possible ans
+// and then walk back from there
 func gcd(a, b int) int {
     res := min(a, b)
     for res > 0 {
