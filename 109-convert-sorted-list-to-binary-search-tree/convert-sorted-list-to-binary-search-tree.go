@@ -15,27 +15,26 @@
  */
 func sortedListToBST(head *ListNode) *TreeNode {
     if head == nil {return nil}
-    var dfs func(curr *ListNode) *TreeNode
-    dfs = func(curr *ListNode) *TreeNode {
+    var dfs func(left, right *ListNode) *TreeNode
+    dfs = func(left, right *ListNode) *TreeNode {
         // base
-        if curr == nil {return nil}
-        if curr.Next == nil {return &TreeNode{Val: curr.Val}}
+        // left was mid closer to the bottom on recursive tree
+        // when something was mid ( slow ptr ), we have already created that node as root node
+        // therefore skip left, same applies to right ptr
+        if left == right {return nil}
 
         // logic
-        var prev *ListNode
-        slow := curr
-        fast := curr
-        for fast != nil && fast.Next != nil {
-            prev = slow
+        slow := left
+        fast := left
+        for fast != right && fast.Next != right {
             slow = slow.Next
             fast = fast.Next.Next
         }
         root := &TreeNode{Val: slow.Val}
-        prev.Next = nil
-        root.Left = dfs(curr)
-        root.Right = dfs(slow.Next)
+        root.Left = dfs(left, slow)
+        root.Right = dfs(slow.Next, right)
         return root
     }
-    return dfs(head)
+    return dfs(head, nil)
 
 }
