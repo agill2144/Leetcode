@@ -29,7 +29,7 @@ func splitListToParts(head *ListNode, k int) []*ListNode {
             currSize++
         }
         if r != 0 {
-            if curr != nil {tail = curr; curr=curr.Next}
+            tail = curr; curr=curr.Next
             r--
         }
         if tail != nil {tail.Next = nil}
