@@ -1,22 +1,21 @@
 func minOperations(nums []int, x int) int {
-    n := len(nums)
-    if nums[0] > x && nums[n-1] > x {return -1} 
+    if nums[0] > x && nums[len(nums)-1] > x {return -1}
     total := 0
-    for i := 0; i < n; i++ {total += nums[i]}
-    k := total-x
-    winSum := 0
-    minWin := len(nums)+1
+    for i := 0; i < len(nums); i++ {total += nums[i]}
+    k := total - x
     left := 0
-    for i := 0; i < n; i++ {
-        winSum += nums[i]
-        for left <= i && winSum > k {
-            winSum -= nums[left]
+    sum := 0
+    ans := len(nums)+1
+    for i := 0; i < len(nums); i++ {
+        sum += nums[i]
+        for left <= i && sum > k {
+            sum -= nums[left]
             left++
         }
-        if winSum == k {
-            minWin = min(minWin, n-(i-left+1))
+        if sum == k {
+            ans = min(ans, len(nums)-(i-left+1))
         }
     }
-    if minWin == len(nums)+1 {return -1}
-    return minWin
+    if ans == len(nums)+1 {return -1}
+    return ans
 }
