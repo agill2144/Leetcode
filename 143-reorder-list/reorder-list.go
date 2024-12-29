@@ -43,5 +43,5 @@ func reorderList(head *ListNode)  {
             p2 = p2.Next
         }
     }
-
+    dummy.Next = nil
 }
