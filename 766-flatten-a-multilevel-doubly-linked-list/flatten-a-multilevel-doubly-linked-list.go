@@ -24,7 +24,16 @@ func flatten(root *Node) *Node {
                 curr.Next = curr.Child
                 curr.Child.Prev = curr
                 ct.Next = next
-                if next != nil {next.Prev = ct} else {next = ct}
+                // 2 cases are possible
+                // next is nil, and next is not nil
+                // if next is nil, meaning our new tail should be ct (childTail)
+                // if next is nil, we want to return ct in this case
+                // if next is not nil, connect your ct, and go to next node , keep looking for tail
+                if next != nil {
+                    next.Prev = ct
+                } else {
+                    next = ct
+                }
                 curr.Child = nil
             }
             tail = curr
