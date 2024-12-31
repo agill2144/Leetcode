@@ -6,35 +6,36 @@
  * }
  */
 func reverseKGroup(head *ListNode, k int) *ListNode {
-    if k <= 1 || head == nil || head.Next == nil {return head}
-    curr := head
+    if k <= 1 {return head}
+    if head == nil || head.Next == nil {return head}
     var pt *ListNode
-    var start *ListNode
+    curr := head
     size := 1
+    var start *ListNode
     for curr != nil {
         next := curr.Next
         if size == 1 {start = curr}
         if size == k {
-            // disconnect this group from next grp
+            // disconnect this k size LL 
+            // from next and prev nodes
             curr.Next = nil
-            // reverse this grp
+            if pt != nil {pt.Next = nil}
+            // now reverse this isolated / disconnected LL
             nh, nt := reverse(start)
-            // if there was a prev grp ( pt = prevTail )
-            // then connect pt with newHead (nh)
+            // connect prevTail to newHead
             if pt != nil {
                 pt.Next = nh
             } else {
-                // if there was no pt, it means this is 1st k size grp
-                // nh is the head node now
                 head = nh
             }
-            // connect this grp newTail with next node
+            // connect new tail to next node that is outside of this LL
             nt.Next = next
-            // move pt ptr to our newTail (nt)
+            // now we have connected the reversed version of k size LL
+            // prevTail now moves to our newTail for the next k size grp
             pt = nt
-            size = 1
             curr = next
             start = nil
+            size = 1
             continue
         }
         size++
@@ -44,6 +45,7 @@ func reverseKGroup(head *ListNode, k int) *ListNode {
 }
 
 func reverse(head *ListNode) (*ListNode, *ListNode) {
+    if head == nil || head.Next == nil {return head, head}
     var prev *ListNode
     curr := head
     for curr != nil {
