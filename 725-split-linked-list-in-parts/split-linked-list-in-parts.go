@@ -6,33 +6,35 @@
  * }
  */
 func splitListToParts(head *ListNode, k int) []*ListNode {
+    out := make([]*ListNode, k)
+    if head == nil {return out}
     n := 0
     curr := head
     for curr != nil {
         n++
         curr = curr.Next
     }
-    // we are creating k groups
-    // of size m each
-    m := n/k
-    r := n%k
+    grpSize := n / k
+    rem := n % k
     curr = head
-    out := []*ListNode{}
-    for i := 0; i < k; i++ {
-        size := 0
-        h := curr
+    outPtr := 0
+    for curr != nil {
+        start := curr
         tail := curr
-        for size != m && curr != nil {
+        size := 0
+        for size != grpSize && curr != nil {
+            size++
             tail = curr
             curr = curr.Next
-            size++
         }
-        if r != 0 {
-            tail = curr; curr=curr.Next
-            r--
+        if rem != 0 && curr != nil {
+            tail = curr
+            curr = curr.Next
+            rem--
         }
-        if tail != nil {tail.Next = nil}
-        out = append(out, h)
+        tail.Next = nil
+        out[outPtr] = start
+        outPtr++
     }
     return out
 }
