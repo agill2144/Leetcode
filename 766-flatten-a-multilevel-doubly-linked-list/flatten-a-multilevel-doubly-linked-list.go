@@ -9,35 +9,27 @@
  */
 
 func flatten(root *Node) *Node {
-    if root == nil {return root}
     var dfs func(r *Node) *Node
     dfs = func(r *Node) *Node {
         // base
         if r == nil {return nil}
+
         // logic
-        curr := r
         tail := r
-        for curr != nil {
-            next := curr.Next
-            if curr.Child != nil {
-                ct := dfs(curr.Child)
-                curr.Next = curr.Child
-                curr.Child.Prev = curr
+        for r != nil {
+            next := r.Next
+            if r.Child != nil {
+                ct := dfs(r.Child)
+                ch := r.Child
+                r.Next = ch
+                ch.Prev = r
                 ct.Next = next
-                // 2 cases are possible
-                // next is nil, and next is not nil
-                // if next is nil, meaning our new tail should be ct (childTail)
-                // if next is nil, we want to return ct in this case
-                // if next is not nil, connect your ct, and go to next node , keep looking for tail
-                if next != nil {
-                    next.Prev = ct
-                } else {
-                    next = ct
-                }
-                curr.Child = nil
+                if next != nil {next.Prev = ct}
+                if next == nil {next = ct}    
+                r.Child = nil            
             }
-            tail = curr
-            curr = next
+            tail = r 
+            r = next
         }
         return tail
     }
