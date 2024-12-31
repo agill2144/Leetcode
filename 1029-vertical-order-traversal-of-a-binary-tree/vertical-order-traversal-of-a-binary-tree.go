@@ -8,32 +8,32 @@
  */
 func verticalTraversal(root *TreeNode) [][]int {
     if root == nil {return nil}
-    colToNodes := map[int][]int{}
     type qNode struct {
-        node *TreeNode
         col int
+        node *TreeNode
     }
     minCol := math.MaxInt64
     maxCol := math.MinInt64
-    q := []*qNode{&qNode{root,0}}
+    colToNodes := map[int][]int{}
+    q := []*qNode{&qNode{0, root}}
     for len(q) != 0 {
-        qSize := len(q)
         levelColToNodes := map[int][]int{}
+        qSize := len(q)
         for qSize != 0 {
             dq := q[0]
             q = q[1:]
+            node := dq.node
+            col := dq.col
+            minCol = min(minCol, col)
+            maxCol = max(maxCol, col)
+            levelColToNodes[col] = append(levelColToNodes[col], node.Val)
+            if node.Left != nil {
+                q = append(q, &qNode{col-1,node.Left})
+            }
+            if node.Right != nil {
+                q = append(q, &qNode{col+1, node.Right})
+            }
             qSize--
-            cn := dq.node
-            cc := dq.col
-            minCol = min(minCol, cc)
-            maxCol = max(maxCol, cc)
-            levelColToNodes[cc] = append(levelColToNodes[cc], cn.Val)
-            if cn.Left != nil {
-                q = append(q, &qNode{cn.Left, cc-1})
-            }
-            if cn.Right != nil {
-                q = append(q, &qNode{cn.Right, cc+1})
-            }
         }
         for col, nodes := range levelColToNodes {
             if len(nodes) > 1 {
@@ -47,4 +47,5 @@ func verticalTraversal(root *TreeNode) [][]int {
         out = append(out, colToNodes[i])
     }
     return out
+
 }
