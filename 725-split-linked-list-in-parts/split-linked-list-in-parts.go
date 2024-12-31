@@ -32,8 +32,14 @@
     - then figure out the size of each split (n/k)
     - then figure out the remaining nodes we need to add starting from beginning (n%k)
     - then take a curr ptr and loop until end of linkedlist
-    - set
-
+    - mark the starting node of this split ( save it into a var)
+    - maintain a size of curr split, maintain a tail ptr ( will be used to cut off the split )
+    - then move curr ptr forward until curr split if of size n/k
+    - add extra node into current split if remainder is still not 0 (dec remainder if we took a node)
+    - now cut of the tail end of this split, so its isolated LL
+    - then save the start ptr ( head of this split ) in output array
+        - use a ptr to write to an idx in output array
+        - move this ptr forward once we have written to output array 
 */
 func splitListToParts(head *ListNode, k int) []*ListNode {
     out := make([]*ListNode, k)
@@ -48,31 +54,23 @@ func splitListToParts(head *ListNode, k int) []*ListNode {
     rem := n % k
     curr = head
     outPtr := 0
-    size := 0
-    tail := curr
-    start := curr
     for curr != nil {
-        if size == grpSize {
-            // take the extra node if we need to
-            if rem != 0 && curr != nil {
-                tail = curr
-                curr = curr.Next
-                rem--
-            }
-            tail.Next = nil
-            out[outPtr] = start
-            size = 0
-            start = curr
-            tail = curr
-            outPtr++
-        } else {
+        start := curr
+        tail := curr
+        size := 0
+        for size != grpSize && curr != nil {
             size++
             tail = curr
             curr = curr.Next
         }
-    }
-    if size != 0{
+        if rem != 0 && curr != nil {
+            tail = curr
+            curr = curr.Next
+            rem--
+        }
+        tail.Next = nil
         out[outPtr] = start
+        outPtr++
     }
     return out
 }
