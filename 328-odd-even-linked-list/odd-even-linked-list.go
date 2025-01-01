@@ -6,28 +6,29 @@
  * }
  */
 func oddEvenList(head *ListNode) *ListNode {
-    d1 := &ListNode{Val:-1}; t1 := d1
-    d2 := &ListNode{Val:-1}; t2 := d2
-    
+    odd := &ListNode{Val:0}
+    even := &ListNode{Val: 0}
+    ot := odd
+    et := even
     curr := head
     for curr != nil {
-        // The first node is considered odd, and the second node is even, and so on.
         next := curr.Next
         curr.Next = nil
-        t1.Next = curr
-        t1 = t1.Next
+        // first node is considered odd, 
+        // and the second node is even, and so on
+        ot.Next = curr
+        ot = ot.Next
         curr = next
         if curr != nil {
             next = curr.Next
             curr.Next = nil
-            t2.Next = curr
-            t2 = t2.Next
+            et.Next = curr
+            et = et.Next
             curr = next
         }
     }
-    d1 = d1.Next
-    d2 = d2.Next
-    t1.Next = d2
-    return d1
-    
+    odd = odd.Next
+    even = even.Next
+    ot.Next = even
+    return odd
 }
