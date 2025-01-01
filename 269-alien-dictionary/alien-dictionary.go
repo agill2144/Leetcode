@@ -9,7 +9,6 @@ func alienOrder(words []string) string {
     for i := 0; i < len(words)-1; i++ {
         word1 := words[i]
         word2 := words[i+1]
-        if strings.HasPrefix(word1, word2) && len(word2) < len(word1) {return ""}
         w1, w2 := 0, 0
         for w1 < len(word1) && w2 < len(word2) {
             if word1[w1] != word2[w2] {
@@ -20,6 +19,7 @@ func alienOrder(words []string) string {
             }
             w1++; w2++
         }
+        if w2 == len(word2) && w1 < len(word1) {return ""}
     }
     countToBeProcessed := 0
     q := []byte{}
