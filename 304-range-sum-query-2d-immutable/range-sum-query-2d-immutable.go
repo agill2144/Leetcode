@@ -8,28 +8,26 @@ func Constructor(matrix [][]int) NumMatrix {
     n := len(matrix[0])
     for i := 0; i < m; i++ {
         for j := 0; j < n; j++ {
-            left := 0
-            if j-1 >= 0 {left = matrix[i][j-1]}
-            top := 0
-            if i-1 >= 0 {top = matrix[i-1][j]}
-            overlapping := 0
-            if i-1 >= 0 && j-1 >= 0 {overlapping = matrix[i-1][j-1]}
-            val := left+top+matrix[i][j]-overlapping
-            matrix[i][j] = val
+            if j-1 >= 0 {matrix[i][j] += matrix[i][j-1]}
+            if i-1 >= 0 {matrix[i][j] += matrix[i-1][j]}
+            // remove the overlapping sum that was added twice
+            // once it was added from left cell and other time it was added from top cell
+            if i-1 >= 0 && j-1 >= 0 {matrix[i][j] -= matrix[i-1][j-1]}
         }
-    }    
+    }
     return NumMatrix{matrix}
 }
 
 
 func (this *NumMatrix) SumRegion(row1 int, col1 int, row2 int, col2 int) int {
-    topSum := 0
-    if row1-1 >= 0 {topSum = this.matrix[row1-1][col2]}
-    leftSum := 0
-    if col1-1 >= 0 {leftSum = this.matrix[row2][col1-1]}
-    overlapping := 0
-    if row1-1 >= 0 && col1-1 >= 0 {overlapping = this.matrix[row1-1][col1-1]}
-    return this.matrix[row2][col2] - topSum - leftSum + overlapping
+    fullSum := this.matrix[row2][col2]
+    // remove top row
+    if row1-1 >= 0 {fullSum -= this.matrix[row1-1][col2]}
+    // remove left col
+    if col1-1 >= 0 {fullSum -= this.matrix[row2][col1-1]}
+    // add the overlapping sum that was removed twice
+    if row1-1 >= 0 && col1-1 >= 0 {fullSum += this.matrix[row1-1][col1-1]}
+    return fullSum
 }
 
 
