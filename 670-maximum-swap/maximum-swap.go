@@ -1,26 +1,38 @@
 func maximumSwap(num int) int {
-    idxs := make([]int, 10)
-    for i := 0; i < len(idxs); i++ {idxs[i] = -1}
-    nums := strings.Split(fmt.Sprintf("%v", num), "")
-    for i := 0; i < len(nums); i++ {
-        numInt, _  := strconv.Atoi(nums[i])
-        idxs[numInt] = i
+    numStr := strings.Split(fmt.Sprintf("%v", num),"")
+    n := len(numStr)
+    maxIdxs := make([]int, n)
+    maxIdxs[n-1] = n-1
+    for i := n-2; i >= 0; i-- {
+        currVal, _ := strconv.Atoi(numStr[i])
+        maxSoFar, _ := strconv.Atoi(numStr[maxIdxs[i+1]])
+        if currVal > maxSoFar {
+            maxIdxs[i] = i
+        } else {
+            maxIdxs[i] = maxIdxs[i+1]
+        }
     }
-    swapped := false
-    for i := 0; i < len(nums) && !swapped; i++ {
-        curr, _ := strconv.Atoi(nums[i])
-        for j := len(idxs)-1; j > curr; j-- {
-            if idxs[j] != -1 && idxs[j] > i && j > curr {
-                nums[i], nums[idxs[j]] = nums[idxs[j]], nums[i]
-                swapped = true
-                break
-            }
+
+    for i := 0; i < n; i++ {
+        maxIdx := maxIdxs[i]
+        maxOnRight, _:= strconv.Atoi(numStr[maxIdx])
+        currVal, _ := strconv.Atoi(numStr[i])
+        if maxOnRight > currVal {
+            numStr[maxIdx], numStr[i] = numStr[i], numStr[maxIdx]
+            break
         }
     }
     out := 0
-    for i := 0; i < len(nums); i++ {
-        n, _ := strconv.Atoi(nums[i])
-        out = out * 10 +n
+    for i := 0; i < len(numStr); i++ {
+        val, _ := strconv.Atoi(numStr[i])
+        out = out*10+val
     }
     return out
 }
+
+/*
+    126546
+    555555
+
+    626541
+*/
