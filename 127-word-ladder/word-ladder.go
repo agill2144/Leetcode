@@ -1,49 +1,45 @@
-func ladderLength(beginWord string, endWord string, wordList []string) int {
-    if beginWord == endWord {return 0}
+func ladderLength(beginWord string, endWord string, words []string) int {
     adjList := map[string][]string{}
-    wordList = append(wordList, beginWord)
-    for i := 0; i < len(wordList); i++ {
-        parent := wordList[i]
-        for j := 0; j < len(wordList); j++ {
+    words = append(words, beginWord)
+    foundEnd := false
+    for i := 0; i < len(words); i++ {
+        if words[i] == endWord {foundEnd = true}
+        parent := words[i]
+        for j := 0; j < len(words); j++ {
             if i == j {continue}
-            child := wordList[j]
-            count := 0
-            p, c := 0, 0
+            child := words[j]
+            p, c := 0,0
+            diff := 0
             for p < len(parent) && c < len(child) {
-                if parent[p] != child[c] {
-                    count++
-                }
+                if parent[p] != child[c] {diff++}
                 p++
-                c++
+                c++ 
             }
-            if count <= 1 {
+            if diff <= 1 {
                 adjList[parent] = append(adjList[parent], child)
             }
         }
     }
-
+    if !foundEnd {return 0}
+    level := 1
     q := []string{beginWord}
-    visited := map[string]struct{}{}
-    visited[beginWord] = struct{}{}
-
-    level := 0
+    visited := map[string]bool{beginWord:true}
     for len(q) != 0 {
         qSize := len(q)
         for qSize != 0 {
             dq := q[0]
             q = q[1:]
-            if dq == endWord {
-                return level+1
-            }
-            for _, adjNei := range adjList[dq] {
-                if _, ok := visited[adjNei]; !ok {
-                    visited[adjNei] = struct{}{}
-                    q = append(q, adjNei)
+            if dq == endWord {return level}
+            for _, nei := range adjList[dq] {
+                if !visited[nei] {
+                    if nei == endWord {return level+1}
+                    visited[nei] = true
+                    q = append(q, nei)
                 }
             }
             qSize--
         }
         level++
-    }
+    }    
     return 0
 }
