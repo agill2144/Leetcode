@@ -35,52 +35,56 @@
     space = o(logn) for the recursive stack
 */
 func sortList(head *ListNode) *ListNode {
-    var dfs func(curr *ListNode) *ListNode
-	dfs = func(curr *ListNode) *ListNode {
+	var dfs func(h *ListNode) *ListNode
+	dfs = func(h *ListNode) *ListNode {
 		// base
-		if curr == nil || curr.Next == nil {
-			return curr
+		// if this is the only node, return it as is!
+		if h == nil || h.Next == nil {
+			return h
 		}
 
 		// logic
-		slow := curr
-		fast := curr
 		var prev *ListNode
+		slow := h
+		fast := h
 		for fast != nil && fast.Next != nil {
 			prev = slow
 			slow = slow.Next
 			fast = fast.Next.Next
 		}
+		// create 2 halves by splitting them
 		prev.Next = nil
 		// recurse on the 2 halves
-		left := dfs(curr)
+		left := dfs(h)
 		right := dfs(slow)
 		// merge 2 halves using merge2SortedLists(l1, l2)
 		// and return the merged result back to parent
-		return mergeTwoLists(left, right)
+		return merge2SortedLists(left, right)
 	}
 	return dfs(head)
 }
 
-func mergeTwoLists(x *ListNode, y *ListNode) *ListNode {
-	dummy := &ListNode{Val: 0}
+func merge2SortedLists(l1, l2 *ListNode) *ListNode {
+	dummy := &ListNode{Val: -1}
 	tail := dummy
-	p1, p2 := x, y
-	for p1 != nil || p2 != nil {
-		p1Val := math.MaxInt64
-		if p1 != nil { p1Val = p1.Val }
-		p2Val := math.MaxInt64
-		if p2 != nil { p2Val = p2.Val }
-		if p1Val <= p2Val {
-			tail.Next = p1
+	for l1 != nil || l2 != nil {
+		l1Val := math.MaxInt64
+		l2Val := math.MaxInt64
+		if l1 != nil {
+			l1Val = l1.Val
+		}
+		if l2 != nil {
+			l2Val = l2.Val
+		}
+		if l1Val <= l2Val {
+			tail.Next = l1
 			tail = tail.Next
-			p1 = p1.Next
+			l1 = l1.Next
 		} else {
-			tail.Next = p2
+			tail.Next = l2
 			tail = tail.Next
-			p2 = p2.Next
+			l2 = l2.Next
 		}
 	}
 	return dummy.Next
 }
-
