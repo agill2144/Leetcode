@@ -52,7 +52,12 @@ func sortList(head *ListNode) *ListNode {
 			fast = fast.Next.Next
 		}
 		prev.Next = nil
-		return mergeTwoLists(dfs(curr), dfs(slow))
+		// recurse on the 2 halves
+		left := dfs(curr)
+		right := dfs(slow)
+		// merge 2 halves using merge2SortedLists(l1, l2)
+		// and return the merged result back to parent
+		return mergeTwoLists(left, right)
 	}
 	return dfs(head)
 }
