@@ -47,8 +47,14 @@ func sortedListToBST(head *ListNode) *TreeNode {
             slow = slow.Next
             fast = fast.Next.Next
         }
-        prev.Next = nil
+        // slow ptr is at middle node
+        // therefore mid is our root node
         root := &TreeNode{Val:slow.Val}
+        // cut the list into 2 halves
+        // left half is the left subtree (curr->prev)
+        // right half is right subtree (slow.Next->right)
+        // slow is already used! slow is the root node, therefore right half is after slow ptr
+        prev.Next = nil
         root.Left = dfs(curr)
         root.Right = dfs(slow.Next)
         return root
