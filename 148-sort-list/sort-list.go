@@ -35,84 +35,47 @@
     space = o(logn) for the recursive stack
 */
 func sortList(head *ListNode) *ListNode {
-    // 4. when we only have 1 or 0 node, we dont have anything to split
-    if head == nil || head.Next == nil {return head}
+    var dfs func(curr *ListNode) *ListNode
+	dfs = func(curr *ListNode) *ListNode {
+		// base
+		if curr == nil || curr.Next == nil {
+			return curr
+		}
 
-    // 1. get mid
-    mid := mid(head)
-
-    // 2. split into 2 halves
-    left := head
-    right := mid.Next
-    mid.Next = nil
-
-    // 3. recurse and let it split further
-    left = sortList(left)
-    right = sortList(right)
-
-    // 5. merge 2 sorted list; merge left and right
-    return merge2SortedLists(left, right)
+		// logic
+		slow := curr
+		fast := curr
+		var prev *ListNode
+		for fast != nil && fast.Next != nil {
+			prev = slow
+			slow = slow.Next
+			fast = fast.Next.Next
+		}
+		prev.Next = nil
+		return mergeTwoLists(dfs(curr), dfs(slow))
+	}
+	return dfs(head)
 }
 
-// two ptrs
-// time = o(n)
-// space = o(1)
-func merge2SortedLists(list1, list2 *ListNode) *ListNode {
-    l1 := list1
-    l2 := list2
-    out := &ListNode{Val: 0}
-    tail := out
-    for l1 != nil && l2 != nil {
-        
-        l1Val := l1.Val
-        l2Val := l2.Val
-        
-        if l1Val < l2Val {
-            l1 = l1.Next
-            tail.Next = &ListNode{Val: l1Val}
-        } else {
-            l2 = l2.Next
-            tail.Next = &ListNode{Val: l2Val}
-        }
-        tail = tail.Next
-    }
-    
-    for l1 != nil {
-        tail.Next = &ListNode{Val: l1.Val}
-        l1 = l1.Next
-        tail = tail.Next
-    }
-    for l2 != nil {
-        tail.Next = &ListNode{Val: l2.Val}
-        l2 = l2.Next
-        tail = tail.Next
-    }
-    return out.Next
+func mergeTwoLists(x *ListNode, y *ListNode) *ListNode {
+	dummy := &ListNode{Val: 0}
+	tail := dummy
+	p1, p2 := x, y
+	for p1 != nil || p2 != nil {
+		p1Val := math.MaxInt64
+		if p1 != nil { p1Val = p1.Val }
+		p2Val := math.MaxInt64
+		if p2 != nil { p2Val = p2.Val }
+		if p1Val <= p2Val {
+			tail.Next = p1
+			tail = tail.Next
+			p1 = p1.Next
+		} else {
+			tail.Next = p2
+			tail = tail.Next
+			p2 = p2.Next
+		}
+	}
+	return dummy.Next
 }
 
-
-/*
-    - get mid using tortoise and hare method
-    - slow ptr = tortoise
-    - fast ptr = hare
-    - slow moves 1x speed
-    - fast moves 2x speed
-    - if fast has reached the finish line
-    - and slow is moving half the speed of fast
-    - then slow ptr is half way across
-    - meaning slow ptr is at our mid node
-    time = o(n)
-    space = o(1)
-*/
-func mid(head *ListNode) *ListNode {
-    if head == nil || head.Next == nil {return head}
-    var prev *ListNode
-    slow := head
-    fast := head
-    for fast != nil && fast.Next != nil {
-        prev = slow
-        slow = slow.Next
-        fast = fast.Next.Next
-    }
-    return prev
-}
