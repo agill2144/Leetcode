@@ -5,24 +5,26 @@
  *     Next *ListNode
  * }
  */
-func mergeTwoLists(x *ListNode, y *ListNode) *ListNode {
-	dummy := &ListNode{Val: 0}
+func mergeTwoLists(l1 *ListNode, l2 *ListNode) *ListNode {
+dummy := &ListNode{Val: -1}
 	tail := dummy
-	p1, p2 := x, y
-	for p1 != nil || p2 != nil {
-		p1Val := math.MaxInt64
-		if p1 != nil { p1Val = p1.Val }
-		p2Val := math.MaxInt64
-		if p2 != nil { p2Val = p2.Val }
-		if p1Val < p2Val {
-			tail.Next = p1
+	for l1 != nil || l2 != nil {
+		l1Val := math.MaxInt64
+		l2Val := math.MaxInt64
+		if l1 != nil {
+			l1Val = l1.Val
+		}
+		if l2 != nil {
+			l2Val = l2.Val
+		}
+		if l1Val <= l2Val {
+			tail.Next = l1
 			tail = tail.Next
-			p1 = p1.Next
+			l1 = l1.Next
 		} else {
-            tail.Next = p2
-            tail = tail.Next
-            p2 = p2.Next
+			tail.Next = l2
+			tail = tail.Next
+			l2 = l2.Next
 		}
 	}
-	return dummy.Next
-}
+	return dummy.Next}
