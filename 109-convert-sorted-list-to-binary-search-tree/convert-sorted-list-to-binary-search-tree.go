@@ -13,6 +13,22 @@
  *     Right *TreeNode
  * }
  */
+/*
+    approach: brute force with extra space
+    - traverse the LL and put the node values into a list
+    - then build a height balanced bst using the sorted list
+    - the root node will the mid element; given 2 idxs left and right 
+    - the left of this root will be elements from left -> mid-1
+    - the right of this root will be elements from mid+1 -> right
+
+    tc = o(2n)
+    sc = o(n)
+
+    approach: no extra list space
+    - we can get mid of linkedlist using slow and fast ptrs
+    - and then split the list into 2 halves; for creating left subtree and for creating right subtree
+
+*/
 func sortedListToBST(head *ListNode) *TreeNode {
     var dfs func(curr *ListNode) *TreeNode
     dfs = func(curr *ListNode) *TreeNode {
