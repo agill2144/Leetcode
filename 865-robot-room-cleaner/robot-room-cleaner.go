@@ -20,6 +20,7 @@
 func cleanRoom(robot *Robot) {
     //   0    1     2      3
     // [ up, right, down, left]
+    dirs := [][]int{{-1,0},{0,1},{1,0},{0,-1}}
     visited := map[[2]int]bool{}
     var dfs func(r, c, dir int)
     dfs = func(r, c, dir int) {
@@ -31,16 +32,7 @@ func cleanRoom(robot *Robot) {
         robot.Clean()
         for i := 0; i < 4; i++ {
             newDir := (dir+i) % 4
-            nr, nc := r, c
-            if newDir == 0 {
-                nr -= 1
-            } else if newDir == 1 {
-                nc += 1
-            } else if newDir == 2 {
-                nr += 1
-            } else if newDir == 3 {
-                nc -= 1
-            }
+            nr, nc := r+dirs[newDir][0], c+dirs[newDir][1]
             if robot.Move() {
                 dfs(nr,nc,newDir)
                 // turn back around
