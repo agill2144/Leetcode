@@ -31,9 +31,9 @@ func cleanRoom(robot *Robot) {
         visited[[2]int{r,c}] = true
         robot.Clean()
         for i := 0; i < 4; i++ {
-            newDir := (dir+i) % 4
-            nr, nc := r+dirs[newDir][0], c+dirs[newDir][1]
             if robot.Move() {
+                newDir := (dir+i) % 4
+                nr, nc := r+dirs[newDir][0], c+dirs[newDir][1]
                 dfs(nr,nc,newDir)
                 // turn back around
                 robot.TurnRight()
