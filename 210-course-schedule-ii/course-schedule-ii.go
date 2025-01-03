@@ -6,11 +6,9 @@ func findOrder(n int, pre [][]int) []int {
         adjList[b] = append(adjList[b], a) 
         indegrees[a]++
     }
-    visited := make([]bool, n)
     q := []int{}
     for i := 0; i < len(indegrees); i++ {
         if indegrees[i] == 0 {
-            visited[i] = true
             q = append(q, i)
         }
     }
@@ -22,8 +20,7 @@ func findOrder(n int, pre [][]int) []int {
         order = append(order, dq)
         for _, nei := range adjList[dq] {
             indegrees[nei]--
-            if indegrees[nei] == 0 && !visited[nei] {
-                visited[nei] = true
+            if indegrees[nei] == 0 {
                 q = append(q, nei)
             }
         }
