@@ -1,38 +1,33 @@
-func findOrder(numCourses int, pre [][]int) []int {
-    adjList := map[int][]int{}
+func findOrder(n int, pre [][]int) []int {
+    indegrees := make([]int, n)
+    adjList := map[int][]int{}    
     for i := 0; i < len(pre); i++ {
-        a, b := pre[i][0], pre[i][1]
-        adjList[b] = append(adjList[b], a)
+        a,b := pre[i][0], pre[i][1]
+        adjList[b] = append(adjList[b], a) 
+        indegrees[a]++
     }
-    visited := make([]bool, numCourses)
-    path := make([]bool, numCourses)
-    completed := 0
-    st := []int{}
-    var dfs func(curr, prev int, path []bool) bool
-    dfs = func(curr, prev int, path []bool) bool {
-        // base
-        if path[curr] {return false}
-        if visited[curr] {return true}
-
-        // logic
-        path[curr] = true
-        visited[curr] = true
-        completed++
-        for _, nei := range adjList[curr] {
-            if !dfs(nei, curr, path) {return false}
-        }
-        st = append(st, curr)
-        path[curr] = false
-        return true
-    }
-    for i := 0; i < numCourses; i++ {
-        if !visited[i] {
-            if !dfs(i, -1, path) {return nil}
+    visited := make([]bool, n)
+    q := []int{}
+    for i := 0; i < len(indegrees); i++ {
+        if indegrees[i] == 0 {
+            visited[i] = true
+            q = append(q, i)
         }
     }
-    if completed != numCourses {return nil}
-    for i := 0; i < len(st)/2; i++ {
-        st[i], st[len(st)-1-i] = st[len(st)-1-i], st[i]
+    if len(q) == 0 {return nil}
+    order := []int{}
+    for len(q) != 0 {
+        dq := q[0]
+        q = q[1:]
+        order = append(order, dq)
+        for _, nei := range adjList[dq] {
+            indegrees[nei]--
+            if indegrees[nei] == 0 && !visited[nei] {
+                visited[nei] = true
+                q = append(q, nei)
+            }
+        }
     }
-    return st
+    if len(order) != n {return nil}
+    return order
 }
