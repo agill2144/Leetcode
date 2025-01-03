@@ -1,30 +1,36 @@
 func findOrder(n int, pre [][]int) []int {
-    indegrees := make([]int, n)
     adjList := map[int][]int{}    
     for i := 0; i < len(pre); i++ {
         a,b := pre[i][0], pre[i][1]
         adjList[b] = append(adjList[b], a) 
-        indegrees[a]++
     }
-    q := []int{}
-    for i := 0; i < len(indegrees); i++ {
-        if indegrees[i] == 0 {
-            q = append(q, i)
-        }
-    }
-    if len(q) == 0 {return nil}
     order := []int{}
-    for len(q) != 0 {
-        dq := q[0]
-        q = q[1:]
-        order = append(order, dq)
-        for _, nei := range adjList[dq] {
-            indegrees[nei]--
-            if indegrees[nei] == 0 {
-                q = append(q, nei)
-            }
+    visited := make([]bool, n)
+    var dfs func(node int, path []bool) bool
+    dfs = func(node int, path []bool) bool {
+        // base
+        if path[node] {return false}
+        if visited[node] {return true}
+
+        // logic
+        visited[node] = true
+        path[node] = true
+        for _, nei := range adjList[node] {
+            if !dfs(nei, path) {return false}
+        }
+        order = append(order, node)
+        path[node] = false
+        return true
+    }
+    p := make([]bool, n)
+    for i := 0; i < n; i++ {
+        if !visited[i] {
+            if !dfs(i, p) {return nil}
         }
     }
     if len(order) != n {return nil}
+    for i := 0; i < len(order)/2; i++ {
+        order[i], order[len(order)-1-i] = order[len(order)-1-i], order[i]
+    }
     return order
 }
