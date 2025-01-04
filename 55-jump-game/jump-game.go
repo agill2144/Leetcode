@@ -1,14 +1,14 @@
 /*
     approach: greedy
     - from an ith position, keep track of how far you can jump
-    - and then go to next ith position, and update farthest idx as needed
-    - keep doing this as long as i <= farthest idx
+    - and then go to next ith position, and update right idx as needed
+    - keep doing this as long as i <= right idx
 
     time = o(n)
     space = o(1)
 
     what were we greedy about?
-    - as we kept iterating, we kept track of farthest reachable idx
+    - as we kept iterating, we kept track of right reachable idx
     - we kept spamming the farthest jump path we can reach (greedily spamming single path to reach an answer)    
 */
 func canJump(nums []int) bool {
