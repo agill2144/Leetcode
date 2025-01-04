@@ -3,7 +3,7 @@ func sortArrayByParityII(nums []int) []int {
     n := len(nums)
     e := 0
     o := n-1
-    for i < n {
+    for i < n && e < n && o >= 0 {
         numIsEven := nums[i] % 2 == 0
         idxIsEven := i % 2 == 0
         numIsOdd := !numIsEven
