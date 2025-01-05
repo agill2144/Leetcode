@@ -6,23 +6,14 @@
  * }
  */
 func reverseList(head *ListNode) *ListNode {
-    var dfs func(curr *ListNode) *ListNode
-    dfs = func(curr *ListNode) *ListNode {
-        // base
-        if curr == nil {return nil}
-
-        // logic
-        tail := dfs(curr.Next)
-        if curr.Next == nil {
-            // we are at the tail end of original LL
-            // the tail is the new head, therefore return it
-            return curr
-        } else {
-            // next node's next ptr should point to me!
-            curr.Next.Next = curr
-            curr.Next = nil
-        }
-        return tail
+    if head == nil || head.Next == nil {return head}
+    var prev *ListNode
+    curr := head
+    for curr != nil {
+        next := curr.Next
+        curr.Next = prev
+        prev = curr
+        curr = next
     }
-    return dfs(head)
+    return prev
 }
