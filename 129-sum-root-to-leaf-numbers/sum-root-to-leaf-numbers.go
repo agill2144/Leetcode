@@ -15,7 +15,10 @@ func sumNumbers(root *TreeNode) int {
 
         // logic
         path = path * 10 + r.Val
-        if r.Left == nil && r.Right == nil {total += path; return}
+        if r.Left == nil && r.Right == nil {
+            total += path
+            return
+        }
         dfs(r.Left, path)
         dfs(r.Right, path)
     }
