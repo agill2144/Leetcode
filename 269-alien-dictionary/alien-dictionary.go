@@ -5,48 +5,45 @@ func alienOrder(words []string) string {
             adjList[words[i][k]] = []byte{}
         }
     }
-    indegrees := make([]int, 26)
+
     for i := 0; i < len(words)-1; i++ {
         parent := words[i]
         child := words[i+1]
-        p,c := 0, 0
+        p, c := 0, 0
         for p < len(parent) && c < len(child) {
             if parent[p] != child[c] {
                 adjList[parent[p]] = append(adjList[parent[p]], child[c])
-                indegrees[int(child[c]-'a')]++
                 break
             }
             p++; c++
         }
-        // this is not lexicographically sorted!
-        if c == len(child) && p < len(parent) {
-            return ""
-        }
+        if c == len(child) && p < len(parent) {return ""}
     }
-    countToBeProcessed := 0
-    q := []byte{}
-    for i := 0; i < len(indegrees); i++ {
-        char := byte('a'+i)
-        if adjList[char] != nil {
-            countToBeProcessed++
-            if indegrees[i] == 0 {q = append(q, char)}
+    st := []byte{}
+    visited := make([]bool, 26)
+    var dfs func(node byte, path []bool) bool
+    dfs = func(node byte, path []bool) bool {
+        // base
+        if path[int(node-'a')] {return false}
+        if visited[int(node-'a')] {return true}
+
+        // logic
+        visited[int(node-'a')] = true
+        path[int(node-'a')] = true
+        for _, nei := range adjList[node] {
+            if !dfs(nei, path) {return false}
         }
+        st = append(st, node)
+        path[int(node-'a')] = false
+        return true
     }
-    if len(q) == 0 {return ""}
-    res := new(strings.Builder)
-    for len(q) != 0 {
-        dq := q[0]
-        q = q[1:]
-        countToBeProcessed--
-        res.WriteByte(dq)
-        for _, nei := range adjList[dq] {
-            indegrees[int(nei-'a')]--
-            if indegrees[int(nei-'a')] == 0 {
-                q = append(q, nei)
-            }
-        }
+    p := make([]bool, 26)
+    for k, _ := range adjList {
+        if !dfs(k, p){return ""}
     }
-    if countToBeProcessed != 0 {return ""}
+    res := &strings.Builder{}
+    for i := len(st)-1; i >= 0; i-- {
+        res.WriteByte(st[i])
+    }
     return res.String()
-    
 }
