@@ -1,15 +1,12 @@
 func canBeEqual(target []int, arr []int) bool {
-    // only possible if arr[i] exists in target x number of times
-    tf := map[int]int{}
+    tFreq := map[int]int{}
     for i := 0; i < len(target); i++ {
-        tf[target[i]]++
+        tFreq[target[i]]++
     }
     for i := 0; i < len(arr); i++ {
-        c, ok := tf[arr[i]]
-        if ok {
-            tf[arr[i]]--
-            if c == 1 {delete(tf, arr[i])}
-        }
+        if tFreq[arr[i]] == 0 {return false}
+        tFreq[arr[i]]--
+        if tFreq[arr[i]] == 0 {delete(tFreq, arr[i])}
     }
-    return len(tf) == 0
+    return len(tFreq) == 0 
 }
