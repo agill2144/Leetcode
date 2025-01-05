@@ -23,6 +23,7 @@ func cleanRoom(robot *Robot) {
     var dfs func(r, c int, currDir int)
     dfs = func(r, c int, currDir int) {
         // base
+        if visited[[2]int{r,c}] {return}
 
         // logic
         visited[[2]int{r,c}] = true
