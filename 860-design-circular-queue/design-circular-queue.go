@@ -1,50 +1,51 @@
 type MyCircularQueue struct {
-    reader int
-    writer int
-    data []int
-    k int
-    count int
+    count int    
+    w int
+    r int
+    nums []int
 }
 
 
 func Constructor(k int) MyCircularQueue {
     return MyCircularQueue{
-        reader: 0,
-        writer: 0,
-        data: make([]int, k),
-        k: k,
-        count: 0,
-    }
+        nums: make([]int, k),
+    }    
 }
-
 
 
 func (this *MyCircularQueue) EnQueue(value int) bool {
     if this.IsFull() {return false}
-    this.data[this.writer % this.k] = value
+    k := len(this.nums)
+    this.nums[this.w%k] = value
     this.count++
-    this.writer++  
-    return true  
+    this.w++
+    return true
 }
 
 
 func (this *MyCircularQueue) DeQueue() bool {
     if this.IsEmpty() {return false}
-    this.reader++
+    k := len(this.nums)
+    this.nums[this.r%k] = 0
     this.count--
+    this.r++
     return true
 }
 
 
 func (this *MyCircularQueue) Front() int {
     if this.IsEmpty() {return -1}
-    return this.data[this.reader % this.k]
+    k := len(this.nums)
+    return this.nums[this.r%k]        
 }
 
 
 func (this *MyCircularQueue) Rear() int {
     if this.IsEmpty() {return -1}
-    return this.data[(this.writer-1) % this.k]
+    k := len(this.nums)
+    w := (this.w%k)-1
+    if w == -1 {w = k-1}
+    return this.nums[w]
 }
 
 
@@ -54,7 +55,7 @@ func (this *MyCircularQueue) IsEmpty() bool {
 
 
 func (this *MyCircularQueue) IsFull() bool {
-    return this.count == this.k
+    return this.count == len(this.nums)
 }
 
 
