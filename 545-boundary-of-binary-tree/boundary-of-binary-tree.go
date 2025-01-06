@@ -6,33 +6,35 @@
  *     Right *TreeNode
  * }
  */
+
+
 /*
-    0 = root ( curr node is root )
-    1 = left boundary node ( curr node is left boundary )
-    2 = right boundary node ( curr node is right boundary )
-    3 = middle node ( curr node is middle node )
+    0 = root
+    1 = left
+    2 = right
+    3 = middle
 */
+
 func boundaryOfBinaryTree(root *TreeNode) []int {
+    if root == nil {return nil}
     left := []int{}
-    right := []int{}
     leaves := []int{}
-    var dfs func(r *TreeNode, state int)
-    dfs = func(r *TreeNode, state int) {
+    right := []int{}
+    var dfs func(r *TreeNode, id int)
+    dfs = func(r *TreeNode, id int) {
         // base
         if r == nil {return}
-
+        
         // logic
-        if state == 0 {
-            left = append(left, r.Val)
-        } else if state == 1 {
-            left = append(left, r.Val)
-        } else if state == 2 {
-            right = append(right, r.Val)
-        } else if r.Left == nil && r.Right == nil {
+        if r.Left == nil && r.Right == nil {
             leaves = append(leaves, r.Val)
+        } else if id == 0 || id == 1 {
+            left = append(left, r.Val)
+        } else if id == 2 {
+            right = append(right, r.Val)
         }
-        dfs(r.Left, leftState(r,state))
-        dfs(r.Right, rightState(r,state))
+        dfs(r.Left, leftID(r,id))
+        dfs(r.Right, rightID(r,id))
     }
     dfs(root, 0)
     left = append(left, leaves...)
@@ -43,20 +45,31 @@ func boundaryOfBinaryTree(root *TreeNode) []int {
 }
 
 
-func leftState(r *TreeNode, curr int) int {
-    if curr == 0 || curr == 1 {
+
+func leftID(r *TreeNode, currID int) int {
+    if currID == 0 || currID == 1 {
+        // root's left will always be a left boundary node
+        // or 
+        // an current left boundary node's left will always be a left node!
         return 1
-    } else if curr == 2 {
-        if r.Right == nil {return 2}
+    } else if currID == 2 {
+        if r.Right == nil {
+            return 2
+        }
     }
     return 3
 }
 
-func rightState(r *TreeNode, curr int) int {
-    if curr == 0 || curr == 2 {
+func rightID(r *TreeNode, currID int) int {
+    if currID == 0 || currID == 2{
+        // root's right will always be a right boundary node
+        // or 
+        // an current right boundary node's right will always be a right node!
         return 2
-    } else if curr == 1 {
-        if r.Left == nil {return 1}
+    } else if currID == 1 {
+        if r.Left == nil {
+            return 1
+        }
     }
     return 3
-}
+} 
