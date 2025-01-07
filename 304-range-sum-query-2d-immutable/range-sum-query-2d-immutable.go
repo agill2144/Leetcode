@@ -16,7 +16,7 @@ func Constructor(matrix [][]int) NumMatrix {
             if j-1 >= 0 {left = fullSum[i][j-1]}
             overlapping := 0
             if i-1 >= 0 && j-1 >= 0 {overlapping = fullSum[i-1][j-1]}
-            fullSum[i][j] = matrix[i][j] + left + top - overlapping
+            fullSum[i][j] = matrix[i][j] + top + left - overlapping
         }
     }
     return NumMatrix{fullSum}
@@ -25,8 +25,8 @@ func Constructor(matrix [][]int) NumMatrix {
 
 func (this *NumMatrix) SumRegion(row1 int, col1 int, row2 int, col2 int) int {
     total := this.fullSum[row2][col2]
-    if row1-1 >= 0 { total -= this.fullSum[row1-1][col2] }
-    if col1-1 >= 0 { total -= this.fullSum[row2][col1-1] }
+    if col1-1 >= 0 {total -= this.fullSum[row2][col1-1]}
+    if row1-1 >= 0 {total -= this.fullSum[row1-1][col2]}
     if row1-1 >= 0 && col1-1 >= 0 {total += this.fullSum[row1-1][col1-1]}
     return total
 }
