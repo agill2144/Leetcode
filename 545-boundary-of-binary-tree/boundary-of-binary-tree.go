@@ -15,7 +15,7 @@ approach: naive, 3-4 passes
 - reverse right
 - return concat ( left + leaves + right )
 tc = o(n)
-sc = o(4n)
+sc = o(n) = recursion space
 
 approach: top-down / preorder recursion, 2 passes
 - marking nodes with an ID
@@ -43,56 +43,59 @@ approach: top-down / preorder recursion, 2 passes
 - reucrse right, with right child's ID ( parent will identify this value and pass down the value to the recursion )
 */
 
+/*
+    0 = root
+    1 = left
+    2 = right
+    3 = middle
+*/
+
 func boundaryOfBinaryTree(root *TreeNode) []int {
-    out := []int{root.Val}
-    getLeftNodes := func(r *TreeNode) {
-        for r != nil {
-            if r.Left == nil && r.Right == nil {return}
-            out = append(out, r.Val)
-            if r.Left != nil {
-                r = r.Left
-            } else {
-                r = r.Right
-            }
-        }
-    }
-    getLeftNodes(root.Left)
-    var leaves func(r *TreeNode)
-    leaves = func(r *TreeNode) {
+    left := []int{}
+    leaves := []int{}
+    right := []int{}
+    var dfs func(r *TreeNode, id int)
+    dfs = func(r *TreeNode, id int) {
         // base
         if r == nil {return}
 
         // logic
-        if r != root && r.Left == nil && r.Right == nil {
-            out = append(out, r.Val)
-            return
+        if r.Left == nil && r.Right == nil {
+            leaves = append(leaves, r.Val)
+        } else if id == 0 || id == 1 {
+            left = append(left, r.Val)
+        } else if id == 2 {
+            right = append(right, r.Val)
         }
-        leaves(r.Left)
-        leaves(r.Right)
-    }
-    leaves(root)
 
-    start := len(out)
-    getRightNodes := func(r *TreeNode) {
-        for r != nil {
-            if r.Left == nil && r.Right == nil {return}
-            out = append(out, r.Val)
-            if r.Right != nil {
-                r = r.Right
-            } else {
-                r = r.Left
-            }
-        }
+        dfs(r.Left, leftID(r, id))
+        dfs(r.Right, rightID(r, id))
     }
-    getRightNodes(root.Right)
-    end := len(out)-1
-    for start < end {
-        out[start], out[end] = out[end], out[start]
-        start++
-        end-- 
+    dfs(root, 0)
+    left = append(left, leaves...)
+    for i := len(right)-1; i >= 0; i-- {
+        left = append(left, right[i])
     }
-
-    return out
+    return left
 }
 
-
+func leftID(r *TreeNode, currID int) int {
+    if currID == 0 || currID == 1 {
+        return 1
+    } else if currID == 2 {
+        if r.Right == nil {
+            return 2
+        }
+    }
+    return 3
+}
+func rightID(r *TreeNode, currID int) int {
+    if currID == 0 || currID == 2 {
+        return 2
+    } else if currID == 1 {
+        if r.Left == nil {
+            return 1
+        }
+    }
+    return 3
+}
