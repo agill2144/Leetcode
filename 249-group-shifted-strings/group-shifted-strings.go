@@ -12,7 +12,7 @@ func groupStrings(strings []string) [][]string {
 }
 
 func hash(word string) string {
-    if len(word) == 1 {return ""} 
+    if len(word) == 1 {return "0"} 
     res := new(strings.Builder)
     for i := 1; i < len(word); i++ {
         diff := int(word[i]-'a') - int(word[i-1]-'a')
