@@ -19,13 +19,14 @@ func sortedListToBST(head *ListNode) *TreeNode {
     dfs = func(left, right int) *TreeNode {
         // base
         if left > right {return nil}
+
         // logic
-        mid := left+(right-left)/2
-        leftNode := dfs(left, mid-1)
+        mid := left + (right-left)/2
+        leftChild := dfs(left, mid-1)
         if head != nil {
             root := &TreeNode{Val: head.Val}
             head = head.Next
-            root.Left = leftNode
+            root.Left = leftChild
             root.Right = dfs(mid+1, right)
             return root
         }
@@ -43,29 +44,3 @@ func size(head *ListNode) int {
     }
     return n
 }
-// func sortedListToBST(head *ListNode) *TreeNode {
-//     var dfs func(curr *ListNode) *TreeNode
-//     dfs = func(curr *ListNode) *TreeNode {
-//         // base
-//         if curr == nil {return nil}
-//         if curr.Next == nil {
-//             return &TreeNode{Val: curr.Val}
-//         }
-
-//         // logic
-//         var prev *ListNode
-//         slow := curr
-//         fast := curr
-//         for fast != nil && fast.Next != nil {
-//             prev = slow
-//             slow = slow.Next
-//             fast = fast.Next.Next
-//         }
-//         prev.Next = nil
-//         root := &TreeNode{Val: slow.Val}
-//         root.Left = dfs(curr)
-//         root.Right = dfs(slow.Next)
-//         return root
-//     }
-//     return dfs(head)
-// }
