@@ -15,20 +15,20 @@ func isPalindrome(head *ListNode) bool {
         slow = slow.Next
         fast = fast.Next.Next
     }
-    // head2 is slow the ptr
-    head2 := reverse(slow)
     prev.Next = nil
-    for head != nil && head2 != nil {
-        if head.Val != head2.Val {return false}
+    h2 := reverse(slow)
+    for head != nil && h2 != nil {
+        if head.Val != h2.Val {return false}
         head = head.Next
-        head2 = head2.Next
+        h2 = h2.Next
     }
     return true
 }
 
 func reverse(head *ListNode) *ListNode {
-    var prev *ListNode
+    if head == nil || head.Next == nil {return head}
     curr := head
+    var prev *ListNode
     for curr != nil {
         next := curr.Next
         curr.Next = prev
