@@ -1,3 +1,4 @@
+// sliding win optimization: take bigger jumps ( by storing idx of positions we want to jump over )
 func lengthOfLongestSubstring(s string) int {
     if len(s) == 0 {return 0}
     res := 0
