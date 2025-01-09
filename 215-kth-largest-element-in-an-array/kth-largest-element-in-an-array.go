@@ -4,6 +4,8 @@ func findKthLargest(nums []int, k int) int {
         start = min(start, nums[i])
         end = max(end, nums[i])
     }
+    // why cant we use a normal bucket array ?
+    // because we have negative values
     bucket := map[int]int{}
     for i := 0; i < len(nums); i++ {
         bucket[nums[i]]++
