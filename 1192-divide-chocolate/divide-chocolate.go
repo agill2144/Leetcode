@@ -9,6 +9,11 @@
     space = o(1)
 
     Key take away
+    - is there a monotonic behavior ?
+        - sweetness increases, chunks count decreases
+        - sweetness decreases, chunks count increases
+        - the two values are never going the same way, they are going opposite from each other
+        - yes, monotinic in nature
     - always check wether our ans lies within a range or not
         - see if a simple range loop can give us a brute force solution
     - minimum total sweetness is maximized
