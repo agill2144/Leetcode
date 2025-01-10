@@ -12,7 +12,7 @@ func validWordAbbreviation(word string, abbr string) bool {
             n = 0
         }
         if a >= len(abbr) || w >= len(word) {
-            break
+            return n == 0 && w == len(word) && a == len(abbr)
         }
         if abbr[a] != word[w] {return false}
         a++
