@@ -15,7 +15,7 @@ func isNumber(s string) bool {
             if !seenDig || seenExp || i == n-1 {return false}
             seenExp = true
         } else if s[i] == '+' || s[i] == '-' {
-            if i == n-1 || (i-1 >= 0 && (s[i-1] !='e' && s[i-1] != 'E')) {return false}
+            if i == n-1 || (s[i-1] != 'e' && s[i-1] != 'E') {return false}
         } else {
             return false
         }
