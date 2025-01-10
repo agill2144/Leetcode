@@ -7,16 +7,34 @@
  * }
  */
 func isCompleteTree(root *TreeNode) bool {
-    if root == nil {return true}
-    q := []*TreeNode{root}
-    seenNil := false
-    for len(q) != 0 {
-        dq := q[0]
-        q = q[1:]
-        if dq == nil {seenNil = true; continue}
-        if seenNil {return false}
-        q = append(q, dq.Left)
-        q = append(q, dq.Right)
+    n := size(root)
+    var dfs func(r *TreeNode, idx int) bool
+    dfs = func(r *TreeNode, idx int) bool {
+        // base
+        if r == nil {return true}
+
+        // logic
+        if idx >= n {return false}
+        if !dfs(r.Left, 2*idx+1) {return false}
+        if !dfs(r.Right, 2*idx+2) {return false}
+        return true
     }
-    return true
+    return dfs(root, 0)
+}
+
+func size(root *TreeNode) int {
+    if root == nil {return 0}
+    count := 0 
+    var dfs func(r *TreeNode)
+    dfs = func(r *TreeNode) {
+        // base
+        if r == nil {return }
+
+        // logic
+        count++
+        dfs(r.Left)
+        dfs(r.Right)
+    }
+    dfs(root)
+    return count
 }
