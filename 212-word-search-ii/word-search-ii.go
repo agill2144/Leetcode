@@ -17,9 +17,9 @@ func findWords(board [][]byte, words []string) []string {
         idx := int(board[r][c]-'a')
         curr = curr.childs[idx]
         if curr == nil {return}
-        if curr.isEnd && !curr.used {
-            curr.used = true
+        if curr.word != "" {
             out = append(out, curr.word)
+            curr.word = ""
         }
         tmp := board[r][c]
         board[r][c] = '#'
@@ -39,7 +39,6 @@ func findWords(board [][]byte, words []string) []string {
 
 type trieNode struct {
     isEnd bool
-    used bool
     word string
     childs [26]*trieNode
 }
