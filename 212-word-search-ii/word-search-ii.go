@@ -6,20 +6,21 @@ func findWords(board [][]byte, words []string) []string {
     m := len(board)
     n := len(board[0])
     dirs := [][]int{{-1,0},{1,0},{0,-1},{0,1}}
-    set := map[string]bool{}
+    out := []string{}
     var dfs func(r, c int, curr *trieNode, path string) 
     dfs = func(r, c int, curr *trieNode, path string) {
         // base
-        if r < 0 || r == m || c < 0 || c == n || board[r][c] == '#' || curr == nil || curr.childs[int(board[r][c]-'a')] == nil {return}
+        if r < 0 || r == m || c < 0 || c == n || board[r][c] == '#' || curr == nil  {return}
         
         
         // logic
         idx := int(board[r][c]-'a')
         tmp := board[r][c]
-        board[r][c] = '#'
         path += string(tmp)
         curr = curr.childs[idx]
-        if curr.isEnd {set[path] = true}
+        if curr == nil {return}
+        if curr.isEnd && !curr.used {curr.used = true; out = append(out, path)}
+        board[r][c] = '#'
         for _, dir := range dirs {
             dfs(r+dir[0], c+dir[1], curr, path) 
         }
@@ -30,13 +31,12 @@ func findWords(board [][]byte, words []string) []string {
             dfs(i, j, root, "")
         }
     }
-    out := []string{}
-    for k, _ := range set {out = append(out, k)}
     return out
 }
 
 type trieNode struct {
     isEnd bool
+    used bool
     childs [26]*trieNode
 }
 
