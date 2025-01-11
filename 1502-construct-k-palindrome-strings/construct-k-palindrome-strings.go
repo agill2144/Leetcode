@@ -9,5 +9,6 @@ func canConstruct(s string, k int) bool {
     for i := 0; i < len(freq); i++ {
         if freq[i] % 2 != 0 {oddCount++}
     }
-    return oddCount <= k
+    oddCount -= k
+    return oddCount <= 0
 }
