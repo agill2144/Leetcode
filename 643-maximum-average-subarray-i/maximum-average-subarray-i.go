@@ -5,8 +5,7 @@ func findMaxAverage(nums []int, k int) float64 {
     for i := 0; i < len(nums); i++ {
         sum += nums[i]
         if i-left+1 == k {
-            avg := float64(sum) / float64(k)
-            if avg > res {res = avg}
+            res = max(res, float64(sum)/float64(k))
             sum -= nums[left]
             left++
         }
