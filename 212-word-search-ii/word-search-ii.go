@@ -7,10 +7,11 @@ func findWords(board [][]byte, words []string) []string {
     n := len(board[0])
     dirs := [][]int{{-1,0},{1,0},{0,-1},{0,1}}
     out := []string{}
+    var visited byte = '#'
     var dfs func(r, c int, curr *trieNode) 
     dfs = func(r, c int, curr *trieNode) {
         // base
-        if r < 0 || r == m || c < 0 || c == n || board[r][c] == '#' || curr == nil  {return}
+        if r < 0 || r == m || c < 0 || c == n || board[r][c] == visited || curr == nil  {return}
         
         
         // logic
@@ -19,10 +20,12 @@ func findWords(board [][]byte, words []string) []string {
         if curr == nil {return}
         if curr.word != "" {
             out = append(out, curr.word)
+            // remove the word from being used again
+            // this is acting like our hashset
             curr.word = ""
         }
         tmp := board[r][c]
-        board[r][c] = '#'
+        board[r][c] = visited
         for _, dir := range dirs {
             dfs(r+dir[0], c+dir[1], curr) 
         }
