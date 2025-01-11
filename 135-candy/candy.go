@@ -1,22 +1,30 @@
 func candy(ratings []int) int {
     n := len(ratings)
-    count := make([]int, n)
-    for i := 0; i < len(ratings); i++ {
-        count[i] = 1
-        curr := ratings[i]
-        prev := math.MaxInt64
-        if i-1 >= 0 {prev = ratings[i-1]}
-        if curr > prev {
-            count[i] = count[i-1]+1
+    total := n
+    peakSum := 0
+    valleySum := 0
+    i := 1
+    for i < len(ratings) {
+        for i < len(ratings) && ratings[i] == ratings[i-1] {
+            i++
+            continue
         }
-    }
-    total := 0
-    for i := n-1; i >= 0; i-- {
-        curr := ratings[i]
-        prev := math.MaxInt64
-        if i+1 < n {prev = ratings[i+1]}
-        if curr > prev && count[i] <= count[i+1] {count[i] = count[i+1]+1}
-        total += count[i]
+        if i == len(ratings) {break}
+
+        for i < len(ratings) && ratings[i] > ratings[i-1] {
+            peakSum++
+            i++
+        }
+        for i < len(ratings) && ratings[i] < ratings[i-1] {
+            valleySum++
+            i++
+        }
+
+        t := ((peakSum*(peakSum+1))/2) + ((valleySum*(valleySum+1))/2)
+        t -= min(peakSum,valleySum)
+        total += t
+        peakSum = 0
+        valleySum = 0
     }
     return total
 }
