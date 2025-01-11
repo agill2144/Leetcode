@@ -1,16 +1,16 @@
 func pickGifts(gifts []int, k int) int64 {
     mx := &maxHeap{items:[]int{}}
+    var total int64
     for i := 0; i < len(gifts); i++ {
         heap.Push(mx, gifts[i])
+        total += int64(gifts[i])
     }
     for mx.Len() != 0 && k != 0 {
         top := heap.Pop(mx).(int)
-        heap.Push(mx, int(math.Sqrt(float64(top))))
+        sqrt := int(math.Sqrt(float64(top)))
+        total -= int64(top-sqrt)
+        heap.Push(mx, sqrt)
         k--
-    }
-    var total int64
-    for mx.Len() != 0 {
-        total += int64(heap.Pop(mx).(int))
     }
     return total
 }
