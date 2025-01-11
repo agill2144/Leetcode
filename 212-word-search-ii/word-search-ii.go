@@ -15,10 +15,13 @@ func findWords(board [][]byte, words []string) []string {
         
         // logic
         idx := int(board[r][c]-'a')
-        tmp := board[r][c]
         curr = curr.childs[idx]
         if curr == nil {return}
-        if curr.isEnd && !curr.used {curr.used = true; out = append(out, curr.word)}
+        if curr.isEnd && !curr.used {
+            curr.used = true
+            out = append(out, curr.word)
+        }
+        tmp := board[r][c]
         board[r][c] = '#'
         for _, dir := range dirs {
             dfs(r+dir[0], c+dir[1], curr) 
@@ -27,6 +30,7 @@ func findWords(board [][]byte, words []string) []string {
     }
     for i := 0; i < len(board); i++ {
         for j := 0; j < len(board[0]); j++ {
+            if root.childs[int(board[i][j]-'a')] == nil {continue}
             dfs(i, j, root)
         }
     }
