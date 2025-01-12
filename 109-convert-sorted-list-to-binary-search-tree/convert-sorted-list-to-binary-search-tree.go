@@ -19,14 +19,13 @@ func sortedListToBST(head *ListNode) *TreeNode {
     dfs = func(left, right int) *TreeNode {
         // base
         if left > right {return nil}
-
         // logic
         mid := left + (right-left)/2
-        leftChild := dfs(left, mid-1)
+        leftNode := dfs(left, mid-1)
         if head != nil {
             root := &TreeNode{Val: head.Val}
             head = head.Next
-            root.Left = leftChild
+            root.Left = leftNode
             root.Right = dfs(mid+1, right)
             return root
         }
