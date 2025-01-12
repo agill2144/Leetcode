@@ -13,13 +13,11 @@ func minTime(n int, edges [][]int, hasApple []bool) int {
         total := 0
         for _, nei := range adjList[node] {
             if nei == prev {continue}
-            cCount := dfs(nei, node)
-            if cCount > 0  || hasApple[nei] {
-                total += cCount + 2
-            }
+            c := dfs(nei, node)
+            total += c
+            if c > 0 || hasApple[nei] {total += 2}
         }
         return total
     }
     return dfs(0,-1)
-    
 }
