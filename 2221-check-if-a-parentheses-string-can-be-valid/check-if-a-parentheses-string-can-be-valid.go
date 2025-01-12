@@ -1,3 +1,22 @@
+/*
+The stack intuition is same as valid parans with asteriks, when traversing the first time
+
+if we have a closing paran; do we have any open? do we have asteriks seen before?
+similarly
+if we have a closing paran; do we have any open? do we have any unlocks seen before?
+when traversing the second time, when we have open parans left
+
+we could only close them if the asteriks idxs appeared after open paran idxs
+similary
+we can only close open parans, if unlock idxs appeared after open paran idxs
+at the end, we must have closed all open parans ( i.e len of open paran stack should be 0 )
+but its possible that we still have left over unlock idxs.
+In the asteriks problem, we could ignore extra asteriks because we were allowed to discard them
+but in this question, we cannot discard them.
+Therefore if number of remaining unlocked idxs are even in size, we can assume that we can do some flips and make them valid, but if we had odd number of unlock idxs, its impossible to use-them-all and make them-all-valid.
+
+
+*/
 func canBeValid(s string, locked string) bool {
     if len(s) % 2 != 0 {return false}
     flexible := []int{}
@@ -17,13 +36,9 @@ func canBeValid(s string, locked string) bool {
             }
         }
     }
-    for len(open) > 0 && len(flexible) > 0 {
-        if flexible[len(flexible)-1] > open[len(open)-1] {
-            flexible = flexible[:len(flexible)-1]
-            open = open[:len(open)-1]
-            continue
-        }
-        break
+    for len(open) > 0 && len(flexible) > 0 && flexible[len(flexible)-1] > open[len(open)-1] {
+        flexible = flexible[:len(flexible)-1]
+        open = open[:len(open)-1]
     }
     return len(open) == 0 && len(flexible) % 2 == 0
 }
