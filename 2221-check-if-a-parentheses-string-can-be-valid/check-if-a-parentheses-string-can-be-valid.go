@@ -1,4 +1,5 @@
 func canBeValid(s string, locked string) bool {
+    if len(s) % 2 != 0 {return false}
     flexible := []int{}
     open := []int{}
     for i := 0; i < len(s); i++ {
