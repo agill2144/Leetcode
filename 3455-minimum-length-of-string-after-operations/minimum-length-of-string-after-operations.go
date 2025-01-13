@@ -12,9 +12,3 @@ func minimumLength(s string) int {
     }
     return n
 }
-
-// 3 - 2 = 1
-// 5 - 4 = 1
-// 6 - 5 = 1
-// abaacbcbb
-// {a:3, b:2, c:2, d:4}
