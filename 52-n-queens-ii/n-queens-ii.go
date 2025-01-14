@@ -1,3 +1,5 @@
+// tc = n!
+// sc = o(n)
 func totalNQueens(n int) int {
     matrix := make([][]bool, n)
     for i := 0; i < n; i++ {matrix[i] = make([]bool,n)}
