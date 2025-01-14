@@ -1,30 +1,26 @@
 func checkValidString(s string) bool {
-    asteriks := []int{} // idxs of asteriks
-    st := []int{} // idxs of open parans
+    asterik := []int{}
+    open := []int{}
     for i := 0; i < len(s); i++ {
-        if s[i] == '(' {
-            st = append(st, i)
+        if s[i] == '*' {
+            asterik = append(asterik, i)
+        } else if s[i] == '(' {
+            open = append(open, i)
         } else if s[i] == ')' {
-            if len(st) > 0 {
-                st = st[:len(st)-1]
-                continue
+            if len(open) > 0 {
+                open = open[:len(open)-1]
+            } else if len(asterik) > 0 {
+                asterik = asterik[:len(asterik)-1]
+            } else {
+                return false
             }
-            if len(asteriks) > 0 {
-                asteriks = asteriks[:len(asteriks)-1]
-                continue                
-            }
-            return false
-        } else if s[i] == '*' {
-            asteriks = append(asteriks, i)
         }
     }
-    for len(st) != 0 && len(asteriks) != 0 {
-        if asteriks[len(asteriks)-1] > st[len(st)-1] {
-            asteriks = asteriks[:len(asteriks)-1]
-            st = st[:len(st)-1]
-            continue
-        }
-        break
+    for len(open) > 0 && len(asterik) > 0 && 
+        asterik[len(asterik)-1] > open[len(open)-1] {
+            open = open[:len(open)-1]
+            asterik = asterik[:len(asterik)-1]
     }
-    return len(st) == 0
+    return len(open) == 0
+
 }
