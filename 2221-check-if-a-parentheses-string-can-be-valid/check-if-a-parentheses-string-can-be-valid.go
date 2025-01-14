@@ -1,3 +1,25 @@
+func canBeValid(s string, locked string) bool {
+    open := 0
+    for i := 0; i < len(s); i++ {
+        if locked[i] == '0' || s[i] == '(' {
+            open++
+        } else if s[i] == ')' {
+            open--
+            if open < 0 {return false}
+        }
+    }
+    close := 0
+    for i := len(s)-1; i >= 0; i-- {
+        if s[i] == ')' || locked[i] == '0' {
+            close++
+        } else if s[i] == '(' {
+            close--
+            if close < 0 {return false}
+        }
+    }
+    return open % 2 == 0 && close % 2 == 0
+}
+
 /*
 The stack intuition is same as valid parans with asteriks, when traversing the first time
 
@@ -17,28 +39,28 @@ Therefore if number of remaining unlocked idxs are even in size, we can assume t
 
 
 */
-func canBeValid(s string, locked string) bool {
-    if len(s) % 2 != 0 {return false}
-    flexible := []int{}
-    open := []int{}
-    for i := 0; i < len(s); i++ {
-        if locked[i] == '0' {
-            flexible = append(flexible, i)
-        } else if s[i] == '(' {
-            open = append(open, i)
-        } else if s[i] == ')' {
-            if len(open) > 0 {
-                open = open[:len(open)-1]
-            } else if len(flexible) > 0 {
-                flexible = flexible[:len(flexible)-1]
-            } else {
-                return false
-            }
-        }
-    }
-    for len(open) > 0 && len(flexible) > 0 && flexible[len(flexible)-1] > open[len(open)-1] {
-        flexible = flexible[:len(flexible)-1]
-        open = open[:len(open)-1]
-    }
-    return len(open) == 0 && len(flexible) % 2 == 0
-}
+// func canBeValid(s string, locked string) bool {
+//     if len(s) % 2 != 0 {return false}
+//     flexible := []int{}
+//     open := []int{}
+//     for i := 0; i < len(s); i++ {
+//         if locked[i] == '0' {
+//             flexible = append(flexible, i)
+//         } else if s[i] == '(' {
+//             open = append(open, i)
+//         } else if s[i] == ')' {
+//             if len(open) > 0 {
+//                 open = open[:len(open)-1]
+//             } else if len(flexible) > 0 {
+//                 flexible = flexible[:len(flexible)-1]
+//             } else {
+//                 return false
+//             }
+//         }
+//     }
+//     for len(open) > 0 && len(flexible) > 0 && flexible[len(flexible)-1] > open[len(open)-1] {
+//         flexible = flexible[:len(flexible)-1]
+//         open = open[:len(open)-1]
+//     }
+//     return len(open) == 0 && len(flexible) % 2 == 0
+// }
