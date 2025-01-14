@@ -1,22 +1,23 @@
 func canBeValid(s string, locked string) bool {
     open := 0
-    for i := 0; i < len(s); i++ {
+    close := 0
+    n := len(s)
+    for i := 0; i < n; i++ {
         if locked[i] == '0' || s[i] == '(' {
             open++
         } else if s[i] == ')' {
             open--
             if open < 0 {return false}
         }
-    }
-    close := 0
-    for i := len(s)-1; i >= 0; i-- {
-        if s[i] == ')' || locked[i] == '0' {
+
+        if locked[n-1-i] == '0' || s[n-1-i] == ')' {
             close++
-        } else if s[i] == '(' {
+        } else if s[n-1-i] == '(' {
             close--
             if close < 0 {return false}
         }
     }
+
     return open % 2 == 0 && close % 2 == 0
 }
 
