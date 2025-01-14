@@ -10,13 +10,13 @@ func Constructor(matrix [][]int) NumMatrix {
     for i := 0; i < m; i++ {
         fullSum[i] = make([]int, n)
         for j := 0; j < n; j++ {
-            top := 0
-            if i-1 >= 0 {top = fullSum[i-1][j]}
             left := 0
             if j-1 >= 0 {left = fullSum[i][j-1]}
+            top := 0
+            if i-1 >= 0 {top = fullSum[i-1][j]}
             overlapping := 0
-            if i-1 >= 0 && j-1 >= 0 {overlapping = fullSum[i-1][j-1]}
-            fullSum[i][j] = matrix[i][j] + top + left - overlapping
+            if i-1 >= 0 && j-1 >= 0 {overlapping=fullSum[i-1][j-1]}
+            fullSum[i][j] = matrix[i][j] + left + top - overlapping
         }
     }
     return NumMatrix{fullSum}
