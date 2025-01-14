@@ -1,3 +1,5 @@
+// bhai... matlab... who tf comes up with this SHIT ???? 
+// FUCK YOU 
 func checkValidString(s string) bool {
     open := 0
     close := 0
