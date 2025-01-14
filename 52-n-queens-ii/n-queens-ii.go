@@ -1,21 +1,22 @@
 func totalNQueens(n int) int {
+    matrix := make([][]bool, n)
+    for i := 0; i < n; i++ {matrix[i] = make([]bool,n)}
+    
     count := 0
-    board := make([][]byte, n)
-    for i := 0; i < n; i++ {board[i] = make([]byte, n)}
-    var dfs func(row int)
-    dfs = func(row int) {
+    var dfs func(r int) 
+    dfs = func(r int) {
         // base
-        if row == n {
+        if r == n {
             count++
             return
         }
 
         // logic
-        for j := 0; j < n; j++ {
-            if canPlace(board, row, j) {
-                board[row][j] = 'Q'
-                dfs(row+1)
-                board[row][j] = '.'
+        for i := 0; i < n; i++ {
+            if isSafe(matrix, r, i) {
+                matrix[r][i] = true
+                dfs(r+1)
+                matrix[r][i] = false
             }
         }
     }
@@ -23,15 +24,14 @@ func totalNQueens(n int) int {
     return count
 }
 
-
-func canPlace(board [][]byte, row, col int) bool {
-    n := len(board)
-    dirs := [][]int{{-1,0},{-1,-1},{-1,1}}
+func isSafe(matrix [][]bool, r, c int) bool {
+    dirs := [][]int{{-1,-1},{-1,1},{-1,0}}
+    n := len(matrix)
     for _, dir := range dirs {
-        nr := row+dir[0]
-        nc := col+dir[1]
+        nr := r+dir[0]
+        nc := c+dir[1]
         for nr >= 0 && nc >= 0 && nc < n {
-            if board[nr][nc] == 'Q' {return false}
+            if matrix[nr][nc] {return false}
             nr += dir[0]
             nc += dir[1]
         }
