@@ -13,21 +13,35 @@ func Constructor(nums []int) SparseVector {
 
 // Return the dotProduct of two sparse vectors
 func (this *SparseVector) dotProduct(vec SparseVector) int {
-    v1, v2 := 0,0
+    if len(vec.items) < len(this.items) {
+        return vec.dotProduct(*this)
+    }
+    // this items array will always be smaller
+    //  loop over smaller array ( this array )
+    //  use binary search over larger array ( vec array )
     total := 0
-    for v1 < len(this.items) && v2 < len(vec.items) {
-        v1Idx := this.items[v1][0]
-        v2Idx := vec.items[v2][0]
-        if v1Idx == v2Idx {
-            total += (this.items[v1][1] * vec.items[v2][1])
-            v1++; v2++
-        } else if v1Idx < v2Idx {
-            v1++ 
-        } else {
-            v2++
-        }
+    for i := 0; i < len(this.items); i++ {
+        idx := search(vec.items, this.items[i][0])
+        if idx == -1 {continue}
+        total += (this.items[i][1] * vec.items[idx][1])
     }
     return total
+}
+
+func search(items [][]int, targetIdx int) int {
+    left := 0
+    right := len(items)-1
+    for left <= right {
+        mid := left+(right-left)/2
+        if items[mid][0] == targetIdx {
+            return mid
+        } else if targetIdx > items[mid][0] {
+            left = mid+1
+        } else {
+            right = mid-1
+        }
+    }
+    return -1
 }
 
 /**
