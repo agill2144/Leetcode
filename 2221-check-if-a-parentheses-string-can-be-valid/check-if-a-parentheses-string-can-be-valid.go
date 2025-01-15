@@ -58,30 +58,76 @@
     - therefore we return true IF len(open) == 0 && len(unlocked) % 2 == 0 
     tc = o(2n)
     sc = o(2n)
+
+    approach: balance parans counter with o(1) space
+    - can we use counters? just like the ones in asteriks?
+    - yes, when taking a pass from left to right
+    - we are checking whether we have run into too many closing
+        - hence we treat unlocked chars as open parans
+    - but this does not guarantee that we do not have too many opens at the end?
+    - therefore take another pass from right to left
+    - in this pass, we check whether we have too many open parans?
+    - by treating unlocked char as a closing paran
+    - if our closing counter goes negative, it means have run into too many open parans
+    - at the end, if our counters are not 0 ?
+    - as long as the counters are divisible by 2, i.e we have even number of
+    - of opens and even number of closings, they are fine 
+    - becuase even number can be used to create balance parans everytime
+    - odd number of open or close at the end, tells us that there are 1 extra open/close
+    - dont care which one, but it means we cannot create balance parans
+    - out of odd number, therefore return false
+
+    tc = o(2n) = can be o(n) by simultaneously processing both ends
+    sc = o(1)
 */
+
 func canBeValid(s string, locked string) bool {
-    unlocked := []int{}
-    open := []int{}
-    for i := 0; i < len(s); i++ {
-        if locked[i] == '0' {
-            unlocked = append(unlocked, i)
-        } else if s[i] == '(' {
-            open = append(open,  i)
-        } else if s[i] == ')' {
-            if len(open) > 0 {
-                open = open[:len(open)-1]
-            } else if len(unlocked) > 0{
-                unlocked = unlocked[:len(unlocked)-1]
-            } else {
-                return false
-            }
-        }
-    }
-    for len(open) > 0 && len(unlocked) > 0 &&
-        unlocked[len(unlocked)-1] > open[len(open)-1] {
-            unlocked = unlocked[:len(unlocked)-1]
-            open = open[:len(open)-1]
+    open := 0
+    close := 0
+    n := len(s)
+    for i := 0; i < n; i++ {
+        if s[i] == '(' || locked[i] == '0' {
+            open++
+        } else {
+            open--
+            if open < 0 {return false}
         }
 
-    return len(open) == 0 && len(unlocked) % 2 == 0
+        if s[n-1-i] == ')' || locked[n-1-i] == '0' {
+            close++
+        } else {
+            close--
+            if close < 0 {return false}
+        }
+    }
+    // because we cannot discard remaining unlocked chars
+    // they must be even in count for us to them into 
+    // balanced pairs of parans
+    return open % 2 == 0 && close % 2 == 0
 }
+// func canBeValid(s string, locked string) bool {
+//     unlocked := []int{}
+//     open := []int{}
+//     for i := 0; i < len(s); i++ {
+//         if locked[i] == '0' {
+//             unlocked = append(unlocked, i)
+//         } else if s[i] == '(' {
+//             open = append(open,  i)
+//         } else if s[i] == ')' {
+//             if len(open) > 0 {
+//                 open = open[:len(open)-1]
+//             } else if len(unlocked) > 0{
+//                 unlocked = unlocked[:len(unlocked)-1]
+//             } else {
+//                 return false
+//             }
+//         }
+//     }
+//     for len(open) > 0 && len(unlocked) > 0 &&
+//         unlocked[len(unlocked)-1] > open[len(open)-1] {
+//             unlocked = unlocked[:len(unlocked)-1]
+//             open = open[:len(open)-1]
+//         }
+
+//     return len(open) == 0 && len(unlocked) % 2 == 0
+// }
