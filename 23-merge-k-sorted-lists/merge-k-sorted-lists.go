@@ -5,43 +5,34 @@
  *     Next *ListNode
  * }
  */
-
-// N = total number of nodes in final LL
-// k = number of LL's in lists array
-// tc = N * logk
-// sc = 1
 func mergeKLists(lists []*ListNode) *ListNode {
     if len(lists) == 0 {return nil}
-    pairIncr := 1
-    iIncr := 2
-    for pairIncr < len(lists) {
-        for i := 0; i+pairIncr < len(lists); i += iIncr {
-            lists[i] = merge2Lists(lists[i], lists[i+pairIncr])
-        }
-        pairIncr *= 2
-        iIncr *= 2
+    head := lists[0]
+    for i := 1; i < len(lists); i++ {
+        head = merge2Lists(head, lists[i])
     }
-    return lists[0]
+    return head
 }
 
-func merge2Lists(l1, l2 *ListNode) *ListNode {
-    if l1 == nil {return l2}
-    if l2 == nil {return l1}
-    head := &ListNode{Val: 0}
-    tail := head
-    for l1 != nil || l2 != nil {
+func merge2Lists(list1, list2 *ListNode) *ListNode {
+    if list1 == nil {return list2}
+    if list2 == nil {return list1}
+    dummy := &ListNode{}
+    tail := dummy
+    for list1 != nil || list2 != nil {
         l1Val := math.MaxInt64
-        if l1 != nil {l1Val = l1.Val}
         l2Val := math.MaxInt64
-        if l2 != nil {l2Val = l2.Val}
+        if list1 != nil {l1Val = list1.Val}
+        if list2 != nil {l2Val = list2.Val}
         if l1Val < l2Val {
-            tail.Next = &ListNode{Val: l1Val}
-            l1 = l1.Next
+            tail.Next = list1
+            tail = tail.Next
+            list1 = list1.Next
         } else {
-            tail.Next = &ListNode{Val: l2Val}
-            l2 = l2.Next
+            tail.Next = list2
+            tail = tail.Next
+            list2 = list2.Next
         }
-        tail = tail.Next
     }
-    return head.Next
+    return dummy.Next
 }
