@@ -1,34 +1,36 @@
 func insert(intervals [][]int, newInterval []int) [][]int {
     if len(intervals) == 0 {return [][]int{newInterval}}
-    // move i ptr where this interval should be inserted at
     out := [][]int{}
     i := 0
-    for i < len(intervals) {
-        if intervals[i][0] <= newInterval[0] {
-            out = append(out, intervals[i])
-            i++
-            continue
-        }
-        break
+    n := len(intervals)
+
+    // insert whatever we can from intervals list first
+    // any interval whose start time is before-or-equal-to newIntervals
+    // start time, it can be placed before newInterval
+    for i < n && intervals[i][0] <= newInterval[0] {
+        out = append(out, intervals[i])
+        i++
     }
 
-    // now insert the newInterval
-    // but could this new interval overlap with last interval inserted?
-    // yes
-    start, end := newInterval[0], newInterval[1]
-    if len(out) > 0 && start <= out[len(out)-1][1] {
-        out[len(out)-1][1] = max(out[len(out)-1][1],end)
+    // now place the new interval
+    // NOTE: its possible that this new interval
+    // could overlap with what we last inserted
+    // if yes, merge the overlap
+    // if no, insert new interval as-is
+    if len(out) > 0 && newInterval[0] <= out[len(out)-1][1] {
+        out[len(out)-1][1] = max(out[len(out)-1][1], newInterval[1])
     } else {
         out = append(out, newInterval)
     }
-    // now add the rest of remaining intervals
-    // while merging overlaps
-    for i < len(intervals) {
+
+    // now add the remaining left over intervals
+    // while merging if there are overlap with last inserted interval
+    for i < n {
         start, end := intervals[i][0], intervals[i][1]
-        lastStart, lastEnd := out[len(out)-1][0], out[len(out)-1][1]
-        if start <= lastEnd {
-            out[len(out)-1][0] = min(lastStart, start)
-            out[len(out)-1][1] = max(lastEnd,end)
+        prevStart, prevEnd := out[len(out)-1][0], out[len(out)-1][1]
+        if start <= prevEnd {
+            out[len(out)-1][0] = min(start, prevStart)
+            out[len(out)-1][1] = max(end, prevEnd)
         } else {
             out = append(out, intervals[i])
         }
@@ -36,4 +38,5 @@ func insert(intervals [][]int, newInterval []int) [][]int {
     }
     return out
 
+    
 }
