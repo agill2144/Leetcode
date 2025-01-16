@@ -1,4 +1,11 @@
 /*
+    approach: brute force
+    - append at the end of intervals list
+    - sort by start time
+    - merge overlapping intervals into a new output array
+    tc = o(nlogn) + o(n)
+    sc = o(n) if counting space for sorting, otherwise o(1)
+
     approach: 2 passes
     1. insert whatever we can from intervals list first
         - any interval whose start time is before-or-equal-to newIntervals
