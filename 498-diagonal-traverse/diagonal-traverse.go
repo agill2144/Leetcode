@@ -1,14 +1,14 @@
-func findDiagonalOrder(matrix [][]int) []int {
-    m := len(matrix)
-    n := len(matrix[0])
+func findDiagonalOrder(mat [][]int) []int {
+    m := len(mat)
+    n := len(mat[0])
     r := 0
     c := 0
-    up := true
     out := []int{}
-    for len(out) < m*n {
-        out = append(out, matrix[r][c])
+    up := true
+    for len(out) != m*n {
+        out = append(out, mat[r][c])
         if up {
-            if  c == n-1 {
+            if c == n-1 {
                 r++
                 up = false
             } else if r == 0 {
@@ -19,7 +19,7 @@ func findDiagonalOrder(matrix [][]int) []int {
                 c++
             }
         } else {
-            if r == m-1  {
+            if r == m-1 {
                 c++
                 up = true
             } else if c == 0 {
