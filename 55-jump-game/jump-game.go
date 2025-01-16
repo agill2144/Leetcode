@@ -1,4 +1,12 @@
-// jump in windows
+/*
+    approach: greedy
+    - jump in windows
+    - from an ith position, keep track of how far you can jump
+    - and then go to next ith position, and update right idx as needed
+    - keep doing this as long as i <= right idx
+    tc = o(n)
+    sc = o(1)
+*/
 func canJump(nums []int) bool {
     right := 0
     i := 0
