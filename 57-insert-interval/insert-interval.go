@@ -1,3 +1,20 @@
+/*
+    approach: 2 passes
+    1. insert whatever we can from intervals list first
+        - any interval whose start time is before-or-equal-to newIntervals
+        - start time, it can be placed before newInterval
+    2. now add the new interval
+        - its possible that this new interval
+        - could overlap with what we last inserted
+        - if yes, merge the overlap
+        - if no, insert new interval as-is
+    3. now add the remaining left over intervals
+        - while merging if there 
+            are overlap with last inserted interval
+
+    tc = o(n)
+    sc = o(1)
+*/
 func insert(intervals [][]int, newInterval []int) [][]int {
     if len(intervals) == 0 {return [][]int{newInterval}}
     out := [][]int{}
