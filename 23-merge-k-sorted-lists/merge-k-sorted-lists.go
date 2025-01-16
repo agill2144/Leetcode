@@ -7,11 +7,19 @@
  */
 func mergeKLists(lists []*ListNode) *ListNode {
     if len(lists) == 0 {return nil}
-    head := lists[0]
-    for i := 1; i < len(lists); i++ {
-        head = merge2Lists(head, lists[i])
+    var dfs func(left, right int) *ListNode
+    dfs = func(left, right int) *ListNode {
+        // base
+        if left == right {return lists[left]}
+        if left > right {return nil}
+
+        // logic
+        mid := left + (right-left)/2
+        leftSorted := dfs(left, mid)
+        rightSorted := dfs(mid+1, right)
+        return merge2Lists(leftSorted, rightSorted)
     }
-    return head
+    return dfs(0, len(lists)-1)
 }
 
 func merge2Lists(list1, list2 *ListNode) *ListNode {
