@@ -1,20 +1,31 @@
+/*
+    approach: maxHeap
+    - we have to take the largest val
+    - and update it with sqrt of that val
+    - then get the next highest val ( could be the same val we just updated )
+    - therefore we need to constantly sort
+    - and since we want the max each time
+    - heap / max heap
+
+    tc = 
+*/
 func pickGifts(gifts []int, k int) int64 {
-    mx := &maxHeap{items:[]int{}}
+    mx := &maxHeap{items: []int{}}
     var total int64
     for i := 0; i < len(gifts); i++ {
-        heap.Push(mx, gifts[i])
         total += int64(gifts[i])
+        heap.Push(mx, gifts[i])
     }
-    for mx.Len() != 0 && k != 0 {
+    for k != 0 {
         top := heap.Pop(mx).(int)
         sqrt := int(math.Sqrt(float64(top)))
-        total -= int64(top-sqrt)
+        diff := int64(top)-int64(sqrt)
+        total -= diff
         heap.Push(mx, sqrt)
         k--
     }
     return total
 }
-
 
 type maxHeap struct {
 	items []int
