@@ -1,25 +1,19 @@
 func smallerNumbersThanCurrent(nums []int) []int {
-    start := math.MaxInt64
-    end := math.MinInt64
-    for i := 0; i < len(nums); i++ {
-        start = min(start, nums[i])
-        end = max(end, nums[i])
+    n := len(nums)
+    pairs := [][]int{}
+    for i := 0; i < n; i++ {
+        pairs = append(pairs, []int{nums[i],i})
     }
-    bucket := make([]int, end+1)
-    for i := 0; i < len(nums); i++ {
-        bucket[nums[i]]++
-    }
-    prefix := make([]int, end+1)
-    for i := start; i < len(bucket); i++ {
-        prevCount := 0
-        prevPrefixCount := 0
-        if i-1 >= 0 {prevCount = bucket[i-1]; prevPrefixCount=prefix[i-1]}
-        prefix[i]= prevCount+prevPrefixCount
-
-    }
-    out := make([]int, len(nums))
-    for i := 0; i < len(nums); i++ {
-        out[i] = prefix[nums[i]]
+    sort.Slice(pairs, func(i, j int)bool {
+        return pairs[i][0] < pairs[j][0]
+    })
+    out := make([]int, n)
+    for i := 1; i < n; i++ {
+        if pairs[i][0] == pairs[i-1][0] {
+            out[pairs[i][1]] = out[pairs[i-1][1]]
+        } else {
+            out[pairs[i][1]] = i
+        }
     }
     return out
 }
