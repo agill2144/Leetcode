@@ -5,11 +5,13 @@ func eraseOverlapIntervals(intervals [][]int) int {
     lastKept := 0
     count := 0
     for i := 1; i < len(intervals); i++ {
-        start, end := intervals[i][0], intervals[i][1]
+        start := intervals[i][0]
         prevEnd := intervals[lastKept][1]
         if start < prevEnd {
             count++
-            if end < prevEnd {lastKept = i}
+            // keep the one that ends earliest, that way we have reduced chances of overlapping
+            // keep curr instead of lastKept when curr ends before lastKept ends
+            if intervals[i][1] < prevEnd {lastKept = i}
         } else {
             lastKept = i
         }
