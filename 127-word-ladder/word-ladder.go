@@ -12,7 +12,11 @@ func ladderLength(beginWord string, endWord string, wordList []string) int {
     
     q := []string{beginWord}
     levels := 1
-    visited := map[string]bool{beginWord:true}
+    // we can use the words set as a visited set too
+    // when we are visiting a word for the first time, and it exists in word set
+    // enqueue and delete it from word set
+    // next time we run into the same word again, it wont exist in word set, therefore implicitly visited
+    // visited := map[string]bool{beginWord:true}
     // o(n)
     for len(q) != 0 {
         qSize := len(q)
@@ -26,9 +30,10 @@ func ladderLength(beginWord string, endWord string, wordList []string) int {
                 // o(26) ; i.e o(1)
                 for j := 0; j < 26; j++ {
                     child := dq[:i] + string(j+'a') + dq[i+1:]
-                    if !visited[child] && words[child] {
+                    if words[child] {
                         q = append(q, child)
-                        visited[child] = true
+                        // mark this child visited
+                        words[child] = false
                     }
                 }
             }
