@@ -1,20 +1,33 @@
 func minChanges(s string) int {
-    n := len(s)
-    total := 0
     left := 0
-    for i := 0; i < n; i++ {
-        // create a partition of size 2 
-        // and if zeros != ones, we need to make a change
-        // therefore increment our total counter
-        if i-left+1 == 2 {
-            if s[i] != s[i-1] {total++}
+    zero := 0
+    one := 0
+    total := 0
+    k := 2
+    for i := 0; i < len(s); i++ {
+        if s[i] == '1' {one++}
+        if s[i] == '0' {zero++}
+        if i-left+1 == k {
+            total += min(zero, one)
             left = i+1
+            one = 0
+            zero = 0
         }
     }
     return total
 }
 
 /*
-    10011011
-    00011111
+    10011000 1010
+
+paritionSize = numOfChnages
+2 = 5
+4 = 5
+6 = 5
+8 = 5
+
+No matter what parition size we pick, 
+the total num of changes will all be the same
+therefore we can pick an parition of size 2
+because 2 size will always exist ( smallest even len )
 */
