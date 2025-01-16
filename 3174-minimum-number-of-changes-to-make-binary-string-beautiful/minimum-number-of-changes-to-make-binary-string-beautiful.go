@@ -1,3 +1,18 @@
+
+/*
+    10011000 1010
+
+paritionSize = numOfChanges
+2 = 5
+4 = 5
+6 = 5
+8 = 5
+
+No matter what parition size we pick, 
+the total num of changes will all be the same
+therefore we can pick an parition of size 2
+because 2 size will always exist ( smallest even len )
+*/
 func minChanges(s string) int {
     left := 0
     zero := 0
@@ -16,18 +31,3 @@ func minChanges(s string) int {
     }
     return total
 }
-
-/*
-    10011000 1010
-
-paritionSize = numOfChnages
-2 = 5
-4 = 5
-6 = 5
-8 = 5
-
-No matter what parition size we pick, 
-the total num of changes will all be the same
-therefore we can pick an parition of size 2
-because 2 size will always exist ( smallest even len )
-*/
