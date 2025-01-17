@@ -1,3 +1,7 @@
+// m = len(order)
+// n = len(s)
+// tc = o(n) + o(m) + o(n) = o(2n + m) = o(n+m)
+// sc = o(26) = o(1)
 func customSortString(order string, s string) string {
     freq := make([]int, 26)
     for i := 0; i < len(s); i++ {
