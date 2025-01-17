@@ -3,16 +3,15 @@ func strStr(s string, pattern string) int {
     lps := calcLPS(pattern)
     i := 0
     j := 0
-    for i < len(s) {
+    for i < len(s) && j < len(pattern) {
         if s[i] == pattern[j] {
-            i++
-            j++
-            if j == len(pattern) {return i-j}
+            i++; j++
         } else {
             if j-1 < 0 {i++; continue}
             j = lps[j-1]
         }
     }
+    if j == len(pattern) {return i-j}
     return -1
 }
 
