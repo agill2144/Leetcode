@@ -9,7 +9,8 @@ func strStr(s string, pattern string) int {
             j++
             if j == len(pattern) {return i-j}
         } else {
-            if j-1 >= 0 {j = lps[j-1]} else {i++}
+            if j-1 < 0 {i++; continue}
+            j = lps[j-1]
         }
     }
     return -1
