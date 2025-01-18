@@ -3,6 +3,7 @@ func restoreIpAddresses(s string) []string {
     var dfs func(start int, path []string)
     dfs = func(start int, path []string) {
         // base
+        if len(path) > 4 {return}
         if start == len(s) {
             if len(path) == 4 {
                 out = append(out, strings.Join(path, "."))
