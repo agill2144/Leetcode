@@ -1,42 +1,40 @@
 type HitCounter struct {
-    leftPtr int
-    hits []int
+    times []int
 }
 
 
 func Constructor() HitCounter {
-    return HitCounter{hits: []int{}}
+    return HitCounter{times:[]int{}}    
 }
 
 
 func (this *HitCounter) Hit(timestamp int)  {
-    this.hits = append(this.hits, timestamp)
-    until := timestamp-300
-    if until <= 0 {return}
-    for this.leftPtr < len(this.hits) &&
-        this.hits[this.leftPtr] < until {
-            this.leftPtr++
-    }
+    this.times = append(this.times, timestamp)    
 }
 
 
 func (this *HitCounter) GetHits(timestamp int) int {
-    diff := timestamp-300
-    if diff <= 0 {return len(this.hits)}
-    left := this.leftPtr
-    right := len(this.hits)-1
-    res := -1
+    target := timestamp-300
+    if target < 0 {return len(this.times)}
+    left := 0
+    right := len(this.times)-1
+    idx := len(this.times)
     for left <= right {
         mid := left + (right-left)/2
-        if this.hits[mid] > diff {
-            res = mid
+        if this.times[mid] > target {
+            idx = mid
             right = mid-1
         } else {
             left = mid+1
         }
     }
-    if res == -1 {return 0}
-    return len(this.hits)-res
+    res := len(this.times)-idx
+    // fmt.Println("GetHits(",timestamp,"): ")
+    // fmt.Println("target: ", target)
+    // fmt.Println("found idx: ", idx)
+    // fmt.Println(this.times)
+    // fmt.Println("-----------------------------------")
+    return res
 }
 
 
