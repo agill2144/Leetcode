@@ -1,3 +1,7 @@
+// m = max val in candies
+// n = len(candies)
+// tc = o(logm*n)
+// sc = o(1)
 func maximumCandies(candies []int, k int64) int {
     left := 1
     right := slices.Max(candies)
