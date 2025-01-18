@@ -14,16 +14,17 @@ func insert(aNode *Node, x int) *Node {
     }
     curr := aNode
     for curr.Next != aNode {
-        next := curr.Next
-        if curr.Val <= next.Val {
-            if x >= curr.Val && x <= next.Val {break}
-        } else {
-            if x >= curr.Val || x <= next.Val {break}
+        if curr.Val <= curr.Next.Val && x >= curr.Val && x <= curr.Next.Val {
+            break
+        } else if curr.Val > curr.Next.Val {
+            if x >= curr.Val || x <= curr.Next.Val {
+                break
+            }
         }
-        curr = next
+        curr = curr.Next
     }
     next := curr.Next
     curr.Next = newNode
-    newNode.Next= next
+    newNode.Next = next
     return aNode
 }
