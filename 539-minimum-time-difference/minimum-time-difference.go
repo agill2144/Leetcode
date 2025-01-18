@@ -27,6 +27,8 @@ func findMinDifference(timePoints []string) int {
     // // assume we walked back to midnight and mightnight converted to mins = 1440
     // // now get the diff from midnight to last mins element
     // walkBack += (1440-mins[len(mins)-1])
+    // minDiff := walkBack
+    // OR walk forward from last element to mins[0]
     minDiff := (1440-mins[len(mins)-1]) + mins[0]
     for i := 1; i < len(mins); i++ {
         minDiff = min(minDiff, mins[i]-mins[i-1])
