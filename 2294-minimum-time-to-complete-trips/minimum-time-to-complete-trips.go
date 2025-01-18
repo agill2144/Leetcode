@@ -4,12 +4,10 @@
 // sc = o(1)
 func minimumTime(time []int, totalTrips int) int64 {
     left := math.MaxInt64
-    right := math.MinInt64
     for i := 0; i < len(time); i++ {
         left = min(left, time[i])
-        right = max(right, time[i])
     }
-    right *= totalTrips
+    right := left*totalTrips
     var res int64
     for left <= right {
         mid := left + (right-left)/2
