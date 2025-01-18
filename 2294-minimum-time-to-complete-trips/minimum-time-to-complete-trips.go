@@ -1,8 +1,5 @@
 func minimumTime(time []int, totalTrips int) int64 {
-    left := math.MaxInt64
-    for i := 0; i < len(time); i++ {
-        left = min(left, time[i])
-    }
+    left := slices.Min(time)
     right := left * totalTrips
     var res int64
     for left <= right {
