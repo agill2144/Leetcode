@@ -1,14 +1,16 @@
 func findClosestElements(arr []int, k int, x int) []int {
     n := len(arr)
     left := 0
-    right := n-1
-    for right-left+1 != k {
-        leftDist := abs(arr[left]-x)
-        rightDist := abs(arr[right]-x)
-        if rightDist >= leftDist {
-            right--
+    right := n-k
+    for left <= right {
+        mid := left + (right-left)/2
+        if mid+k >= n {break}
+        startDist := x-arr[mid]
+        endDist := arr[mid+k]-x
+        if endDist >= startDist {
+            right = mid-1
         } else {
-            left++
+            left = mid+1
         }
     }
     return arr[left:left+k]
