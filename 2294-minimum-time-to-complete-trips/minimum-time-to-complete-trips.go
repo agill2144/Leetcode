@@ -1,5 +1,5 @@
 // n = len(time)
-// m = (maxTime*totalTrips)-minTime+1
+// m = (minTime*totalTrips)-minTime+1
 // tc = o(logm*n)
 // sc = o(1)
 func minimumTime(time []int, totalTrips int) int64 {
