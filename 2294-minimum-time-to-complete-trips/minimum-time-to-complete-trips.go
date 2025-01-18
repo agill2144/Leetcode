@@ -1,21 +1,24 @@
 func minimumTime(time []int, totalTrips int) int64 {
-    left := 1
-    right := slices.Max(time)*totalTrips
-    var ans int64 = -1
+    left := math.MaxInt64
+    right := math.MinInt64
+    for i := 0; i < len(time); i++ {
+        left = min(left, time[i])
+        right = max(right, time[i])
+    }
+    right *= totalTrips
+    var res int64
     for left <= right {
-        // atMax time allowed per bus
         mid := left + (right-left)/2
         trips := 0
         for i := 0; i < len(time); i++ {
             trips += (mid/time[i])
         }
-        // when does mid not work?
-        if trips < totalTrips {
-            left = mid+1
-        } else {
-            ans = int64(mid)
+        if trips >= totalTrips {
+            res = int64(mid)
             right = mid-1
+        } else {
+            left = mid+1
         }
     }
-    return ans
+    return res
 }
