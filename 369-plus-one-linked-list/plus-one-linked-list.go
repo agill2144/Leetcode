@@ -6,29 +6,28 @@
  * }
  */
 func plusOne(head *ListNode) *ListNode {
-    if head == nil {return head}
-    head = reverse(head)
+    rev := reverse(head)
     carry := 1
-    curr := head
-    tail := head
+    curr := rev
+    var prev *ListNode
     for curr != nil {
+        next := curr.Next
         sum := curr.Val + carry
         curr.Val = sum % 10
         carry = sum / 10
-        tail = curr
-        curr = curr.Next
+        prev = curr
+        curr = next
     }
     if carry != 0 {
-        tail.Next = &ListNode{Val: carry}
-        carry = 0
+        prev.Next = &ListNode{Val: carry}
     }
-    return reverse(head)
+    return reverse(rev)
 }
 
 func reverse(head *ListNode) *ListNode {
-    if head == nil  {return head}
-    var prev *ListNode
+    if head == nil || head.Next == nil {return head}
     curr := head
+    var prev *ListNode
     for curr != nil {
         next := curr.Next
         curr.Next = prev
