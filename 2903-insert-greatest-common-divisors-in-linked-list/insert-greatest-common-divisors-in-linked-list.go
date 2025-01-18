@@ -18,6 +18,7 @@ func insertGreatestCommonDivisors(head *ListNode) *ListNode {
     return head
 }
 
+// TODO: there is a more efficient gcd algo
 func gcd(n1, n2 int) int {
     x := min(n1,n2)
     for x > 0 {
