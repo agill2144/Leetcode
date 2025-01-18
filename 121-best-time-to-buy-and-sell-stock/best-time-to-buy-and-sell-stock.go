@@ -1,9 +1,9 @@
 func maxProfit(prices []int) int {
-    bestBuyPrice := prices[0]
-    maxPr := 0
-    for i := 1; i < len(prices); i++ {
-        maxPr = max(maxPr, prices[i]-bestBuyPrice)
-        bestBuyPrice = min(prices[i], bestBuyPrice)
+    buy := prices[0]
+    pr := 0
+    for i := 0; i < len(prices); i++ {
+        pr = max(pr, prices[i]-buy)
+        buy = min(buy, prices[i])
     }
-    return maxPr
+    return pr
 }
