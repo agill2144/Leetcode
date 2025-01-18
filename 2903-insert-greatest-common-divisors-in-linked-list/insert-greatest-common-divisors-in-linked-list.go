@@ -6,28 +6,23 @@
  * }
  */
 func insertGreatestCommonDivisors(head *ListNode) *ListNode {
-    if head == nil || head.Next == nil {return head}
+    if head == nil {return head}
     curr := head
-    for curr != nil {
+    for curr != nil && curr.Next != nil{
         next := curr.Next
-        if next != nil {
-            curr.Next = &ListNode{Val:gcd(curr.Val, next.Val)}
-            curr = curr.Next
-            curr.Next = next
-        }
+        res := &ListNode{Val:gcd(curr.Val, next.Val)}
+        curr.Next = res
+        res.Next = next
         curr = next
     }
     return head
 }
 
-// gcd = greatest common divisor
-// so be greedy and start with the highest possible ans
-// and then walk back from there
-func gcd(a, b int) int {
-    res := min(a, b)
-    for res > 0 {
-        if a % res == 0 && b % res == 0 {return res}
-        res--
+func gcd(n1, n2 int) int {
+    x := min(n1,n2)
+    for x > 0 {
+        if n1%x == 0 && n2%x == 0 {return x}
+        x--
     }
     return 0
 }
