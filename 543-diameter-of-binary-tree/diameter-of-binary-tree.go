@@ -8,7 +8,8 @@
  */
 func diameterOfBinaryTree(root *TreeNode) int {
     maxDia := 0
-    var dfs func(r *TreeNode) int
+    if root == nil {return maxDia}
+    var dfs func(r *TreeNode) int 
     dfs = func(r *TreeNode) int {
         // base
         if r == nil {return 0}
