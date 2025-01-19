@@ -7,7 +7,7 @@ func maxUniqueSplit(s string) int {
             maxCount = max(maxCount, len(path))
             return
         }
-
+        if len(path) + len(s)-start <= maxCount {return}
         // logic
         for i := start; i < len(s); i++ {
             subStr := s[start:i+1]
