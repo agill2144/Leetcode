@@ -1,46 +1,42 @@
-func matrixMedian(matrix [][]int) int {
-    m := len(matrix)
-    n := len(matrix[0])
+func matrixMedian(grid [][]int) int {
+    m := len(grid)
+    n := len(grid[0])
+    total := m*n
+    expectedCount := (total/2)+1
     left := 1
     right := 1000000
-    totalEle := m*n
-    minCount := (totalEle/2)+1
-    ans := -1
+    res := -1
     for left <= right {
         mid := left + (right-left)/2
-        count := countLessThanOrEqualTo(matrix, mid)
-        // count <= median value
-        // MUST ALWAYS BE midIdx+1 ( at the very least! )
-        // therefore if count < minCount
-        // search right
-        if count < minCount {
-            left = mid+1
-        } else {
-            ans = mid
+        if count(grid, mid) >= expectedCount {
+            res = mid
             right = mid-1
+        } else {
+            left = mid+1
         }
     }
-    return ans
+    return res
 }
 
-func countLessThanOrEqualTo(matrix [][]int, target int) int {
-    total := 0
-    m := len(matrix)
-    n := len(matrix[0])
+// count num of elements <= target
+func count(grid [][]int, target int) int {
+    c := 0
+    m := len(grid)
+    n := len(grid[0])
     for i := 0; i < m; i++ {
-        idx := -1
         left := 0
         right := n-1
+        idx := -1
         for left <= right {
             mid := left + (right-left)/2
-            if matrix[i][mid] <= target {
+            if grid[i][mid] <= target {
                 idx = mid
                 left = mid+1
             } else {
                 right = mid-1
             }
         }
-        total += idx+1
+        c += (idx+1)
     }
-    return total
+    return c
 }
