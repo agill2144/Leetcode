@@ -1,43 +1,20 @@
+/*
+    approach: brute force
+    - try evaluating each position in haystack string whether its the first index or not
+    time = o
+    approach: kmp
+    - instead
+*/
 func strStr(haystack string, needle string) int {
-    if len(haystack) < len(needle) {return -1}
-    lps := calcLPS(needle)
-    i, j := 0, 0
-    for i < len(haystack) && j < len(needle) {
-        if haystack[i] == needle[j] {
-            i++
-            j++
-        } else {
-            // what is a longest COMMON suffix before this char
-            // that is also a prefix, that we can skip 
-            // checking because they are equal
-            if j != 0 {
-                j = lps[j-1]
-            } else {
-                i++
-            }
+    for i := 0; i < len(haystack); i++ {
+        h := i
+        n := 0
+        for h < len(haystack) && n < len(needle) {
+            if haystack[h] != needle[n] {break}
+            h++
+            n++
         }
+        if n == len(needle) {return h-len(needle)}
     }
-    if j == len(needle) {return i-len(needle)}
     return -1
-}
-
-func calcLPS(word string) []int{
-    n := len(word)
-    lps := make([]int, n)
-    i := 1
-    j := 0
-    for i < len(word) {
-        if word[i] == word[j] {
-            j++
-            lps[i] = j
-            i++
-        } else {
-            if j == 0 {
-                i++
-            } else {
-                j = lps[j-1]
-            }
-        }
-    }
-    return lps
 }
