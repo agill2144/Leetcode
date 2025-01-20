@@ -1,3 +1,5 @@
+
+// merge sort ; recursively
 func largestNumber(nums []int) string {
     var dfs func(left, right int)
     dfs = func(left, right int) {
@@ -33,6 +35,9 @@ func largestNumber(nums []int) string {
     dfs(0, len(nums)-1)
     res := new(strings.Builder)
     for i := 0; i < len(nums); i++ {
+        // edge case when constructing numbers: leading zeros
+        // in this case, if nums[i] is 0 and we do not have anything in our result
+        // yet, drop this 0 because it creates an invalid number
         if nums[i] == 0 && len(res.String()) == 0 {continue}
         res.WriteString(fmt.Sprintf("%v", nums[i]))
     }
