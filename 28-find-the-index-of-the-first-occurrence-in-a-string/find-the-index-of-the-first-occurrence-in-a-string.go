@@ -7,6 +7,9 @@ func strStr(haystack string, needle string) int {
             i++
             j++
         } else {
+            // what is a longest COMMON suffix before this char
+            // that is also a prefix, that we can skip 
+            // checking because they are equal
             if j != 0 {
                 j = lps[j-1]
             } else {
