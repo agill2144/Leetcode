@@ -8,10 +8,17 @@ func isRobotBounded(ins string) bool {
         if ins[i] == 'G' {
             r += dirs[currDir][0]
             c += dirs[currDir][1]
-        } else if ins[i] == 'L' {
-            currDir = (currDir + 3) % 4
-        } else if ins[i] == 'R' {
+        } else if ins[i] == 'R' {            
+            // wherever we are facing,
+            // turning right will always be +1
+            // because our dirs are written in clockwise order
             currDir = (currDir+1) % 4
+        } else if ins[i] == 'L' {
+            // wherever we are facing,
+            // turning left will awlays be +3
+            // because our dirs are written in clockwise order
+            currDir--
+            if currDir < 0 {currDir = 3}
         }
     }
     if r == 0 && c == 0 {return true}
