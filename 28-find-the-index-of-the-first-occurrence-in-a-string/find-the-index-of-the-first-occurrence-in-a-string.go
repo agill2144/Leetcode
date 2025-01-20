@@ -1,32 +1,37 @@
-func strStr(s string, pattern string) int {
-    if len(pattern) > len(s) {return -1}
-    lps := calcLPS(pattern)
-    i := 0
-    j := 0
-    for i < len(s) && j < len(pattern) {
-        if s[i] == pattern[j] {
-            i++; j++
+func strStr(src string, target string) int {
+    if len(src) < len(target) {return -1}
+    lps := calcLPS(target)
+    i, j := 0, 0
+    for i < len(src) && j < len(target) {
+        if src[i] == target[j] {
+            i++
+            j++
         } else {
-            if j-1 < 0 {i++; continue}
-            j = lps[j-1]
+            // what is a longest COMMON suffix that is also a prefix
+            // that we can skip checking because they are equal
+            if j != 0 {
+                j = lps[j-1]
+            } else {
+                i++
+            }
         }
     }
-    if j == len(pattern) {return i-j}
+    if j == len(target) {return i-len(target)}
     return -1
 }
 
-func calcLPS(s string) []int {
-    n := len(s)
+func calcLPS(word string) []int{
+    n := len(word)
     lps := make([]int, n)
-    length := 0
     i := 1
+    length := 0
     for i < n {
-        if s[i] == s[length] {
+        if word[i] == word[length] {
             length++
             lps[i] = length
             i++
         } else {
-            if length-1 >= 0 {
+            if length != 0 {
                 length = lps[length-1]
             } else {
                 i++
