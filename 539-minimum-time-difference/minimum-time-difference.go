@@ -7,7 +7,7 @@ func findMinDifference(timePoints []string) int {
         mins = append(mins, (hh*60)+mm)
     }
     sort.Ints(mins)
-    // edge case 
+    // edge case ( walk forward from last time till mins[0] )
     // mins[-1] = 23:50 (i.e 1430 mins)
     // mins[0] = 02:00 (i.e 120 mins)
     // the difference between these 2 is not 1430-120 = 1320 mins ..
