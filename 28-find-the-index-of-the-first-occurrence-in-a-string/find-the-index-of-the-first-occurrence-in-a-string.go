@@ -24,19 +24,23 @@ func calcLPS(word string) []int{
     n := len(word)
     lps := make([]int, n)
     i := 1
-    length := 0
+    // j does 2 things
+    // 1. its position = len of prefix / suffix window
+    // 2. its also the incoming char in prefix win that can be compared with incoming char (i) in suffix window
+    j := 0
     for i < n {
-        if word[i] == word[length] {
-            length++
-            lps[i] = length
+        if word[i] == word[j] {
+            j++
+            lps[i] = j
             i++
         } else {
-            if length != 0 {
-                length = lps[length-1]
+            if j != 0 {
+                j = lps[j-1]
             } else {
                 i++
             }
         }
     }
     return lps
+    
 }
