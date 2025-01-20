@@ -1,20 +1,17 @@
+// sort on ;
+// whatever concatnation results into a bigger num
+// its either i+j or j+i
 func largestNumber(nums []int) string {
-    sort.Slice(nums, func(i, j int) bool {
-        iNum := nums[i]
-        jNum := nums[j]
-        ij := fmt.Sprintf("%v%v",iNum, jNum)
-        ji := fmt.Sprintf("%v%v", jNum, iNum)
-        ijInt, _ := strconv.Atoi(ij)
-        jiInt, _ := strconv.Atoi(ji)
-        // ith num should be placed first
-        // if i+j > j+i
-        return ijInt > jiInt
+    sort.Slice(nums, func(i, j int)bool{
+        ij, _ := strconv.Atoi(fmt.Sprintf("%v%v", nums[i], nums[j]))
+        ji, _ := strconv.Atoi(fmt.Sprintf("%v%v", nums[j], nums[i]))
+        return ij > ji
     })
-    out := new(strings.Builder)
+    res := new(strings.Builder)
     for i := 0; i < len(nums); i++ {
-        if nums[i] == 0 && len(out.String()) == 0 {continue}
-        out.WriteString(fmt.Sprintf("%v", nums[i]))
+        if nums[i] == 0 && len(res.String()) == 0 {continue}
+        res.WriteString(fmt.Sprintf("%v", nums[i]))
     }
-    if out.String() == "" {return "0"}
-    return out.String()
+    if res.String() == "" {return "0"}
+    return res.String()
 }
