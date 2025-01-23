@@ -1,3 +1,10 @@
+// got confused , looked like a connected compoenent problem at first
+// but its not
+// a server to be counted as connected, its row or col must have atleast 1 more server excluding itself
+// hence we track server freq by row and col in a map
+// then take another pass to count total servers
+// tc = o(mn) + o(mn)
+// sc = o(m+n)
 func countServers(grid [][]int) int {
     m := len(grid)
     n := len(grid[0])
