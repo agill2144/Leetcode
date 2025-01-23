@@ -1,15 +1,15 @@
 func reverse(x int) int {
-    // -2^31 = -2147483648
-    // (2^31)-1 = 2147483647
-    leftLimit := -214748364
-    rightLimit := 214748364
-    res := 0
+    // left limit = -2147483648
+    left := -214748364
+    // right limit = 2147483647
+    right := 214748364
+    rev := 0
     for x != 0 {
-        lastDig := x%10
-        if res < leftLimit || (res == leftLimit && lastDig < -8) {return 0}
-        if res > rightLimit || (res == rightLimit && lastDig > 7) {return 0}
-        res = res*10 + lastDig
+        lastDig := x % 10
+        if rev < left || (rev == left && lastDig > 8) {return 0}
+        if rev > right || (rev == right && lastDig > 7) {return 0}
+        rev = rev * 10 + lastDig
         x /= 10
     }
-    return res
+    return rev
 }
