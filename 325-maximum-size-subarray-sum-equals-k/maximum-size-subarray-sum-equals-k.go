@@ -1,14 +1,14 @@
 func maxSubArrayLen(nums []int, k int) int {
     idx := map[int]int{0:-1}
-    rSum := 0
     res := 0
+    rSum := 0
     for i := 0; i < len(nums); i++ {
         rSum += nums[i]
-        val, ok := idx[rSum-k]
+        diff := rSum - k
+        prevIdx, ok := idx[diff]
         if ok {
-            res = max(res, i-val)
+            res = max(res, i-prevIdx)
         }
-
         if _, ok := idx[rSum]; !ok {
             idx[rSum] = i
         }
