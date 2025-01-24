@@ -1,3 +1,5 @@
+// tc = o(nlogn) + o(2^n * n)
+// sc = o(2n) ; at the deepest layer of recursion, our recursion stack is n and path is n
 func subsetsWithDup(nums []int) [][]int {
     sort.Ints(nums)
     out := [][]int{}    
