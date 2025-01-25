@@ -1,18 +1,15 @@
 func canCompleteCircuit(gas []int, cost []int) int {
-    start := 0
-    tank := 0
-    count := 0
     n := len(gas)
-    for i := 0; i < 2 * n; i++ {
-        tank += gas[i%n]
-        tank -= cost[i%n]
-        if tank >= 0 {
-            count++
-            if count == n {return start}
-        } else {
-            tank = 0
-            count = 0
-            start = (i+1) % n
+    idx := -1
+    curr := 0
+    for i := 0; i < 2*n; i++ {
+        if i%n == idx {return idx%n}
+        if idx == -1 {idx = i%n}
+        curr += gas[i%n]        
+        curr -= cost[i%n]
+        if curr < 0 {
+            idx = -1
+            curr = 0
         }
     }
     return -1
