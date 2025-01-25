@@ -1,3 +1,5 @@
+// tc = log base 10 x
+// sc o(1)
 func reverse(x int) int {
     // left limit = 2147483648
     left := -214748364
