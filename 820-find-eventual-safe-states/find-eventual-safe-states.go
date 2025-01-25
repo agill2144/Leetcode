@@ -7,12 +7,12 @@ func eventualSafeNodes(graph [][]int) []int {
             adjList[graph[i][j]] = append(adjList[graph[i][j]], i)
         }
     }
-    out := []int{}
+    safeNodes := map[int]bool{}
     q := []int{}
     for i := 0; i < len(outdegrees); i++ {
         if outdegrees[i] == 0 {
             q = append(q, i)
-            out = append(out, i)
+            safeNodes[i] = true
         }
     }
     for len(q) != 0 {
@@ -22,10 +22,13 @@ func eventualSafeNodes(graph [][]int) []int {
             outdegrees[nei]--
             if outdegrees[nei] == 0 {
                 q = append(q, nei)
-                out = append(out, nei)
+                safeNodes[nei] = true
             }
         }
     }
-    sort.Ints(out)
+    out := []int{}
+    for i := 0; i < len(graph); i++ {
+        if safeNodes[i] {out = append(out, i)}
+    }
     return out
 }
