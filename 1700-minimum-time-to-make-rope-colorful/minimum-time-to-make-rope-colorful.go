@@ -6,7 +6,6 @@ func minCost(colors string, neededTime []int) int {
             if neededTime[i] < neededTime[prev] {
                 // removing current, keeping prev
                 total += neededTime[i]
-                continue
             } else {
                 // removing prev, keeping current
                 total += neededTime[prev]
