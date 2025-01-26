@@ -4,6 +4,7 @@ func isPalindrome(x int) bool {
     rev := 0
     rightLimit := 214748364
     for x > rev {
+        // handle +ve int32 overflow
         if rev > rightLimit || (rev == rightLimit && x % 10 > 7) {return false}
         rev = rev * 10 + (x % 10)
         x /= 10
