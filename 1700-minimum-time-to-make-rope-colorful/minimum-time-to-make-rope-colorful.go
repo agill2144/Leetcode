@@ -1,5 +1,7 @@
 func minCost(colors string, neededTime []int) int {
     total := 0
+    // last ballon we decided to keep, 
+    // this is the ballon we compare with to check if things are colorful or not
     prev := 0
     for i := 1; i < len(colors); i++ {
         if colors[i] == colors[prev] {
