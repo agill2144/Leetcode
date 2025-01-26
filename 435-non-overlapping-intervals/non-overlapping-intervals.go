@@ -14,11 +14,9 @@ func eraseOverlapIntervals(intervals [][]int) int {
             if end < prevEnd {
                 // keep curr, drop prev
                 prev = i
-                count++
-            } else {
-                // keep prev, drop curr
-                count++
             }
+            // keep prev, drop curr
+            count++
         } else {
             // no overlap, move prev ptr to curr i ptr
             prev = i
