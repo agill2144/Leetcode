@@ -1,3 +1,9 @@
+// Pre-process a visited matrix
+// Start a bfs from each course i and assign for each course j you visit true.
+// v = num of vertices
+// e = total num of edges
+// tc = o( (v+e) * (v+e) ) = o(v+e)^2
+// sc = o(2 (v+e)) for adjList and visited matrix and for queue
 func checkIfPrerequisite(numCourses int, prerequisites [][]int, queries [][]int) []bool {
     m := numCourses
     n := numCourses
