@@ -1,33 +1,33 @@
 type Solution struct {
-    cmpIdxs []int
+    compressedIdxs []int
 }
 
 
 func Constructor(w []int) Solution {
-    sum := 0
-    cmpIdxs := []int{}    
+    rSum := 0
+    compressedIdxs := []int{}
     for i := 0; i < len(w); i++ {
-        sum += w[i]
-        cmpIdxs = append(cmpIdxs, sum)
+        rSum += w[i]
+        compressedIdxs = append(compressedIdxs, rSum)
     }
-    return Solution{cmpIdxs}
+    return Solution{compressedIdxs}
 }
 
 
 func (this *Solution) PickIndex() int {
-    n := len(this.cmpIdxs)
-    end := this.cmpIdxs[n-1]
-    r := rand.Intn(end)
+    n := len(this.compressedIdxs)
+    totalSum := this.compressedIdxs[n-1]
     left := 0
     right := n-1
     res := -1
+    r := rand.Intn(totalSum)
     for left <= right {
         mid := left + (right-left)/2
-        if this.cmpIdxs[mid] <= r {
-            left = mid+1
-        } else {
+        if this.compressedIdxs[mid] > r {
             res = mid
             right = mid-1
+        }  else {
+            left = mid+1
         }
     }
     return res
