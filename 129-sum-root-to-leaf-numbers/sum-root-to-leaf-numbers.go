@@ -14,7 +14,7 @@ func sumNumbers(root *TreeNode) int {
         if r == nil {return}
 
         // logic
-        path = path * 10 + r.Val
+        path = (path * 10) + r.Val
         if r.Left == nil && r.Right == nil {
             total += path
             return
