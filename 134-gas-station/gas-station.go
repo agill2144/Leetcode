@@ -6,8 +6,9 @@ func canCompleteCircuit(gas []int, cost []int) int {
         if i % n == endIdx {return endIdx}
         curr += gas[i%n]
         curr -= cost[i%n]
-        if curr < 0 {endIdx = -1; curr = 0; continue}
         if endIdx == -1 {endIdx = i}
+        if curr < 0 {endIdx = -1; curr = 0; continue}
+       
     }
     return -1
 }
