@@ -1,21 +1,16 @@
-// tc = log base 10 x
-// sc o(1)
 func reverse(x int) int {
-    // left limit = 2147483648
-    left := -214748364
-    // right limit = 2147483647
-    right := 214748364
-    rev := 0
-    // dont we need to handle explicitly ?
-    // no,
-    // in golang Remainder result has the same sign as the dividend
-    // so if the dividend is -ve, our % result will be -ve
+    res := 0
+    // hard limit -2147483648
+    leftLimit := -214748364
+    // hard limit = 2147483647
+    rightLimit := 214748364
+
     for x != 0 {
         lastDig := x % 10
-        if rev < left || (rev == left && lastDig >= 8) {return 0}
-        if rev > right || (rev == right && lastDig >= 7) {return 0}
-        rev = rev * 10 + lastDig
         x /= 10
+        if res < leftLimit || (res == leftLimit && lastDig > 8) {return 0}
+        if res > rightLimit || (res == rightLimit && lastDig > 7) {return 0}
+        res = res * 10 + lastDig        
     }
-    return rev
+    return res
 }
