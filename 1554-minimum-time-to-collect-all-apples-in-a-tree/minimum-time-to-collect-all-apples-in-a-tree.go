@@ -6,21 +6,22 @@ func minTime(n int, edges [][]int, hasApple []bool) int {
         adjList[v] = append(adjList[v], u)
     }
     total := 0
-    var dfs func(curr, prev int) bool
-    dfs = func(curr, prev int) bool {
-        // base 
+    var dfs func(node, prev int) bool
+    dfs = func(node, prev int)bool{
+        // base
+
 
         // logic
-        yes := false
-        for _, nei := range adjList[curr] {
-            if nei == prev {continue}
-            if dfs(nei, curr) {
-                yes = true
+        childHasApples := false
+        for _, child := range adjList[node] {
+            if child == prev {continue}
+            if dfs(child, node) {
+                childHasApples = true
                 total += 2
             }
         }
-        return hasApple[curr] || yes 
+        return childHasApples || hasApple[node]
     }
-    dfs(0, -1)
+    dfs(0,-1)
     return total
 }
