@@ -26,16 +26,14 @@ func Constructor(matrix [][]int) NumMatrix {
 
 
 func (this *NumMatrix) SumRegion(row1 int, col1 int, row2 int, col2 int) int {
+    // get fullSum from 0,0 to row2,col2
     total := this.fullSum[row2][col2]
-    if row1-1 >= 0 {
-        total -= this.fullSum[row1-1][col2]
-    }
-    if col1-1 >= 0 {
-        total -= this.fullSum[row2][col1-1]
-    }
-    if row1-1 >= 0 && col1-1 >= 0 {
-        total += this.fullSum[row1-1][col1-1]
-    }
+    // remove top sum
+    if row1-1 >= 0 {total -= this.fullSum[row1-1][col2]}
+    // remove left sum
+    if col1-1 >= 0 {total -= this.fullSum[row2][col1-1]}
+    // add back overlapping sum that got removed twice
+    if row1-1 >= 0 && col1-1 >= 0 {total += this.fullSum[row1-1][col1-1]}
     return total
 }
 
