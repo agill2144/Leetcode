@@ -1,3 +1,5 @@
+// tc = o(mn)
+// sc = o(mn)
 func maxAreaOfIsland(grid [][]int) int {
     m := len(grid)
     n := len(grid[0])
