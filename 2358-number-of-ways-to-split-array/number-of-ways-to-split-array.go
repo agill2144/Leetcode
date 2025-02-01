@@ -1,14 +1,15 @@
 func waysToSplitArray(nums []int) int {
+    n := len(nums)
     total := 0
-    for i := 0; i < len(nums); i++ {
-        total += nums[i]
-    }
+    for i := 0; i < n; i++ {total += nums[i]}
+    left := 0
     count := 0
-    leftSum := 0
-    for i := 0; i < len(nums)-1; i++ {
-        leftSum += nums[i]
-        rightSum := total-leftSum
-        if leftSum >= rightSum {count++}
+    for i := 0; i < n-1; i++ {
+        left += nums[i]
+        right := total-left
+        if left >= right {
+            count++
+        }
     }
     return count
 }
