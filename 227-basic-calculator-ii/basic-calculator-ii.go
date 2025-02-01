@@ -1,7 +1,8 @@
 func calculate(s string) int {
-    st := []int{}
-    var lastOp byte = '+'
     curr := 0
+    total := 0
+    lastContr := 0
+    var lastOp byte = '+'
     for i := 0; i < len(s); i++ {
         char := s[i]
         if char >= '0' && char <= '9' {
@@ -9,22 +10,23 @@ func calculate(s string) int {
         }
         if i == len(s)-1 || (char == '+' || char == '-' || char == '*' || char == '/') {
             if lastOp == '+' {
-                st = append(st, curr)
+                total += curr
+                lastContr = curr
             } else if lastOp == '-' {
-                st = append(st, -curr)
+                total -= curr
+                lastContr = -curr
             } else if lastOp == '*' {
-                st[len(st)-1] *= curr
+                multiRes := lastContr * curr
+                total = total - lastContr + multiRes
+                lastContr = multiRes
             } else if lastOp == '/' {
-                st[len(st)-1] /= curr
+                divRes := lastContr / curr
+                total = total - lastContr + divRes
+                lastContr = divRes
             }
             curr = 0
             lastOp = char
         }
-    }
-    total := 0
-    for len(st) != 0 {
-        total += st[len(st)-1]
-        st = st[:len(st)-1]
     }
     return total
 }
