@@ -1,14 +1,14 @@
 func strStr(haystack string, needle string) int {
     if len(needle) > len(haystack) {return -1}
-    lps := calclps(needle)
-    i := 0
-    j := 0
+    lps := calcLPS(needle)
+    i := 0 // haystack ptr
+    j := 0 // needle ptr
     for i < len(haystack) && j < len(needle) {
         if haystack[i] == needle[j] {
             i++
             j++
         } else {
-            if j > 0 {
+            if j-1 >= 0 {
                 j = lps[j-1]
             } else {
                 i++
@@ -16,23 +16,23 @@ func strStr(haystack string, needle string) int {
         }
     }
     if j == len(needle) {
-        return i - len(needle)
+        return i-len(needle)
     }
     return -1
 }
 
-func calclps(word string) []int {
+func calcLPS(word string) []int {
     n := len(word)
     lps := make([]int, n)
-    i := 1
     j := 0
-    for i < n {
+    i := 1
+    for i < len(word) {
         if word[i] == word[j] {
             j++
             lps[i] = j
             i++
         } else {
-            if j > 0 {
+            if j-1 >= 0 {
                 j = lps[j-1]
             } else {
                 i++
