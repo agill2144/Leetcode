@@ -1,20 +1,22 @@
 func check(nums []int) bool {
-    n := len(nums)
     startIdx := -1
-    for i := 0; i+1 < len(nums); i++ {
-        if nums[i] > nums[i+1] {
-            startIdx = i+1
+    for i := 0; i < len(nums)-1; i++ {
+        nextIdx := i+1
+        if nums[i] > nums[nextIdx] {
+            startIdx = nextIdx
             break
         }
     }
     if startIdx == -1 {return true}
-    endIdx := startIdx-1
-    if endIdx < 0 {endIdx = n-1}
-    for (startIdx%n) != (endIdx%n) {
-        if nums[startIdx%n] > nums[(startIdx+1)%n] {
-            return false
-        }
-        startIdx++
+    count := 1
+    ptr := startIdx
+    n := len(nums)
+    for count != n {
+        curr := nums[ptr%n]
+        next := nums[(ptr+1)%n]
+        if curr > next {return false}
+        count++
+        ptr++
     }
     return true
-}   
+}
