@@ -5,7 +5,7 @@ func shortestDistance(grid [][]int) int {
     for i := 0; i < m; i++ {
         dists[i] = make([][]int, n)
         for j := 0; j < n; j++ {
-            dists[i][j] = make([]int, 2)
+            dists[i][j] = []int{0,0}
         }
     }
     hCount := 0
