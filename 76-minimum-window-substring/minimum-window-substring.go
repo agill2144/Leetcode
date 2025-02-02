@@ -1,41 +1,30 @@
 func minWindow(s string, t string) string {
-    tFreq := map[byte]int{}
-    for i := 0; i < len(t); i++ {tFreq[t[i]]++}
-    type char struct {
-        c byte
-        idx int
-    }
-    filteredS := []*char{}
-    for i := 0; i < len(s); i++ {
-        if _, ok := tFreq[s[i]]; ok {
-            filteredS = append(filteredS, &char{s[i], i})
-        }
-    }
-    left := 0
-    start, end := -1,-1
+    freq := map[byte]int{}
+    for i := 0; i < len(t); i++ {freq[t[i]]++}
     fullMatch := 0
-    for i := 0; i < len(filteredS); i++ {
-        c,idx := filteredS[i].c, filteredS[i].idx
-        tFreq[c]--
-        if tFreq[c] == 0 {
-            fullMatch++
+    startIdx, endIdx := -1,-1
+    left := 0
+    for i := 0; i < len(s); i++ {
+        val, ok := freq[s[i]]
+        if ok {
+            freq[s[i]]--
+            if val == 1 {fullMatch++}
         }
-        for fullMatch == len(tFreq) {
-            leftChar := filteredS[left].c
-            leftIdx := filteredS[left].idx
-            if start == -1 || idx-leftIdx+1 < end-start+1 {
-                start = leftIdx
-                end = idx
+        for left <= i && fullMatch == len(freq) {
+            if startIdx == -1 || (i-left+1 < endIdx-startIdx+1) {
+                startIdx = left
+                endIdx = i
             }
-            if _, ok := tFreq[leftChar]; ok {
-                tFreq[leftChar]++
-                if tFreq[leftChar] == 1 {
+            val, ok := freq[s[left]]
+            if ok {
+                freq[s[left]]++
+                if val == 0 {
                     fullMatch--
                 }
             }
             left++
         }
     }
-    if start == -1 {return ""}
-    return s[start:end+1]
+    if startIdx == -1 {return ""}
+    return s[startIdx:endIdx+1]
 }
