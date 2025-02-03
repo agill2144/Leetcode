@@ -18,7 +18,7 @@ func (this *HitCounter) GetHits(t int) int {
     if diff < 0 {return len(this.times)}
     left := 0
     right := len(this.times)-1
-    idx := len(this.times)
+    idx := -1
     for left <= right {
         mid := left + (right-left)/2
         if this.times[mid] > diff {
@@ -28,6 +28,7 @@ func (this *HitCounter) GetHits(t int) int {
             left = mid+1
         }
     }
+    if idx == -1 {return 0}
     return len(this.times)-idx
 }
 
