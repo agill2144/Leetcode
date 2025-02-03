@@ -1,22 +1,20 @@
 func longestMonotonicSubarray(nums []int) int {
     n := len(nums)
-    inc := 1
-    dec := 1
-    ans := 1
+    res := 1
+    incr := 1
+    decr := 1
     for i := 1; i < n; i++ {
-        prev := nums[i-1]
-        curr := nums[i]
-        if curr > prev {
-            inc++
-            dec = 1
-        } else if curr < prev {
-            dec++
-            inc = 1
+        if nums[i] > nums[i-1] {
+            incr++
         } else {
-            inc = 1
-            dec = 1
+            incr = 1
         }
-        ans = max(ans, max(inc,dec))
+        if nums[i] < nums[i-1] {
+            decr++
+        } else {
+            decr = 1
+        }
+        res = max(res, max(incr, decr))
     }
-    return ans
+    return res
 }
