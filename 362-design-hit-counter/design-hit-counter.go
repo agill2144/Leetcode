@@ -4,37 +4,31 @@ type HitCounter struct {
 
 
 func Constructor() HitCounter {
-    return HitCounter{times:[]int{}}    
+    return HitCounter{times: []int{}}    
 }
 
 
-func (this *HitCounter) Hit(timestamp int)  {
-    this.times = append(this.times, timestamp)    
+func (this *HitCounter) Hit(t int)  {
+    this.times = append(this.times, t)
 }
 
 
-func (this *HitCounter) GetHits(timestamp int) int {
-    target := timestamp-300
-    if target < 0 {return len(this.times)}
+func (this *HitCounter) GetHits(t int) int {
+    diff := t-300
+    if diff < 0 {return len(this.times)}
     left := 0
     right := len(this.times)-1
     idx := len(this.times)
     for left <= right {
         mid := left + (right-left)/2
-        if this.times[mid] > target {
+        if this.times[mid] > diff {
             idx = mid
             right = mid-1
         } else {
             left = mid+1
         }
     }
-    res := len(this.times)-idx
-    // fmt.Println("GetHits(",timestamp,"): ")
-    // fmt.Println("target: ", target)
-    // fmt.Println("found idx: ", idx)
-    // fmt.Println(this.times)
-    // fmt.Println("-----------------------------------")
-    return res
+    return len(this.times)-idx
 }
 
 
