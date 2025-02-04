@@ -1,5 +1,5 @@
 func myPow(x float64, n int) float64 {
-    // x^n  = (x^2)^n/2
+    // x^n  = x^n/2 * x^n/2
     if n < 0 {
         n *= -1
         x = 1/x
@@ -13,9 +13,11 @@ func myPow(x float64, n int) float64 {
         }
 
         // logic
-        res := dfs(base*base, exp/2)
+        res := dfs(base, exp/2)
+        res *= res
         if exp % 2 != 0 {res *= base}
         return res
+
     }
     return dfs(x, n)
 }
