@@ -1,3 +1,8 @@
+// k = max ele in quantities arr
+// q = len(quantities)
+// n = num of stores
+// tc = o(q) + o(logk * q)
+// sc = o(1)
 func minimizedMaximum(n int, quantities []int) int {
     left := 1
     right := slices.Max(quantities)
