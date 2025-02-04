@@ -20,6 +20,7 @@ class Solution:
             # logic
             left = dfs(r.left)
             right = dfs(r.right)
+
             if r is p:
                 p_found = True
                 return r
@@ -31,7 +32,9 @@ class Solution:
                 return r
             if left:
                 return left
-            return right
+            if right:
+                return right
+            return None
         res = dfs(root)
         if p_found and q_found:
             return res
