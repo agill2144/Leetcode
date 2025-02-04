@@ -1,5 +1,7 @@
 func checkValidString(s string) bool {
     open := 0
+    close := 0
+    n := len(s)
     for i := 0; i < len(s); i++ {
         if s[i] == '*' || s[i] == '(' {
             open++
@@ -7,14 +9,12 @@ func checkValidString(s string) bool {
             open--
             if open < 0 {return false}
         }
-    }
-    close := 0
-    for i := len(s)-1; i >= 0; i-- {
-        if s[i] == ')' || s[i] == '*' {
+
+        if s[n-1-i] == '*' || s[n-1-i] == ')' {
             close++
-        } else if s[i] == '(' {
+        } else if s[n-1-i] == '(' {
             close--
-            if close < 0 {return false}
+            if close < 0 { return false }
         }
     }
     return true
