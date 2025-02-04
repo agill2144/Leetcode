@@ -1,9 +1,5 @@
 func exclusiveTime(n int, logs []string) []int {
-    prev := 0
-    // we are making use of stack
-    // only when a func has started
-    // on top of an existing / already-started func
-    st := []int{}
+    st := [][]int{} // id, startTime
     out := make([]int, n)
     for i := 0; i < len(logs); i++ {
         log := strings.Split(logs[i], ":")
@@ -12,14 +8,15 @@ func exclusiveTime(n int, logs []string) []int {
         time, _ := strconv.Atoi(log[2])
         if logType == "start" {
             if len(st) > 0 {
-                out[st[len(st)-1]] += (time-prev)
+                peek := st[len(st)-1]
+                out[peek[0]] += (time-peek[1])
             }
-            prev = time
-            st = append(st, id)
+            st = append(st, []int{id, time})
         } else if logType == "end" {
+            top := st[len(st)-1]
             st = st[:len(st)-1]
-            out[id] += (time-prev+1)
-            prev = time+1
+            out[top[0]] += (time-top[1]+1)
+            if len(st) > 0 {st[len(st)-1][1] = time+1}
         }
     }
     return out
