@@ -1,23 +1,22 @@
-// k = max num in nums array
-// n = len of nums array
-// tc = o(logk * n)
-// sc = o(1)
-func minimumSize(nums []int, maxOperations int) int {
+func minimumSize(nums []int, maxOps int) int {
     left := 1
     right := slices.Max(nums)
-    ans := -1
+    if maxOps <= 0 {return right}
+    res := -1
     for left <= right {
         mid := left + (right-left)/2
+        atMax := mid
         ops := 0
         for i := 0; i < len(nums); i++ {
-            ops += int(math.Ceil(float64(nums[i])/float64(mid)))-1
+            ops += int(math.Ceil(float64(nums[i])/float64(atMax)))-1
+            if ops > maxOps {break}
         }
-        if ops > maxOperations {
-            left = mid+1
-        } else {
-            ans = mid
+        if ops <= maxOps {
+            res = mid
             right = mid-1
+        } else {
+            left = mid+1
         }
     }
-    return ans
+    return res
 }
