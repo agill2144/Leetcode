@@ -1,76 +1,74 @@
 /*
-    approach: 1 pass with freq map
-    - if s[i] == guess[i] ; happy path, increment bulls counter
-    - otherwise
-        - we need to see if secret[i] was previously seen in guess?
-        - meaning from i -> 0 in guess string, have we had a non-matching secret[i] char?
-        - to build this non-matching guess char;
-            - we will create a negative freq of guess[i] char; i.e freq[guess[i]]--
-            - this means, we had a guess char that had not matched with a secret char
-        - now to check if this secret char can match with a previously seen non-matching guess char
-            - check in freq if secret[i] has a negative value?
-            - negative value freq are only added by guess[i] chars when they dont match
-            - so if there is a negative freq, there is a previously seen guess char thats misplaced
-            - therefore cows++
-            - if freq[secret[i]] < 0 {cows++}
-        - similarly, we need to check if guess[i] could be paired with a non-matching previously seen secret char?
-        - meaning we need to go back from i -> 0 in secret string to check if there was a non-matching guess[i] char
-        - to build non-matching secret char;
-            - we will create a positive freq for each secret[i] char that has not been paired with a guess char
-            - now guess[i] can perform a lookup in freq to check whether secret string ever added a non matching guess[i] char
-            - if there is a freq > 0, it means yes, secret string added a char that previously did not match
-            - meaning we have a secret char that matches guess char but in the wrong position
-            - if freq[guess[i]] > 0 {cows++}
-        - now add secret freq ; freq[secret[i]]++
-            - this does 2 things
-            - adds itself if it did not match previously seen non-matching guess char
-            - or 
-            - it matched with previously seen guess char, and its freq was negative, incrementing it made it 0, therefore no-longer usable
-        - now decrement guess freq; freq[guess[i]]--
-            - this also does 2 things
-            - it adds itself for the first time when there was no previously seen secret char to pair with
-            - or
-            - it matched with a previously seen secret char and now decremeting its freq because that secret char is no longer usable
-        
+    approach: 1 pass with offset freq matching
+    - if both chars match, great, happy path, bulls++
+
+    - when both chars do not match
+        - they could match later tho ... 
+        - secret[i] could match later
+        - guess[i] could match later
+        - so we need to store them in some searchable data structure
+        - i.e hash map
+    - this hash map is tracking unmatched chars ONLY
+    - when secret[i] exists in hash map 
+        - how do we know whether it was added by guess string?
+    - when guess[i] exists in hash map
+        - how do we know whether it was added by secret string?
+    - so then we should create a partition from where chars are added from
+        - {secretChars: {}, guessChars: {}}
+    - now when we have an unmatched char, then
+    - we check if guess char exists in secret partition
+        - did secret string before current idx have this guess[i]char?
+        - if yes, cow detected, decrement its count in secret partition space
+        - if not, we need to store this guess char to see if it can be matched later
+    - we need to check other way around too
+    - if secret char exists in guess partition
+        - did the guess string before current idx have this secret[i] char?
+        - if yes, cow detected, decrement its count in guess partition space
+        - if not, we need to store this secret char to see if it can be matched later
+
+
         time = o(n)
-        space = o(1) // 26 chars in alphabets
+        space = o(1) 
+        - digits are from 0-9 , so 10 possible keys at worst
+        - 2 * 10 = 20 keys in each partition space
 */
 func getHint(secret string, guess string) string {
-    if len(secret) != len(guess) {return ""}
+    if len(secret) != len(guess) { return "" }
+
     bulls := 0
     cows := 0
-    freq := map[byte]int{}
+    freq := map[string]map[byte]int{"s": {}, "g": {}}
+
     for i := 0; i < len(secret); i++ {
         s, g := secret[i], guess[i]
+        
         if s == g {
             bulls++
         } else {
-            // is there a secret[i] char that was added by guess?
-            // guess makes its counters negative
-            // if we run into a secret[i] whose freq is negative
-            // it means it was added by guess string
-            // therefore placed at incorrect position
-            // hence cows++
-            if freq[s] < 0 {cows++} 
+            // Check if 'g' exists in secret's storage → cow found!
+            if freq["s"][g] > 0 {
+                cows++
+                freq["s"][g]-- // Decrement since we matched it
+            } else {
+                freq["g"][g]++ // Store unmatched guess character
+            }
 
-            // is there a guess[i] added by secret string?
-            // secret makes its counters positive
-            // if we run into guess[i] whose freq is positive
-            // it means secret string and guess string has guess[i] char
-            // but at difference positions
-            // hence cows++
-            if freq[g] > 0 {cows++}
-
-            // secret string adds its char with positive counters
-            freq[s]++
-            
-            // guess string adds its char with negaitve counters
-            freq[g]--
+            // Check if 's' exists in guess's storage → cow found!
+            if freq["g"][s] > 0 {
+                cows++
+                freq["g"][s]-- // Decrement since we matched it
+            } else {
+                freq["s"][s]++ // Store unmatched secret character
+            }
         }
     }
-    return fmt.Sprintf("%vA%vB", bulls, cows)
+
+    return fmt.Sprintf("%dA%dB", bulls, cows)
 }
 
+
+
+// 2 pass, freq map
 // func getHint(secret string, guess string) string {
 //     if len(secret) != len(guess) {return ""}
 //     bulls := 0
