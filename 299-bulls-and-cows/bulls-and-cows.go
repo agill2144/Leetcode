@@ -37,7 +37,9 @@ func getHint(secret string, guess string) string {
 
     bulls := 0
     cows := 0
-    freq := map[string]map[byte]int{"s": {}, "g": {}}
+    // freq := map[string]map[byte]int{"s": {}, "g": {}}
+    sFreq := make([]int, 10)
+    gFreq := make([]int, 10)
 
     for i := 0; i < len(secret); i++ {
         s, g := secret[i], guess[i]
@@ -45,20 +47,24 @@ func getHint(secret string, guess string) string {
         if s == g {
             bulls++
         } else {
-            // Check if 'g' exists in secret's storage → cow found!
-            if freq["s"][g] > 0 {
+            // have we seen g char in secret before this position?
+            if sFreq[int(g-'0')] > 0 {
+                // if yes, cow detected
                 cows++
-                freq["s"][g]-- // Decrement since we matched it
+                sFreq[int(g-'0')]--
             } else {
-                freq["g"][g]++ // Store unmatched guess character
+                // store this guess char to match later
+                gFreq[int(g-'0')]++
             }
 
-            // Check if 's' exists in guess's storage → cow found!
-            if freq["g"][s] > 0 {
+            // have we seen s char in guess string before this idx?
+            if gFreq[int(s-'0')] > 0 {
+                // if yes, cow detected
                 cows++
-                freq["g"][s]-- // Decrement since we matched it
+                gFreq[int(s-'0')]--
             } else {
-                freq["s"][s]++ // Store unmatched secret character
+                // store this secret char to match later
+                sFreq[int(s-'0')]++
             }
         }
     }
