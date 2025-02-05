@@ -15,22 +15,24 @@
         - how do we know whether it was added by secret string?
     - so then we should create a partition from where chars are added from
         - {secretChars: {}, guessChars: {}}
+        - or 2 separate arrays tracking freq of each char for each string
+            upto an idx i ( curr i position )
     - now when we have an unmatched char, then
     - we check if guess char exists in secret partition
         - did secret string before current idx have this guess[i]char?
         - if yes, cow detected, decrement its count in secret partition space
+        - because its no longer usable and its matched 
         - if not, we need to store this guess char to see if it can be matched later
     - we need to check other way around too
     - if secret char exists in guess partition
         - did the guess string before current idx have this secret[i] char?
         - if yes, cow detected, decrement its count in guess partition space
+        - because its no longer usable and its matched 
         - if not, we need to store this secret char to see if it can be matched later
 
 
         time = o(n)
-        space = o(1) 
-        - digits are from 0-9 , so 10 possible keys at worst
-        - 2 * 10 = 20 keys in each partition space
+        space = o(2*10) = o(1) 
 */
 func getHint(secret string, guess string) string {
     if len(secret) != len(guess) { return "" }
@@ -43,7 +45,6 @@ func getHint(secret string, guess string) string {
 
     for i := 0; i < len(secret); i++ {
         s, g := secret[i], guess[i]
-        
         if s == g {
             bulls++
         } else {
