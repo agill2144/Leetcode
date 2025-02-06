@@ -1,17 +1,18 @@
 func maxScore(cardPoints []int, k int) int {
-    maxPoints := 0
     n := len(cardPoints)
-    left := n-k
-    i := left
-    points := 0
-    for left <= n {
-        points += cardPoints[i%n]
-        if i-left+1 == k {
-            maxPoints = max(maxPoints, points)
-            points -= cardPoints[left%n]
+    total := 0
+    for i := 0; i < n; i++ {total += cardPoints[i]}
+    if k == n {return total}
+    left := 0
+    winSum := 0
+    maxPoints := 0
+    for i := 0; i < n; i++ {
+        winSum += cardPoints[i]
+        if i-left+1 == n-k {
+            maxPoints = max(maxPoints, total-winSum)
+            winSum -= cardPoints[left]
             left++
         }
-        i++
     }
     return maxPoints
 }
