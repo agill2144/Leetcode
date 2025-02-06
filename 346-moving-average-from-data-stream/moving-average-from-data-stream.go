@@ -19,6 +19,9 @@ func Constructor(size int) MovingAverage {
 
 
 func (this *MovingAverage) Next(val int) float64 {
+    // right ptr is actually sitting at next cell
+    // its not at the cell that it had last written data to
+    // therefore we do not have the +1 in this window calc
     if this.right - this.left == this.k {
         this.sum -= this.nums[this.left%this.k]
         this.left++
