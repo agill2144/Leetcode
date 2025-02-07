@@ -8,9 +8,6 @@ func removeDuplicates(s string) string {
             st = append(st, s[i])
         }
     }
-    res := new(strings.Builder)
-    for i := 0; i < len(st); i++ {
-        res.WriteByte(st[i])
-    } 
-    return res.String()
+    
+    return string(st)
 }
