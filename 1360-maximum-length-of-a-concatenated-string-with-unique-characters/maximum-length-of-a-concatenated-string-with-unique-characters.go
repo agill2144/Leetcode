@@ -1,38 +1,59 @@
 func maxLength(arr []string) int {
-    if len(arr) == 0 {return 0}
-    words := []string{}
+    // only use words with uniq chars
+    // ["abc", "def", "ghhi"]
+    // we can never make anything with "ghhi" - because it has duplicate h's
+    // therefore, 1st find words with uniq chars
+    uniqWords := []string{}
     for i := 0; i < len(arr); i++ {
-        set := map[byte]bool{}
-        hasDupeChars := false
         word := arr[i]
-        for k := 0; k < len(arr[i]); k++ {
-            if set[word[k]] {hasDupeChars = true; break}
-            set[word[k]] = true
+        seen := make([]bool, 26)
+        isUniq := true
+        for j := 0; j < len(word); j++ {
+            if seen[int(word[j]-'a')] {
+                isUniq = false
+                break
+            }
+            seen[int(word[j]-'a')] = true
         }
-        if !hasDupeChars {words = append(words, word)}
+        if isUniq {
+            uniqWords = append(uniqWords, word)
+        }
     }
-    res := 0
-    if len(words) == 0 {return 0}
-    var dfs func(start int, path []bool, currSize int)
-    dfs = func(start int, path []bool, currSize int) {
+    
+    // now its just dfs with backtracking
+    // we will be backtracking "seen" bool vars to keep track of what all characters we have seen so far
+    // this way when we are evaluating a word to use, we will go thru all chars of that word first to check
+    // whether we can use this word or not ( all chars of this word have not been seen yet )
+    longest := 0
+    var dfs func(start int, path int, seen []bool)
+    dfs = func(start int, path int, seen []bool) {
         // base
-        res = max(res, currSize)
+        longest = max(longest, path)
         
         // logic
-        for i := start; i < len(words); i++ {
-            word := words[i]
-            canBeUsed := true
-            for k := 0; k < len(word); k++ {
-                charIdx := int(word[k]-'a')
-                if path[charIdx] {canBeUsed = false; break}
+        for i := start; i < len(uniqWords); i++ {
+            word := uniqWords[i]
+
+            canUse := true
+            for j := 0; j < len(word); j++ {
+                idx := int(word[j]-'a')
+                if seen[idx] {
+                    canUse = false
+                    break
+                }
             }
-            if canBeUsed {
-                for k := 0; k < len(word); k++ { path[int(word[k]-'a')] = true}
-                dfs(i+1, path, currSize + len(word))
-                for k := 0; k < len(word); k++ { path[int(word[k]-'a')] = false}
+            
+            if canUse {
+                // mark each char seen
+                for j := 0; j < len(word); j++ { seen[int(word[j]-'a')] = true  }
+                dfs(i+1, path+len(word), seen)
+                // mark each char un-seen
+                for j := 0; j < len(word); j++ { seen[int(word[j]-'a')] = false  }
+                
             }
+            
         }
     }
-    dfs(0, make([]bool, 26), 0)
-    return res
+    dfs(0, 0, make([]bool, 26))
+    return longest
 }
