@@ -1,21 +1,18 @@
-func minCost(colors string, neededTime []int) int {
-    total := 0
-    // last ballon we decided to keep, 
-    // this is the ballon we compare with to check if things are colorful or not
+func minCost(colors string, times []int) int {
     prev := 0
-    for i := 1; i < len(colors); i++ {
+    time := 0
+    n := len(colors)
+    for i := 1; i < n; i++ {
         if colors[i] == colors[prev] {
-            if neededTime[i] < neededTime[prev] {
-                // removing current, keeping prev
-                total += neededTime[i]
-            } else {
-                // removing prev, keeping current
-                total += neededTime[prev]
+            if times[prev] < times[i] {
+                time += times[prev]
                 prev = i
-            } 
+            } else {
+                time += times[i]
+            }
         } else {
             prev = i
         }
     }
-    return total
+    return time
 }
