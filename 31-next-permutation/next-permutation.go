@@ -8,17 +8,17 @@ func nextPermutation(nums []int)  {
         }
     }
     if breachIdx != -1 {
-        nextGreaterIdx := -1
+        nextGreater := -1
         for i := n-1; i > breachIdx; i-- {
             if nums[i] > nums[breachIdx] {
-                if nextGreaterIdx == -1 || nums[i] < nums[nextGreaterIdx] {
-                    nextGreaterIdx = i
+                if nextGreater == -1 || nums[i] < nums[nextGreater] {
+                    nextGreater = i
                 }
             }
         }
-        nums[breachIdx], nums[nextGreaterIdx] = nums[nextGreaterIdx], nums[breachIdx]
-    }
 
+        nums[breachIdx] , nums[nextGreater] = nums[nextGreater], nums[breachIdx]
+    }
     left := breachIdx+1
     right := n-1
     for left < right {
@@ -26,5 +26,4 @@ func nextPermutation(nums []int)  {
         left++
         right--
     }
-    
 }
