@@ -6,27 +6,40 @@
  *     Right *TreeNode
  * }
  */
+ // k =2
+ // [3,2,1]
+// tc = o(n * logk)
+// sc = o(k) for heap + o(n) for recursive stack
 func closestKValues(root *TreeNode, target float64, k int) []int {
-    if root == nil || k == 0 {return nil}   
-    mx := &maxHeap{items: []*heapNode{}}
+    if root == nil || k == 0 {return nil}
+    type tmpNode struct {
+        val int
+        diff float64
+    }
+    tmp := []tmpNode{}
     var dfs func(r *TreeNode)
     dfs = func(r *TreeNode) {
         // base
         if r == nil {return}
 
         // logic
-        node := &heapNode{node:r.Val,diff:abs(target-float64(r.Val))}
-        heap.Push(mx, node)
-        if mx.Len() > k {
-            heap.Pop(mx)
-        }
         dfs(r.Left)
+        tmp = append(tmp, tmpNode{r.Val, abs(target-float64(r.Val))})
+        if len(tmp) > k {
+            if tmp[0].diff > tmp[len(tmp)-1].diff {
+                // drop the 0th element
+                tmp = tmp[1:]
+            } else {
+                // drop the last element
+                tmp = tmp[:len(tmp)-1]
+            }
+        }
         dfs(r.Right)
     }
     dfs(root)
     out := []int{}
-    for mx.Len() > 0 {
-        out = append(out, heap.Pop(mx).(*heapNode).node)
+    for i := 0; i < len(tmp); i++ {
+        out = append(out, tmp[i].val)
     }
     return out
 }
