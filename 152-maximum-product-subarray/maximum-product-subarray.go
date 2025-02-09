@@ -1,14 +1,14 @@
 func maxProduct(nums []int) int {
-    ans := math.MinInt64
-    left := 1
-    right := 1
     n := len(nums)
+    leftRp := 1
+    rightRp := 1
+    res := math.MinInt64
     for i := 0; i < n; i++ {
-        left *= nums[i]
-        right *= nums[n-1-i]
-        ans = max(ans, max(left, right))
-        if left == 0 {left = 1}
-        if right == 0 {right = 1}
+        leftRp *= nums[i]
+        rightRp *= nums[n-1-i]
+        res = max(res, max(leftRp, rightRp))
+        if leftRp == 0 {leftRp = 1}
+        if rightRp == 0 {rightRp = 1}
     }
-    return ans
+    return res
 }
