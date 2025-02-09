@@ -21,6 +21,15 @@ func ladderLength(beginWord string, endWord string, wordList []string) int {
                     child := dq[0:i] + string(j+'a') + dq[i+1:]
                     if set[child] {
                         q = append(q, child)
+                        // set acts as a visited set as well
+                        // once a child is added to queue
+                        // that child is visited / no-longer usable
+                        // therefore mark it visited 
+                        // (set to false no longer allowed to use)
+                        // because take a look at condition at line 22
+                        // we only enqueue a child if its value is true in set
+                        // by turning it false, we can no longer use it
+                        // effectively marking it visited
                         set[child] = false
                     }
                 }
