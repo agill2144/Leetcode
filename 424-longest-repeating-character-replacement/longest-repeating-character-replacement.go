@@ -1,19 +1,18 @@
 func characterReplacement(s string, k int) int {
+    maxWin := 0
     left := 0
     freq := map[byte]int{}
-    majority := 0
-    ans := 0
+    maxFreq := 0
     for i := 0; i < len(s); i++ {
         freq[s[i]]++
-        majority = max(majority, freq[s[i]])
-        size := i-left+1
-        if size-majority <= k {
-            ans = max(ans, size)
+        maxFreq = max(maxFreq, freq[s[i]])
+        if i-left+1 - maxFreq <= k {
+            maxWin = max(maxWin, i-left+1)
         } else {
-            leftChar := s[left]
-            freq[leftChar]--
+            freq[s[left]]--
+            if freq[s[left]] == 0 {delete(freq, s[left])}
             left++
         }
     }
-    return ans
+    return maxWin
 }
