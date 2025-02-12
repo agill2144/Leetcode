@@ -7,41 +7,53 @@
  * }
  */
 func distanceK(root *TreeNode, target *TreeNode, k int) []int {
+    if root == nil || target == nil {return nil}
+    targetFound := false
     adjList := map[*TreeNode][]*TreeNode{}
-    var buildGraph func(r *TreeNode)
-    buildGraph = func(r *TreeNode) {
+    var dfs func(r *TreeNode)
+    dfs = func(r *TreeNode) {
         // base
         if r == nil {return}
 
         // logic
+        if r == target {targetFound = true}
+        if _, ok := adjList[r]; !ok {
+            adjList[r] = []*TreeNode{}
+        }
         if r.Left != nil {
             adjList[r] = append(adjList[r], r.Left)
             adjList[r.Left] = append(adjList[r.Left], r)
-            buildGraph(r.Left)            
+            dfs(r.Left)
         }
         if r.Right != nil {
             adjList[r] = append(adjList[r], r.Right)
             adjList[r.Right] = append(adjList[r.Right], r)
-            buildGraph(r.Right)            
+            dfs(r.Right)
         }
     }
-    buildGraph(root)
+    dfs(root)
+    if !targetFound {return nil}
+    q := []*TreeNode{target}
+    dist := 0
     out := []int{}
-    var dfs func(node, prev *TreeNode, depth int)
-    dfs = func(node, prev *TreeNode, depth int) {
-        // base
-        if node == nil {return}
-
-        // logic
-        if depth == k {
-            out = append(out, node.Val)
-            return
+    visited := map[*TreeNode]bool{target:true}
+    for len(q) != 0 {
+        qSize := len(q)
+        for qSize != 0 {
+            dq := q[0]
+            q = q[1:]
+            if dist == k {
+                out = append(out, dq.Val)
+            } else {
+                for _, child := range adjList[dq] {
+                    if visited[child] {continue}
+                    q = append(q, child)
+                    visited[child] = true
+                }
+            }
+            qSize--
         }
-        for _, nei := range adjList[node] {
-            if nei == prev {continue}
-            dfs(nei, node,depth+1)
-        }
+        dist++
     }
-    dfs(target, nil, 0)
     return out
 }
