@@ -1,7 +1,6 @@
 func search(nums []int, target int) bool {
-    n := len(nums)
-    left := 0
-    right := n-1
+    left := 0 
+    right := len(nums)-1
     for left <= right {
         mid := left + (right-left)/2
         if nums[mid] == target {return true}
@@ -10,7 +9,7 @@ func search(nums []int, target int) bool {
             right--
             continue
         }
-        if nums[left] <= nums[mid] {
+        if nums[mid] >= nums[left] {
             if target <= nums[mid] && target >= nums[left] {
                 right = mid-1
             } else {
