@@ -44,6 +44,8 @@ func distanceK(root *TreeNode, target *TreeNode, k int) []int {
             q = q[1:]
             if dist == k {
                 out = append(out, dq.Val)
+                qSize--
+                continue
             } else {
                 for _, child := range adjList[dq] {
                     if visited[child] {continue}
