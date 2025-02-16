@@ -18,30 +18,32 @@
  */
 
 func cleanRoom(robot *Robot) {
-    visited := map[[2]int]bool{}
+    visited := map[int]map[int]bool{} // {$row: {$col: true|false}}
     dirs := [][]int{{-1,0},{0,1},{1,0},{0,-1}}
-    var dfs func(r, c, currDir int)
-    dfs = func(r, c, currDir int) {
+    currDir := 0
+    var dfs func(r, c int)
+    dfs = func(r, c int) {
         // base
+        if visited[r] != nil && visited[r][c] == true {return}
 
         // logic
-        visited[[2]int{r,c}] = true
+        if visited[r] == nil {visited[r] = map[int]bool{}}
+        visited[r][c] = true
         robot.Clean()
         for i := 0; i < 4; i++ {
-            nr := r+dirs[currDir][0]
-            nc := c+dirs[currDir][1]
-            if !visited[[2]int{nr,nc}] && robot.Move() {
-                dfs(nr,nc, currDir)
+            nr, nc := r+dirs[currDir][0], c+dirs[currDir][1]
+            if (visited[nr] == nil || !visited[nr][nc]) && robot.Move() {
+                dfs(nr, nc)
                 robot.TurnRight()
                 robot.TurnRight()
                 robot.Move()
                 robot.TurnRight()
                 robot.TurnRight()
             }
+            currDir++
+            if currDir >= 4 {currDir = 0}
             robot.TurnRight()
-            currDir = (currDir+1) % 4
         }
     }
-    dfs(0,0,0)
-    
+    dfs(0,0)
 }
