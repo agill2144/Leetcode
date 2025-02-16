@@ -7,11 +7,12 @@
  */
 
 func cloneGraph(node *Node) *Node {
+    if node == nil {return nil}
     origToCp := map[*Node]*Node{}
     var dfs func(curr *Node) 
     dfs = func(curr *Node) {
         // base
-        if curr == nil {return}
+        // if curr == nil {return}
         if origToCp[curr] != nil {return}
 
         // logic
