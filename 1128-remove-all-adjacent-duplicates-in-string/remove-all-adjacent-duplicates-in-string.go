@@ -1,13 +1,18 @@
 func removeDuplicates(s string) string {
     st := []byte{}
     for i := 0; i < len(s); i++ {
-        if len(st) == 0 {st = append(st, s[i]); continue}
-        if st[len(st)-1] == s[i] {
+        pushCurr := true
+        for len(st) > 0 && st[len(st)-1] == s[i] {
             st = st[:len(st)-1]
-        } else {
+            pushCurr = false
+        }
+        if pushCurr {
             st = append(st, s[i])
         }
     }
-    
-    return string(st)
+    res := new(strings.Builder)
+    for i := 0; i < len(st); i++ {
+        res.WriteByte(st[i])
+    }
+    return res.String()
 }
