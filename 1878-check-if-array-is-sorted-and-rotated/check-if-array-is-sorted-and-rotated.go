@@ -1,28 +1,23 @@
 func check(nums []int) bool {
+    if len(nums) <= 1 {return true}
+
     startIdx := -1
-    // find the dipping point
-    // i.e start of sorted array
     for i := 0; i < len(nums)-1; i++ {
-        nextIdx := i+1
-        if nums[i] > nums[nextIdx] {
-            startIdx = nextIdx
+        if nums[i] > nums[i+1] {
+            startIdx = i+1
             break
         }
     }
     if startIdx == -1 {return true}
-    // now count how many elements successfully processed
-    // as in, count number of curr elements seen 
-    // as long as curr and next element are sorted
-    // once curr has seen all, we are good, things are sorted
-    count := 1
-    ptr := startIdx
+    count := 0
     n := len(nums)
-    for count != n {
-        curr := nums[ptr%n]
-        next := nums[(ptr+1)%n]
-        if curr > next {return false}
-        count++
-        ptr++
+    for count != n-1 {
+        if nums[startIdx%n] <= nums[(startIdx+1)%n] {
+            count++
+            startIdx++
+        } else {
+            return false
+        }
     }
     return true
 }
