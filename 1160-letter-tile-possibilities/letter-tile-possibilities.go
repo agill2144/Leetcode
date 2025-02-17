@@ -1,6 +1,6 @@
 func numTilePossibilities(tiles string) int {
     if len(tiles) <= 1 {return len(tiles)}
-    seqs := map[string]bool{}
+    seqs := map[string]bool{} // to track uniq subset seqs
     var dfs func(set map[int]bool, path string)
     dfs = func(set map[int]bool, path string){
         // base
