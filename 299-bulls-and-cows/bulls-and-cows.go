@@ -1,24 +1,24 @@
 func getHint(secret string, guess string) string {
-    g := make([]int, 10)
-    s := make([]int, 10)
+    gFreq := make([]int, 10)
+    sFreq := make([]int, 10)
     bulls := 0
     cows := 0
     for i := 0; i < len(secret); i++ {
         if secret[i] == guess[i] {
             bulls++
         } else {
-            if s[int(guess[i]-'0')] > 0 {
-                s[int(guess[i]-'0')]--
+            if sFreq[int(guess[i]-'0')] > 0 {
+                sFreq[int(guess[i]-'0')]--
                 cows++
             } else {
-                g[int(guess[i])-'0']++
+                gFreq[int(guess[i])-'0']++
             }
             
-            if g[int(secret[i]-'0')] > 0 {
-                g[int(secret[i]-'0')]--
+            if gFreq[int(secret[i]-'0')] > 0 {
+                gFreq[int(secret[i]-'0')]--
                 cows++
             } else {
-                s[int(secret[i])-'0']++                
+                sFreq[int(secret[i])-'0']++                
             }
         }
     }
