@@ -1,29 +1,26 @@
 func shipWithinDays(weights []int, days int) int {
-    left := 0
+    left := slices.Max(weights)
     right := 0
-    for i := 0; i < len(weights); i++ {
-        left = max(left, weights[i])
-        right += weights[i]
-    }
-    ans := -1
+    for i := 0; i < len(weights); i++ {right += weights[i]}
+
+    res := -1
     for left <= right {
         mid := left + (right-left)/2
-        rSum := 0
-        day := 1
+        sum := 0
+        count := 1
         for i := 0; i < len(weights); i++ {
-            rSum += weights[i]
-            if rSum > mid {
-                rSum = weights[i]
-                day++
+            sum += weights[i]
+            if sum > mid {
+                sum = weights[i]
+                count++
             }
         }
-        if day <= days {
-            ans = mid
-            right = mid-1
-        } else {
+        if count > days {
             left = mid+1
+        } else {
+            res = mid
+            right = mid-1
         }
     }
-    return ans
-
+    return res
 }
