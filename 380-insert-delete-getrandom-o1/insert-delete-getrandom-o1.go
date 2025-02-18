@@ -1,39 +1,41 @@
 type RandomizedSet struct {
-    items []int
-    idx map[int]int 
+    idxs map[int]int
+    nums []int
 }
 
 
 func Constructor() RandomizedSet {
-    return RandomizedSet{items: []int{}, idx: map[int]int{}}    
+    return RandomizedSet{idxs:map[int]int{}, nums:[]int{}}    
 }
 
 
 func (this *RandomizedSet) Insert(val int) bool {
-    _, exists := this.idx[val]
-    if exists {return false}
-    this.items = append(this.items, val)
-    this.idx[val] = len(this.items)-1    
+    _, ok := this.idxs[val]
+    if ok {return false}
+    this.nums = append(this.nums, val)
+    this.idxs[val] = len(this.nums)-1
     return true
 }
 
 
 func (this *RandomizedSet) Remove(val int) bool {
-    currPos, exists := this.idx[val]
-    if !exists {return false}
-    lastPos := len(this.items)-1
-    lastVal := this.items[lastPos]
-    this.items[currPos], this.items[lastPos] = lastVal, val
-    this.items = this.items[:len(this.items)-1]
-    this.idx[lastVal] = currPos
-    delete(this.idx, val)    
+    n := len(this.nums)
+    idx, ok := this.idxs[val]
+    if !ok {return false}
+    lastIdx := n-1
+    lastVal := this.nums[lastIdx]
+
+    this.nums[idx], this.nums[lastIdx] = lastVal, val
+    this.idxs[lastVal] = idx
+    this.nums = this.nums[:n-1]
+    delete(this.idxs, val)
     return true
 }
 
 
 func (this *RandomizedSet) GetRandom() int {
-    n := len(this.items)
-    return this.items[rand.Intn(n)]
+    n := len(this.nums)
+    return this.nums[rand.Intn(n)]    
 }
 
 
