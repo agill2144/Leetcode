@@ -26,6 +26,6 @@ func getHappyString(n int, k int) string {
     }
     dfs("")
     if k-1 >= len(paths) {return ""}
-    sort.Strings(paths)
+    // sort.Strings(paths)
     return paths[k-1]
 }
