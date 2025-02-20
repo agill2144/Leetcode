@@ -1,7 +1,6 @@
 func getHappyString(n int, k int) string {
     if n <= 1 && k > 3 {return ""}
     count := 0
-    choices := []string{"a","b","c"}
     var dfs func (path string) string
     dfs = func (path string) string{
         // base
@@ -14,8 +13,8 @@ func getHappyString(n int, k int) string {
         }
 
         // logic
-        for i := 0; i < len(choices); i++ {
-            curr := choices[i]
+        for i := 0; i < 3; i++ {
+            curr := string('a' + i)
             prev := ""
             if path != "" {prev = string(path[len(path)-1])}
             if curr != prev {
