@@ -27,8 +27,8 @@ func (this *RandomizedSet) Remove(val int) bool {
     lastVal := this.nums[lastPos]
     this.nums[currPos], this.nums[lastPos] = this.nums[lastPos], this.nums[currPos]
     this.idx[lastVal] = currPos
-    this.nums = this.nums[:n-1]
     delete(this.idx, val)
+    this.nums = this.nums[:n-1]
     return true
 }
 
