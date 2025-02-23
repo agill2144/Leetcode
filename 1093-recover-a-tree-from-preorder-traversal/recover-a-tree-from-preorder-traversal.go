@@ -7,7 +7,15 @@
  * }
  */
 // num of dashes == depth of node
-// cannot add left/right child if current node depth >
+// cannot add left/right child if current depth > current node's depth
+// traversal is given in a pre-order travsersal form
+// parse it , and create a list out of [nodeval, depth]
+// then use dfs to construct it from the list
+// root node is always at idx 0
+// therefore keep a ptr to track what idx we are on
+// also keep track of current depth in dfs (starting from 0)
+// if depth at currDepth in dfs > list[ptr] depth, this node cannot be a child
+// of a prev parent node we just created, therefore return nil
 func recoverFromPreorder(traversal string) *TreeNode {
     type node struct {
         depth int
