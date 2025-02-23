@@ -30,8 +30,7 @@ func recoverFromPreorder(traversal string) *TreeNode {
     var dfs func(currDepth int) *TreeNode
     dfs = func(currDepth int) *TreeNode {
         // base
-        if ptr == len(pre) {return nil}
-        if currDepth != 0 && currDepth > pre[ptr].depth {return nil}
+        if ptr == len(pre) || (currDepth != 0 && currDepth > pre[ptr].depth) {return nil}
 
         // logic
         root := &TreeNode{Val:pre[ptr].val}
