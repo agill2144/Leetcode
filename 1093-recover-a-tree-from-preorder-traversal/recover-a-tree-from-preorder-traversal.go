@@ -6,6 +6,8 @@
  *     Right *TreeNode
  * }
  */
+// num of dashes == depth of node
+// cannot add left/right child if current node depth >
 func recoverFromPreorder(traversal string) *TreeNode {
     type node struct {
         depth int
@@ -30,7 +32,7 @@ func recoverFromPreorder(traversal string) *TreeNode {
     var dfs func(currDepth int) *TreeNode
     dfs = func(currDepth int) *TreeNode {
         // base
-        if ptr == len(pre) || (currDepth != 0 && currDepth > pre[ptr].depth) {return nil}
+        if ptr == len(pre) || currDepth > pre[ptr].depth {return nil}
 
         // logic
         root := &TreeNode{Val:pre[ptr].val}
