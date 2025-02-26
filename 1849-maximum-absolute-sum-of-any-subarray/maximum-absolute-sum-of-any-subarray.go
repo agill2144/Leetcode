@@ -3,8 +3,10 @@ func maxAbsoluteSum(nums []int) int {
     maxSoFar := 0
     res := 0
     for i := 0; i < len(nums); i++ {
-        minSoFar = min(0, minSoFar+nums[i])
-        maxSoFar = max(0, maxSoFar+nums[i])
+        minSoFar += nums[i]
+        if minSoFar > 0 {minSoFar = 0}
+        maxSoFar += nums[i]
+        if maxSoFar < 0 {maxSoFar = 0}
         res = max(maxSoFar, max(abs(minSoFar),res))
     }
     return res
