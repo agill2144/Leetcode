@@ -5,7 +5,7 @@ func maxAbsoluteSum(nums []int) int {
     for i := 0; i < len(nums); i++ {
         minSoFar = min(0, minSoFar+nums[i])
         maxSoFar = max(0, maxSoFar+nums[i])
-        res = max(abs(maxSoFar), max(abs(minSoFar),res))
+        res = max(maxSoFar, max(abs(minSoFar),res))
     }
     return res
 }
