@@ -3,6 +3,12 @@ func maxAbsoluteSum(nums []int) int {
     maxSoFar := 0
     res := 0
     for i := 0; i < len(nums); i++ {
+        // like traditional kadane's algo
+        // if running sum becomes negative, we reset
+        // similarly, we have to have track the traditional rSum (maxSoFar)
+        // and also minSoFar, we want to keep this value as small as possible
+        // therefore if minSoFar becomes > 0, we reset
+        // and maxSoFar is traditional rSum from kadanes algo
         minSoFar += nums[i]
         if minSoFar > 0 {minSoFar = 0}
         maxSoFar += nums[i]
