@@ -1,10 +1,10 @@
 func moveZeroes(nums []int)  {
-    slow := 0
-    for i := 0; i < len(nums); i++ {
+    nonZero := 0
+    n := len(nums)
+    for i := 0; i < n; i++ {
         if nums[i] != 0 {
-            nums[slow], nums[i] = nums[i], nums[slow]
-            slow++
+            nums[i], nums[nonZero] = nums[nonZero], nums[i]
+            nonZero++
         }
     }
-    
 }
