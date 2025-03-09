@@ -2,10 +2,8 @@ func numberOfAlternatingGroups(colors []int, k int) int {
     total := 0
     n := len(colors)
     // tracks size of a window with alternating colors
-    count := 0
-    for i := 0; i < n+k-1; i++ {
-        // we have no prev idx
-        if i == 0 {count++; continue}
+    count := 1
+    for i := 1; i < n+k-1; i++ {
         currIdx := i%n
         prevIdx := (i-1) % n
         if colors[currIdx] == colors[prevIdx] {
