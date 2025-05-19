@@ -1,11 +1,13 @@
+// brute force - n^2
+// using nested iterations, check all pairs
 func twoSum(nums []int, target int) []int {
-    idx := map[int]int{}
-    for i := 0; i < len(nums); i++ {
-        diff := target - nums[i] 
-        if _, ok := idx[diff]; ok {
-            return []int{i, idx[diff]}
+    n := len(nums)
+    for i := 0; i < n; i++ {
+        for j := i+1; j < n; j++ {
+            if nums[i] + nums[j] == target {
+                return []int{i, j}
+            } 
         }
-        idx[nums[i]] = i
     }
     return nil
 }
