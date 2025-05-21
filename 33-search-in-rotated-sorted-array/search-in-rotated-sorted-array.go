@@ -1,14 +1,12 @@
-// look for sorted half
-// check if target is in sorted half
-// go there if its in that sorted half
-// otherwise go to the other side
 func search(nums []int, target int) int {
     n := len(nums)
     left := 0
     right := n-1
     for left <= right {
         mid := left + (right-left)/2
-        if nums[mid] == target {return mid}
+        if nums[mid] == target {
+            return mid
+        }
         if nums[left] <= nums[mid] {
             if target >= nums[left] && target <= nums[mid] {
                 right = mid-1
