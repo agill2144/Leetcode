@@ -9,9 +9,10 @@ func rotate(matrix [][]int)  {
         left := 0
         right := n-1
         for left < right {
-            matrix[i][left], matrix[i][right] = matrix[i][right], matrix[i][left]
+            matrix[i][left], matrix[i][right] = matrix[i][right], matrix[i][left] 
             left++
             right--
         }
     }
+    
 }
