@@ -7,32 +7,34 @@ func spiralOrder(matrix [][]int) []int {
     right := n-1
     out := []int{}
     for len(out) != m*n {
-        // top : left -> right (col)
-        for j := top; j <= right; j++ {
-            out = append(out, matrix[top][j])
+
+        // left to right , same row
+        for i := left; i <= right; i++ {
+            out = append(out, matrix[top][i])
         }
         top++
         if len(out) == m*n {break}
-
-        // right : top to bottom ( row )
+        
+        // top to bottom on right side
         for i := top; i <= bottom; i++ {
             out = append(out, matrix[i][right])
         }
         right--
         if len(out) == m*n {break}
 
-        // bottom : right to left ( col )
-        for j := right; j >= left; j-- {
-            out = append(out, matrix[bottom][j])
+        // right to left on bottom side
+        for i := right; i >= left; i-- {
+            out = append(out, matrix[bottom][i])
         }
         bottom--
         if len(out) == m*n {break}
 
-        // left : bottom to top ( row )
+        // bottom to top on left side
         for i := bottom; i >= top; i-- {
             out = append(out, matrix[i][left])
         }
         left++
     }
     return out
+
 }
