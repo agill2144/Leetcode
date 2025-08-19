@@ -1,17 +1,18 @@
+// count sort because there are only 3 colors/digits
 func sortColors(nums []int)  {
-    z,o,t := 0,0,0
-    for i := 0; i < len(nums); i++ {
-        if nums[i] == 0 {z++}
-        if nums[i] == 1 {o++}
-        if nums[i] == 2 {t++}
-    }
-    for i := 0; i < len(nums); i++ {
-        if z > 0 {
-            nums[i] = 0; z--
-        } else if o > 0 {
-            nums[i] = 1; o--
+    n := len(nums)
+    z, t := 0, n-1
+    i := 0
+    for i <= t {
+        if nums[i] == 0 {
+            nums[i], nums[z] = nums[z], nums[i]
+            i++
+            z++
+        } else if nums[i] == 2 {
+            nums[i], nums[t] = nums[t], nums[i]
+            t--
         } else {
-            nums[i] = 2; t--
+            i++
         }
     }
 }
