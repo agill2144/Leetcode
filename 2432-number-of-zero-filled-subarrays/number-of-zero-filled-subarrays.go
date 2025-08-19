@@ -4,9 +4,8 @@ func zeroFilledSubarray(nums []int) int64 {
     for i := 0; i < len(nums); i++ {
         if nums[i] != 0 {
             left = i+1
-        } else {
-            count += int64(i-left+1)
         }
+        count += int64(i-left+1)
     }
     return count
 }
