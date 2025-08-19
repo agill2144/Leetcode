@@ -1,4 +1,4 @@
-// count sort because there are only 3 colors/digits
+// 2 ptrs on each end collecting their values
 func sortColors(nums []int)  {
     n := len(nums)
     z, t := 0, n-1
