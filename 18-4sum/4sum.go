@@ -6,18 +6,18 @@ func fourSum(nums []int, target int) [][]int {
         iTarget := target-nums[i]
         for j := i+1; j < len(nums); j++ {
             if j != i+1 && nums[j] == nums[j-1] {continue}
-            jTarget := iTarget - nums[j]
+            jTarget := iTarget-nums[j]
             left := j+1
             right := len(nums)-1
             for left < right {
-                sum := nums[left] + nums[right]
-                if sum == jTarget {
+                total := nums[left] + nums[right]
+                if total == jTarget {
                     out = append(out, []int{nums[i], nums[j], nums[left], nums[right]})
                     left++
                     for left < right && nums[left] == nums[left-1] {left++}
                     right--
                     for left < right && nums[right] == nums[right+1] {right--}
-                } else if sum > jTarget {
+                } else if total > jTarget {
                     right--
                 } else {
                     left++
