@@ -3,23 +3,24 @@ func reversePairs(nums []int) int {
     var dfs func(left, right int)
     dfs = func(left, right int) {
         // base
-        if left >= right {return}
-
+        if left >= right {return}        
 
         // logic
         mid := left + (right-left)/2
         dfs(left, mid)
         dfs(mid+1, right)
-        i := left; j := mid+1
+
+        i, j := left, mid+1
         for i <= mid && j <= right {
-            if nums[i] > 2*nums[j] {
+            if nums[i] > 2 * nums[j] {
                 count += (mid-i+1)
                 j++
             } else {
                 i++
             }
         }
-        i = left; j = mid+1
+
+        i, j = left, mid+1
         merged := []int{}
         for i <= mid && j <= right {
             if nums[i] < nums[j] {
@@ -30,8 +31,8 @@ func reversePairs(nums []int) int {
                 j++
             }
         }
-        for i <= mid {merged=append(merged, nums[i]); i++}
-        for j <= right {merged=append(merged, nums[j]); j++}
+        for i <= mid {merged = append(merged, nums[i]); i++}
+        for j <= right {merged = append(merged, nums[j]); j++}
         ptr := 0
         for i := left; i <= right; i++ {
             nums[i] = merged[ptr]
