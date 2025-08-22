@@ -1,22 +1,21 @@
 func minimumArea(grid [][]int) int {
     m := len(grid)
     n := len(grid[0])
-    firstRow := m+1
+    firstRow := m
+    firstCol := n
     lastRow := -1
-    firstCol := m+1
     lastCol := -1
     for i := 0; i < m; i++ {
         for j := 0; j < n; j++ {
             if grid[i][j] == 1 {
                 firstRow = min(firstRow, i)
                 firstCol = min(firstCol, j)
-
-                lastRow = max(i, lastRow)
-                lastCol = max(j, lastCol)
+                lastRow = max(lastRow, i)
+                lastCol = max(lastCol, j)
             }
         }
     }
-    height := lastRow-firstRow+1
-    width := lastCol-firstCol+1
-    return height*width
+    h := lastRow-firstRow+1
+    w := lastCol-firstCol+1
+    return h*w
 }
