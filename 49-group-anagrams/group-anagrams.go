@@ -5,6 +5,8 @@
 // aba = [2,1, 0,0,....]
 // aab = [2,1, 0,0,....]
 // hence proving anagrams
+// tc = o(n * k) + o(n)
+// sc = o(n)
 func groupAnagrams(strs []string) [][]string {
     grps := map[[26]int][]string{}    
     for i := 0; i < len(strs); i++ {
@@ -17,6 +19,8 @@ func groupAnagrams(strs []string) [][]string {
     }
     return out
 }
+// tc = o(k)
+// sc = o(26)
 func hash(str string) [26]int{
     out := [26]int{}
     for i := 0; i < len(str); i++ {
