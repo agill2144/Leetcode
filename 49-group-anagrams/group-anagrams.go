@@ -1,34 +1,60 @@
-// same as hashing freq array as the key
-// but now hashing freq array a string
-// thumb-rule: whenever forming strs, try to use delimeter
-// to avoid failures like : [1 11] vs [11 1] -> in str it will 111 but reality is 1-11 vs 11-1 which are not anagrams
 func groupAnagrams(strs []string) [][]string {
-    grps := map[string][]string{}    
+    grps := map[float64][]string{}    
     for i := 0; i < len(strs); i++ {
         key := hash(strs[i])
         grps[key] = append(grps[key], strs[i])
     }
     out := [][]string{}
     for _, v := range grps {
-        out = append(out, v)
+        out = append(out, v)        
     }
     return out
 }
+
+func hash(str string)float64 {
+    primes := []float64{
+        2, 3, 5, 7, 11, 13, 17, 19, 23, 29,
+        31, 37, 41, 43, 47, 53, 59, 61, 67, 71,
+        73, 79, 83, 89, 97, 101,
+    }
+    var prod float64 = 1.0
+    for i := 0; i < len(str); i++ {
+        idx := str[i]-'a'
+        prod *= primes[idx]
+    }
+    return prod
+}
+// same as hashing freq array as the key
+// but now hashing freq array a string
+// thumb-rule: whenever forming strs, try to use delimeter
+// to avoid failures like : [1 11] vs [11 1] -> in str it will 111 but reality is 1-11 vs 11-1 which are not anagrams
+// func groupAnagrams(strs []string) [][]string {
+//     grps := map[string][]string{}    
+//     for i := 0; i < len(strs); i++ {
+//         key := hash(strs[i])
+//         grps[key] = append(grps[key], strs[i])
+//     }
+//     out := [][]string{}
+//     for _, v := range grps {
+//         out = append(out, v)
+//     }
+//     return out
+// }
 // tc = o(k)
 // sc = o(26)
-func hash(str string) string {
-    out := [26]int{}
-    for i := 0; i < len(str); i++ {
-        charIdx := str[i]-'a'
-        out[charIdx]++
-    }
-    strB := new(strings.Builder)
-    for i := 0; i < len(out); i++ {
-        strB.WriteString(fmt.Sprintf("%v",out[i]))
-        if i+1 < len(out) {strB.WriteByte('-')}
-    }
-    return strB.String()
-}
+// func hash(str string) string {
+//     out := [26]int{}
+//     for i := 0; i < len(str); i++ {
+//         charIdx := str[i]-'a'
+//         out[charIdx]++
+//     }
+//     strB := new(strings.Builder)
+//     for i := 0; i < len(out); i++ {
+//         strB.WriteString(fmt.Sprintf("%v",out[i]))
+//         if i+1 < len(out) {strB.WriteByte('-')}
+//     }
+//     return strB.String()
+// }
 // hash it based on freq of each char in each word
 // hash key = [26]int{} which has freq of each char
 // this will be in sorted form by default
