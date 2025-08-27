@@ -9,11 +9,11 @@ func findMin(nums []int) int {
             minVal = min(minVal, nums[left])
             left++
             right--
-        } else if nums[left] <= nums[mid] {
+        } else if nums[left] <= nums[mid] { // left sorted -> search right
             minVal = min(minVal, nums[left])
             left = mid+1
-        } else if nums[mid] <= nums[right] {
-            minVal = min(minVal, min(nums[mid], nums[right]))
+        } else if nums[mid] <= nums[right] { // right sorted -> search left
+            minVal = min(minVal, nums[mid])
             right = mid-1
         }
     }
