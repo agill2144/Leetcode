@@ -5,6 +5,7 @@ func findMin(nums []int) int {
     minVal := math.MaxInt64
     for left <= right {
         mid := left + (right-left)/2
+        
         if nums[mid] == nums[left] && nums[mid] == nums[right] {
             minVal = min(minVal, nums[left])
             left++
