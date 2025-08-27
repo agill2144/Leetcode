@@ -6,18 +6,27 @@
     space = o(1)
 */
 func findMin(nums []int) int {
-    n := len(nums)
+   n := len(nums)
     left := 0
     right := n-1
     for left <= right {
         mid := left + (right-left)/2
-        if nums[left] < nums[mid] && nums[mid] < nums[right] {return nums[left]}
-        
+        // if we are looking at a sorted window
+        // exit early because min will always be nums[left]
+        if nums[mid] < nums[right] && nums[left] < nums[mid] {return nums[left]}
+
+        // mid is min if mid < mid-1 and mid < mid+1
         if (mid == 0 || nums[mid] < nums[mid-1]) && (mid == n-1 || nums[mid] < nums[mid+1]) {
             return nums[mid]
-        } else if nums[left] <= nums[mid] {
+        }
+         
+
+        if nums[left] <= nums[mid] {
+            // left sorted, take search on right side
             left = mid+1
         } else {
+            // right side is sorted, min is always on unsorted half
+            // therefore take search on left side
             right = mid-1
         }
     }
