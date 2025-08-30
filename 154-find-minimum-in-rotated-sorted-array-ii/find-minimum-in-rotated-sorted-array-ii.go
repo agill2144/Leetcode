@@ -2,21 +2,26 @@ func findMin(nums []int) int {
     n := len(nums)
     left := 0
     right := n-1
-    minVal := math.MaxInt64
+    ans := math.MaxInt64
     for left <= right {
         mid := left + (right-left)/2
-        
-        if nums[mid] == nums[left] && nums[mid] == nums[right] {
-            minVal = min(minVal, nums[left])
+        if nums[left] == nums[mid] && nums[mid] == nums[right] {
+            ans = min(ans, nums[mid])
             left++
             right--
-        } else if nums[left] <= nums[mid] { // left sorted -> search right
-            minVal = min(minVal, nums[left])
-            left = mid+1
-        } else if nums[mid] <= nums[right] { // right sorted -> search left
-            minVal = min(minVal, nums[mid])
+            continue
+        }
+        if (mid == 0 || nums[mid] < nums[mid-1]) && (mid == n-1 || nums[mid] < nums[mid+1]) {
+            ans = min(ans, nums[mid])
+        } 
+
+        if nums[mid] <= nums[right] {
+            ans = min(ans, nums[mid])
             right = mid-1
+        } else if nums[mid] >= nums[left] {
+            ans = min(ans, nums[left])
+            left = mid+1
         }
     }
-    return minVal
+    return ans
 }
