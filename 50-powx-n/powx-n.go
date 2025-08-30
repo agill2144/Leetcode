@@ -2,6 +2,12 @@
     binary exponentiation: repeatedly square the base, and half the exp
     - when exp is odd, save the current base to multiply LATER (because PEMDAS = exp first and then rem base terms)
     - until exp > 0
+    tc = o(logn)
+    sc = o(1)
+
+    another approach: binary expo using dfs
+    tc = o(logn)
+    sc = o(logn) - recursive stack
 */
 func myPow(x float64, n int) float64 {
     if n < 0 {
