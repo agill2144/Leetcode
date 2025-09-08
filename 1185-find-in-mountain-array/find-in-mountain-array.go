@@ -34,7 +34,7 @@ func findInMountainArray(target int, mt *MountainArray) int {
     }
     if peakIdx == -1 {panic("well shit")}
     if target == peakVal {return peakIdx}
-
+    
     left = 0
     right = peakIdx-1
     for left <= right {
