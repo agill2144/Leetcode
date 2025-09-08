@@ -1,3 +1,8 @@
+// m = len(nums1)
+// n = len(nums2)
+// S = min(m,n)
+// tc = o(logS)
+// sc = o(1)
 func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
     if len(nums2) < len(nums1) {
         return findMedianSortedArrays(nums2, nums1)
