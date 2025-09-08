@@ -16,19 +16,23 @@ func findInMountainArray(target int, mt *MountainArray) int {
     peakVal := -1
     for left <= right {
         mid := left + (right-left)/2
-        midVal := mt.get(mid)
-        if (mid == 0 || midVal > mt.get(mid-1)) && (mid == n-1 || midVal > mt.get(mid+1)) {
+        val := mt.get(mid)
+        prev := math.MinInt64
+        next := math.MinInt64
+        if mid-1 >= 0 {prev = mt.get(mid-1)}
+        if mid+1 < n {next = mt.get(mid+1)}
+        if val > prev && val > next {
             peakIdx = mid
-            peakVal = midVal
+            peakVal = val
             break
         }
-        if mid == n-1 || mt.get(mid+1) > midVal {
-            left = mid+1
-        } else {
+        if prev > val {
             right = mid-1
+        } else {
+            left = mid+1
         }
-
     }
+    if peakIdx == -1 {panic("well shit")}
     if target == peakVal {return peakIdx}
 
     left = 0
