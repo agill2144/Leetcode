@@ -1,3 +1,6 @@
+// m = len(banned)
+// tc = o(logn * m)
+// sc = o(m)
 func maxCount(banned []int, n int, maxSum int64) int {
     set := map[int]bool{}
     for i := 0; i < len(banned); i++ {set[banned[i]] = true}
