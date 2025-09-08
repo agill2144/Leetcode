@@ -36,7 +36,7 @@ func findInMountainArray(target int, mt *MountainArray) int {
     if target == peakVal {return peakIdx}
 
     left = 0
-    right = peakIdx
+    right = peakIdx-1
     for left <= right {
         mid := left + (right-left)/2
         val := mt.get(mid)
