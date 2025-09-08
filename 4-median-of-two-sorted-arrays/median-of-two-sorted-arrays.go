@@ -1,3 +1,11 @@
+// noob approach
+// we have 2 sorted arrays
+// merge them using two ptrs into a third array
+// and then give out the median
+// n = len(nums1)
+// m = len(nums2)
+// tc = o(n+m)
+// sc = o(n+m)
 func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
     merged := []int{}
     n1 := 0
