@@ -1,22 +1,19 @@
-// approach: use binary search to find the start position of our k size window
-// tc = o(logn-k) + o(k)
-// sc = o(1)
+// sorted;
+// 1. two pointers
 func findClosestElements(arr []int, k int, x int) []int {
     n := len(arr)
     left := 0
-    right := n-k
-    for left <= right {
-        mid := left + (right-left)/2
-        if mid+k >= n {break}
-        startDist := x-arr[mid]
-        endDist := arr[mid+k]-x
-        if endDist >= startDist {
-            right = mid-1
+    right := n-1
+    for right-left+1 != k {
+        leftDist := abs(arr[left]-x)
+        rightDist := abs(arr[right]-x)
+        if leftDist <= rightDist {
+            right--
         } else {
-            left = mid+1
+            left++
         }
     }
-    return arr[left:left+k]
+    return arr[left:right+1]
 }
 
 func abs(x int) int {
