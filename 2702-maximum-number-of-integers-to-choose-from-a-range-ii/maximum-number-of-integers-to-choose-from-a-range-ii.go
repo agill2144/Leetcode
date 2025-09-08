@@ -6,15 +6,14 @@ func maxCount(banned []int, n int, maxSum int64) int {
     ans := 0
     for left <= right {
         mid := left + (right-left)/2
-        ap := (mid*(mid+1))/2
+        // choosing integers from 1 to mid
         count := mid
-        for k , _ := range set {
-            if k <= mid {
-                ap -= k
-                count--
-            }
+        sum := mid*(mid+1)/2
+        // remove banned integers from the sum / count
+        for k, _ := range set {
+            if k <= mid {sum -= k; count--}
         }
-        if int64(ap) <= maxSum {
+        if int64(sum) <= maxSum {
             ans = count
             left = mid+1
         } else {
