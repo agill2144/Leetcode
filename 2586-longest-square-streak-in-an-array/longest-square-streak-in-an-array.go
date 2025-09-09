@@ -1,21 +1,18 @@
 func longestSquareStreak(nums []int) int {
     set := map[float64]bool{}
-    for i := 0; i < len(nums); i++ {
-        set[float64(nums[i])] = true
-    }
-    res := 1
+    for i := 0; i < len(nums); i++ {set[float64(nums[i])] = true}
+    maxStreak := 0
     for i := 0; i < len(nums); i++ {
         sqrt := math.Sqrt(float64(nums[i]))
         if set[sqrt] {continue}
-
+        start := float64(nums[i])
         count := 0
-        sq := float64(nums[i])
-        for set[sq] {
+        for set[start] {
             count++
-            sq *= sq
+            start *= start
         }
-        res = max(res, count)
+        maxStreak = max(maxStreak, count)
     }
-    if res < 2 {return -1}
-    return res
+    if maxStreak == 1 {maxStreak = -1}
+    return maxStreak
 }
