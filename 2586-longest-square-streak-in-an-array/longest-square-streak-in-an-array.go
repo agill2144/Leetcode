@@ -1,3 +1,6 @@
+// hashing: longest consec seq pattern
+// tc = o(n) + o(n * log n)
+// sc = o(n)
 func longestSquareStreak(nums []int) int {
     set := map[float64]bool{}
     for i := 0; i < len(nums); i++ {set[float64(nums[i])] = true}
