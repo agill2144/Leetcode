@@ -14,17 +14,18 @@ func sortVowels(s string) string {
         if !set[s[i]] {
             out.WriteByte(s[i])
         } else {
-            // Find next available vowel
+            // we are at a vowel position in OG string
+            // now we need the correct sorted vowel char
+            // hence, based on the sorted order, 
+            // find next available vowel char which has a freq > 0
             for sPtr < len(sortedOrder) && vFreq[int(sortedOrder[sPtr]-'A')] == 0 {
                 sPtr++
             }
-            
-            // Write the vowel and decrement its count
+
+            // found a vowel char , write it to new string
             out.WriteByte(sortedOrder[sPtr])
+            // decrement its count by 1
             vFreq[int(sortedOrder[sPtr]-'A')]--
-            
-            // Don't advance sPtr here - let the while loop handle it
-            // when this vowel type is exhausted
         }
     }
     
