@@ -1,3 +1,6 @@
+// count sort
+// tc = o(s) + o(s * 10) = o(s) + o(s)
+// sc = o(1) ; we do not count output string builder
 func sortVowels(s string) string {
     set := map[byte]bool{
         'A': true, 'E': true, 'I': true, 'O': true, 'U': true,
