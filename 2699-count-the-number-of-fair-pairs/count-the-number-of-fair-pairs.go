@@ -3,8 +3,8 @@ func countFairPairs(nums []int, lower int, upper int) int64 {
     sort.Ints(nums)
     var count int64
     for i := 0; i < n; i++ {
-        left := searchGreaterEqualTo(nums, i+1, lower-nums[i])
-        right := searchLessEqualTo(nums, i+1, upper-nums[i])
+        left := searchGreaterOrEqualTo(nums, i+1, lower-nums[i])
+        right := searchLessThanOrEqualTo(nums, i+1, upper-nums[i])
         if left != -1 && right != -1 {
             count += int64(right-left+1)
         }
@@ -12,35 +12,33 @@ func countFairPairs(nums []int, lower int, upper int) int64 {
     return count
 }
 
-func searchGreaterEqualTo(nums []int, left int, target int) int {
-    n := len(nums)
-    idx := -1
-    right := n-1
+
+func searchGreaterOrEqualTo(nums []int, left int, target int) int {
+    ans := -1
+    right := len(nums)-1
     for left <= right {
         mid := left + (right-left)/2
         if nums[mid] >= target {
-            idx = mid
+            ans = mid
             right = mid-1
         } else {
             left = mid+1
         }
     }
-    return idx
+    return ans
 }
 
-
-func searchLessEqualTo(nums []int,left int,target int) int {
-    n := len(nums)
-    idx := -1
-    right := n-1
+func searchLessThanOrEqualTo(nums []int, left int, target int) int {
+    ans := -1
+    right := len(nums)-1
     for left <= right {
         mid := left + (right-left)/2
         if nums[mid] <= target {
-            idx= mid
+            ans = mid
             left = mid+1
         } else {
             right = mid-1
         }
     }
-    return idx
+    return ans
 }
