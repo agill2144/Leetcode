@@ -1,47 +1,47 @@
 type SnapshotArray struct {
-    snapId int
-    history [][][]int // [ [], [] ]
+    history [][][]int
+    id int
 }
 
 
 func Constructor(length int) SnapshotArray {
     return SnapshotArray{
         history: make([][][]int, length),
-    } 
+        id: 0,
+    }
 }
 
 
 func (this *SnapshotArray) Set(index int, val int)  {
-    pair := []int{val, this.snapId}
     if this.history[index] == nil {
         this.history[index] = [][]int{}
     }
-    this.history[index] = append(this.history[index], pair)
+    this.history[index] = append(this.history[index], []int{this.id, val})
 }
 
 
 func (this *SnapshotArray) Snap() int {
-    out := this.snapId
-    this.snapId++
+    out := this.id
+    this.id++
     return out
 }
 
 
 func (this *SnapshotArray) Get(index int, snap_id int) int {
-    items := this.history[index]
+    history := this.history[index]
     left := 0
-    right := len(items)-1
-    ans := 0
+    right := len(history)-1
+    val := 0
     for left <= right {
         mid := left + (right-left)/2
-        if items[mid][1] <= snap_id {
-            ans = items[mid][0]
+        if history[mid][0] <= snap_id {
+            val = history[mid][1]
             left = mid+1
         } else {
             right = mid-1
         }
-    }    
-    return ans
+    }
+    return val
 }
 
 
