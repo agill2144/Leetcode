@@ -1,25 +1,25 @@
-// k = max ele in quantities arr
-// q = len(quantities)
-// n = num of stores
-// tc = o(q) + o(logk * q)
-// sc = o(1)
+// minimize the maximum
+// mid = atMax
+// if mid works , search left because we want smallest such mid
+// when does mid not work ? when stores needed exceed stores given
+// meaning our quantity per store (mid) is too small, increase it the load per store ( left = mid+1 )
+
 func minimizedMaximum(n int, quantities []int) int {
     left := 1
     right := slices.Max(quantities)
-    res := -1
+    ans := -1
     for left <= right {
         mid := left + (right-left)/2
-        stores := 0
+        count := 0
         for i := 0; i < len(quantities); i++ {
-            stores += int(math.Ceil(float64(quantities[i])/float64(mid)))
-            if stores > n {break}
+            count += int(math.Ceil(float64(quantities[i])/float64(mid)))
         }
-        if stores > n {
+        if count > n {
             left = mid+1
         } else {
-            res = mid
+            ans = mid
             right = mid-1
         }
     }
-    return res
+    return ans
 }
