@@ -1,3 +1,9 @@
+// have each idx keep track of values it has had over each snapID
+// snapID will incrementally increase
+// therefore each idx will have a list of values [snapID, val]
+// that tells what that value was at the snapID
+// snapIDs in this nested list will be sorted, because they increase incrementally
+// now we can use binary search to find the snapID in logN time
 type SnapshotArray struct {
     history [][][]int
     id int
