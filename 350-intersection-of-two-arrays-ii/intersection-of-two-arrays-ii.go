@@ -1,3 +1,10 @@
+// What if nums1's size is small compared to nums2's size? Which algorithm is better?
+// nums1 = 2
+// nums2 = 5
+// then looping over small is 2 elements * log base 2 on nums2 (5) = 2.x
+// so tc = o(n1 * log n2) = 2 * 2.x = 4.x iterations
+// vs in two ptrs = 2+5 = 7 iterations
+// hence binary search is better when nums1 is smaller in size compared to nums2
 func intersect(nums1 []int, nums2 []int) []int {
     if len(nums2) < len(nums1) {return intersect(nums2, nums1)}
     sort.Ints(nums1)
