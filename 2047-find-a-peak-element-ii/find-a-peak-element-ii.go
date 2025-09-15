@@ -1,3 +1,24 @@
+/*
+    - random binary search on rows or cols
+    - in this case, i am doing it on rows
+    - then once we have selected a row (mid)
+    - we find the max value in that row 
+        - selecting a cell in such manner
+        - ensures we have the highest value in this row
+        - solves for left / right neighor comparisons
+            - because we picked the highest val in that row
+    - now we have a cell and a row(mid) , we need to see if this cell is > above and bottom cell
+    - if it is, we return and call it done
+    - if the above cell val > current cell val
+        - take the search above ( right = mid-1 )
+    - if the bottom cell val > current cell val
+        - take the search below ( left = mid+1 )
+
+    m = len(rows)
+    n = len(cols)
+    tc = o(logm * n)
+    sc = o(1)
+*/
 func findPeakGrid(mat [][]int) []int {
     m := len(mat)
     n := len(mat[0])
