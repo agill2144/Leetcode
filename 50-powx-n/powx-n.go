@@ -9,6 +9,14 @@ func myPow(x float64, n int) float64 {
             x *= x
             n /= 2
         } else {
+            // we have ran into a odd exp
+            // save the current state of base we need multiply in res
+            // ( recursion did this when we stack unfolded - it kept the base as is )
+            // ( here we are mutating the base as we are going )
+            // ( hence save the current base state as a snapshot in res var )
+            // why ?
+            // because PEMDAS
+            // solve exp first and then multiply, hence save the current base 
             res *= x
             n--
         }
