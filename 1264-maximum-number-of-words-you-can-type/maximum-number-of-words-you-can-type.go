@@ -1,18 +1,19 @@
 func canBeTypedWords(text string, brokenLetters string) int {
-    bkn := make([]bool, 26)
+    set := make([]bool, 26)
     for i := 0; i < len(brokenLetters); i++ {
-        bkn[int(brokenLetters[i]-'a')] = true
+        set[int(brokenLetters[i]-'a')] = true
     }
     count := 0
-    skipCurr := false
-    for i := 0; i < len(text); i++ {
-        if text[i] == ' ' {
-            if !skipCurr { count++ }
-            skipCurr = false
-        } else {
-            if bkn[int(text[i]-'a')] {skipCurr = true}
+    i := 0
+    for i < len(text) {
+        ptr := i
+        skip := false
+        for ptr < len(text) && text[ptr] != ' ' {
+            if set[int(text[ptr]-'a')] {skip = true}
+            ptr++
         }
+        if !skip {count++}
+        i = ptr+1
     }
-    if !skipCurr {count++}
     return count
 }
