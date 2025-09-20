@@ -6,7 +6,7 @@ func minimumTime(time []int, totalTrips int) int64 {
         mid := left + (right-left)/2
         trips := 0
         for i := 0; i < len(time); i++ {
-            trips += mid/time[i]
+            trips += int(math.Floor(float64(mid)/float64(time[i])))
         }
         if trips >= totalTrips {
             ans = int64(mid)
