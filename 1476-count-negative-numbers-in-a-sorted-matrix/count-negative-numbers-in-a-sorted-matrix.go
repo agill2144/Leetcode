@@ -1,16 +1,16 @@
 func countNegatives(grid [][]int) int {
     m := len(grid)
     n := len(grid[0])
-    r := m-1
-    c := 0
-    total := 0
-    for r >= 0 && c < n {
-        if grid[r][c] < 0 {
-            total += (n-c)
-            r--
+    i := m-1
+    j := 0
+    count := 0
+    for i >= 0 && j < n {
+        if grid[i][j] < 0 {
+            count += (n-j)
+            i--
         } else {
-            c++
+            j++
         }
     }
-    return total
+    return count
 }
