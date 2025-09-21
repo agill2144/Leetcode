@@ -1,17 +1,17 @@
 func combinationSum3(k int, n int) [][]int {
     out := [][]int{}
     var dfs func(start int, sum int, path []int)
-    dfs = func(start int, sum int, path []int) {
+    dfs = func(start, sum int, path []int) {
         // base
-        if len(path) == k {
-            if sum == n {
-                newL := make([]int, len(path))
-                copy(newL, path)
-                out = append(out, newL)
+        if len(path) > k {return}
+        if sum >= n {
+            if sum == n && len(path) == k {
+                newP := make([]int, k)
+                copy(newP, path)
+                out = append(out, newP)
             }
             return
         }
-        if sum > n {return}
 
         // logic
         for i := start; i <= 9; i++ {
