@@ -1,23 +1,23 @@
 func minDays(bloomDay []int, m int, k int) int {
-    left := slices.Min(bloomDay)
+    left := 1
     right := slices.Max(bloomDay)
     ans := -1
     for left <= right {
         mid := left + (right-left)/2
         count := 0
-        bq := 0
+        boqs := 0
         for i := 0; i < len(bloomDay); i++ {
             if bloomDay[i] <= mid {
                 count++
                 if count == k {
+                    boqs++
                     count = 0
-                    bq++
                 }
             } else {
                 count = 0
             }
-        }
-        if bq >= m {
+        }    
+        if boqs >= m {
             ans = mid
             right = mid-1
         } else {
