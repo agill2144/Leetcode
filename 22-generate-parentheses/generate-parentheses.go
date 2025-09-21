@@ -1,20 +1,20 @@
 func generateParenthesis(n int) []string {
 	out := []string{}
-	var dfs func(o, c int, path string, tmp []string)
-	dfs = func(o, c int, path string, tmp []string) {
+	var dfs func(o, c int, path string )
+	dfs = func(o, c int, path string) {
 		// base
 		if o == 0 && c == 0 {
-			out = append(out, strings.Join(tmp, ""))
+			out = append(out, path)
 			return
 		}
 		// logic
 		if o > 0 {
             // action
-			tmp = append(tmp, "(")
+            path += "("
             // recurse
-			dfs(o-1, c, path+"(", tmp)
+			dfs(o-1, c, path)
             // backtrack
-			tmp = tmp[:len(tmp)-1]
+            path = path[:len(path)-1]
 		}
 
         // only close if we have opened more than we have closed
@@ -24,12 +24,14 @@ func generateParenthesis(n int) []string {
         // i.e we can def close atleast one now ...
         // hence this logic
 		if c > o {
-			tmp = append(tmp, ")")
-			dfs(o, c-1, path+")", tmp)
-			tmp = tmp[:len(tmp)-1]
+            path += ")"
+            // recurse
+			dfs(o, c-1, path)
+            // backtrack
+            path = path[:len(path)-1]
 		}
 	}
-	dfs(n, n, "", []string{})
+	dfs(n, n, "")
 	return out
 
 }
