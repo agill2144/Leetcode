@@ -1,5 +1,5 @@
 func minDays(bloomDay []int, m int, k int) int {
-    left := 1
+    left := slices.Min(bloomDay)
     right := slices.Max(bloomDay)
     ans := -1
     for left <= right {
