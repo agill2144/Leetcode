@@ -1,3 +1,8 @@
+// tc = o(n) + o(n) + 2^n
+// sc = o(2n) + o(t)
+// o(t) = recursion stack stops after runningSum exceeds target, 
+//          assume all values are 1s, 
+//          therefore reucrsion stack will be of size $target)
 func combinationSum2(candidates []int, target int) [][]int {
     freqM := map[int]int{}
     for i := 0; i < len(candidates); i++ {freqM[candidates[i]]++}
