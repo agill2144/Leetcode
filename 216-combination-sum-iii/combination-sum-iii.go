@@ -1,3 +1,9 @@
+// numOfOptionsPerNode ^ maxDepthOfRecursion
+// numOfOptionsPerNode = 2 ( choose, not-choose )
+// maxDepthOfRecursion, X = min(k, n)
+// tc = 2^X * k
+// the extra *k is coming when we are creating a new copy of path to save into output
+// sc = o(X) + o(k) when creating paths in recursion
 func combinationSum3(k int, n int) [][]int {
     out := [][]int{}
     var dfs func(start int, sum int, path []int)
