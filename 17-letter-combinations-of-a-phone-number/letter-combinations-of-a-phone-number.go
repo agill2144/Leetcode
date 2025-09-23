@@ -1,3 +1,8 @@
+// numOfOptionsPerNode^totalNumberOfOptions
+// numOfOptionsPerNode = 4 ( worst case we have digit 7 or 9 in hand, it has 4 chars, hence 4 options)
+// totalNumberOfOptions = n = len(digits)
+// tc = 4^n
+// sc = n : recursion stack space will never exceed n size
 func letterCombinations(digits string) []string {
     if len(digits) == 0 {return nil}
     out := []string{}
@@ -11,20 +16,15 @@ func letterCombinations(digits string) []string {
         '8': {'t', 'u', 'v'},
         '9': {'w', 'x', 'y', 'z'},
     }
-    var dfs func(start int, path string)
-    dfs = func(start int, path string) {
+    var dfs func(ptr int, path string)
+    dfs = func(ptr int, path string) {
         // base
-        if start == len(digits) {
-            out = append(out, path)
-            return
-        }
+        if ptr == len(digits) {out = append(out, path); return}
 
         // logic
-        digits := numberPad[digits[start]]
-        for _, digit := range digits {
-            path += string(digit)
-            dfs(start+1, path)
-            path = path[:len(path)-1]
+        chars := numberPad[digits[ptr]]
+        for i := 0; i < len(chars); i++ {
+            dfs(ptr+1, path + string(chars[i]))
         }
     }
     dfs(0, "")
