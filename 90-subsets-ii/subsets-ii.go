@@ -14,11 +14,16 @@ func subsetsWithDup(nums []int) [][]int {
             // recurse
             dfs(i+1, path)
             // backtrack
+            fmt.Println("back from: ", path)
             path = path[:len(path)-1]
+            fmt.Println("to: ", path)
             
             // hidden: not choose case here
             skipVal := nums[i]
-            for i+1 < len(nums) && nums[i+1] == skipVal {i++}
+            for i+1 < len(nums) && nums[i+1] == skipVal {
+                fmt.Println("skipCheck: ",skipVal, nums[i])
+                i++
+            }
         }
     }
     dfs(0, nil)
