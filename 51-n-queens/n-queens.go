@@ -1,33 +1,36 @@
 func solveNQueens(n int) [][]string {
+    board := make([][]bool, n)
+    for i := 0; i < n; i++ {
+        board[i] = make([]bool, n)
+    }
     out := [][]string{}
-    board := make([][]byte, n)
-    for i := 0; i < n; i++ {board[i] = make([]byte, n)}
-    var dfs func(row int)
-    dfs = func(row int) {
+    var dfs func(r int)
+    dfs = func(r int) {
         // base
-        if row == n {
+        if r == n {
             tmp := []string{}
-            for i := 0; i < n; i++ {
-                rowStr := new(strings.Builder)
-                for j := 0; j < n; j++ {
-                    if board[i][j] == 'Q' {
-                        rowStr.WriteByte('Q')
+            for i := 0; i < len(board); i++ {
+                row := ""
+                for j := 0; j < len(board[0]); j++ {
+                    if board[i][j] {
+                        row += "Q"
                     } else {
-                        rowStr.WriteByte('.')
+                        row += "."
                     }
                 }
-                tmp = append(tmp, rowStr.String())
+                tmp = append(tmp, row)
             }
             out = append(out, tmp)
             return
         }
 
+
         // logic
-        for j := 0; j < n; j++ {
-            if canPlace(board, row, j) {
-                board[row][j] = 'Q'
-                dfs(row+1)
-                board[row][j] = '.'
+        for j := 0; j < len(board); j++ {
+            if isSafe(board, r, j) {
+                board[r][j] = true
+                dfs(r+1)
+                board[r][j] = false
             }
         }
     }
@@ -35,15 +38,18 @@ func solveNQueens(n int) [][]string {
     return out
 }
 
-
-func canPlace(board [][]byte, row, col int) bool {
+func isSafe(board [][]bool, r, c int)bool {
+    dirs := [][]int{
+        {-1,0},
+        {-1,-1},
+        {-1,1},
+    }
     n := len(board)
-    dirs := [][]int{{-1,0},{-1,-1},{-1,1}}
     for _, dir := range dirs {
-        nr := row+dir[0]
-        nc := col+dir[1]
+        nr := r + dir[0]
+        nc := c + dir[1]
         for nr >= 0 && nc >= 0 && nc < n {
-            if board[nr][nc] == 'Q' {return false}
+            if board[nr][nc] {return false}
             nr += dir[0]
             nc += dir[1]
         }
