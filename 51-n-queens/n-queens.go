@@ -10,15 +10,16 @@ func solveNQueens(n int) [][]string {
         if r == n {
             tmp := []string{}
             for i := 0; i < len(board); i++ {
-                row := ""
+                row := new(strings.Builder)
                 for j := 0; j < len(board[0]); j++ {
                     if board[i][j] {
-                        row += "Q"
+                        row.WriteString("Q")
                     } else {
-                        row += "."
+                        row.WriteString(".")
                     }
                 }
-                tmp = append(tmp, row)
+                tmp = append(tmp, row.String())
+                row.Reset()
             }
             out = append(out, tmp)
             return
