@@ -11,6 +11,7 @@ func distributeCookies(cookies []int, k int) int {
 
         // logic
         for i := 0; i < len(childs); i++ {
+            if childs[i] + cookies[ptr] > ans {continue}
             childs[i] += cookies[ptr]
             dfs(ptr+1, max(maxCookies, childs[i]))
             childs[i] -= cookies[ptr]
