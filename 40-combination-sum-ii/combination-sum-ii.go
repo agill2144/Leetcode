@@ -1,15 +1,7 @@
-// tc = o(n) + o(n) + 2^n
-// sc = o(2n) + o(t)
-// o(t) = recursion stack stops after runningSum exceeds target, 
-//          assume all values are 1s, 
-//          therefore reucrsion stack will be of size $target)
 func combinationSum2(candidates []int, target int) [][]int {
-    freqM := map[int]int{}
-    for i := 0; i < len(candidates); i++ {freqM[candidates[i]]++}
-    freq := [][]int{}
-    for k, v := range freqM {freq = append(freq, []int{k,v})}
+    sort.Ints(candidates)
     out := [][]int{}
-    var dfs func(start , sum int, path []int) 
+    var dfs func(start int, sum int, path []int)
     dfs = func(start, sum int, path []int) {
         // base
         if sum >= target {
@@ -22,21 +14,16 @@ func combinationSum2(candidates []int, target int) [][]int {
         }
 
         // logic
-        for i := start; i < len(freq); i++ {
-            if freq[i][1] > 0 {
-                // action
-                sum += freq[i][0]
-                freq[i][1]--
-                path = append(path, freq[i][0])
-                // recurse
-                dfs(i, sum, path)
-                // backtrack
-                path = path[:len(path)-1]
-                freq[i][1]++
-                sum -= freq[i][0]
-            }
+        for i := start; i < len(candidates); i++ {
+            sum += candidates[i]
+            path = append(path, candidates[i])
+            dfs(i+1, sum, path)
+            path = path[:len(path)-1]
+            sum -= candidates[i]
+
+            for i+1 < len(candidates) && candidates[i] == candidates[i+1] {i++}
         }
     }
-    dfs(0, 0, nil)
+    dfs(0,0,nil)
     return out
 }
