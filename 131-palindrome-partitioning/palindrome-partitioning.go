@@ -1,26 +1,22 @@
 func partition(s string) [][]string {
-    out := [][]string{}    
+    out := [][]string{}
     var dfs func(start int, path []string)
     dfs = func(start int, path []string) {
         // base
         if start == len(s) {
             newP := make([]string, len(path))
             copy(newP, path)
-            out = append(out, newP)
+            out= append(out, newP)
             return
         }
-
 
         // logic
         for i := start; i < len(s); i++ {
             subStr := s[start:i+1]
             if isPalindrome(subStr) {
-                // action
                 path = append(path, subStr)
-                // recurse
                 dfs(i+1, path)
-                // backtrack
-                path = path[:len(path)-1]                
+                path = path[:len(path)-1]
             }
         }
     }
@@ -28,14 +24,12 @@ func partition(s string) [][]string {
     return out
 }
 
-func isPalindrome(s string) bool {
-    if len(s) == 1 {return true}
+func isPalindrome(s string)bool{
     left := 0
     right := len(s)-1
     for left < right {
         if s[left] != s[right] {return false}
-        left++
-        right--
+        left++; right--
     }
     return true
 }
