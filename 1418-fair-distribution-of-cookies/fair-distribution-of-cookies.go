@@ -1,24 +1,21 @@
 func distributeCookies(cookies []int, k int) int {
-    minVal := math.MaxInt64
+    ans := math.MaxInt64
     childs := make([]int, k)
-    var dfs func(start ,cookiePtr, maxCookies int)
-    dfs = func(start , cookiePtr, maxCookies int) {
+    var dfs func(ptr int, maxCookies int)
+    dfs = func(ptr int, maxCookies int) {
         // base
-        if cookiePtr == len(cookies) {
-            minVal = min(minVal, maxCookies)
+        if ptr == len(cookies) {
+            ans = min(ans, maxCookies)
             return
         }
 
         // logic
-        for i := start; i < len(childs); i++ {
-            if childs[i] + cookies[cookiePtr] > minVal {continue}
-            // action
-            childs[i] += cookies[cookiePtr]
-
-            dfs(start, cookiePtr+1, max(maxCookies, childs[i]))
-            childs[i] -= cookies[cookiePtr]
+        for i := 0; i < len(childs); i++ {
+            childs[i] += cookies[ptr]
+            dfs(ptr+1, max(maxCookies, childs[i]))
+            childs[i] -= cookies[ptr]
         }
     }
-    dfs(0, 0, 0)
-    return minVal
+    dfs(0, 0)
+    return ans
 }
