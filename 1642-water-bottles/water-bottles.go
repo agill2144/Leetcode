@@ -1,20 +1,15 @@
-func numWaterBottles(numBottles int, numExchange int) int {
-    if numExchange > numBottles {
-        return numBottles
-    }
+func numWaterBottles(numBottles int, k int) int {
+    full := numBottles
+    empty := 0
     total := 0
-    fulls := numBottles
-    emptys := 0
-
-    for fulls > 0 {
-        aboutToDrink := min(numExchange, fulls)
-        fulls -= aboutToDrink
-        emptys += aboutToDrink
-        total += aboutToDrink
-        if emptys == numExchange {
-            fulls++
-            emptys = 0
-        }
+    for full != 0 {
+        // drink all
+        total += full
+        // get back
+        getBack := (full + empty) / k
+        // collect empty that could not be changed
+        empty = (full + empty) % k
+        full = getBack
     }
     return total
 }
