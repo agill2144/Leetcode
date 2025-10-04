@@ -8,18 +8,18 @@ func shipWithinDays(weights []int, days int) int {
     ans := -1
     for left <= right {
         mid := left + (right-left)/2
-        curr := 0
-        numDays := 1
+        rSum := 0
+        d := 1
         for i := 0; i < len(weights); i++ {
-            curr += weights[i]
-            if curr > mid {
-                curr = weights[i]
-                numDays++
+            rSum += weights[i]
+            if rSum > mid {
+                rSum = weights[i]
+                d++
             }
         }
-        if numDays <= days {
+        if d <= days {
             ans = mid
-            right = mid -1
+            right = mid-1
         } else {
             left = mid+1
         }
