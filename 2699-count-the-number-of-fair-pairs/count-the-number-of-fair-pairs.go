@@ -1,21 +1,21 @@
 func countFairPairs(nums []int, lower int, upper int) int64 {
     sort.Ints(nums)
-    var count int64 
+    count := 0
     for i := 0; i < len(nums); i++ {
-        left := leftMostOnRightSide(nums, lower-nums[i], i+1)
-        right := rightMostOnLeftSide(nums, upper-nums[i],i+1)
-        if left != -1 && right != -1 {
-            count += int64(right-left+1)
+        leftIdx := leftSearch(nums, i+1, lower-nums[i])
+        rightIdx := rightSearch(nums, i+1, upper-nums[i])
+        if leftIdx != -1 && rightIdx != -1 {
+            count += (rightIdx-leftIdx+1)
         }
     }
-    return count
+    return int64(count)
 }
 
-func leftMostOnRightSide(nums []int, target, left int) int {
+func leftSearch(nums []int, left int, target int )int {
     idx := -1
     right := len(nums)-1
     for left <= right {
-        mid := left+(right-left)/2
+        mid := left + (right-left)/2
         if nums[mid] >= target {
             idx = mid
             right = mid-1
@@ -26,15 +26,15 @@ func leftMostOnRightSide(nums []int, target, left int) int {
     return idx
 }
 
-func rightMostOnLeftSide(nums []int, target, left int) int {
+func rightSearch(nums []int, left int, target int )int {
     idx := -1
     right := len(nums)-1
     for left <= right {
-        mid := left+(right-left)/2
+        mid := left + (right-left)/2
         if nums[mid] <= target {
             idx = mid
             left = mid+1
-        } else {
+        }  else {
             right = mid-1
         }
     }
