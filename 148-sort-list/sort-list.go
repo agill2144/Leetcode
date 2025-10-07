@@ -6,46 +6,57 @@
  * }
  */
 func sortList(head *ListNode) *ListNode {
-    var dfs func(curr *ListNode) *ListNode
-    dfs = func(curr *ListNode) *ListNode {
+    var dfs func(h *ListNode) *ListNode
+    dfs = func(h *ListNode) *ListNode {
         // base
-        if curr == nil {return nil}
-        if curr.Next == nil {return curr}
+        if h == nil || h.Next == nil {return h}
 
         // logic
+        slow := h
+        fast := h
         var prev *ListNode
-        slow := curr
-        fast := curr
         for fast != nil && fast.Next != nil {
             prev = slow
             slow = slow.Next
             fast = fast.Next.Next
         }
         prev.Next = nil
-        left := dfs(curr)
-        right := dfs(slow)
-        return mergeTwoLists(left, right)
+        h1 := dfs(h)
+        h2 := dfs(slow)
+        dummy := &ListNode{Val:-1}
+        tail := dummy 
+        l1, l2 := h1,h2
+        for l1 != nil && l2 != nil {
+            l1Next := l1.Next
+            l2Next := l2.Next
+            if l1.Val < l2.Val {
+                l1.Next = nil
+                tail.Next = l1
+                tail = tail.Next
+                l1 = l1Next
+            } else {
+                l2.Next = nil
+                tail.Next = l2
+                tail = tail.Next
+                l2 = l2Next
+            }
+        }
+        for l1 != nil {
+            l1Next := l1.Next
+            l1.Next = nil
+            tail.Next = l1
+            tail = tail.Next
+            l1 = l1Next
+        }
+        for l2 != nil {
+            l2Next := l2.Next
+            l2.Next = nil
+            tail.Next = l2
+            tail = tail.Next
+            l2 = l2Next
+        }
+        newHead := dummy.Next
+        return newHead
     }
     return dfs(head)
-}
-
-func mergeTwoLists(list1 *ListNode, list2 *ListNode) *ListNode {
-    dummy := &ListNode{Val: 0}
-    tail := dummy
-    l1, l2 := list1, list2
-    for l1 != nil || l2 != nil {
-        l1Val := math.MaxInt64
-        l2Val := math.MaxInt64
-        if l1 != nil {l1Val = l1.Val}
-        if l2 != nil {l2Val = l2.Val}
-        if l1Val < l2Val {
-            tail.Next = l1
-            l1 = l1.Next
-        } else {
-            tail.Next = l2
-            l2 = l2.Next
-        }
-        tail = tail.Next
-    }
-    return dummy.Next
 }
