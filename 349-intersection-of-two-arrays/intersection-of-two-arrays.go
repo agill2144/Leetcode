@@ -5,6 +5,11 @@ func intersection(nums1 []int, nums2 []int) []int {
     out := []int{}
     left := 0
     for i := 0; i < len(nums1); i++ {
+        // if dupes were allowed to be collected, we would drop this condition
+        // and we would want the binary search to return to the leftMost idx of an element
+        // such that if more dupes of next element exists in nums2, we can also collect them
+        // only when dupes are allowed*
+        // in this problem dupes are not allowed
         if i > 0 && nums1[i] == nums1[i-1] {continue}
         target := nums1[i]
         idx := search(nums2, target, left)
