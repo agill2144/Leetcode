@@ -10,6 +10,7 @@ func threeSumClosest(nums []int, target int) int {
             if abs(target-total) < abs(target-closestSum) {closestSum = total}
             if total > target {
                 right--
+                for left < right && nums[right] == nums[right+1] {right--}
             } else {
                 left++
             }
