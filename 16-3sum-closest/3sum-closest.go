@@ -2,6 +2,7 @@ func threeSumClosest(nums []int, target int) int {
     closestSum := math.MaxInt64
     sort.Ints(nums)
     for i := 0; i < len(nums); i++ {
+        if i > 0 && nums[i] == nums[i-1] {continue}
         left := i+1
         right := len(nums)-1
         for left < right {
