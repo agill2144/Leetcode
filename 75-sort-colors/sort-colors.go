@@ -1,6 +1,23 @@
 func sortColors(nums []int)  {
-    sort.Ints(nums)
+    z,t := 0, len(nums)-1
+    i := 0
+    for i <= t {
+        if nums[i] == 0 {
+            nums[z], nums[i] = nums[i], nums[z]
+            z++
+            i++
+        } else if nums[i] == 2 {
+            nums[t],nums[i] = nums[i], nums[t]
+            t--
+        } else {
+            i++
+        }
+    }
 }
+// lol
+// func sortColors(nums []int)  {
+//     sort.Ints(nums)
+// }
 
 // because there are only 3 values possible, we can use counting sort
 // where we count the occurence of each val in its own counter var
