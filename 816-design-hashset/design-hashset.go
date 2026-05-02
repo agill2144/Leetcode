@@ -1,5 +1,5 @@
 var (
-    outter int = 1000
+    outter int = 1001
     inner int = 1001
 )
 type MyHashSet struct {
