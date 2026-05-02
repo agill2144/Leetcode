@@ -1,27 +1,30 @@
 type MyQueue struct {
-    st []int
+    st1 []int
     st2 []int
 }
 
 
 func Constructor() MyQueue {
-    return MyQueue{st: []int{}, st2: []int{}}
+    return MyQueue{
+        st1: []int{},
+        st2: []int{},
+    }
 }
 
 
 func (this *MyQueue) Push(x int)  {
-    this.st = append(this.st, x)
+    this.st1 = append(this.st1, x)    
 }
 
 func (this *MyQueue) flip() {
-    if len(this.st2) > 0 {return}
-    for len(this.st) != 0 {
-        top := this.st[len(this.st)-1]
-        this.st = this.st[:len(this.st)-1]
-        this.st2 = append(this.st2, top)
+    if len(this.st2) == 0 {
+        for len(this.st1) != 0 {
+            top := this.st1[len(this.st1)-1]
+            this.st1 = this.st1[:len(this.st1)-1]
+            this.st2 = append(this.st2, top)
+        }
     }
 }
-
 
 func (this *MyQueue) Pop() int {
     this.flip()
@@ -33,12 +36,14 @@ func (this *MyQueue) Pop() int {
 
 func (this *MyQueue) Peek() int {
     this.flip()
-    return this.st2[len(this.st2)-1]        
+    top := this.st2[len(this.st2)-1]
+    return top    
 }
 
 
 func (this *MyQueue) Empty() bool {
-    return len(this.st) == 0 && len(this.st2) == 0
+    total := len(this.st1) + len(this.st2)
+    return total == 0
 }
 
 
