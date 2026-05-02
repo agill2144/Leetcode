@@ -1,40 +1,41 @@
-type node struct {
-    val int
-    min int
-}
 type MinStack struct {
-    st []*node
+    st1 []int
+    st2 []int // mins
 }
 
 
 func Constructor() MinStack {
     return MinStack{
-        st: []*node{},
-    }    
+        st1: []int{},
+        st2: []int{},
+    }
 }
 
 
 func (this *MinStack) Push(val int)  {
-    newNode := &node{val:val,min:val}
-    if len(this.st) != 0 {
-        newNode.min = min(newNode.min, this.st[len(this.st)-1].min)
+    this.st1 = append(this.st1, val)
+    if len(this.st2) == 0 || val <= this.st2[len(this.st2)-1] {
+        this.st2 = append(this.st2, val)
     }
-    this.st = append(this.st, newNode)
 }
 
 
 func (this *MinStack) Pop()  {
-    this.st = this.st[:len(this.st)-1]
+    top := this.st1[len(this.st1)-1]
+    this.st1 = this.st1[:len(this.st1)-1]
+    if len(this.st2) > 0 && top == this.st2[len(this.st2)-1] {
+        this.st2 = this.st2[:len(this.st2)-1]
+    }
 }
 
 
 func (this *MinStack) Top() int {
-    return this.st[len(this.st)-1].val
+    return this.st1[len(this.st1)-1]
 }
 
 
 func (this *MinStack) GetMin() int {
-    return this.st[len(this.st)-1].min
+    return this.st2[len(this.st2)-1]
 }
 
 
