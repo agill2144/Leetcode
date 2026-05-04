@@ -14,9 +14,8 @@ func (this *Logger) ShouldPrintMessage(timestamp int, message string) bool {
         if timestamp >= lastT + 10 {
             this.lastPrinted[message] = timestamp
             return true
-        } else {
-            return false
         }
+        return false
     }
     this.lastPrinted[message] = timestamp
     return true
