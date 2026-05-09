@@ -1,3 +1,7 @@
+// n = num of words in strings
+// k = max len of a word in strs
+// tc = o(n * k)
+// sc = o(n)
 func groupAnagrams(strs []string) [][]string {
     m := map[string][]string{}
     for i := 0; i < len(strs); i++ {
@@ -10,6 +14,9 @@ func groupAnagrams(strs []string) [][]string {
     }
     return out
 }
+// k = max len of word
+// tc = o(k) + o(26) = o(k)
+// sc = o(26) + o(k) = o(k)
 func hash(word string) string {
     freq := make([]int, 26)
     for i := 0; i < len(word); i++ {
