@@ -1,3 +1,7 @@
+// n = num of words in strings
+// k = max len of a word in strs
+// tc = o(n * (k + klogk + k))
+// sc = o(n)
 func groupAnagrams(strs []string) [][]string {
     sortedMap := map[string][]string{}
     for i := 0; i < len(strs); i++ {
